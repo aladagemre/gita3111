@@ -1,0 +1,9 @@
+{
+  "result": {
+    "response": "1) Sessizliğin adresi. 2) Kahven, prizin, zamanın. 3) Burada odaklanırsın.",
+    "usage": {"prompt_tokens": 24, "completion_tokens": 22, "total_tokens": 46}
+  },
+  "success": true,
+  "errors": [],
+  "messages": []
+}

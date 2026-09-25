@@ -1,0 +1,13 @@
+{
+  "aciklama": "09_baglam_farki.py demo modunda bu kayıtlı örnek cevapları kullanır. Gerçek anahtarla çalıştırınca model kendi cümlelerini yazar.",
+  "baglamsiz": [
+    "1) Her yudumda mutluluk. 2) Taze çekirdek, sıcak sohbet. 3) Kahvenin en güzel hâli burada.",
+    "1) Güne bir fincan kahveyle başla. 2) Aroması sokağa taşan kafe. 3) Köpüğü bol, sohbeti koyu.",
+    "1) Kahve kokusu, dost yüzü. 2) Her fincanda bir hikâye. 3) Espresso kadar yoğun, latte kadar yumuşak."
+  ],
+  "baglamli": [
+    "1) Sessizliğin adresi. 2) Kahven, prizin, zamanın. 3) Burada odaklanırsın.",
+    "1) Sessizce çalış, derin düşün. 2) Priz yanında, gürültü uzakta. 3) Odaklanmak için bir masa.",
+    "1) Sakin masa, açık zihin. 2) Çalışmak için sessiz bir köşe. 3) Burada zaman senin."
+  ]
+}

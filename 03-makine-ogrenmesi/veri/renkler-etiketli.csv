@@ -1,0 +1,241 @@
+hex,ad,ogrenci,etiket
+#E63946,kırmızı,ogrenci01,enerjik
+#F1FAEE,kırık beyaz,ogrenci01,enerjik
+#A8DADC,açık turkuaz,ogrenci01,sakin
+#457B9D,orta mavi,ogrenci01,ciddi
+#1D3557,lacivert,ogrenci01,ciddi
+#F4A261,şeftali,ogrenci01,enerjik
+#2A9D8F,yeşil turkuaz,ogrenci01,sakin
+#E9C46A,hardal,ogrenci01,sakin
+#264653,petrol,ogrenci01,ciddi
+#8D99AE,gri mavi,ogrenci01,sakin
+#FFB4A2,somon,ogrenci01,ciddi
+#6D6875,puslu mor,ogrenci01,sakin
+#B5838D,gül kurusu,ogrenci01,sakin
+#606C38,zeytin,ogrenci01,enerjik
+#283618,koyu yeşil,ogrenci01,ciddi
+#BC6C25,tarçın,ogrenci01,ciddi
+#DDA15E,bal,ogrenci01,sakin
+#FEFAE0,krem,ogrenci01,enerjik
+#9A031E,bordo,ogrenci01,enerjik
+#0F4C5C,derin mavi,ogrenci01,ciddi
+#E63946,kırmızı,ogrenci02,enerjik
+#F1FAEE,kırık beyaz,ogrenci02,sakin
+#A8DADC,açık turkuaz,ogrenci02,sakin
+#457B9D,orta mavi,ogrenci02,sakin
+#1D3557,lacivert,ogrenci02,ciddi
+#F4A261,şeftali,ogrenci02,enerjik
+#2A9D8F,yeşil turkuaz,ogrenci02,sakin
+#E9C46A,hardal,ogrenci02,enerjik
+#264653,petrol,ogrenci02,ciddi
+#8D99AE,gri mavi,ogrenci02,ciddi
+#FFB4A2,somon,ogrenci02,enerjik
+#6D6875,puslu mor,ogrenci02,sakin
+#B5838D,gül kurusu,ogrenci02,enerjik
+#606C38,zeytin,ogrenci02,enerjik
+#283618,koyu yeşil,ogrenci02,sakin
+#BC6C25,tarçın,ogrenci02,ciddi
+#DDA15E,bal,ogrenci02,sakin
+#FEFAE0,krem,ogrenci02,ciddi
+#9A031E,bordo,ogrenci02,enerjik
+#0F4C5C,derin mavi,ogrenci02,sakin
+#E63946,kırmızı,ogrenci03,enerjik
+#F1FAEE,kırık beyaz,ogrenci03,sakin
+#A8DADC,açık turkuaz,ogrenci03,sakin
+#457B9D,orta mavi,ogrenci03,sakin
+#1D3557,lacivert,ogrenci03,ciddi
+#F4A261,şeftali,ogrenci03,ciddi
+#2A9D8F,yeşil turkuaz,ogrenci03,enerjik
+#E9C46A,hardal,ogrenci03,enerjik
+#264653,petrol,ogrenci03,ciddi
+#8D99AE,gri mavi,ogrenci03,sakin
+#FFB4A2,somon,ogrenci03,enerjik
+#6D6875,puslu mor,ogrenci03,sakin
+#B5838D,gül kurusu,ogrenci03,enerjik
+#606C38,zeytin,ogrenci03,ciddi
+#283618,koyu yeşil,ogrenci03,ciddi
+#BC6C25,tarçın,ogrenci03,enerjik
+#DDA15E,bal,ogrenci03,enerjik
+#FEFAE0,krem,ogrenci03,enerjik
+#9A031E,bordo,ogrenci03,enerjik
+#0F4C5C,derin mavi,ogrenci03,sakin
+#E63946,kırmızı,ogrenci04,enerjik
+#F1FAEE,kırık beyaz,ogrenci04,sakin
+#A8DADC,açık turkuaz,ogrenci04,sakin
+#457B9D,orta mavi,ogrenci04,sakin
+#1D3557,lacivert,ogrenci04,sakin
+#F4A261,şeftali,ogrenci04,enerjik
+#2A9D8F,yeşil turkuaz,ogrenci04,sakin
+#E9C46A,hardal,ogrenci04,ciddi
+#264653,petrol,ogrenci04,enerjik
+#8D99AE,gri mavi,ogrenci04,sakin
+#FFB4A2,somon,ogrenci04,enerjik
+#6D6875,puslu mor,ogrenci04,enerjik
+#B5838D,gül kurusu,ogrenci04,enerjik
+#606C38,zeytin,ogrenci04,enerjik
+#283618,koyu yeşil,ogrenci04,ciddi
+#BC6C25,tarçın,ogrenci04,enerjik
+#DDA15E,bal,ogrenci04,enerjik
+#FEFAE0,krem,ogrenci04,sakin
+#9A031E,bordo,ogrenci04,enerjik
+#0F4C5C,derin mavi,ogrenci04,ciddi
+#E63946,kırmızı,ogrenci05,ciddi
+#F1FAEE,kırık beyaz,ogrenci05,sakin
+#A8DADC,açık turkuaz,ogrenci05,enerjik
+#457B9D,orta mavi,ogrenci05,sakin
+#1D3557,lacivert,ogrenci05,ciddi
+#F4A261,şeftali,ogrenci05,enerjik
+#2A9D8F,yeşil turkuaz,ogrenci05,sakin
+#E9C46A,hardal,ogrenci05,enerjik
+#264653,petrol,ogrenci05,enerjik
+#8D99AE,gri mavi,ogrenci05,sakin
+#FFB4A2,somon,ogrenci05,enerjik
+#6D6875,puslu mor,ogrenci05,sakin
+#B5838D,gül kurusu,ogrenci05,enerjik
+#606C38,zeytin,ogrenci05,enerjik
+#283618,koyu yeşil,ogrenci05,sakin
+#BC6C25,tarçın,ogrenci05,enerjik
+#DDA15E,bal,ogrenci05,enerjik
+#FEFAE0,krem,ogrenci05,sakin
+#9A031E,bordo,ogrenci05,enerjik
+#0F4C5C,derin mavi,ogrenci05,ciddi
+#E63946,kırmızı,ogrenci06,enerjik
+#F1FAEE,kırık beyaz,ogrenci06,sakin
+#A8DADC,açık turkuaz,ogrenci06,sakin
+#457B9D,orta mavi,ogrenci06,ciddi
+#1D3557,lacivert,ogrenci06,enerjik
+#F4A261,şeftali,ogrenci06,enerjik
+#2A9D8F,yeşil turkuaz,ogrenci06,sakin
+#E9C46A,hardal,ogrenci06,enerjik
+#264653,petrol,ogrenci06,ciddi
+#8D99AE,gri mavi,ogrenci06,sakin
+#FFB4A2,somon,ogrenci06,enerjik
+#6D6875,puslu mor,ogrenci06,sakin
+#B5838D,gül kurusu,ogrenci06,sakin
+#606C38,zeytin,ogrenci06,enerjik
+#283618,koyu yeşil,ogrenci06,ciddi
+#BC6C25,tarçın,ogrenci06,enerjik
+#DDA15E,bal,ogrenci06,enerjik
+#FEFAE0,krem,ogrenci06,sakin
+#9A031E,bordo,ogrenci06,enerjik
+#0F4C5C,derin mavi,ogrenci06,ciddi
+#E63946,kırmızı,ogrenci07,ciddi
+#F1FAEE,kırık beyaz,ogrenci07,sakin
+#A8DADC,açık turkuaz,ogrenci07,sakin
+#457B9D,orta mavi,ogrenci07,ciddi
+#1D3557,lacivert,ogrenci07,ciddi
+#F4A261,şeftali,ogrenci07,ciddi
+#2A9D8F,yeşil turkuaz,ogrenci07,sakin
+#E9C46A,hardal,ogrenci07,enerjik
+#264653,petrol,ogrenci07,ciddi
+#8D99AE,gri mavi,ogrenci07,sakin
+#FFB4A2,somon,ogrenci07,enerjik
+#6D6875,puslu mor,ogrenci07,sakin
+#B5838D,gül kurusu,ogrenci07,ciddi
+#606C38,zeytin,ogrenci07,ciddi
+#283618,koyu yeşil,ogrenci07,ciddi
+#BC6C25,tarçın,ogrenci07,sakin
+#DDA15E,bal,ogrenci07,enerjik
+#FEFAE0,krem,ogrenci07,enerjik
+#9A031E,bordo,ogrenci07,enerjik
+#0F4C5C,derin mavi,ogrenci07,ciddi
+#E63946,kırmızı,ogrenci08,enerjik
+#F1FAEE,kırık beyaz,ogrenci08,sakin
+#A8DADC,açık turkuaz,ogrenci08,enerjik
+#457B9D,orta mavi,ogrenci08,sakin
+#1D3557,lacivert,ogrenci08,ciddi
+#F4A261,şeftali,ogrenci08,enerjik
+#2A9D8F,yeşil turkuaz,ogrenci08,ciddi
+#E9C46A,hardal,ogrenci08,sakin
+#264653,petrol,ogrenci08,ciddi
+#8D99AE,gri mavi,ogrenci08,enerjik
+#FFB4A2,somon,ogrenci08,enerjik
+#6D6875,puslu mor,ogrenci08,enerjik
+#B5838D,gül kurusu,ogrenci08,ciddi
+#606C38,zeytin,ogrenci08,enerjik
+#283618,koyu yeşil,ogrenci08,enerjik
+#BC6C25,tarçın,ogrenci08,enerjik
+#DDA15E,bal,ogrenci08,enerjik
+#FEFAE0,krem,ogrenci08,sakin
+#9A031E,bordo,ogrenci08,enerjik
+#0F4C5C,derin mavi,ogrenci08,ciddi
+#E63946,kırmızı,ogrenci09,ciddi
+#F1FAEE,kırık beyaz,ogrenci09,sakin
+#A8DADC,açık turkuaz,ogrenci09,enerjik
+#457B9D,orta mavi,ogrenci09,sakin
+#1D3557,lacivert,ogrenci09,ciddi
+#F4A261,şeftali,ogrenci09,enerjik
+#2A9D8F,yeşil turkuaz,ogrenci09,sakin
+#E9C46A,hardal,ogrenci09,enerjik
+#264653,petrol,ogrenci09,ciddi
+#8D99AE,gri mavi,ogrenci09,sakin
+#FFB4A2,somon,ogrenci09,enerjik
+#6D6875,puslu mor,ogrenci09,ciddi
+#B5838D,gül kurusu,ogrenci09,enerjik
+#606C38,zeytin,ogrenci09,enerjik
+#283618,koyu yeşil,ogrenci09,enerjik
+#BC6C25,tarçın,ogrenci09,enerjik
+#DDA15E,bal,ogrenci09,ciddi
+#FEFAE0,krem,ogrenci09,enerjik
+#9A031E,bordo,ogrenci09,ciddi
+#0F4C5C,derin mavi,ogrenci09,ciddi
+#E63946,kırmızı,ogrenci10,enerjik
+#F1FAEE,kırık beyaz,ogrenci10,sakin
+#A8DADC,açık turkuaz,ogrenci10,sakin
+#457B9D,orta mavi,ogrenci10,enerjik
+#1D3557,lacivert,ogrenci10,ciddi
+#F4A261,şeftali,ogrenci10,enerjik
+#2A9D8F,yeşil turkuaz,ogrenci10,enerjik
+#E9C46A,hardal,ogrenci10,ciddi
+#264653,petrol,ogrenci10,ciddi
+#8D99AE,gri mavi,ogrenci10,sakin
+#FFB4A2,somon,ogrenci10,enerjik
+#6D6875,puslu mor,ogrenci10,sakin
+#B5838D,gül kurusu,ogrenci10,enerjik
+#606C38,zeytin,ogrenci10,sakin
+#283618,koyu yeşil,ogrenci10,sakin
+#BC6C25,tarçın,ogrenci10,enerjik
+#DDA15E,bal,ogrenci10,enerjik
+#FEFAE0,krem,ogrenci10,enerjik
+#9A031E,bordo,ogrenci10,enerjik
+#0F4C5C,derin mavi,ogrenci10,ciddi
+#E63946,kırmızı,ogrenci11,enerjik
+#F1FAEE,kırık beyaz,ogrenci11,sakin
+#A8DADC,açık turkuaz,ogrenci11,sakin
+#457B9D,orta mavi,ogrenci11,sakin
+#1D3557,lacivert,ogrenci11,ciddi
+#F4A261,şeftali,ogrenci11,enerjik
+#2A9D8F,yeşil turkuaz,ogrenci11,sakin
+#E9C46A,hardal,ogrenci11,sakin
+#264653,petrol,ogrenci11,ciddi
+#8D99AE,gri mavi,ogrenci11,sakin
+#FFB4A2,somon,ogrenci11,ciddi
+#6D6875,puslu mor,ogrenci11,sakin
+#B5838D,gül kurusu,ogrenci11,enerjik
+#606C38,zeytin,ogrenci11,enerjik
+#283618,koyu yeşil,ogrenci11,ciddi
+#BC6C25,tarçın,ogrenci11,enerjik
+#DDA15E,bal,ogrenci11,ciddi
+#FEFAE0,krem,ogrenci11,ciddi
+#9A031E,bordo,ogrenci11,enerjik
+#0F4C5C,derin mavi,ogrenci11,ciddi
+#E63946,kırmızı,ogrenci12,sakin
+#F1FAEE,kırık beyaz,ogrenci12,sakin
+#A8DADC,açık turkuaz,ogrenci12,sakin
+#457B9D,orta mavi,ogrenci12,sakin
+#1D3557,lacivert,ogrenci12,ciddi
+#F4A261,şeftali,ogrenci12,enerjik
+#2A9D8F,yeşil turkuaz,ogrenci12,sakin
+#E9C46A,hardal,ogrenci12,enerjik
+#264653,petrol,ogrenci12,ciddi
+#8D99AE,gri mavi,ogrenci12,sakin
+#FFB4A2,somon,ogrenci12,enerjik
+#6D6875,puslu mor,ogrenci12,sakin
+#B5838D,gül kurusu,ogrenci12,enerjik
+#606C38,zeytin,ogrenci12,enerjik
+#283618,koyu yeşil,ogrenci12,sakin
+#BC6C25,tarçın,ogrenci12,enerjik
+#DDA15E,bal,ogrenci12,enerjik
+#FEFAE0,krem,ogrenci12,sakin
+#9A031E,bordo,ogrenci12,enerjik
+#0F4C5C,derin mavi,ogrenci12,ciddi
