@@ -1,7 +1,51 @@
-# Konu 0 — Kurulum
+# Konu 0 — Dersin Tanıtımı ve Kurulum
 
 GİTA3111 · Üretken Yapay Zeka ve Programlama
 Ahmet Emre Aladağ
+
+-----
+
+## Dönemin haritası
+
+Bu ders GİTA2112'nin devamı. Orada kodun temelini attık; burada yapay zekayı
+**kendi kodumuzdan** kullanacağız.
+
+- **Önce:** bu şeyler nasıl çalışıyor — veri, web servisleri, temsil, dil modelleri, üretken modeller
+- **Ortada:** vize
+- **Sonra:** onlarla ne üretiyoruz — görsel, video, üretim hatları
+- **Sonda:** kendi üretim aracını kurduğun final projesi
+
+Dersi haftalara değil **konulara** böldük. Bir konu bir dersten kısa da sürebilir,
+uzun da. Her konunun sonunda elinde çalışan bir çıktı olacak; hiçbir derste sadece
+dinlemeyeceğiz.
+
+-----
+
+## Nasıl değerlendirileceksin?
+
+- **Vize %40** — take-home, evde yapılır, **yapay zeka yasak**, derste sözlü teyit var
+- **Final projesi %60** — kendi kurduğun üretim aracı + üretim günlüğü + sunum
+- **Konu ödevleri: puansız**
+
+Ödevler puansız ama sıra listesi var: herkes dönem boyunca 2-3 kez sınıfta
+çıktısını gösterecek.
+
+Çalışmayan kodla gelmek sorun değil. Hiç denememiş gelmek sorun.
+
+-----
+
+## Yapay zeka ile kod yazmak (vibecoding)
+
+Geçen dönem Antigravity ile araç ürettiniz. Bu derste de kullanacağız — ama nerede
+serbest, nerede yasak, baştan net olsun:
+
+- **Vizede yasak.** Ölçtüğümüz şey senin kendi programlama becerin.
+- **Üretim konularında (dönemin ikinci yarısı) serbest ve bekleniyor.** Orada
+  ölçtüğümüz şey aracı yönetme becerisi.
+- **Kavram konularında serbest** — ama unutma: vizede tek başına yazacaksın.
+  Aracın yazdığını anlamadan geçmek kendi ayağına sıkmaktır.
+
+Kullandığın her yerde üretim günlüğüne yazacaksın.
 
 -----
 

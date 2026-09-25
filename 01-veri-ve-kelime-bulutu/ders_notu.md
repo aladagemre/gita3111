@@ -52,24 +52,6 @@ kadar üretilen değişkenleri hatırlayarak başlarız (yukarıdaki şema tam d
 
 ---
 
-## Dönemin haritası
-
-Bu bölüm yalnızca dönemin ilk dersinde konuşulur.
-
-- **Bu ders GİTA2112'nin devamı.** Orada kodun temelini attık; burada yapay zekayı
-  kendi kodumuzdan kullanacağız.
-- **Önce** "bu şeyler nasıl çalışıyor" (veri, web servisleri, temsil, dil modelleri,
-  üretken modeller), **sonra** "onlarla ne üretiyoruz" (görsel, video, üretim hatları).
-  Ortada vize, sonda proje.
-- **Değerlendirme:** %40 vize (evde yapılır, yapay zeka yasak, ardından kısa bir sözlü
-  kontrol), %60 final projesi. Ödevler **puansız**; sırası gelen öğrenci sınıfta
-  gösterir.
-- **Yapay zekayla kod yazmak (vibecoding):** üretim konularında serbest, vizede
-  yasak. Kavram konularında da serbest; ama vizede tek başına yazacağını unutma.
-- **Maliyet:** dersin tamamı ücretsiz katmanlarla tasarlandı. Kimseden para istenmiyor.
-
----
-
 ## Isınma: geçen dönemin iki hatası
 
 `00_isinma.py` iki küçük bozuk fonksiyon içeriyor. Bu konunun tamamı sözlüğe
