@@ -212,8 +212,8 @@ Terminali kapatıp yeniden açmadın. Aç-kapat, tekrar dene.
 
 **Komutlar çalışıyor ama dosyayı bulamıyor diyor**
 Muhtemelen yanlış klasördesin. Komutları konunun klasörünün **içinden** çalıştırıyoruz:
-`cd gita3111/00-hazirlik` yazdığından emin ol. Nerede olduğunu görmek için Windows'ta `cd`,
-macOS'ta `pwd` yaz.
+`cd gita3111/00-hazirlik` yazdığından emin ol. Nerede olduğunu görmek için `pwd` yaz
+(PowerShell'de de çalışır).
 
 **`git clone` "Repository not found" ya da kullanıcı adı/şifre soruyor**
 Depo adresini yanlış yazmış olabilirsin; yukarıdan kopyala-yapıştır yap. Yine olmuyorsa bana yaz.
