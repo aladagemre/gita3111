@@ -1,6 +1,6 @@
 """GİTA3111 — kurulum testi.
 
-Çalıştırma (gita3111 klasörünün içinden):  uv run 00-hazirlik/ornekler/kurulum_testi.py
+Çalıştırma (00-hazirlik klasörünün içinden):  uv run ornekler/kurulum_testi.py
 
 Bu betik hiçbir şeyi değiştirmez; sadece kurulumun tamam olup olmadığına bakar.
 """
@@ -21,6 +21,12 @@ def bildir(baslik, durum, aciklama=""):
 print("GİTA3111 kurulum testi")
 print("-" * 40)
 
+# 0) Doğru klasörde miyiz? Komutlar konunun klasörünün içinden çalıştırılır.
+dogru_klasor = Path("pyproject.toml").exists() and Path("ornekler/kurulum_testi.py").exists()
+bildir("Doğru klasördesin", dogru_klasor, f"şu an: {Path.cwd()}")
+if not dogru_klasor:
+    print("      -> Önce `cd gita3111/00-hazirlik` yaz, sonra `uv run ornekler/kurulum_testi.py`.")
+
 # 1) Python sürümü
 surum = f"{sys.version_info.major}.{sys.version_info.minor}"
 bildir("Python sürümü", sys.version_info[:2] in [(3, 13), (3, 14)], f"bulunan: {surum}")
@@ -34,7 +40,7 @@ for paket in ("matplotlib", "wordcloud"):
         __import__(paket)
         bildir(f"{paket} kurulu", True)
     except ImportError:
-        bildir(f"{paket} kurulu", False, "`uv add -r 00-hazirlik/requirements.txt` komutunu çalıştır")
+        bildir(f"{paket} kurulu", False, "00-hazirlik klasörünün içinde `uv sync` komutunu çalıştır")
 
 # 3) Gerçekten bir görsel üretebiliyor muyuz?
 try:
@@ -52,7 +58,7 @@ except Exception as hata:
     bildir("Grafik üretimi", False, str(hata))
 
 # 4) Cloudflare anahtarı (isteğe bağlı — yoksa sorun değil)
-anahtar_dosyasi = Path("anahtar.txt")
+anahtar_dosyasi = Path("../anahtar.txt")
 if anahtar_dosyasi.exists():
     metin = anahtar_dosyasi.read_text(encoding="utf-8")
     degerler = {}

@@ -81,12 +81,13 @@ boyutu, kaç kez geçtiğiyle orantılı.
 ## Adım 0 — Kod dosyayı nerede arıyor?
 
 ```python
-open("01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt")
+open("veri/kafe-yorumlari.txt")
 ```
 
 - Python bu dosyayı **kodun çalıştığı klasöre** göre arar
 - Kod dosyasının durduğu yere göre değil
-- Bu yüzden komutları hep `gita3111` klasöründen çalıştırıyoruz
+- Bu yüzden komutları hep konunun klasöründen çalıştırıyoruz:
+  `cd 01-veri-ve-kelime-bulutu`, sonra `uv run ornekler/...`
 - "No such file or directory" hatasının sebebi neredeyse her zaman budur
 
 -----
@@ -98,7 +99,7 @@ Traceback (most recent call last):
   File ".../ornekler/01_dosya_oku.py", line 13, in <module>
     with open(DOSYA, encoding="utf-8") as dosya:
          ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt'
+FileNotFoundError: [Errno 2] No such file or directory: 'veri/kafe-yorumlari.txt'
 ```
 
 1. **En alttan başla:** hatanın türü (`FileNotFoundError`) ve açıklaması
@@ -112,7 +113,7 @@ Emin değilsen sor: `import os` → `print(os.getcwd())` şu an hangi klasördes
 ## Adım 1 — Dosyayı aç
 
 ```python
-DOSYA = "01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt"
+DOSYA = "veri/kafe-yorumlari.txt"
 
 with open(DOSYA, encoding="utf-8") as dosya:
     metin = dosya.read()
@@ -330,7 +331,7 @@ Bunlara **durak kelime** (stopword) denir. Elemeliyiz.
 ## Adım 5 — Durak kelimeleri elemek
 
 ```python
-with open("01-veri-ve-kelime-bulutu/veri/turkce-durak-kelimeler.txt", encoding="utf-8") as dosya:
+with open("veri/turkce-durak-kelimeler.txt", encoding="utf-8") as dosya:
     durak_kelimeler = set(dosya.read().split())   # set: tekrarsız torba
 
 temiz_kelimeler = []

@@ -18,8 +18,10 @@ sessiz bir çalışma kafesinin yeni kimliği için slogan, renk, yazı tipi.
   (`cevaplar.json`),
 - ve bir bulgu: **soruya bağlam yazmak cevabı nasıl değiştiriyor?**
 
-**Kurulum (dersten önce):** `uv add -r 02-api-ile-konusmak/requirements.txt` — internete istek atan
-`requests` kütüphanesini kurar.
+**Kurulum (dersten önce):** konunun klasörüne gir (`cd 02-api-ile-konusmak`) ve bir kez
+`uv sync` çalıştır. Bu konunun kütüphaneleri (internete istek atan `requests` ve
+`wordcloud`) klasördeki `pyproject.toml` dosyasında yazılı; `uv sync` onları önceden
+indirir. Yapmazsan ilk `uv run` komutu indirir, ama ders sırasında beklersin.
 
 > Bu dönemin **kritik konusu**: Konu 4, 5, 8, 9, 10 ve 11 bunun üstüne kuruluyor.
 > Buradaki her adım ileride her derste tekrar edecek. Anlamadığın bir yer kalırsa
@@ -31,7 +33,9 @@ sessiz bir çalışma kafesinin yeni kimliği için slogan, renk, yazı tipi.
 - `Kendini dene` kutuları küçük kontrol sorularıdır. Cevapları notun sonunda.
 - Kod parçalarının çoğu anahtarsız da çalışır. Gerçek anahtar isteyenlerin başında
   **(anahtar gerekir)** yazıyor.
-- Kodları `gita3111` klasörünün içinden çalıştır. Nedenini Adım 1'de göreceksin.
+- Kodları bu konunun klasöründen çalıştır: önce `cd 02-api-ile-konusmak`, sonra
+  `uv run ornekler/...`. Nedenini Konu 1'de gördün; `anahtar.txt` için Adım 1'de bir kez
+  daha bakacağız.
 
 ---
 
@@ -106,7 +110,7 @@ kullanılır. Kod aynı kod, sadece cevap kutudan gelir. Yani dersi takip edebil
 
 Ama bu bir köprü, çözüm değil. Ödev için kendi anahtarın gerekiyor ve Konu 4'ten
 itibaren demo modu yetmiyor. Hesabı ders öncesi kurulum yönergesinin 5. adımıyla
-aç (`00-hazirlik/kurulum-yonergesi.md`).
+aç (`../00-hazirlik/kurulum-yonergesi.md`).
 
 Örnek dosyalar anahtar dosyasını üç durumdan birinde bulur:
 
@@ -213,7 +217,7 @@ gizlidir.
 `anahtarlari_oku()` fonksiyonu bu dosyayı satır satır okuyup bir **sözlük** döndürür:
 
 ```python
-def anahtarlari_oku(yol="anahtar.txt"):
+def anahtarlari_oku(yol="../anahtar.txt"):
     degerler = {}
     with open(yol, encoding="utf-8") as dosya:
         for satir in dosya:                         # dosyayı satır satır gez
@@ -267,26 +271,33 @@ Anahtarı **asla tam olarak** ekrana basma; sadece okunduğunu doğrula. İlk 6 
 
 ### Dosya nerede olmalı? Çalışma klasörü
 
-`open("anahtar.txt")` dosyayı **programı çalıştırdığın klasörde** arar, `.py`
-dosyasının durduğu klasörde değil. Bütün komutları `gita3111` klasöründen
-çalıştırdığımız için `anahtar.txt` de oraya konur:
+Konu 1'deki kural burada da geçerli: `open(...)` dosyayı **komutu çalıştırdığın
+klasöre göre** arar, `.py` dosyasının durduğu yere göre değil. Komutları konunun
+klasöründen (`02-api-ile-konusmak`) çalıştırıyoruz; `veri/...` yolları bu yüzden
+çalışıyor.
+
+`anahtar.txt` ise bir üst klasörde, `gita3111`'in içinde duruyor; böylece bütün konular
+aynı dosyayı kullanıyor. Yoldaki **`..`** "bir üst klasör" demek. `"../anahtar.txt"`,
+"bulunduğum klasörden bir üste çık, oradaki `anahtar.txt`'yi aç" anlamına gelir:
 
 ```
 gita3111/
-├── anahtar.txt                  ← burada
-└── 02-api-ile-konusmak/
+├── anahtar.txt                  ← "../anahtar.txt" burayı gösterir
+└── 02-api-ile-konusmak/         ← komutları buradan çalıştırıyoruz
     ├── ornekler/02_ilk_istek.py
     └── veri/ornek_yanit.json
 ```
 
-Terminalde `ornekler` klasörüne girip `uv run 02_ilk_istek.py` dersen program
-`anahtar.txt` dosyasını da, `02-api-ile-konusmak/veri/...` dosyalarını da bulamaz:
+Terminalde `ornekler` klasörüne girip `uv run 02_ilk_istek.py` dersen iki yol da
+kayar: `..` artık `02-api-ile-konusmak` klasörünü gösterir (orada `anahtar.txt` yok,
+program demo moduna geçer), `veri/...` de `ornekler/veri/...` olarak aranır:
 
 ```text
-FileNotFoundError: [Errno 2] No such file or directory: '02-api-ile-konusmak/veri/ornek_sorular.txt'
+FileNotFoundError: [Errno 2] No such file or directory: 'veri/ornek_yanit.json'
 ```
 
-Çözüm: `cd` ile `gita3111` klasörüne dön, komutu oradan ver.
+Çözüm: `cd ..` ile konu klasörüne (`02-api-ile-konusmak`) dön, komutu oradan ver:
+`uv run ornekler/02_ilk_istek.py`.
 
 ### Adım 1'de sık yapılan hatalar
 
@@ -448,7 +459,7 @@ yükleyebilirsin. Aşağıdaki iki satır demo modunun yaptığı işin aynısı
 ```python
 import json
 
-with open("02-api-ile-konusmak/veri/ornek_yanit.json", encoding="utf-8") as dosya:
+with open("veri/ornek_yanit.json", encoding="utf-8") as dosya:
     yanit = json.load(dosya)
 ```
 
@@ -471,7 +482,7 @@ print(json.dumps(yanit, ensure_ascii=False, indent=2))
 }
 ```
 
-(Bu, demo modunun kullandığı `02-api-ile-konusmak/veri/ornek_yanit.json` dosyası.)
+(Bu, demo modunun kullandığı `veri/ornek_yanit.json` dosyası.)
 
 - `ensure_ascii=False` Türkçe harfler bozulmasın diye. Yazmazsan `ılık yeşil` yerine
   `ılık yeşil` görürsün. Veri bozulmamıştır ama okunmaz.
@@ -764,15 +775,18 @@ böylece akışın tamamını görebilirsin.
 
 ## Adım 6 — Aynı işi beş kez yap
 
-`06_coklu_soru.py` soruları `02-api-ile-konusmak/veri/ornek_sorular.txt` dosyasından satır satır
+`06_coklu_soru.py` soruları `veri/ornek_sorular.txt` dosyasından satır satır
 okuyup `sorular` listesine koyar. Hazır dosyadaki beş soru aynı konuda: Konu 1'in
 bulgusuyla, sessiz bir çalışma kafesinin yeni kimliği (slogan, renk, yazı tipi,
-gönderi fikri, kaçınılacak klişeler). Kendi sorularını sormak için o dosyayı değiştir. Kendi
-kopyanı kullanacaksan dosyanın başındaki `SORULAR_DOSYASI` satırındaki yolu da değiştir.
+gönderi fikri, kaçınılacak klişeler). Kendi sorularını sormak için bu iki dosyayı
+değiştirme, kopyala: soru dosyasını `veri` klasöründe, `06_coklu_soru.py`'yi `ornekler`
+klasöründe yeni bir adla kopyala. Sorularını kopyaya yaz, `06`'nın kopyasında da başındaki
+`SORULAR_DOSYASI` satırının yolunu yeni dosyana çevir. Depodaki dosyalara dokunmazsan
+`git pull` çakışmaz.
 
 ```python
 sorular = []
-with open("02-api-ile-konusmak/veri/ornek_sorular.txt", encoding="utf-8") as dosya:
+with open("veri/ornek_sorular.txt", encoding="utf-8") as dosya:
     for satir in dosya:                    # her satır bir soru
         if satir.strip():                  # boş satırları atla
             sorular.append(satir.strip())
@@ -892,7 +906,7 @@ print(kelime_say(ornek, KLISE))
   Türkçede ise `ı` olmalı.
 
 `09_baglam_farki.py` dosyasının demo modunda (kayıtlı örnek cevaplarla,
-`02-api-ile-konusmak/veri/baglam_ornek_cevaplar.json`) çıktısı:
+`veri/baglam_ornek_cevaplar.json`) çıktısı:
 
 ```text
 --- Sayım (3'er cevapta) ---
@@ -938,8 +952,9 @@ bağlamdadır.
 | 6 | Döngüye soktuk | `cevaplar.json` | `06_coklu_soru.py` |
 | 7 | Bağlamın etkisini ölçtük | kahve klişesi / çalışma yeri sayımı | `09_baglam_farki.py` |
 
-Her dosyayı `gita3111` klasöründen çalıştır: `uv run 02-api-ile-konusmak/ornekler/01_anahtar_oku.py`.
-Ürettikleri dosyalar (`cevap.txt`, `cevaplar.json`) de oraya yazılır.
+Her dosyayı konunun klasöründen (`02-api-ile-konusmak`) çalıştır:
+`uv run ornekler/01_anahtar_oku.py`. Ürettikleri dosyalar (`cevap.txt`, `cevaplar.json`)
+de bu klasöre yazılır.
 
 `05`, `06` ve `09`, önceki dosyalardaki fonksiyonları kendi içlerinde tekrar içerir;
 her dosya tek başına çalışsın diye. Kendi programında bunları yeniden yazmana gerek yok.
@@ -955,9 +970,9 @@ kodu yeni veriyle). Önce `06` çalışmış olmalı; çıktısı `cevaplar-bulu
 
 | Ne görüyorsun | Sebebi | Ne yapmalı |
 |---|---|---|
-| `anahtar.txt bulunamadı` | Hesap açılmamış, dosya yanlış klasörde ya da adı `anahtar.txt.txt` | Demo moduyla devam et; dosyayı `gita3111` klasörüne koy, uzantıyı kontrol et |
-| `FileNotFoundError: ... '02-api-ile-konusmak/veri/...'` | Komutu yanlış klasörden verdin | `gita3111` klasörüne dön |
-| `ModuleNotFoundError: No module named 'requests'` | Kütüphane kurulu değil | `uv add -r 02-api-ile-konusmak/requirements.txt` |
+| `anahtar.txt bulunamadı` | Hesap açılmamış, dosya yanlış klasörde ya da adı `anahtar.txt.txt` | Demo moduyla devam et; dosyayı `gita3111` klasörüne (konu klasörlerinin bir üstüne) koy, uzantıyı kontrol et; komutu konu klasöründen verdiğinden emin ol |
+| `FileNotFoundError: ... 'veri/...'` | Komutu yanlış klasörden verdin | `cd` ile konu klasörüne (`02-api-ile-konusmak`) geç |
+| `ModuleNotFoundError: No module named 'requests'` | Dosyayı `uv run` yerine `python` ile ya da konu klasörünün dışından çalıştırdın | Konu klasöründe `uv run ...`; olmazsa orada `uv sync` |
 | `[UYARI] anahtar.txt var ama ... okunamadı` | Dosyada `ACCOUNT_ID` ya da `API_TOKEN` satırı eksik | Dosyayı Adım 1'deki biçime göre düzelt |
 | Beş soruya beş aynı cevap | Demo modundasın | Gerçek anahtarla çalıştır |
 | `KeyError: 'response'` | Bir kat atlandı | `yanit["result"]["response"]`; emin değilsen önce ham yanıtı bas |
@@ -979,7 +994,7 @@ kodu yeni veriyle). Önce `06` çalışmış olmalı; çıktısı `cevaplar-bulu
 - **Anahtar senin kimliğindir:** koda yazılmaz, ayrı dosyada durur, teslime konmaz,
   ekranda gösterilmez. Sızarsa silip yenisini üretirsin.
 - **Dosyayı satır satır okumak:** `for satir in dosya`, `partition`, `strip`.
-  Dosyalar programı çalıştırdığın klasörde aranır.
+  Dosyalar programı çalıştırdığın klasöre göre aranır; `..` bir üst klasör demek.
 - **Bir istek üç parçadır:** adres (nereye), başlık (kim), gövde (ne). `requests.post`
   üçünü birlikte gönderir.
 - **JSON** sözlük ve listelerin metin hâlidir. `true`/`null` Python'da `True`/`None`
@@ -1069,8 +1084,8 @@ senin veriden bulduğun bir bilgiyi eklemek.
 
 `odevler/odev2.md` (puansız; sırası gelen sınıfta gösterir):
 
-1. **Kendi beş sorun:** soru dosyasına aynı konuda kendi beş sorunu yaz, `06_coklu_soru.py` ile
-   çalıştır, `cevaplar.json` dosyanı getir. Bir de tek cümle: beş cevaptan hangisi
+1. **Kendi beş sorun:** soru dosyasının kopyasına aynı konuda kendi beş sorunu yaz,
+   `06_coklu_soru.py`'nin kopyasıyla çalıştır (Adım 6), `cevaplar.json` dosyanı getir. Bir de tek cümle: beş cevaptan hangisi
    işe yaramazdı, sence neden? (Adım 7'yi hatırla: sebep soruda olabilir.)
 2. **Renk etiketleme:** `veri/renkler.csv` içindeki 20 renge sakin / enerjik / ciddi
    etiketi ver.

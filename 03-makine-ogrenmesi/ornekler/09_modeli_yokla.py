@@ -1,6 +1,7 @@
 """9. adım — Model ne öğrendi? Yeni renklerle yoklamak.
 
-Çalıştırma:  uv run --with scikit-learn 03-makine-ogrenmesi/ornekler/09_modeli_yokla.py
+Çalıştırma (önce konunun klasörüne gir: cd 03-makine-ogrenmesi):
+    uv run ornekler/09_modeli_yokla.py
 
 Modelin içini açıp "kuralını" okuyamayız; ama ona hiç görmediği renkleri
 sorup cevaplarından ne öğrendiğini çıkarabiliriz. Her cevabın yanında,
@@ -11,7 +12,7 @@ import csv
 
 from sklearn.neighbors import KNeighborsClassifier
 
-VERI = "03-makine-ogrenmesi/veri/renkler-etiketli.csv"
+VERI = "veri/renkler-etiketli.csv"
 
 # Aynı rengin koyudan açığa üç sürümü: koyuluk etiketi değiştiriyor mu?
 MAVILER = [("#0A1F44", "çok koyu mavi"), ("#4A7FB0", "orta mavi"), ("#CFE3F2", "buz mavisi")]

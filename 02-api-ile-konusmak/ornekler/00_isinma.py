@@ -1,6 +1,7 @@
 """ISINMA — Konu 1'den iki tamir, bu konuya hazırlık.
 
-Çalıştırma:  uv run 02-api-ile-konusmak/ornekler/00_isinma.py
+Çalıştırma (önce konunun klasörüne gir: cd 02-api-ile-konusmak):
+    uv run ornekler/00_isinma.py
 
 Bugün sunucudan gelen cevabı okuyacağız. O cevap İÇ İÇE bir sözlük olarak geliyor.
 Bu iki alıştırma tam olarak onun provası.

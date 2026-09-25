@@ -9,3 +9,8 @@ anahtar.txt
 # Herhangi bir derinlikteki _hoca/ klasörü depoya girmez.
 _hoca/
 .claude/
+
+# Örneklerin ürettiği çıktı dosyaları (konu klasörlerinde oluşur)
+sonuc.txt
+cevap.txt
+cevaplar.json

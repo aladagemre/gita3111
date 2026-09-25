@@ -14,21 +14,29 @@ kaldığın adımdan devam et.
 
 ## Kurulum
 
-**Dersten önce** çalıştır, indirme biraz sürüyor:
+Bu konunun kütüphaneleri (`scikit-learn`, `matplotlib`) bu klasördeki `pyproject.toml`
+dosyasında yazılı. **Dersten önce** konunun klasörüne girip bir kez çalıştır; indirme
+biraz sürüyor:
 
 ```
-uv add -r 03-makine-ogrenmesi/requirements.txt
+cd 03-makine-ogrenmesi
+uv sync
 ```
-
-Kurulacak kütüphanelerin listesi bu klasördeki `requirements.txt` dosyasında.
 
 ## Çalıştırma
 
-Komutları `gita3111` klasörünün içinden:
+Komutları **bu konunun klasörünün içinden** çalıştır (`gita3111` klasöründeysen önce
+`cd 03-makine-ogrenmesi`):
 
 ```
-uv run 03-makine-ogrenmesi/ornekler/01_veriyi_oku.py
+uv run ornekler/01_veriyi_oku.py
 ```
+
+## Güncel kalmak
+
+Yeni materyal geldiğinde `gita3111` klasöründe `git pull` çalıştır. Depodaki bir dosyayı
+(örneğin bir alıştırmayı) değiştirmek istersen önce aynı klasörde **yeni bir adla
+kopyala**, kopyada çalış; böylece `git pull` hiç çakışmaz.
 
 ## Dosyalar
 

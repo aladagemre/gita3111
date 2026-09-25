@@ -1,6 +1,7 @@
 """ISINMA — CSV satırlarını sözlüğe çevirmek.
 
-Çalıştırma:  uv run 03-makine-ogrenmesi/ornekler/00_isinma.py
+Çalıştırma (önce konunun klasörüne gir: cd 03-makine-ogrenmesi):
+    uv run ornekler/00_isinma.py
 
 Bu konuda tablo hâlinde veriyle çalışacağız. Her satır bir sözlük olacak —
 Konu 2'deki API yanıtları gibi. İki alıştırma, o yapının provası.

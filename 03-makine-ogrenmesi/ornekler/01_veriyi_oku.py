@@ -1,13 +1,14 @@
 """1. adım — Sınıfın ürettiği veriyi okumak.
 
-Çalıştırma:  uv run 03-makine-ogrenmesi/ornekler/01_veriyi_oku.py
+Çalıştırma (önce konunun klasörüne gir: cd 03-makine-ogrenmesi):
+    uv run ornekler/01_veriyi_oku.py
 
 Konu 2'nin ödevinde herkes 20 rengi etiketledi. Hepsi tek dosyada birleşti.
 """
 
 import csv
 
-VERI = "03-makine-ogrenmesi/veri/renkler-etiketli.csv"
+VERI = "veri/renkler-etiketli.csv"
 
 with open(VERI, encoding="utf-8") as dosya:
     kayitlar = list(csv.DictReader(dosya))

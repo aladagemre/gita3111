@@ -1,6 +1,7 @@
 """6. adım — Veri arttıkça ne oluyor?
 
-Çalıştırma:  uv run --with scikit-learn --with matplotlib 03-makine-ogrenmesi/ornekler/06_veri_miktari.py
+Çalıştırma (önce konunun klasörüne gir: cd 03-makine-ogrenmesi):
+    uv run ornekler/06_veri_miktari.py
 
 Aynı modeli önce az veriyle, sonra çok veriyle eğitip doğruluğu karşılaştırıyoruz.
 """
@@ -13,7 +14,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 
-VERI = "03-makine-ogrenmesi/veri/renkler-etiketli.csv"
+VERI = "veri/renkler-etiketli.csv"
 CIKTI = "veri-miktari.png"
 ORANLAR = [0.1, 0.25, 0.5, 0.75, 1.0]
 

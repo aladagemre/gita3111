@@ -1,6 +1,7 @@
 """2. adım — Öznitelik ve etiket.
 
-Çalıştırma:  uv run 03-makine-ogrenmesi/ornekler/02_ozellik_etiket.py
+Çalıştırma (önce konunun klasörüne gir: cd 03-makine-ogrenmesi):
+    uv run ornekler/02_ozellik_etiket.py
 
 Model renk ADINI anlamaz, sayı ister. "#E63946" metnini üç sayıya çevireceğiz:
 kırmızı, yeşil, mavi miktarları.
@@ -8,7 +9,7 @@ kırmızı, yeşil, mavi miktarları.
 
 import csv
 
-VERI = "03-makine-ogrenmesi/veri/renkler-etiketli.csv"
+VERI = "veri/renkler-etiketli.csv"
 
 
 def hex_to_rgb(hex_kod):

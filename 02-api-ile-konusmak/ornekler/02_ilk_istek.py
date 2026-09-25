@@ -1,6 +1,7 @@
 """2. adım — İlk istek.
 
-Çalıştırma:  uv run --with requests 02-api-ile-konusmak/ornekler/02_ilk_istek.py
+Çalıştırma (önce konunun klasörüne gir: cd 02-api-ile-konusmak):
+    uv run ornekler/02_ilk_istek.py
 
 Bu dosya ilk kez bilgisayarının dışına çıkıyor: bir soruyu uzaktaki bir modele
 gönderiyor ve cevabı geri alıyor.
@@ -13,8 +14,8 @@ import json
 import requests
 
 MODEL = "@cf/google/gemma-4-26b-a4b-it"
-ANAHTAR_DOSYASI = "anahtar.txt"
-DEMO_YANIT = "02-api-ile-konusmak/veri/ornek_yanit.json"
+ANAHTAR_DOSYASI = "../anahtar.txt"
+DEMO_YANIT = "veri/ornek_yanit.json"
 SORU = "Müşterilerinin sessiz bir çalışma yeri olarak anlattığı bir kafe için üç kısa slogan yaz."
 
 

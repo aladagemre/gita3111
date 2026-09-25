@@ -1,6 +1,7 @@
 """6. adım (bonus) — Aynı kod, farklı metin.
 
-Çalıştırma:  uv run 01-veri-ve-kelime-bulutu/ornekler/06_iki_metin.py
+Çalıştırma (önce konunun klasörüne gir: cd 01-veri-ve-kelime-bulutu):
+    uv run ornekler/06_iki_metin.py
 
 Aynı kafe, iki kaynak: müşterilerin yorumları ve kafenin kendi sosyal medya gönderileri.
 Soru: kafe kendini nasıl anlatıyor, müşteri onu nasıl anlatıyor?
@@ -9,10 +10,10 @@ da özeti.
 """
 
 METINLER = [
-    ("Müşteri yorumları", "01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt"),
-    ("Kafenin kendi gönderileri", "01-veri-ve-kelime-bulutu/veri/kafe-gonderileri.txt"),
+    ("Müşteri yorumları", "veri/kafe-yorumlari.txt"),
+    ("Kafenin kendi gönderileri", "veri/kafe-gonderileri.txt"),
 ]
-DURAK_DOSYASI = "01-veri-ve-kelime-bulutu/veri/turkce-durak-kelimeler.txt"
+DURAK_DOSYASI = "veri/turkce-durak-kelimeler.txt"
 NOKTALAMA = ".,!?:;()[]\"'…-–—/"
 
 

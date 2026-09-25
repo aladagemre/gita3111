@@ -1,6 +1,7 @@
 """8. adım (bonus) — Bulutun tasarımıyla oynamak.
 
-Çalıştırma:  uv run 01-veri-ve-kelime-bulutu/ornekler/08_bulut_tasarimi.py
+Çalıştırma (önce konunun klasörüne gir: cd 01-veri-ve-kelime-bulutu):
+    uv run ornekler/08_bulut_tasarimi.py
 
 Hızlı bitirdiysen burası senin. Aşağıdaki AYARLAR sözlüğünü değiştir, tekrar çalıştır,
 farkı gör. Kod aynı kalıyor; değişen tek şey ayarlar.
@@ -10,8 +11,8 @@ import os
 
 from wordcloud import WordCloud
 
-DOSYA = "01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt"
-DURAK_DOSYASI = "01-veri-ve-kelime-bulutu/veri/turkce-durak-kelimeler.txt"
+DOSYA = "veri/kafe-yorumlari.txt"
+DURAK_DOSYASI = "veri/turkce-durak-kelimeler.txt"
 NOKTALAMA = ".,!?:;()[]\"'…-–—/"
 
 # ---- OYNAYACAĞIN YER -------------------------------------------------------

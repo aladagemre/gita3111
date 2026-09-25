@@ -1,6 +1,7 @@
 """6. adım — Beş soruyu döngüyle sorup JSON'a kaydetmek.
 
-Çalıştırma:  uv run --with requests 02-api-ile-konusmak/ornekler/06_coklu_soru.py
+Çalıştırma (önce konunun klasörüne gir: cd 02-api-ile-konusmak):
+    uv run ornekler/06_coklu_soru.py
 
 Tek soru sormak güzel ama kodun asıl gücü burada: aynı işi elli kez yapmak.
 """
@@ -11,9 +12,9 @@ import time
 import requests
 
 MODEL = "@cf/google/gemma-4-26b-a4b-it"
-ANAHTAR_DOSYASI = "anahtar.txt"
-SORULAR_DOSYASI = "02-api-ile-konusmak/veri/ornek_sorular.txt"
-DEMO_YANIT = "02-api-ile-konusmak/veri/ornek_yanit.json"
+ANAHTAR_DOSYASI = "../anahtar.txt"
+SORULAR_DOSYASI = "veri/ornek_sorular.txt"
+DEMO_YANIT = "veri/ornek_yanit.json"
 CIKTI = "cevaplar.json"
 BEKLEME = 1  # istekler arasında saniye — sunucuyu yormamak için
 

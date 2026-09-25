@@ -1,13 +1,14 @@
 """4. adım — Durak kelimeleri elemek ve sonucu kaydetmek.
 
-Çalıştırma:  uv run 01-veri-ve-kelime-bulutu/ornekler/04_durak_kelime.py
+Çalıştırma (önce konunun klasörüne gir: cd 01-veri-ve-kelime-bulutu):
+    uv run ornekler/04_durak_kelime.py
 
 "ve", "bir", "bu" gibi kelimeler her metinde en üstte çıkar ve hiçbir şey anlatmaz.
 Bunlara durak kelime (stopword) denir; eleriz.
 """
 
-DOSYA = "01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt"
-DURAK_DOSYASI = "01-veri-ve-kelime-bulutu/veri/turkce-durak-kelimeler.txt"
+DOSYA = "veri/kafe-yorumlari.txt"
+DURAK_DOSYASI = "veri/turkce-durak-kelimeler.txt"
 CIKTI = "sonuc.txt"
 NOKTALAMA = ".,!?:;()[]\"'…-–—/"
 

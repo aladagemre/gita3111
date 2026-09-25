@@ -1,6 +1,7 @@
 """9. adım (ek) — Soruya bağlam koymak cevabı değiştiriyor mu?
 
-Çalıştırma:  uv run --with requests 02-api-ile-konusmak/ornekler/09_baglam_farki.py
+Çalıştırma (önce konunun klasörüne gir: cd 02-api-ile-konusmak):
+    uv run ornekler/09_baglam_farki.py
 
 Konu 1'deki bulgu: müşteriler kafeyi kahvesiyle değil, SESSİZ BİR ÇALIŞMA YERİ
 olarak anlatıyordu. Bu dosya aynı isteği iki biçimde soruyor:
@@ -22,8 +23,8 @@ import time
 import requests
 
 MODEL = "@cf/google/gemma-4-26b-a4b-it"
-ANAHTAR_DOSYASI = "anahtar.txt"
-DEMO_CEVAPLAR = "02-api-ile-konusmak/veri/baglam_ornek_cevaplar.json"
+ANAHTAR_DOSYASI = "../anahtar.txt"
+DEMO_CEVAPLAR = "veri/baglam_ornek_cevaplar.json"
 TEKRAR = 3
 BEKLEME = 1  # istekler arasında saniye
 

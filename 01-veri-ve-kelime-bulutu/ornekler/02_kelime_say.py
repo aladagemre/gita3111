@@ -1,11 +1,12 @@
 """2. adım — Kelimeleri saymak.
 
-Çalıştırma:  uv run 01-veri-ve-kelime-bulutu/ornekler/02_kelime_say.py
+Çalıştırma (önce konunun klasörüne gir: cd 01-veri-ve-kelime-bulutu):
+    uv run ornekler/02_kelime_say.py
 
 Bu dosyanın konusu SÖZLÜK. Sayaç tutmak, sözlüğün en sık işidir.
 """
 
-DOSYA = "01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt"
+DOSYA = "veri/kafe-yorumlari.txt"
 NOKTALAMA = ".,!?:;()[]\"'…-–—/"
 
 

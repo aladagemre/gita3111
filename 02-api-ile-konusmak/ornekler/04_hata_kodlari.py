@@ -1,6 +1,7 @@
 """4. adım — Hatalarla tanışmak.
 
-Çalıştırma:  uv run --with requests 02-api-ile-konusmak/ornekler/04_hata_kodlari.py
+Çalıştırma (önce konunun klasörüne gir: cd 02-api-ile-konusmak):
+    uv run ornekler/04_hata_kodlari.py
 
 Bu dersin geri kalanında en çok göreceğin üç sayı: 401, 429, 500.
 Ne anlama geldiklerini bugün öğrenirsen, ilerideki konularda saatler kazanırsın.
@@ -11,7 +12,7 @@ import json
 import requests
 
 MODEL = "@cf/google/gemma-4-26b-a4b-it"
-ANAHTAR_DOSYASI = "anahtar.txt"
+ANAHTAR_DOSYASI = "../anahtar.txt"
 
 HATA_SOZLUGU = {
     200: "Her şey yolunda.",

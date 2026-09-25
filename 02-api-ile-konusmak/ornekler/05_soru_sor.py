@@ -1,6 +1,7 @@
 """5. adım — Kullanıcıdan soru al, cevabı dosyaya yaz.
 
-Çalıştırma:  uv run --with requests 02-api-ile-konusmak/ornekler/05_soru_sor.py
+Çalıştırma (önce konunun klasörüne gir: cd 02-api-ile-konusmak):
+    uv run ornekler/05_soru_sor.py
 
 Bu konunun hedef çıktısı bu dosya.
 """
@@ -10,8 +11,8 @@ import json
 import requests
 
 MODEL = "@cf/google/gemma-4-26b-a4b-it"
-ANAHTAR_DOSYASI = "anahtar.txt"
-DEMO_YANIT = "02-api-ile-konusmak/veri/ornek_yanit.json"
+ANAHTAR_DOSYASI = "../anahtar.txt"
+DEMO_YANIT = "veri/ornek_yanit.json"
 CIKTI = "cevap.txt"
 
 

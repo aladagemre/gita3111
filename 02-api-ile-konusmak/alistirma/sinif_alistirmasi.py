@@ -3,7 +3,11 @@
 Kendi başına doldur. Süre: ~40 dakika. İnternet gerekmiyor.
 Soru tipleri vize ile aynı: boşluk doldurma ve hata bulma.
 
-Çalıştırma:  uv run 02-api-ile-konusmak/alistirma/sinif_alistirmasi.py
+Çalıştırma (önce konunun klasörüne gir: cd 02-api-ile-konusmak):
+    uv run alistirma/sinif_alistirmasi.py
+
+Doldurmadan önce bu dosyayı aynı klasörde yeni bir adla kopyala
+(örneğin benim_alistirmam.py), kopyayı doldur ve çalıştır; böylece git pull çakışmaz.
 """
 
 BOSLUK = None

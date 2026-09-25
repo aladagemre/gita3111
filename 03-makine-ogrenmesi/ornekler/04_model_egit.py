@@ -1,6 +1,7 @@
 """4. adım — Modeli eğit ve ölç.
 
-Çalıştırma:  uv run --with scikit-learn 03-makine-ogrenmesi/ornekler/04_model_egit.py
+Çalıştırma (önce konunun klasörüne gir: cd 03-makine-ogrenmesi):
+    uv run ornekler/04_model_egit.py
 
 Kullandığımız model: en yakın komşular (k-NN).
 Mantığı tek cümle: "Bu renge en çok benzeyen 5 rengi bul, onlar ne dediyse onu de."
@@ -11,7 +12,7 @@ import csv
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 
-VERI = "03-makine-ogrenmesi/veri/renkler-etiketli.csv"
+VERI = "veri/renkler-etiketli.csv"
 KOMSU_SAYISI = 5
 
 

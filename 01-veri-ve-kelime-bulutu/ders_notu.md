@@ -14,8 +14,10 @@ yorum olsaydı? Bu yüzden kelimeleri **kodla sayacağız**.
 en sık 20 kelimenin listesi (`sonuc.txt`) ve isteğe bağlı olarak aynı sonucun çubuk
 grafiği (`kelime-grafik.png`).
 
-**Kurulum:** bu konunun kütüphaneleri (`wordcloud`, `matplotlib`) ders öncesi kurulum
-yönergesinin 2. adımında kuruldu. Ek bir şey gerekmiyor.
+**Kurulum:** bu konunun kütüphaneleri (`wordcloud`, `matplotlib`) klasördeki
+`pyproject.toml` dosyasında yazılı. Terminalde bu konunun klasörüne gir
+(`cd 01-veri-ve-kelime-bulutu`); ilk `uv run ...` komutu kütüphaneleri kendisi indirir.
+Ders sırasında beklememek için dersten önce aynı klasörde bir kez `uv sync` çalıştır.
 
 **Notu nasıl kullanmalısın:** Kod bloklarını okurken yanında örnek dosyayı çalıştır.
 Arada **Kendini dene** kutuları var; önce kendin cevapla, sonra notun sonundaki
@@ -130,7 +132,7 @@ Traceback (most recent call last):
   File ".../ornekler/01_dosya_oku.py", line 13, in <module>
     with open(DOSYA, encoding="utf-8") as dosya:
          ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt'
+FileNotFoundError: [Errno 2] No such file or directory: 'veri/kafe-yorumlari.txt'
 ```
 
 1. **En alttan başla.** Son satır iki parça: hatanın **türü** (`FileNotFoundError`) ve
@@ -147,24 +149,26 @@ FileNotFoundError: [Errno 2] No such file or directory: '01-veri-ve-kelime-bulut
 ## Adım 0 — Kod dosyayı nerede arıyor?
 
 ```python
-open("01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt")
+open("veri/kafe-yorumlari.txt")
 ```
 
-Bu yol **göreli** bir yoldur: "bulunduğum klasörün içindeki `01-veri-ve-kelime-bulutu`
-klasörüne gir, oradan `veri`'ye gir, oradaki dosyayı aç" demek. Peki "bulunduğum klasör"
-hangisi?
+Bu yol **göreli** bir yoldur: "bulunduğum klasörün içindeki `veri` klasörüne gir,
+oradaki dosyayı aç" demek. Peki "bulunduğum klasör" hangisi?
 
 Python bu dosyayı **komutu çalıştırdığın klasöre** göre arar; kod dosyasının durduğu
-yere göre değil. Bu yüzden komutları hep `gita3111` klasöründen çalıştırıyoruz.
+yere göre değil. Bu yüzden komutları hep konunun klasöründen
+(`gita3111/01-veri-ve-kelime-bulutu`) çalıştırıyoruz: önce `cd 01-veri-ve-kelime-bulutu`,
+sonra `uv run ornekler/...`.
 
 Aynı kodu iki farklı yerden çalıştıralım:
 
 | Komutu nereden çalıştırdın | Python dosyayı nerede aradı | Sonuç |
 |---|---|---|
-| `gita3111/` | `gita3111/01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt` | Çalışır |
-| `gita3111/01-veri-ve-kelime-bulutu/` | `gita3111/01-veri-ve-kelime-bulutu/01-veri-ve-kelime-bulutu/veri/...` | `FileNotFoundError` |
+| `gita3111/01-veri-ve-kelime-bulutu/` | `gita3111/01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt` | Çalışır |
+| `gita3111/` | `gita3111/veri/kafe-yorumlari.txt` | `FileNotFoundError` |
 
-İkinci satırda Python klasör adını **iki kez** arka arkaya ekledi; öyle bir klasör yok.
+İkinci satırda konu klasörüne girilmemiş; `gita3111`'in hemen içinde `veri` diye bir
+klasör yok.
 
 Kodun hangi klasörden çalıştığını bilmiyorsan sor:
 
@@ -173,7 +177,8 @@ import os
 print(os.getcwd())    # "current working directory": şu an çalıştığım klasör
 ```
 
-Çıktının sonu `gita3111` ile bitmiyorsa, terminalde önce doğru klasöre geç.
+Çıktının sonu `01-veri-ve-kelime-bulutu` ile bitmiyorsa, terminalde önce `cd` ile konu
+klasörüne geç.
 
 > "No such file or directory" hatasının sebebi neredeyse her zaman budur. Geri kalan
 > durumlarda sebep genellikle yolda bir yazım hatasıdır: `kafe-yorumlari.txt` yerine
@@ -189,7 +194,7 @@ kullanıcı adı ve klasörleri farklıdır. Bu yüzden derste göreli yol kulla
 ## Adım 1 — Dosyayı aç
 
 ```python
-DOSYA = "01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt"
+DOSYA = "veri/kafe-yorumlari.txt"
 
 with open(DOSYA, encoding="utf-8") as dosya:
     metin = dosya.read()
@@ -593,7 +598,7 @@ dilin özelliği: bir şarkı sözünde, bir haberde ya da bir tezde de aynı ke
 başta olur. Bunlara **durak kelime** (İngilizcesi *stopword*) denir.
 
 ```python
-with open("01-veri-ve-kelime-bulutu/veri/turkce-durak-kelimeler.txt", encoding="utf-8") as dosya:
+with open("veri/turkce-durak-kelimeler.txt", encoding="utf-8") as dosya:
     durak_kelimeler = set(dosya.read().split())
 
 temiz_kelimeler = []
@@ -694,8 +699,8 @@ with open("sonuc.txt", "w", encoding="utf-8") as dosya:
   değiştirilir: `f"{sayac[kelime]}\t{kelime}"` → `8	sessiz`.
 - **`encoding="utf-8"`** okurken olduğu gibi yazarken de gerekli; yoksa Windows'ta
   `ç`, `ş` gibi harfler bozuk yazılabilir.
-- Dosya, komutu çalıştırdığın `gita3111` klasörüne yazılır (Adım 0'daki kural yazarken
-  de geçerli).
+- Dosya, komutu çalıştırdığın klasöre, yani `01-veri-ve-kelime-bulutu` klasörüne
+  yazılır (Adım 0'daki kural yazarken de geçerli).
 
 `sonuc.txt`'nin ilk satırları şöyle:
 
@@ -985,10 +990,11 @@ yazarsan boş bir görsel kaydedilir; hata mesajı almazsın. Sıra: çiz → ka
 ## Adımlar ve dosyalar
 
 Slaytlardaki program adım adım büyüyor; her adım bir öncekinin çıktısını kullanıyor.
-Aynı sıra `ornekler/` klasöründe de var. Her dosyayı `gita3111` klasöründen çalıştır:
+Aynı sıra `ornekler/` klasöründe de var. Her dosyayı konunun klasöründen
+(`01-veri-ve-kelime-bulutu`) çalıştır:
 
 ```
-uv run 01-veri-ve-kelime-bulutu/ornekler/01_dosya_oku.py
+uv run ornekler/01_dosya_oku.py
 ```
 
 | Adım | Ne yaptık | Elimizde ne oluştu | Dosya |
@@ -1024,8 +1030,8 @@ Erken bitirirsen:
 
 | Ne görüyorsun | Sebebi | Ne yapmalı |
 |---|---|---|
-| `FileNotFoundError: ... No such file or directory` | Komut yanlış klasörden çalıştırıldı ya da yolda yazım hatası var | `gita3111` klasörüne geç; yol `01-veri-ve-kelime-bulutu/veri/...` ile başlamalı. Emin değilsen `print(os.getcwd())` |
-| `ModuleNotFoundError: No module named 'wordcloud'` | Dosyayı `uv run` yerine `python` ile ya da `gita3111` dışından çalıştırdın | `gita3111` klasöründen `uv run ...` ile çalıştır; olmazsa `uv add -r 01-veri-ve-kelime-bulutu/requirements.txt` |
+| `FileNotFoundError: ... No such file or directory` | Komut yanlış klasörden çalıştırıldı ya da yolda yazım hatası var | `cd 01-veri-ve-kelime-bulutu` ile konu klasörüne geç; yol `veri/...` ile başlamalı. Emin değilsen `print(os.getcwd())` |
+| `ModuleNotFoundError: No module named 'wordcloud'` | Dosyayı `uv run` yerine `python` ile ya da konu klasörünün dışından çalıştırdın | Konu klasörüne gir, `uv run ...` ile çalıştır; olmazsa orada `uv sync` |
 | `Ã§alÄ±ÅŸmak` gibi bozuk harfler ya da `UnicodeDecodeError` | `open(...)` içinde `encoding="utf-8"` yok | Okurken de yazarken de `encoding="utf-8"` ekle |
 | `KeyError: 0` | Sözlüğü sayıyla açmaya çalıştın | Anahtarla aç: `sayac["sessiz"]` ya da `sayac[sirali[0]]` |
 | `KeyError: 'kelime'` | Sayaçta olmayan bir kelimeyi okumaya ya da artırmaya çalıştın | Sayarken `if / else` ya da `.get(kelime, 0)`; okurken önce `in` ile kontrol |
@@ -1043,8 +1049,8 @@ Erken bitirirsen:
 
 ## Bu konuda öğrendiklerin
 
-- **Dosya yolu, çalıştığın klasöre göredir.** Komutları `gita3111`'den çalıştır;
-  `FileNotFoundError` görürsen önce bunu kontrol et.
+- **Dosya yolu, çalıştığın klasöre göredir.** Komutları konunun klasöründen
+  (`01-veri-ve-kelime-bulutu`) çalıştır; `FileNotFoundError` görürsen önce bunu kontrol et.
 - **Dosyayı okurken ve yazarken `encoding="utf-8"` yaz.** Yazmazsan Windows'ta Türkçe
   harfler bozulur.
 - **Temizlik saymadan önce gelir.** Noktalama ve büyük harf temizlenmezse aynı kelime
@@ -1066,7 +1072,7 @@ Erken bitirirsen:
 
 | Terim | Anlamı |
 |---|---|
-| **Göreli yol** | Çalıştığın klasörden başlayan dosya yolu (`01-veri-ve-kelime-bulutu/veri/...`) |
+| **Göreli yol** | Çalıştığın klasörden başlayan dosya yolu (`veri/...`) |
 | **Mutlak yol** | Diskin kökünden başlayan tam yol (`C:/Users/...`, `/home/...`) |
 | **Kodlama (encoding)** | Dosyadaki baytların hangi kurala göre harfe çevrileceği. Bizde hep `utf-8` |
 | **Dilimleme** | Bir yazının ya da listenin bir parçasını almak: `metin[:150]`, `kelimeler[:8]` |
@@ -1090,8 +1096,9 @@ Erken bitirirsen:
 1. **10** döndürür. Hata mesajı almazsın; `return` döngünün içinde olduğu için ilk
    sayıyı ekleyip çıkar. Sessiz hata.
 2. **Bulunmaz.** Python yolu çalıştığın klasöre (`ornekler`) göre arar:
-   `ornekler/01-veri-ve-kelime-bulutu/veri/...` diye bir yer yok. Önce `gita3111`'e
-   geç, komutu tam yolla yaz: `uv run 01-veri-ve-kelime-bulutu/ornekler/01_dosya_oku.py`.
+   `01-veri-ve-kelime-bulutu/ornekler/veri/kafe-yorumlari.txt` diye bir yer yok.
+   Önce `cd ..` ile bir üst klasöre, yani `01-veri-ve-kelime-bulutu`'ya çık; komutu
+   oradan yaz: `uv run ornekler/01_dosya_oku.py`.
 3. `metin[:1]` → `"D"` (ilk karakter, yazı olarak). `metin[0]` da `"D"` verir. Farkı
    boş metinde görürsün: boş bir yazıda `[:1]` boş yazı verir, `[0]` hata verir. Bu
    konuda ikisi aynı işi görür.
@@ -1127,6 +1134,6 @@ elenmeden ve elendikten sonra) ve aradaki farkı tek cümleyle yaz.
 
 Konu 2'de (`02-api-ile-konusmak`) kodla internete bağlanıp bir yapay zeka modeline soru
 soracağız. Bunun için **Cloudflare hesabın ve anahtarın hazır olmalı**. Ders öncesi
-kurulum yönergesinin 5. adımı (`00-hazirlik/kurulum-yonergesi.md`). Hesabın yoksa
+kurulum yönergesinin 5. adımı (`../00-hazirlik/kurulum-yonergesi.md`). Hesabın yoksa
 derste kayıtlı bir cevapla (demo modu) takip edebilirsin, ama ödev için gerçek hesap
 gerekiyor. Takıldıysan şimdiden söyle.

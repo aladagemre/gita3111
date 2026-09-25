@@ -1,13 +1,17 @@
 """1. adım — Anahtarı dosyadan okumak.
 
-Çalıştırma:  uv run 02-api-ile-konusmak/ornekler/01_anahtar_oku.py
+Çalıştırma (önce konunun klasörüne gir: cd 02-api-ile-konusmak):
+    uv run ornekler/01_anahtar_oku.py
 
 Anahtar koda YAZILMAZ. Ayrı bir dosyada durur, kod oradan okur.
 Neden: kodunu paylaştığında anahtarın da gitmiş olur. Anahtarı olan senin adına
 istek atabilir, kotanı bitirebilir.
 """
 
-ANAHTAR_DOSYASI = "anahtar.txt"
+# Komutu konu klasöründen (02-api-ile-konusmak) çalıştırıyoruz. ".." bir üst klasör
+# demek: "../anahtar.txt" = gita3111 klasörünün içindeki anahtar.txt. Bütün konular
+# aynı anahtar dosyasını kullanır.
+ANAHTAR_DOSYASI = "../anahtar.txt"
 
 
 def anahtarlari_oku(yol=ANAHTAR_DOSYASI):

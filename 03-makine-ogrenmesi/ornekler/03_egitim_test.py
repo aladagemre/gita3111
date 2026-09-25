@@ -1,6 +1,7 @@
 """3. adım — Eğitim ve test ayrımı.
 
-Çalıştırma:  uv run --with scikit-learn 03-makine-ogrenmesi/ornekler/03_egitim_test.py
+Çalıştırma (önce konunun klasörüne gir: cd 03-makine-ogrenmesi):
+    uv run ornekler/03_egitim_test.py
 
 Modeli bütün veriyle eğitip yine aynı veriyle sınarsak, ezberi ölçmüş oluruz.
 Sınavda çıkmış soruyla sınav yapmak gibi.
@@ -10,7 +11,7 @@ import csv
 
 from sklearn.model_selection import train_test_split
 
-VERI = "03-makine-ogrenmesi/veri/renkler-etiketli.csv"
+VERI = "veri/renkler-etiketli.csv"
 
 
 def hex_to_rgb(hex_kod):

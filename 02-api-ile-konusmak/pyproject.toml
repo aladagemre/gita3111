@@ -1,0 +1,8 @@
+[project]
+name = "gita3111-02-api-ile-konusmak"
+version = "0.1.0"
+requires-python = ">=3.13,<3.15"
+dependencies = [
+    "requests>=2.32",
+    "wordcloud>=1.9",
+]

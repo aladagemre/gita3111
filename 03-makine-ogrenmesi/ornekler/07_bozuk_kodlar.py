@@ -1,6 +1,10 @@
 """7. adım — Bozuk kodlar galerisi (makine öğrenmesi sürümü).
 
-Çalıştırma:  uv run --with scikit-learn 03-makine-ogrenmesi/ornekler/07_bozuk_kodlar.py
+Çalıştırma (önce konunun klasörüne gir: cd 03-makine-ogrenmesi):
+    uv run ornekler/07_bozuk_kodlar.py
+
+Düzeltmeden önce bu dosyayı aynı klasörde yeni bir adla kopyala
+(örneğin benim_bozuklarim.py), kopyada düzelt; böylece git pull çakışmaz.
 
 Beş hata, beşi de bu konunun içinden. Bazıları programı çöktürüyor (eğitmeden
 tahmin istemek gibi), bazıları hiçbir hata vermeden yanlış sonuç veriyor (doğruluğu

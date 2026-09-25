@@ -3,7 +3,11 @@
 Kendi başına doldur. Süre: ~40 dakika.
 Soru tipleri vize ile aynı: boşluk doldurma ve hata bulma.
 
-Çalıştırma:  uv run 01-veri-ve-kelime-bulutu/alistirma/sinif_alistirmasi.py
+Çalıştırma (önce konunun klasörüne gir: cd 01-veri-ve-kelime-bulutu):
+    uv run alistirma/sinif_alistirmasi.py
+
+Doldurmadan önce bu dosyayı aynı klasörde yeni bir adla kopyala
+(örneğin benim_alistirmam.py), kopyayı doldur ve çalıştır; böylece git pull çakışmaz.
 
 Dosya baştan ÇALIŞIR. Her soru için "henüz değil" yazar; doldurdukça "doğru"ya döner.
 Hepsi doğru olunca en altta TAMAM yazar.

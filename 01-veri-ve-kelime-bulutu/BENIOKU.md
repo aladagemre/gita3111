@@ -12,17 +12,27 @@ Bu klasörde ne var:
 
 ## Çalıştırma
 
-Komutları **`gita3111` klasörünün içinden** çalıştır:
+Komutları **bu konunun klasörünün içinden** çalıştır. `gita3111` klasöründeysen önce
+içeri gir:
 
 ```
-uv run 01-veri-ve-kelime-bulutu/ornekler/01_dosya_oku.py
+cd 01-veri-ve-kelime-bulutu
+uv run ornekler/01_dosya_oku.py
 ```
 
-Kütüphane eksik derse (bu konunun kütüphaneleri `requirements.txt` içinde yazılı):
+Bu konunun kütüphaneleri (`wordcloud`, `matplotlib`) klasördeki `pyproject.toml`
+dosyasında yazılı. İlk `uv run` komutu onları kendisi indirir. Derste beklememek için
+dersten önce aynı klasörde bir kez şunu çalıştır:
 
 ```
-uv add -r 01-veri-ve-kelime-bulutu/requirements.txt
+uv sync
 ```
+
+## Güncel kalmak
+
+Yeni materyal geldiğinde `gita3111` klasöründe `git pull` çalıştır. Depodaki bir dosyayı
+(örneğin bir alıştırmayı) değiştirmek istersen önce aynı klasörde **yeni bir adla
+kopyala**, kopyada çalış; böylece `git pull` hiç çakışmaz.
 
 ## Bu konuda ne üreteceksin
 

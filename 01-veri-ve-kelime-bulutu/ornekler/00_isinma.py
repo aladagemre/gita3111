@@ -1,6 +1,7 @@
 """ISINMA — Geçen dönemden iki tamir.
 
-Çalıştırma:  uv run 01-veri-ve-kelime-bulutu/ornekler/00_isinma.py
+Çalıştırma (önce konunun klasörüne gir: cd 01-veri-ve-kelime-bulutu):
+    uv run ornekler/00_isinma.py
 
 İki fonksiyon da bozuk. Düzelt, çalıştır, en altta TAMAM yazsın.
 Bu ikisi geçen dönemin en sık iki hatasıydı; bu konunun tamamı bunlara dayanıyor.

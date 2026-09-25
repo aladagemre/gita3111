@@ -1,6 +1,7 @@
 """5. adım — Modelin yanıldığı yerlere bakmak.
 
-Çalıştırma:  uv run --with scikit-learn --with matplotlib 03-makine-ogrenmesi/ornekler/05_yanilgilari_gor.py
+Çalıştırma (önce konunun klasörüne gir: cd 03-makine-ogrenmesi):
+    uv run ornekler/05_yanilgilari_gor.py
 
 Doğruluk oranı tek bir sayı. Asıl öğretici olan, NEREDE yanıldığı.
 Bu yüzden yanlış sınıflanan renkleri kare kare çizdiriyoruz.
@@ -14,7 +15,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 
-VERI = "03-makine-ogrenmesi/veri/renkler-etiketli.csv"
+VERI = "veri/renkler-etiketli.csv"
 CIKTI = "yanilgilar.png"
 
 

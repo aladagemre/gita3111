@@ -1,0 +1,8 @@
+[project]
+name = "gita3111-00-hazirlik"
+version = "0.1.0"
+requires-python = ">=3.13,<3.15"
+dependencies = [
+    "matplotlib>=3.10",
+    "wordcloud>=1.9",
+]

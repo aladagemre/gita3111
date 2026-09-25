@@ -6,7 +6,11 @@
 
 ## Parça 1 — Beş soru, tek dosya
 
-`06_coklu_soru.py` dosyasını kendi klasörüne kopyala ve **kendi beş sorunla** çalıştır.
+`06_coklu_soru.py` dosyasını `ornekler` klasöründe yeni bir adla kopyala (örneğin
+`odev2_sorularim.py`) ve **kendi beş sorunla** çalıştır. Sorularını da
+`veri/ornek_sorular.txt` dosyasının yeni adlı bir kopyasına yaz; kopyadaki
+`SORULAR_DOSYASI` satırını o dosyaya çevir. Depodaki dosyaları değiştirmezsen
+`git pull` çakışmaz.
 
 Sorular senin ilgi alanından olsun: tasarım, müzik, oyun, yemek — fark etmez.
 Tek kural: hepsi aynı konudan olsun ki cevapları karşılaştırabilelim.
@@ -36,7 +40,8 @@ enerjik    — hareket, dikkat, canlılık
 ciddi      — kurumsal, ağır, güven
 ```
 
-Dosyanın `etiket` sütununu doldur ve gönder.
+Dosyayı aynı klasörde **kendi adınla** kopyala (örneğin `ayse-yilmaz.csv`), kopyanın
+`etiket` sütununu doldur ve kopyayı gönder.
 
 **Doğru cevap yok.** Herkesin etiketi farklı olacak — zaten mesele bu. Konu 3'te
 modelin bu kararsızlıkla ne yaptığını göreceğiz.

@@ -1,6 +1,10 @@
 """7. adım — Bozuk kodlar galerisi.
 
-Çalıştırma:  uv run 01-veri-ve-kelime-bulutu/ornekler/07_bozuk_kodlar.py
+Çalıştırma (önce konunun klasörüne gir: cd 01-veri-ve-kelime-bulutu):
+    uv run ornekler/07_bozuk_kodlar.py
+
+Düzeltmeden önce bu dosyayı aynı klasörde yeni bir adla kopyala
+(örneğin benim_bozuklarim.py), kopyada düzelt; böylece git pull çakışmaz.
 
 Beş küçük fonksiyon, beş farklı hata türü. Her biri bu konudan.
 Düzelt, çalıştır, TAMAM yazsın.

@@ -58,7 +58,7 @@ kuralı modelin bulmasını istiyorsun.
 ```python
 import csv
 
-VERI = "03-makine-ogrenmesi/veri/renkler-etiketli.csv"
+VERI = "veri/renkler-etiketli.csv"
 
 with open(VERI, encoding="utf-8") as dosya:
     kayitlar = list(csv.DictReader(dosya))

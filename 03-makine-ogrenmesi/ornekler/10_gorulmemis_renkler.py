@@ -1,6 +1,7 @@
 """10. adım — Hiç görmediği renklerde sınamak.
 
-Çalıştırma:  uv run --with scikit-learn 03-makine-ogrenmesi/ornekler/10_gorulmemis_renkler.py
+Çalıştırma (önce konunun klasörüne gir: cd 03-makine-ogrenmesi):
+    uv run ornekler/10_gorulmemis_renkler.py
 
 03'teki rastgele bölmede her renk hem eğitimde hem testte var: model "lacivert"i
 teste gelmeden önce başka öğrencilerden zaten duymuş oluyor. Burada her seferinde
@@ -12,7 +13,7 @@ import csv
 
 from sklearn.neighbors import KNeighborsClassifier
 
-VERI = "03-makine-ogrenmesi/veri/renkler-etiketli.csv"
+VERI = "veri/renkler-etiketli.csv"
 
 
 def hex_to_rgb(hex_kod):

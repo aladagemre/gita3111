@@ -20,9 +20,11 @@ ne söylediği.
 renkleri gösteren bir görsel (`yanilgilar.png`) ve kafe paleti için modelden alınmış
 bir "ikinci görüş".
 
-**Kurulum (dersten önce):** `uv add -r 03-makine-ogrenmesi/requirements.txt` — indirme birkaç dakika sürebilir.
-Dosyada kütüphanenin tam adı yazılı: `scikit-learn`. Kodda ise `sklearn` diye çağrılır;
-elle kurarken `uv add sklearn` yazarsan yanlış pakete gidersin.
+**Kurulum (dersten önce):** konunun klasörüne gir (`cd 03-makine-ogrenmesi`) ve bir kez
+`uv sync` çalıştır; indirme birkaç dakika sürebilir. Bu konunun kütüphaneleri klasördeki
+`pyproject.toml` dosyasında yazılı, `uv sync` onları önceden indirir. Dikkat: paketin adı
+`scikit-learn`, ama kodda `sklearn` diye çağrılır (`from sklearn... import ...`). Adlar
+farklı; ikisi aynı kütüphane.
 
 > **Bu nottaki sayılar hakkında.** Buradaki bütün sayılar **yedek veri setinden**:
 > 12 kişinin 20 rengi etiketlediği, 240 satırlık hazır bir dosya. Sınıfın kendi
@@ -85,7 +87,7 @@ yazmıyorsun, **örnek veriyorsun** ve kuralı modelin bulmasını istiyorsun.
 ```python
 import csv
 
-VERI = "03-makine-ogrenmesi/veri/renkler-etiketli.csv"
+VERI = "veri/renkler-etiketli.csv"
 
 with open(VERI, encoding="utf-8") as dosya:
     kayitlar = list(csv.DictReader(dosya))
@@ -765,8 +767,9 @@ Konu 4'ün sorusu tam burada başlıyor: **bir şeyi hangi sayılarla temsil ede
 | 7 | Modeli yeni renklerle yokladık | kafe paleti için ikinci görüş | `09_modeli_yokla.py` |
 | 8 | Hiç görmediği renklerde sınadık | dürüst doğruluk | `10_gorulmemis_renkler.py` |
 
-Her dosyayı `gita3111` klasöründen çalıştır: `uv run 03-makine-ogrenmesi/ornekler/01_veriyi_oku.py`.
-Görseller (`yanilgilar.png`, `veri-miktari.png`) de oraya kaydedilir.
+Her dosyayı konunun klasöründen (`03-makine-ogrenmesi`) çalıştır:
+`uv run ornekler/01_veriyi_oku.py`. Görseller (`yanilgilar.png`, `veri-miktari.png`) de
+bu klasöre kaydedilir.
 
 Derste kendi başına dolduracağın alıştırma: `alistirma/sinif_alistirmasi.py`
 (scikit-learn gerekmez).
@@ -786,8 +789,8 @@ ve satır numarasını orada ararsın.
 
 | Ne görüyorsun | Sebebi | Ne yapmalı |
 |---|---|---|
-| `ModuleNotFoundError: No module named 'sklearn'` | Kütüphane kurulu değil | `uv add -r 03-makine-ogrenmesi/requirements.txt` |
-| `FileNotFoundError: [Errno 2] No such file or directory: '03-makine-ogrenmesi/veri/renkler-etiketli.csv'` | Komut yanlış klasörden çalıştırıldı | `gita3111` klasöründen çalıştır |
+| `ModuleNotFoundError: No module named 'sklearn'` | Dosyayı `uv run` yerine `python` ile ya da konu klasörünün dışından çalıştırdın | Konu klasöründe `uv run ...`; olmazsa orada `uv sync` |
+| `FileNotFoundError: [Errno 2] No such file or directory: 'veri/renkler-etiketli.csv'` | Komut yanlış klasörden çalıştırıldı | `cd 03-makine-ogrenmesi` ile konu klasörüne geç, oradan çalıştır |
 | `ValueError: invalid literal for int() with base 10: 'E6'` | `int(...)` içinde `16` unutuldu | `int(hex_kod[0:2], 16)` |
 | `ValueError: Found input variables with inconsistent numbers of samples: [200, 240]` | X ve y farklı uzunlukta | İkisini aynı döngüde doldur |
 | `NotFittedError: This KNeighborsClassifier instance is not fitted yet.` | `fit` çağrılmadan `predict` ya da `score` | Önce `model.fit(X_egitim, y_egitim)` |

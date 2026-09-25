@@ -1,6 +1,7 @@
 """5. adım — Kelime bulutu.
 
-Çalıştırma:  uv run 01-veri-ve-kelime-bulutu/ornekler/05_kelime_bulutu.py
+Çalıştırma (önce konunun klasörüne gir: cd 01-veri-ve-kelime-bulutu):
+    uv run ornekler/05_kelime_bulutu.py
 
 Konunun görsel çıktısı. Aynı sayaç, bu kez grafik olarak.
 """
@@ -9,8 +10,8 @@ import os
 
 from wordcloud import WordCloud
 
-DOSYA = "01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt"
-DURAK_DOSYASI = "01-veri-ve-kelime-bulutu/veri/turkce-durak-kelimeler.txt"
+DOSYA = "veri/kafe-yorumlari.txt"
+DURAK_DOSYASI = "veri/turkce-durak-kelimeler.txt"
 CIKTI = "kelime-bulutu.png"
 NOKTALAMA = ".,!?:;()[]\"'…-–—/"
 

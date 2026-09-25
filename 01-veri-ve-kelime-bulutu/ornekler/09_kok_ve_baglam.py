@@ -1,6 +1,7 @@
 """Derinleşme (ders notunda Adım 8) — Bulutun söylemediği iki şey: ekler ve bağlam.
 
-Çalıştırma:  uv run 01-veri-ve-kelime-bulutu/ornekler/09_kok_ve_baglam.py
+Çalıştırma (önce konunun klasörüne gir: cd 01-veri-ve-kelime-bulutu):
+    uv run ornekler/09_kok_ve_baglam.py
 
 Kelime bulutu iki şeyi göremez:
 1. EKLER: "bahçe", "bahçesi", "bahçede" ayrı kelimeler sayılır; konu olduğundan küçük görünür.
@@ -10,8 +11,8 @@ Bu dosya ikisine de basit bir çözüm getiriyor: kelimeleri başlangıçlarına
 ve kelimenin geçtiği yorumları okumak.
 """
 
-DOSYA = "01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt"
-DURAK_DOSYASI = "01-veri-ve-kelime-bulutu/veri/turkce-durak-kelimeler.txt"
+DOSYA = "veri/kafe-yorumlari.txt"
+DURAK_DOSYASI = "veri/turkce-durak-kelimeler.txt"
 NOKTALAMA = ".,!?:;()[]\"'…-–—/"
 
 

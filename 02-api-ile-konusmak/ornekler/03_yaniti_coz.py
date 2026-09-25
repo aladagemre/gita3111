@@ -1,6 +1,7 @@
 """3. adım — Yanıtın içinden metni çekmek.
 
-Çalıştırma:  uv run --with requests 02-api-ile-konusmak/ornekler/03_yaniti_coz.py
+Çalıştırma (önce konunun klasörüne gir: cd 02-api-ile-konusmak):
+    uv run ornekler/03_yaniti_coz.py
 
 Sunucu sana düz metin göndermiyor; İÇ İÇE bir sözlük gönderiyor. Buna JSON denir.
 JSON = sözlüğün ağ üzerinde yazılmış hâli.
@@ -8,7 +9,7 @@ JSON = sözlüğün ağ üzerinde yazılmış hâli.
 
 import json
 
-DEMO_YANIT = "02-api-ile-konusmak/veri/ornek_yanit.json"
+DEMO_YANIT = "veri/ornek_yanit.json"
 
 with open(DEMO_YANIT, encoding="utf-8") as dosya:
     yanit = json.load(dosya)

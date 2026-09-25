@@ -1,6 +1,7 @@
 """8. adım (bonus) — Kaydettiğin cevaplardan rapor çıkarmak.
 
-Çalıştırma:  uv run --with wordcloud 02-api-ile-konusmak/ornekler/08_cevap_raporu.py
+Çalıştırma (önce konunun klasörüne gir: cd 02-api-ile-konusmak):
+    uv run ornekler/08_cevap_raporu.py
 
 Konu 1'de bir metin dosyasından kelime bulutu ürettik. Bu konuda metni kendimiz
 üretiyoruz. İkisini birleştirelim: modelin verdiği cevapların kelime bulutu.
@@ -14,7 +15,9 @@ import os
 from wordcloud import WordCloud
 
 KAYNAK = "cevaplar.json"
-DURAK_DOSYASI = "01-veri-ve-kelime-bulutu/veri/turkce-durak-kelimeler.txt"
+# Konu 1'in durak kelime listesi: ".." ile bir üst klasöre (gita3111) çıkıp oradan
+# 01-veri-ve-kelime-bulutu klasörüne giriyoruz.
+DURAK_DOSYASI = "../01-veri-ve-kelime-bulutu/veri/turkce-durak-kelimeler.txt"
 CIKTI = "cevaplar-bulutu.png"
 NOKTALAMA = ".,!?:;()[]\"'…-–—/"
 

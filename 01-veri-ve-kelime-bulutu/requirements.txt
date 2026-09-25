@@ -1,4 +1,0 @@
-# 01-veri-ve-kelime-bulutu için gereken kütüphaneler.
-# Kurmak için gita3111 klasörünün içinden:  uv add -r 01-veri-ve-kelime-bulutu/requirements.txt
-matplotlib>=3.10
-wordcloud>=1.9

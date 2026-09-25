@@ -1,8 +1,11 @@
 """8. adım (bonus) — Kendi rengini tahmin ettir.
 
-Çalıştırma:  uv run --with scikit-learn 03-makine-ogrenmesi/ornekler/08_kendi_rengin.py
+Çalıştırma (önce konunun klasörüne gir: cd 03-makine-ogrenmesi):
+    uv run ornekler/08_kendi_rengin.py
 
-Aşağıdaki listeye kendi seçtiğin renkleri ekle, modelin ne dediğine bak.
+Önce bu dosyayı aynı klasörde yeni bir adla kopyala (örneğin benim_renklerim.py);
+böylece git pull çakışmaz. Kopyadaki listeye kendi seçtiğin renkleri ekle, modelin ne
+dediğine bak.
 Sen aynı fikirde misin?
 """
 
@@ -10,7 +13,7 @@ import csv
 
 from sklearn.neighbors import KNeighborsClassifier
 
-VERI = "03-makine-ogrenmesi/veri/renkler-etiketli.csv"
+VERI = "veri/renkler-etiketli.csv"
 
 # ---- OYNAYACAĞIN YER ----
 DENEMELER = [

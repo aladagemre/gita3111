@@ -11,6 +11,10 @@ Sonra iki ölçüm yap:
 1. Modeli **eğitim verisinin yarısıyla** eğit, doğruluğu yaz
 2. Modeli **tamamıyla** eğit, doğruluğu yaz
 
+Kodu değiştireceksen önce dosyayı `ornekler` klasöründe yeni bir adla kopyala, kopyada
+değiştir; depodaki dosyaya dokunmazsan `git pull` çakışmaz. Komutları konunun
+klasöründen ver (`cd 03-makine-ogrenmesi`, sonra `uv run ornekler/...`).
+
 ## Teslim edeceğin
 
 - İki doğruluk oranı
@@ -24,7 +28,8 @@ gördüğün şeyi yaz, düzeltmeye çalışma. Neden düştüğünü derste kon
 
 ## İstersen (zorunlu değil)
 
-`08_kendi_rengin.py` dosyasına kendi seçtiğin 5 rengi ekle ve modele tahmin ettir.
+`08_kendi_rengin.py` dosyasını yeni bir adla kopyala, kopyaya kendi seçtiğin 5 rengi
+ekle ve modele tahmin ettir.
 
 Modelle aynı fikirde misin? Ayrıldığınız bir renk varsa onu getir — sınıfça
 bakalım, kim haklı?

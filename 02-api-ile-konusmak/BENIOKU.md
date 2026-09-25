@@ -14,14 +14,27 @@ gönderip cevabını alacaksın. Konu 1'in bulgusundan (müşteriler kafeyi sess
 
 ## Çalıştırma
 
-Komutları **`gita3111` klasörünün içinden** çalıştır:
-
-Önce bu konunun kütüphanelerini kur (liste `requirements.txt` içinde), sonra çalıştır:
+Komutları **bu konunun klasörünün içinden** çalıştır. `gita3111` klasöründeysen önce
+içeri gir, dersten önce kütüphaneleri indir (liste klasördeki `pyproject.toml`
+dosyasında), sonra çalıştır:
 
 ```
-uv add -r 02-api-ile-konusmak/requirements.txt
-uv run 02-api-ile-konusmak/ornekler/02_ilk_istek.py
+cd 02-api-ile-konusmak
+uv sync
+uv run ornekler/02_ilk_istek.py
 ```
+
+`uv sync`'i atlarsan ilk `uv run` kütüphaneleri kendisi indirir; sadece biraz bekletir.
+
+`anahtar.txt` bütün konular için tek dosya: konu klasöründe değil, bir üstte,
+`gita3111` klasörünün içinde durur. Kodlar onu `"../anahtar.txt"` yoluyla okur
+(`..` = bir üst klasör).
+
+## Güncel kalmak
+
+Yeni materyal geldiğinde `gita3111` klasöründe `git pull` çalıştır. Depodaki bir dosyayı
+(örneğin bir alıştırmayı) değiştirmek istersen önce aynı klasörde **yeni bir adla
+kopyala**, kopyada çalış; böylece `git pull` hiç çakışmaz.
 
 ## Anahtarın yoksa ne olacak?
 

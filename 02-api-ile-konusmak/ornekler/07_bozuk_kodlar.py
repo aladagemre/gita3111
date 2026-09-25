@@ -1,6 +1,10 @@
 """7. adım — Bozuk kodlar galerisi (API sürümü).
 
-Çalıştırma:  uv run 02-api-ile-konusmak/ornekler/07_bozuk_kodlar.py
+Çalıştırma (önce konunun klasörüne gir: cd 02-api-ile-konusmak):
+    uv run ornekler/07_bozuk_kodlar.py
+
+Düzeltmeden önce bu dosyayı aynı klasörde yeni bir adla kopyala
+(örneğin benim_bozuklarim.py), kopyada düzelt; böylece git pull çakışmaz.
 
 Beş küçük fonksiyon, beşi de bu konudan. İnternet gerekmiyor;
 hepsi kayıtlı bir yanıt üzerinde çalışıyor.

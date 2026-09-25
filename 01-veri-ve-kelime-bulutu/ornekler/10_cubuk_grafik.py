@@ -1,6 +1,7 @@
 """Derinleşme (ders notunda Adım 9) — Aynı sayaç, çubuk grafik olarak.
 
-Çalıştırma:  uv run 01-veri-ve-kelime-bulutu/ornekler/10_cubuk_grafik.py
+Çalıştırma (önce konunun klasörüne gir: cd 01-veri-ve-kelime-bulutu):
+    uv run ornekler/10_cubuk_grafik.py
 
 Kelime bulutu bir İZLENİM verir: "sessiz" büyük, gerisi küçük.
 Çubuk grafik ise KARŞILAŞTIRMA verir: "sessiz" ikinci sıradakinden kaç fazla?
@@ -13,8 +14,8 @@ import matplotlib
 matplotlib.use("Agg")          # ekran açmadan doğrudan dosyaya çizer
 import matplotlib.pyplot as plt
 
-DOSYA = "01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt"
-DURAK_DOSYASI = "01-veri-ve-kelime-bulutu/veri/turkce-durak-kelimeler.txt"
+DOSYA = "veri/kafe-yorumlari.txt"
+DURAK_DOSYASI = "veri/turkce-durak-kelimeler.txt"
 CIKTI = "kelime-grafik.png"
 NOKTALAMA = ".,!?:;()[]\"'…-–—/"
 

@@ -99,7 +99,7 @@ API_TOKEN = xyz789...
 ```
 
 ```python
-def anahtarlari_oku(yol="anahtar.txt"):
+def anahtarlari_oku(yol="../anahtar.txt"):
     degerler = {}
     with open(yol, encoding="utf-8") as dosya:
         for satir in dosya:
@@ -110,6 +110,9 @@ def anahtarlari_oku(yol="anahtar.txt"):
 ```
 
 Konu 1'in dosya okuma bilgisi burada işe yarıyor; bu sefer dosyayı **satır satır** geziyoruz.
+
+`"../anahtar.txt"`: `..` **bir üst klasör** demek. Komutu konu klasöründen verdiğimiz için
+bu yol `gita3111/anahtar.txt`'yi gösterir; bütün konular aynı anahtar dosyasını kullanır.
 
 -----
 
@@ -348,7 +351,7 @@ with open("cevap.txt", "w", encoding="utf-8") as dosya:
 
 ```python
 sorular = []
-with open("02-api-ile-konusmak/veri/ornek_sorular.txt", encoding="utf-8") as dosya:
+with open("veri/ornek_sorular.txt", encoding="utf-8") as dosya:
     for satir in dosya:                    # her satır bir soru
         if satir.strip():                  # boş satırları atla
             sorular.append(satir.strip())
@@ -464,7 +467,7 @@ Her adım bir öncekinin çıktısını kullandı.
 | `KeyError: 'response'` | Bir kat atladın: `["result"]["response"]` |
 | `TypeError: list indices must be integers...` | `errors` listesini adla açtın: `[0]` |
 | `TypeError: 'NoneType' object is not subscriptable` | İstek başarısız; önce durum kodu |
-| `FileNotFoundError: ... '02-api-ile-konusmak/...'` | Komutu `gita3111` dışından verdin |
+| `FileNotFoundError: ... '...'` | Komutu konu klasörünün (`02-api-ile-konusmak`) dışından verdin |
 | `requests.exceptions.ConnectionError` | İnternet yok; istek hiç gitmedi |
 
 Hata mesajını **sondan** oku: en alt satır hatanın türü ve açıklaması.
@@ -473,11 +476,12 @@ Hata mesajını **sondan** oku: en alt satır hatanın türü ve açıklaması.
 
 ## Bu konunun ödevi — iki parça
 
-**1. Kendi beş sorun.** `06_coklu_soru.py` ile çalıştır, `cevaplar.json` getir.
+**1. Kendi beş sorun.** `06_coklu_soru.py`'yi yeni bir adla kopyala, kopyayla çalıştır,
+`cevaplar.json` getir.
 Tek soru cevapla: hangi cevap işe yaramazdı, neden? (İpucu: Adım 7)
 
-**2. Renk etiketleme.** `veri/renkler.csv` içindeki 20 renge duygu etiketi ver:
-sakin / enerjik / ciddi.
+**2. Renk etiketleme.** `veri/renkler.csv`'yi kendi adınla kopyala, kopyadaki 20 renge
+duygu etiketi ver: sakin / enerjik / ciddi.
 
 İkinci parça **Konu 3'ün verisi.** Yapılmazsa sınıfın eğitecek verisi olmaz.
 Doğru cevap yok — herkesin etiketi farklı olacak, mesele de bu.
