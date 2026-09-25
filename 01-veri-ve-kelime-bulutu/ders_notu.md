@@ -1025,7 +1025,7 @@ Erken bitirirsen:
 | Ne görüyorsun | Sebebi | Ne yapmalı |
 |---|---|---|
 | `FileNotFoundError: ... No such file or directory` | Komut yanlış klasörden çalıştırıldı ya da yolda yazım hatası var | `gita3111` klasörüne geç; yol `01-veri-ve-kelime-bulutu/veri/...` ile başlamalı. Emin değilsen `print(os.getcwd())` |
-| `ModuleNotFoundError: No module named 'wordcloud'` | Dosyayı `uv run` yerine `python` ile ya da `gita3111` dışından çalıştırdın | `gita3111` klasöründen `uv run ...` ile çalıştır; olmazsa `uv add wordcloud matplotlib` |
+| `ModuleNotFoundError: No module named 'wordcloud'` | Dosyayı `uv run` yerine `python` ile ya da `gita3111` dışından çalıştırdın | `gita3111` klasöründen `uv run ...` ile çalıştır; olmazsa `uv add -r 01-veri-ve-kelime-bulutu/requirements.txt` |
 | `Ã§alÄ±ÅŸmak` gibi bozuk harfler ya da `UnicodeDecodeError` | `open(...)` içinde `encoding="utf-8"` yok | Okurken de yazarken de `encoding="utf-8"` ekle |
 | `KeyError: 0` | Sözlüğü sayıyla açmaya çalıştın | Anahtarla aç: `sayac["sessiz"]` ya da `sayac[sirali[0]]` |
 | `KeyError: 'kelime'` | Sayaçta olmayan bir kelimeyi okumaya ya da artırmaya çalıştın | Sayarken `if / else` ya da `.get(kelime, 0)`; okurken önce `in` ile kontrol |

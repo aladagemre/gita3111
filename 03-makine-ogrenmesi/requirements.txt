@@ -1,0 +1,4 @@
+# 03-makine-ogrenmesi için gereken kütüphaneler.
+# Kurmak için gita3111 klasörünün içinden:  uv add -r 03-makine-ogrenmesi/requirements.txt
+scikit-learn>=1.6
+matplotlib>=3.10

@@ -1,6 +1,6 @@
 """GİTA3111 — kurulum testi.
 
-Çalıştırma:  uv run kurulum_testi.py
+Çalıştırma (gita3111 klasörünün içinden):  uv run 00-hazirlik/ornekler/kurulum_testi.py
 
 Bu betik hiçbir şeyi değiştirmez; sadece kurulumun tamam olup olmadığına bakar.
 """
@@ -34,7 +34,7 @@ for paket in ("matplotlib", "wordcloud"):
         __import__(paket)
         bildir(f"{paket} kurulu", True)
     except ImportError:
-        bildir(f"{paket} kurulu", False, "`uv add " + paket + "` komutunu çalıştır")
+        bildir(f"{paket} kurulu", False, "`uv add -r 00-hazirlik/requirements.txt` komutunu çalıştır")
 
 # 3) Gerçekten bir görsel üretebiliyor muyuz?
 try:

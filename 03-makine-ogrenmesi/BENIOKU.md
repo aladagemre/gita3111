@@ -17,8 +17,10 @@ kaldığın adımdan devam et.
 **Dersten önce** çalıştır, indirme biraz sürüyor:
 
 ```
-uv add scikit-learn matplotlib
+uv add -r 03-makine-ogrenmesi/requirements.txt
 ```
+
+Kurulacak kütüphanelerin listesi bu klasördeki `requirements.txt` dosyasında.
 
 ## Çalıştırma
 

@@ -18,7 +18,8 @@ sessiz bir çalışma kafesinin yeni kimliği için slogan, renk, yazı tipi.
   (`cevaplar.json`),
 - ve bir bulgu: **soruya bağlam yazmak cevabı nasıl değiştiriyor?**
 
-**Kurulum (dersten önce):** `uv add requests` — internete istek atan kütüphane.
+**Kurulum (dersten önce):** `uv add -r 02-api-ile-konusmak/requirements.txt` — internete istek atan
+`requests` kütüphanesini kurar.
 
 > Bu dönemin **kritik konusu**: Konu 4, 5, 8, 9, 10 ve 11 bunun üstüne kuruluyor.
 > Buradaki her adım ileride her derste tekrar edecek. Anlamadığın bir yer kalırsa
@@ -956,7 +957,7 @@ kodu yeni veriyle). Önce `06` çalışmış olmalı; çıktısı `cevaplar-bulu
 |---|---|---|
 | `anahtar.txt bulunamadı` | Hesap açılmamış, dosya yanlış klasörde ya da adı `anahtar.txt.txt` | Demo moduyla devam et; dosyayı `gita3111` klasörüne koy, uzantıyı kontrol et |
 | `FileNotFoundError: ... '02-api-ile-konusmak/veri/...'` | Komutu yanlış klasörden verdin | `gita3111` klasörüne dön |
-| `ModuleNotFoundError: No module named 'requests'` | Kütüphane kurulu değil | `uv add requests` |
+| `ModuleNotFoundError: No module named 'requests'` | Kütüphane kurulu değil | `uv add -r 02-api-ile-konusmak/requirements.txt` |
 | `[UYARI] anahtar.txt var ama ... okunamadı` | Dosyada `ACCOUNT_ID` ya da `API_TOKEN` satırı eksik | Dosyayı Adım 1'deki biçime göre düzelt |
 | Beş soruya beş aynı cevap | Demo modundasın | Gerçek anahtarla çalıştır |
 | `KeyError: 'response'` | Bir kat atlandı | `yanit["result"]["response"]`; emin değilsen önce ham yanıtı bas |

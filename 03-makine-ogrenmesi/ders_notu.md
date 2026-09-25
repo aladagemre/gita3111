@@ -20,9 +20,9 @@ ne söylediği.
 renkleri gösteren bir görsel (`yanilgilar.png`) ve kafe paleti için modelden alınmış
 bir "ikinci görüş".
 
-**Kurulum (dersten önce):** `uv add scikit-learn matplotlib` — indirme birkaç dakika sürebilir.
-Kütüphanenin adı `scikit-learn`, ama kodda `sklearn` diye çağrılır. `uv add sklearn`
-yazarsan yanlış pakete gidersin; kurulumda tam adı kullan.
+**Kurulum (dersten önce):** `uv add -r 03-makine-ogrenmesi/requirements.txt` — indirme birkaç dakika sürebilir.
+Dosyada kütüphanenin tam adı yazılı: `scikit-learn`. Kodda ise `sklearn` diye çağrılır;
+elle kurarken `uv add sklearn` yazarsan yanlış pakete gidersin.
 
 > **Bu nottaki sayılar hakkında.** Buradaki bütün sayılar **yedek veri setinden**:
 > 12 kişinin 20 rengi etiketlediği, 240 satırlık hazır bir dosya. Sınıfın kendi
@@ -786,7 +786,7 @@ ve satır numarasını orada ararsın.
 
 | Ne görüyorsun | Sebebi | Ne yapmalı |
 |---|---|---|
-| `ModuleNotFoundError: No module named 'sklearn'` | Kütüphane kurulu değil | `uv add scikit-learn matplotlib` (dikkat: `sklearn` değil) |
+| `ModuleNotFoundError: No module named 'sklearn'` | Kütüphane kurulu değil | `uv add -r 03-makine-ogrenmesi/requirements.txt` |
 | `FileNotFoundError: [Errno 2] No such file or directory: '03-makine-ogrenmesi/veri/renkler-etiketli.csv'` | Komut yanlış klasörden çalıştırıldı | `gita3111` klasöründen çalıştır |
 | `ValueError: invalid literal for int() with base 10: 'E6'` | `int(...)` içinde `16` unutuldu | `int(hex_kod[0:2], 16)` |
 | `ValueError: Found input variables with inconsistent numbers of samples: [200, 240]` | X ve y farklı uzunlukta | İkisini aynı döngüde doldur |

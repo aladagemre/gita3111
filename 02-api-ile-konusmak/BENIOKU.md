@@ -16,8 +16,10 @@ gönderip cevabını alacaksın. Konu 1'in bulgusundan (müşteriler kafeyi sess
 
 Komutları **`gita3111` klasörünün içinden** çalıştır:
 
+Önce bu konunun kütüphanelerini kur (liste `requirements.txt` içinde), sonra çalıştır:
+
 ```
-uv add requests
+uv add -r 02-api-ile-konusmak/requirements.txt
 uv run 02-api-ile-konusmak/ornekler/02_ilk_istek.py
 ```
 

@@ -62,10 +62,17 @@ Sırayla:
 uv python install 3.13
 uv init gita3111
 cd gita3111
-uv add matplotlib wordcloud
 ```
 
-Son komut biraz sürebilir, indirme yapıyor.
+Sonra ders deposundan **`00-hazirlik` klasörünü** indir ve `gita3111` klasörünün içine koy.
+İçindeki `requirements.txt` bu adımda gereken kütüphanelerin listesi. Kur:
+
+```
+uv add -r 00-hazirlik/requirements.txt
+```
+
+Bu komut biraz sürebilir, indirme yapıyor. Sonraki her konunun klasöründe de böyle bir
+`requirements.txt` var; o konuya başlamadan önce aynı komutu o klasörün adıyla çalıştıracaksın.
 
 > **Klasör yolu uyarısı:** Bu komutları Türkçe karakter (ç, ğ, ı, ö, ş, ü) ve boşluk içermeyen
 > bir klasörde çalıştır. Masaüstü genelde uygundur; "Ders Notları/Yapay Zekâ" gibi bir yol
@@ -75,11 +82,10 @@ Son komut biraz sürebilir, indirme yapıyor.
 
 ## Adım 3 — Test betiğini çalıştır
 
-Ders deposundan `00-hazirlik/ornekler/kurulum_testi.py` dosyasını indir ve `gita3111` klasörünün
-içine koy. Sonra:
+`gita3111` klasörünün içinden:
 
 ```
-uv run kurulum_testi.py
+uv run 00-hazirlik/ornekler/kurulum_testi.py
 ```
 
 Ekranda şunu görmelisin:
@@ -139,8 +145,8 @@ API_TOKEN = buraya_anahtar
 ## Derse gelmeden önce kontrol listesi
 
 - [ ] `uv --version` bir sürüm numarası yazıyor
-- [ ] `gita3111` klasörüm var, içinde `uv add` ile kütüphaneler kurulu
-- [ ] `uv run kurulum_testi.py` → **KURULUM TAMAM** yazdı
+- [ ] `gita3111` klasörüm var, içinde `uv add -r 00-hazirlik/requirements.txt` ile kütüphaneler kurulu
+- [ ] `uv run 00-hazirlik/ornekler/kurulum_testi.py` → **KURULUM TAMAM** yazdı
 - [ ] VS Code kurulu ve `gita3111` klasörünü açabiliyorum
 - [ ] Cloudflare hesabım var, Account ID ve anahtarımı bir dosyaya kaydettim
 
@@ -157,5 +163,5 @@ Terminali kapatıp yeniden açmadın. Aç-kapat, tekrar dene.
 Üniversite ağındaysan bazı adresler kapalı olabilir. Telefon internetini paylaşıp tekrar dene.
 
 **Komutlar çalışıyor ama dosyayı bulamıyor diyor**
-Muhtemelen yanlış klasördesin. `cd gita3111` yazdığından ve test dosyasını o klasörün **içine**
-koyduğundan emin ol.
+Muhtemelen yanlış klasördesin. `cd gita3111` yazdığından ve `00-hazirlik` klasörünü o klasörün
+**içine** koyduğundan emin ol.

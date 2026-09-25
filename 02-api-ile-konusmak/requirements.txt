@@ -1,0 +1,4 @@
+# 02-api-ile-konusmak için gereken kütüphaneler.
+# Kurmak için gita3111 klasörünün içinden:  uv add -r 02-api-ile-konusmak/requirements.txt
+requests>=2.32
+wordcloud>=1.9

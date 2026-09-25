@@ -18,10 +18,10 @@ Komutları **`gita3111` klasörünün içinden** çalıştır:
 uv run 01-veri-ve-kelime-bulutu/ornekler/01_dosya_oku.py
 ```
 
-Kütüphane eksik derse:
+Kütüphane eksik derse (bu konunun kütüphaneleri `requirements.txt` içinde yazılı):
 
 ```
-uv add wordcloud matplotlib
+uv add -r 01-veri-ve-kelime-bulutu/requirements.txt
 ```
 
 ## Bu konuda ne üreteceksin
