@@ -109,7 +109,7 @@ bir liste; `yanit["errors"]["message"]` yazınca bu hatayı alırsın. Doğrusu
 kullanılır. Kod aynı kod, sadece cevap kutudan gelir. Yani dersi takip edebilirsin.
 
 Ama bu bir köprü, çözüm değil. Ödev için kendi anahtarın gerekiyor ve Konu 4'ten
-itibaren demo modu yetmiyor. Hesabı ders öncesi kurulum yönergesinin 5. adımıyla
+itibaren demo modu yetmiyor. Hesabı kurulum yönergesinin 6. adımıyla
 aç (`../00-hazirlik/kurulum-yonergesi.md`).
 
 Örnek dosyalar anahtar dosyasını üç durumdan birinde bulur:

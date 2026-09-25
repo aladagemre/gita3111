@@ -40,7 +40,7 @@ kopyala**, kopyada çalış; böylece `git pull` hiç çakışmaz.
 
 Örneklerin çoğu **DEMO modunda** çalışır: `anahtar.txt` yoksa kayıtlı bir yanıtla
 aynı şeyi gösterirler. Yani derse yetişebilirsin. Ama ödev için kendi anahtarın
-gerekiyor — ders öncesi hazırlıktaki 5. adımı bugün bitir.
+gerekiyor — kurulum yönergesinin 6. adımını bugün bitir.
 
 ## Dosyalar
 

@@ -1,8 +1,9 @@
-"""GİTA3111 — Ders öncesi hazırlık: verilen grafik betiği.
+"""GİTA3111 — Konu 00 (kurulum): verilen grafik betiği.
 
 Çalıştırma (00-hazirlik klasörünün içinden):  uv run ornekler/grafik.py
 
-Buradaki işin: aşağıdaki iki listeyi kendi verinle değiştirip çalıştırmak.
+Buradaki işin: bu dosyayı benim_grafigim.py adıyla kopyalamak, kopyadaki iki listeyi
+kendi verinle değiştirip çalıştırmak.
 Grafik kodunun nasıl yazıldığını Konu 01'de (kelime bulutu) öğreneceğiz.
 """
 

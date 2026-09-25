@@ -51,7 +51,7 @@ Kullandığın her yerde üretim günlüğüne yazacaksın.
 
 ## Bu konunun planı
 
-**1. Kurulum kontrolü** — herkes `kurulum_testi.py` çalıştırır *(yalnızca dönemin ilk dersinde)*
+**1. Kurulum kontrolü** — herkes evde yaptığı kurulumu `kurulum_testi.py` ile gösterir *(yalnızca Konu 01'in ilk oturumunda)*
 
 **2. Isınma** — geçen dönemin en sık iki hatası, düzeltmeli
 

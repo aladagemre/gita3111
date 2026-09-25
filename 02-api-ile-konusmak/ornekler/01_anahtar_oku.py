@@ -29,7 +29,7 @@ try:
     anahtarlar = anahtarlari_oku()
 except FileNotFoundError:
     print("anahtar.txt bulunamadı.")
-    print("Ders öncesi hazırlıktaki 5. adımı yap: hesabı aç, Account ID ve token'ı")
+    print("Kurulum yönergesinin 6. adımını yap (../00-hazirlik/kurulum-yonergesi.md): hesabı aç, Account ID ve token'ı")
     print("gita3111 klasörünün içinde anahtar.txt dosyasına kaydet.")
     raise SystemExit(1)
 

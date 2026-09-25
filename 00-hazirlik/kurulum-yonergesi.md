@@ -1,7 +1,8 @@
-# GİTA3111 — Ders Öncesi Kurulum Yönergesi
+# GİTA3111 — Kurulum Yönergesi
 
-**Bunu ilk dersten ÖNCE yap.** Ders saatinde kurulumla uğraşmayacağız; sadece çalıştığını
-kontrol edeceğiz. Toplam süre yaklaşık 30 dakika.
+**Bunu ilk dersten sonra, ikinci dersten önce evde yap.** Adımları ilk derste slaytlarla
+gördün; burada adım adım yazılı hâli var. İkinci dersin (Konu 01) başında kurulumunun
+çalıştığını birlikte kontrol edeceğiz. Toplam süre yaklaşık 30 dakika.
 
 Takıldığın yerde dur, ekran görüntüsü al ve bana yaz. Yarım kalmış kurulumla derse gelmek
 sorun değil — hiç denememiş olarak gelmek sorun.
@@ -146,6 +147,26 @@ görüntüsünü al, derse onunla gel.
 
 ---
 
+## Isınma — ilk grafiğin
+
+`00-hazirlik/ornekler/grafik.py` hazır bir grafik betiği. Kod yazmanı beklemiyorum;
+yalnızca veriyi değiştireceksin:
+
+1. Dosyayı aynı klasörde `benim_grafigim.py` adıyla kopyala (neden kopyaladığımızı
+   "Dönem boyunca: depoyu güncel tut" bölümünde anlattım).
+2. Kopyada `DEĞİŞTİRECEĞİN YER` arasındaki iki listeyi ve başlığı kendi verinle değiştir:
+   bir haftada kaç saat çizim yaptığın, en çok kullandığın beş rengi kaç kez kullandığın…
+3. `00-hazirlik` klasörünün içinden çalıştır:
+
+```
+uv run ornekler/benim_grafigim.py
+```
+
+`00-hazirlik` klasöründe `grafik.png` oluşur. Grafik kodunun nasıl yazıldığını Konu 01'de
+öğreneceğiz.
+
+---
+
 ## Adım 5 — VS Code
 
 Geçen dönemden kuruluysa bir şey yapma. Değilse: https://code.visualstudio.com adresinden indir,
@@ -190,15 +211,16 @@ API_TOKEN = buraya_anahtar
 
 ---
 
-## Derse gelmeden önce kontrol listesi
+## İkinci dersten önce kontrol listesi
 
 - [ ] `uv --version` ve `git --version` birer sürüm numarası yazıyor
 - [ ] `git clone` ile indirdiğim `gita3111` klasörüm var
 - [ ] `00-hazirlik` klasörünün içinde `uv run ornekler/kurulum_testi.py` → **KURULUM TAMAM** yazdı
+- [ ] Kendi verimle `grafik.png` ürettim
 - [ ] VS Code kurulu ve `gita3111` klasörünü açabiliyorum
 - [ ] Cloudflare hesabım var, Account ID ve anahtarım `gita3111/anahtar.txt` dosyasında
 
-Beş maddeyi de işaretlediysen hazırsın.
+Altı maddeyi de işaretlediysen hazırsın.
 
 ---
 

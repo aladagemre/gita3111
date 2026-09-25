@@ -1,19 +1,19 @@
-# Konu 0 — Ders Öncesi Hazırlık
+# Konu 0 — Kurulum
 
 GİTA3111 · Üretken Yapay Zeka ve Programlama
 Ahmet Emre Aladağ
 
 -----
 
-## Bu hazırlık neden var?
+## Bu dersten sonra: kurulum
 
-Ders saatinde kurulumla uğraşmak istemiyoruz. Üç saatin yarısı "bende çalışmıyor"la
-geçerse kimse bir şey üretemez.
+Gelecek dersten itibaren (Konu 01) her derste kod çalıştıracağız. Bunun için
+bilgisayarında birkaç araç kurulu olmalı.
 
-- Kurulumu **ilk dersten önce**, kendi bilgisayarında yapacaksın
+- Şimdi adımları **birlikte göreceğiz**; kurulumu **bu dersten sonra evde** yapacaksın
+- Evde bu slaytlara değil, **yazılı yönergeye** bakarak ilerle: `00-hazirlik/kurulum-yonergesi.md`
 - Toplam süre yaklaşık **30–45 dakika**
-- Derste yalnızca **çalıştığını kontrol edeceğiz**
-- Adımların yazılı hâli: `00-hazirlik/kurulum-yonergesi.md`
+- Gelecek dersin başında herkesin kurulumunun çalıştığını **birlikte kontrol edeceğiz**
 
 Takıldığın yerde dur, ekran görüntüsü al ve bana yaz. Yarım kalmış kurulumla derse
 gelmek sorun değil; **hiç denememiş olarak gelmek sorun.**
@@ -226,10 +226,11 @@ Hatanın sebebi çoğu zaman kodda değil, **nerede durduğunda.**
 
 -----
 
-## Isınma: ilk grafiğin
+## Kurulumdan sonra: ilk grafiğin
 
-Klasörde hazır bir grafik betiği var. Kod yazmanı beklemiyorum; yalnızca **veriyi
-değiştir**:
+`00-hazirlik/ornekler/` klasöründe hazır bir grafik betiği var. Kod yazmanı
+beklemiyorum; yalnızca **veriyi değiştireceksin**. Önce dosyayı kopyala
+(`grafik.py` → `benim_grafigim.py`), sonra kopyada şu kısmı değiştir:
 
 ```python
 #---- DEĞİŞTİRECEĞİN YER ----
@@ -240,8 +241,8 @@ baslik = "Haftalık bir şey"
 ```
 
 - Kendinden bir veri koy: bir haftada kaç saat çizim yaptığın, en sevdiğin beş rengi kaç kez kullandığın…
-- Çalıştır: `uv run ornekler/grafik.py`
-- Klasörde `grafik.png` oluşur
+- Çalıştır: `uv run ornekler/benim_grafigim.py`
+- `00-hazirlik` klasöründe `grafik.png` oluşur
 
 Grafik kodunun **nasıl yazıldığını** Konu 01'de öğreneceğiz.
 
@@ -249,7 +250,7 @@ Grafik kodunun **nasıl yazıldığını** Konu 01'de öğreneceğiz.
 
 ## Önemli kural: depo dosyasını değiştirmeden önce kopyala
 
-Az önce `grafik.py`'yi değiştirdin. Dönem boyunca bu alışkanlığı değiştiriyoruz:
+Grafik betiğini neden önce kopyaladık? Dönem boyunca kuralımız bu:
 
 - Depodaki bir dosyayı değiştireceksen önce **aynı klasörde yeni bir adla kopyala**
 - Örnek: `grafik.py` → `benim_grafigim.py`, `sinif_alistirmasi.py` → `benim_alistirmam.py`
@@ -356,7 +357,7 @@ Listede olmayan bir şey görürsen: ekran görüntüsü, bana mesaj.
 
 -----
 
-## Derse gelmeden önce kontrol listesi
+## Gelecek dersten önce kontrol listesi
 
 - [ ] `uv --version` ve `git --version` birer sürüm numarası yazıyor
 - [ ] `git clone` ile indirdiğim `gita3111` klasörüm var
@@ -365,8 +366,8 @@ Listede olmayan bir şey görürsen: ekran görüntüsü, bana mesaj.
 - [ ] VS Code'da `gita3111` klasörünü açabiliyorum
 - [ ] Cloudflare hesabım var; Account ID ve anahtarım `gita3111/anahtar.txt` dosyasında
 
-Altısı da tamamsa hazırsın. İlk derste kurulum testini birlikte bir kez daha
-çalıştıracağız; herkesin ekranında **KURULUM TAMAM** görmeden kelime bulutuna
+Altısı da tamamsa hazırsın. Gelecek dersin başında kurulum testini birlikte bir kez
+daha çalıştıracağız; herkesin ekranında **KURULUM TAMAM** görmeden kelime bulutuna
 geçmeyeceğiz.
 
 -----
