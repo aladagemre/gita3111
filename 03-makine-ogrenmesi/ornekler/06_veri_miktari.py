@@ -1,63 +1,37 @@
-"""6. adım — Veri arttıkça ne oluyor?
-
-Çalıştırma (önce konunun klasörüne gir: cd 03-makine-ogrenmesi):
-    uv run ornekler/06_veri_miktari.py
-
-Aynı modeli önce az veriyle, sonra çok veriyle eğitip doğruluğu karşılaştırıyoruz.
-"""
+# Adım 6 — Veri arttıkça doğruluk nasıl değişiyor?
+# Çalıştır: uv run ornekler/06_veri_miktari.py
 
 import csv
-
-import matplotlib
-matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 
-VERI = "veri/renkler-etiketli.csv"
-CIKTI = "veri-miktari.png"
-ORANLAR = [0.1, 0.25, 0.5, 0.75, 1.0]
-
-
-def hex_to_rgb(hex_kod):
-    hex_kod = hex_kod.lstrip("#")
-    return (int(hex_kod[0:2], 16), int(hex_kod[2:4], 16), int(hex_kod[4:6], 16))
-
-
-with open(VERI, encoding="utf-8") as dosya:
+with open("veri/renkler-etiketli.csv", encoding="utf-8") as dosya:
     kayitlar = list(csv.DictReader(dosya))
 
 X = []
 y = []
 for kayit in kayitlar:
-    X.append(hex_to_rgb(kayit["hex"]))
+    kod = kayit["hex"]
+    X.append((int(kod[1:3], 16), int(kod[3:5], 16), int(kod[5:7], 16)))
     y.append(kayit["etiket"])
 
-X_egitim, X_test, y_egitim, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+X_egitim, X_test, y_egitim, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
 
-miktarlar = []
+adetler = []
 dogruluklar = []
-
-print("Eğitim verisi   Doğruluk")
-print("-" * 26)
-for oran in ORANLAR:
+for oran in [0.1, 0.25, 0.5, 0.75, 1.0]:
     adet = int(len(X_egitim) * oran)
     model = KNeighborsClassifier(n_neighbors=5)
     model.fit(X_egitim[:adet], y_egitim[:adet])
-    dogruluk = model.score(X_test, y_test)
-    miktarlar.append(adet)
-    dogruluklar.append(dogruluk)
-    print(f"{adet:>10} örnek   {dogruluk:.2f}")
+    adetler.append(adet)
+    dogruluklar.append(round(model.score(X_test, y_test), 2))
 
-plt.figure(figsize=(7, 4))
-plt.plot(miktarlar, dogruluklar, marker="o")
+print(adetler)
+print(dogruluklar)
+plt.plot(adetler, dogruluklar, marker="o")
 plt.xlabel("Eğitim örneği sayısı")
 plt.ylabel("Test doğruluğu")
-plt.title("Veri arttıkça doğruluk")
-plt.grid(alpha=0.3)
-plt.tight_layout()
-plt.savefig(CIKTI, dpi=120)
-plt.close()
-
-print(f"\nGrafik kaydedildi: {CIKTI}")
-print("Soru: eğri sonunda düzleşiyor mu? Düzleşiyorsa daha fazla veri işe yaramaz demektir.")
+plt.savefig("veri-miktari.png")

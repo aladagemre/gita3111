@@ -52,14 +52,14 @@ open("veri/kafe-yorumlari.txt")
 
 ```
 Traceback (most recent call last):
-  File ".../ornekler/01_dosya_oku.py", line 13, in <module>
-    with open(DOSYA, encoding="utf-8") as dosya:
-         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ".../ornekler/01_dosya_oku.py", line 4, in <module>
+    with open("veri/kafe-yorumlari.txt", encoding="utf-8") as dosya:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 FileNotFoundError: [Errno 2] No such file or directory: 'veri/kafe-yorumlari.txt'
 ```
 
 1. **En alttan başla:** hatanın türü (`FileNotFoundError`) ve açıklaması
-2. **Bir üste çık:** hangi satırda (`line 13`), `^^^^` ile satırın hangi parçasında
+2. **Bir üste çık:** hangi satırda (`line 4`), `^^^^` ile satırın hangi parçasında
 3. **Tırnak içine bak:** ipucu çoğu zaman orada — burada aranan dosya yolu
 
 Emin değilsen sor: `import os` → `print(os.getcwd())` şu an hangi klasördesin?
@@ -69,12 +69,10 @@ Emin değilsen sor: `import os` → `print(os.getcwd())` şu an hangi klasördes
 ## Adım 1 — Dosyayı aç
 
 ```python
-DOSYA = "veri/kafe-yorumlari.txt"
-
-with open(DOSYA, encoding="utf-8") as dosya:
+with open("veri/kafe-yorumlari.txt", encoding="utf-8") as dosya:
     metin = dosya.read()
 
-print("Karakter sayısı:", len(metin))
+print(len(metin))
 print(metin[:150])
 ```
 
@@ -88,12 +86,11 @@ print(metin[:150])
 
 ## Adım 2 — Metni kelimelere ayır
 
-Tek parça metinle kelime sayamayız. Önce parçalara ayırmalıyız.
+Tek parça metinle kelime sayamayız. Önce parçalara ayırmalıyız. Aynı dosyanın devamı:
 
 ```python
 kelimeler = metin.split()
-
-print("Kelime sayısı:", len(kelimeler))
+print(len(kelimeler))
 print(kelimeler[:8])
 ```
 
@@ -107,29 +104,9 @@ görünür. Temizlemeden sayarsak asıl bulguyu kaçırırız.
 
 -----
 
-## Sorun 1 — Noktalama
+## Sorun 1 — Büyük ve küçük harf
 
-Şu an `sessiz` ile `sessiz,` iki ayrı kelime sayılıyor. Saymadan önce temizlemeliyiz.
-
-```python
-NOKTALAMA = ".,!?:;()[]\"'…-–—/"
-
-def noktalama_temizle(metin):
-    for isaret in NOKTALAMA:
-        metin = metin.replace(isaret, " ")
-    return metin
-```
-
-- Noktalamayı **silmiyoruz, boşluğa çeviriyoruz**
-- Silseydik `yer.Sessiz` gibi yapışık kelimeler oluşurdu
-- Dikkat: `.replace()` metni değiştirmez, **yeni metin üretir**. Bu yüzden
-  `metin = metin.replace(...)` yazıyoruz; `metin.replace(...)` tek başına hiçbir şey yapmaz
-
------
-
-## Sorun 2 — Büyük ve küçük harf
-
-`Sessiz` ile `sessiz` de şu an iki ayrı kelime. Hepsini küçültmeliyiz.
+`Sessiz` ile `sessiz` şu an iki ayrı kelime. Hepsini küçültmeliyiz.
 
 Ama Türkçede `.lower()` tek başına yetmiyor:
 
@@ -147,38 +124,37 @@ Büyük **I** da noktasız **ı** yerine noktalı **i** oluyor.
 
 ## Türkçe için güvenli küçültme
 
-```python
-def turkce_kucult(metin):
-    return metin.replace("I", "ı").replace("İ", "i").lower()
-```
-
-Sıra önemli: `.lower()` **en sonda**. Önce çağırsaydık İ çoktan bozulmuş olurdu.
-
-İki temizliği tek fonksiyonda birleştirelim:
+Yeni dosya, `02_kelime_say.py`. Okuma satırları aynı:
 
 ```python
-def temizle(metin):
-    for isaret in NOKTALAMA:
-        metin = metin.replace(isaret, " ")
-    return turkce_kucult(metin)
+with open("veri/kafe-yorumlari.txt", encoding="utf-8") as dosya:
+    metin = dosya.read()
+
+temiz = metin.replace("I", "ı").replace("İ", "i").lower()   # .lower() en sonda
 ```
+
+- Önce İ ve I'yı kendimiz çeviriyoruz, **sonra** `.lower()`
+- Sıra önemli: `.lower()` önce çalışsaydı İ çoktan bozulmuş olurdu
+- Sonuç yeni bir değişkende: **`temiz`**. `metin` olduğu gibi duruyor
 
 -----
 
-## Kelimeleri yeniden üretelim
+## Sorun 2 — Noktalama
 
-Artık temizlenmiş hâlini kullanıyoruz:
+`sessiz` ile `sessiz,` de iki ayrı kelime. Saymadan önce noktalamayı temizleyelim:
 
 ```python
-kelimeler = temizle(metin).split()
-
-print("Kelime sayısı:", len(kelimeler))
+for isaret in ".,!?:;()[]\"'…-–—/":
+    temiz = temiz.replace(isaret, " ")
+kelimeler = temiz.split()
 print(kelimeler[:8])
 ```
 
-- Aynı `kelimeler` değişkeni, bu kez temiz
+- Noktalamayı **silmiyoruz, boşluğa çeviriyoruz**
+- Silseydik `yer.Sessiz` gibi yapışık kelimeler oluşurdu
+- Dikkat: `.replace()` metni değiştirmez, **yeni metin üretir**. Bu yüzden
+  `temiz = temiz.replace(...)` yazıyoruz; `temiz.replace(...)` tek başına hiçbir şey yapmaz
 - Baştaki listeyle karşılaştır: noktalama gitti, hepsi küçük harf
-- Bundan sonra hep bu listeyle çalışacağız
 
 -----
 
@@ -207,7 +183,9 @@ Hata mesajını oku: `KeyError: 0` → "0 diye bir anahtar aradım, bulamadım".
 
 -----
 
-## Adım 3 — Saymak (uzun hâli)
+## Adım 3 — Saymak
+
+`02_kelime_say.py`'nin devamı:
 
 ```python
 sayac = {}
@@ -217,28 +195,16 @@ for kelime in kelimeler:
     else:
         sayac[kelime] = 1
 
-print("Farklı kelime:", len(sayac))
-print("'sessiz' kaç kez:", sayac["sessiz"])
+print(len(sayac))
+print(sayac["sessiz"])
 ```
 
 - `kelimeler` bir önceki adımda hazırlandı — döngü onu geziyor
 - İlk görüşte kelimeyi 1 olarak ekliyoruz, sonraki görüşlerde artırıyoruz
-
------
-
-## Aynı şey, kısa hâli
-
-```python
-sayac = {}
-for kelime in kelimeler:
-    sayac[kelime] = sayac.get(kelime, 0) + 1
-```
-
-- `sayac.get(kelime, 0)` demek: **varsa değerini ver, yoksa 0 ver**
-- `if / else` bloğunun tamamı tek satıra indi
-- İkisi birebir aynı sonucu üretir — istediğini kullan
+- Çıktı: **196** farklı kelime, `sessiz` **8** kez
 
 Elimizde artık `{"ders": 3, "çalışmak": 5, "için": 10, ...}` gibi bir sözlük var.
+(Aynı işin `.get` ile kısa yazılışı ders notunda.)
 
 -----
 
@@ -258,10 +224,12 @@ Sonuca her zaman bir göz at: "her kelime bir kez geçmiş" makul değil.
 
 Sözlük sıralı değil. En sık geçenleri görmek için sıralamalıyız.
 
-```python
-sirali = sorted(sayac, key=sayac.get, reverse=True)
+`03_ilk_20.py`: `02`'nin okuma, temizleme ve sayma satırları aynen; sondaki iki
+`print` yerine:
 
-for kelime in sirali[:10]:
+```python
+sirali = sorted(sayac, key=sayac.get, reverse=True)   # değere göre; parantez yok
+for kelime in sirali[:20]:
     print(sayac[kelime], kelime)
 ```
 
@@ -286,36 +254,34 @@ Bunlara **durak kelime** (stopword) denir. Elemeliyiz.
 
 ## Adım 5 — Durak kelimeleri elemek
 
+`04_durak_kelime.py`: okuma ve temizleme aynı. Sonra durak kelimeleri okuyup sayma
+döngüsüne **tek satır** ekliyoruz:
+
 ```python
 with open("veri/turkce-durak-kelimeler.txt", encoding="utf-8") as dosya:
-    durak_kelimeler = set(dosya.read().split())   # set: tekrarsız torba
+    durak_kelimeler = dosya.read().split()
 
-temiz_kelimeler = []
+sayac = {}
 for kelime in kelimeler:
     if kelime not in durak_kelimeler and len(kelime) > 2:
-        temiz_kelimeler.append(kelime)
-
-print("Eleme öncesi:", len(kelimeler))
-print("Eleme sonrası:", len(temiz_kelimeler))
+        if kelime in sayac:
+            sayac[kelime] = sayac[kelime] + 1
+        else:
+            sayac[kelime] = 1
 ```
 
-- `set(...)` listeyi **tekrarsız bir torbaya** çevirir; "bu kelime içinde var mı?"
-  sorusunu listeden çok daha hızlı cevaplar. Tek kullandığımız özelliği bu
+- Durak kelimeler düz bir **liste**; `not in` "listede yoksa" demek
+- Yeni satır `if kelime not in ...`; altındaki dört satır bir girinti içeri kaydı
 - `len(kelime) > 2` koşulu tek-iki harfli artıkları da atıyor
 
 -----
 
-## Sayacı yeniden kuralım
+## Yeni sayacı sıralayalım
 
-Yeni listeyle aynı sayma işini tekrarlıyoruz:
+Adım 4'teki sıralama, bu kez ilk 10:
 
 ```python
-sayac = {}
-for kelime in temiz_kelimeler:
-    sayac[kelime] = sayac.get(kelime, 0) + 1
-
 sirali = sorted(sayac, key=sayac.get, reverse=True)
-
 for kelime in sirali[:10]:
     print(sayac[kelime], kelime)
 ```
@@ -331,10 +297,10 @@ açık bir laptop mı?
 
 ## Adım 6 — Sonucu dosyaya yazmak
 
-Ekrana basmak yeter mi? Hayır — sonucu saklamalıyız.
+Ekrana basmak yeter mi? Hayır — sonucu saklamalıyız. `04`'ün son satırları:
 
 ```python
-with open("sonuc.txt", "w", encoding="utf-8") as dosya:
+with open("sonuc.txt", "w", encoding="utf-8") as dosya:   # "w": yazma modu
     for kelime in sirali[:20]:
         dosya.write(f"{sayac[kelime]}\t{kelime}\n")
 ```
@@ -348,21 +314,24 @@ with open("sonuc.txt", "w", encoding="utf-8") as dosya:
 
 ## Adım 7 — Kelime bulutu
 
+`05_kelime_bulutu.py`: `04`'ün okuma, temizleme, eleme ve sayma satırları aynen.
+En üste:
+
 ```python
 from wordcloud import WordCloud
+```
 
-bulut = WordCloud(
-    width=1200, height=800,
-    background_color="white",
-    colormap="viridis",
-)
+En alta:
+
+```python
+bulut = WordCloud(width=1200, height=800, background_color="white")
 bulut.generate_from_frequencies(sayac)
 bulut.to_file("kelime-bulutu.png")
 ```
 
 - Girdi olarak doğrudan **sayaç sözlüğümüzü** veriyoruz
 - Kelimenin boyutu, sözlükteki değeriyle orantılı
-- Türkçe harfler kutu görünürse yazı tipi ayarını değiştireceğiz
+- Program ekrana bir şey yazmaz; klasörde `kelime-bulutu.png` oluşur
 
 -----
 
@@ -381,24 +350,21 @@ bu yanlış okumayı engellemek **tasarımcının işi**.
 
 ## Adım 8 — Bulutun göremediği: ekler
 
-`bahçe`, `bahçesi`, `bahçede` ayrı sayılıyor. Aynı harflerle başlayanları toplayalım:
+`bahçe`, `bahçesi`, `bahçede` ayrı sayılıyor. `09_kok_ve_baglam.py`: okuma ve temizleme
+aynı (eleme yok); sonra aynı harflerle başlayanları topluyoruz:
 
 ```python
-def kok_toplami(sayac, kok):
-    toplam = 0
-    bulunanlar = []
-    for kelime in sayac:
-        if kelime.startswith(kok):
-            toplam = toplam + sayac[kelime]
-            bulunanlar.append(kelime)
-    return toplam, bulunanlar
-
 for kok in ["sessiz", "kahve", "bahçe", "priz", "ışık"]:
-    toplam, bulunanlar = kok_toplami(sayac, kok)
-    print(kok, toplam, bulunanlar)
+    bulunanlar = []
+    for kelime in kelimeler:
+        if kelime.startswith(kok):   # bu harflerle mi başlıyor?
+            bulunanlar.append(kelime)
+    print(kok, len(bulunanlar), bulunanlar)
 ```
 
 **sessiz 9 · kahve 6 · bahçe 5 · priz 5 · ışık 3**
+
+`kahve 6 ['kahvesi', 'kahve', 'kahve', 'kahvenin', 'kahveleri', 'kahveli']`
 
 Kahve toplayınca 6'ya çıktı, prizi geçti. Bulgumuz çöktü mü?
 
@@ -410,18 +376,17 @@ Sayı **kaç kez** geçtiğini söyler, **nasıl** geçtiğini söylemez. Kahved
 yorumları okuyalım:
 
 ```python
-def baglamda_goster(metin, aranan):
-    for satir in metin.splitlines():
-        if aranan in turkce_kucult(satir):
-            print("   -", satir)
-
-baglamda_goster(metin, "kahve")
+for aranan in ["kahve", "ışık"]:
+    print(aranan)
+    for satir in temiz.splitlines():   # her satır bir yorum
+        if aranan in satir:
+            print("  ", satir)
 ```
 
-- "Kahvesi **fena değil** ama asıl sebep ortam."
-- "Kahve **ortalama**, tatlılar güzel. Ama buraya ders çalışmaya geliyorum."
-- "Kahve **biraz pahalı** ama saatlerce oturmana kimse bir şey demiyor."
-- "Kütüphane gibi **ama kahveli**."
+- "kahvesi **fena değil** ama asıl sebep ortam ..."
+- "kahve **ortalama**  tatlılar güzel  ama buraya ders çalışmaya geliyorum ..."
+- "kahve **biraz pahalı** ama saatlerce oturmana kimse bir şey demiyor"
+- "kütüphane gibi **ama kahveli**"
 
 Kahveyi doğrudan öven **tek** yorum var. Bulgu çökmedi, güçlendi.
 
@@ -429,13 +394,11 @@ Kahveyi doğrudan öven **tek** yorum var. Bulgu çökmedi, güçlendi.
 
 ## Bir bulgu daha: ışık
 
-```python
-baglamda_goster(metin, "ışık")
-```
+Aynı döngünün `"ışık"` turu:
 
-- "Masalar geniş, **ışık yeterli**, müzik sessiz."
-- "Bahçe akşamları çok keyifli. **Işıklandırma sıcak**, ortam sakin."
-- "**İçerisi biraz karanlık**, kitap okumak için ışık yetmiyor. **Bahçe daha aydınlık.**"
+- "masalar geniş  **ışık yeterli**  müzik sessiz"
+- "bahçe akşamları çok keyifli  **ışıklandırma sıcak**  ortam sakin"
+- "**içerisi biraz karanlık**  kitap okumak için ışık yetmiyor  **bahçe daha aydınlık**"
 
 Bulutta neredeyse görünmeyen bir kelime, somut bir tasarım sorunu çıkardı: çalışmaya
 gelinen bir yerde iç mekân okumak için karanlık.
@@ -446,29 +409,32 @@ gelinen bir yerde iç mekân okumak için karanlık.
 
 ## Adım 9 — Aynı sonuç, çubuk grafik
 
-```python
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
+`10_cubuk_grafik.py`: `04`'ün okuma, temizleme, eleme ve sayma satırları aynen.
+En üste:
 
-etiketler = []
+```python
+import matplotlib.pyplot as plt
+```
+
+En alta:
+
+```python
+sirali = sorted(sayac, key=sayac.get, reverse=True)
+etiketler = sirali[:10]
 degerler = []
-for kelime in sirali[:10]:
-    etiketler.append(kelime)
+for kelime in etiketler:
     degerler.append(sayac[kelime])
 
-plt.figure(figsize=(8, 4.5))
 plt.bar(etiketler, degerler, color="#4a6fa5")
 plt.title("Müşteri yorumlarında en sık 10 kelime")
 plt.ylabel("Kaç kez geçti")
-plt.xticks(rotation=45, ha="right")
-plt.tight_layout()
+plt.xticks(rotation=45, ha="right")   # kelimeler üst üste binmesin
+plt.tight_layout()                    # kenardaki yazılar kesilmesin
 plt.savefig("kelime-grafik.png", dpi=150)
-plt.close()
 ```
 
 - `plt.bar` iki liste ister: adlar ve boylar. Sayıyı yine **anahtarla** alıyoruz
-- Sıra: çiz → kaydet → kapat. `close` önce gelirse boş görsel kaydedilir
+- Başlık ve eksen adı olmayan grafik, izleyiciye "ne ölçtüğümü tahmin et" der
 
 -----
 
@@ -491,10 +457,10 @@ Hangisini seçeceğin, izleyicine ne söylemek istediğine bağlı. Bu bir **tas
 | Adım | Ne yaptık | Elimizde ne oluştu |
 |---|---|---|
 | 0–1 | Dosyayı açtık | `metin` |
-| 2 | Kelimelere ayırıp temizledik | `kelimeler` |
+| 2 | Küçülttük, noktalamayı attık, kelimelere ayırdık | `temiz`, `kelimeler` |
 | 3 | Saydık | `sayac` |
 | 4 | Sıraladık | `sirali` |
-| 5 | Durak kelimeleri eledik | `temiz_kelimeler`, yeni `sayac` |
+| 5 | Durak kelimeleri eledik | yeni `sayac` |
 | 6 | Dosyaya yazdık | `sonuc.txt` |
 | 7 | Çizdirdik | `kelime-bulutu.png` |
 | 8 | Ekleri topladık, bağlamda okuduk | bulgu |

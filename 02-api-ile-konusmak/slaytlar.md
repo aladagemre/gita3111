@@ -23,28 +23,29 @@ Bu, dersin **kritik konusu**: Konu 4, 5, 8, 9, 10 ve 11 bunun üstüne kuruluyor
 
 ## Bugünün planı
 
-Yine **tek bir program** yazacağız, adım adım büyüyecek:
+Her adım bir dosya; dosyalar adım adım büyüyor:
 
-**1.** Anahtarı dosyadan oku
-**2.** İsteğin üç parçasını hazırla ve gönder
-**3.** Yanıtın içinden metni çek (ve hataları tanı)
-**4.** Soruyu bir fonksiyona koy
-**5.** Kullanıcıdan soru al, cevabı kaydet
-**6.** Aynı işi döngüyle beş kez yap
-**7.** Soruya bağlam koy, farkı ölç
+**1.** Anahtarı dosyadan oku — `01_anahtar_oku.py`
+**2.** İsteğin üç parçasını hazırla ve gönder — `02_ilk_istek.py`
+**3.** Yanıtın içinden metni çek — `03_yaniti_coz.py`
+**4.** Hata kodlarını tanı — `04_hata_kodlari.py`
+**5.** Soruyu fonksiyona koy, cevabı kaydet — `05_soru_sor.py`
+**6.** Aynı işi döngüyle beş kez yap — `06_coklu_soru.py`
+**7.** Soruya bağlam koy, farkı ölç — `09_baglam_farki.py`
 
 -----
 
 ## Anahtarın yoksa?
 
-Bugünkü örneklerin çoğu **DEMO modunda** çalışıyor.
+Bugünkü örnekler **gerçek istek** atıyor. `anahtar.txt` yoksa program ilk satırda durur:
 
-- `anahtar.txt` yoksa kayıtlı bir cevap kullanılıyor
-- Kod aynı kod; sadece cevap kutudan geliyor
-- Yani dersi takip edebilirsin
+`FileNotFoundError: [Errno 2] No such file or directory: '../anahtar.txt'`
 
-**Ama bu bir köprü, çözüm değil.** Ödev için kendi anahtarın gerekiyor ve
-Konu 4'ten itibaren demo modu yetmiyor. Bugün halledeceğiz.
+- Ders boyunca **yanındakiyle birlikte** çalış: onun ekranında izle, kodu sen de yaz
+- Adım 3 anahtarsız da çalışır: kayıtlı bir yanıtı okur
+- Konu 00'daki kurulum yönergesinin **6. adımını** (Cloudflare hesabı) bugün bitir
+
+Ödev için kendi anahtarın gerekiyor; Konu 4'ten itibaren her derste de gerekecek.
 
 -----
 
@@ -99,37 +100,33 @@ API_TOKEN = xyz789...
 ```
 
 ```python
-def anahtarlari_oku(yol="../anahtar.txt"):
-    degerler = {}
-    with open(yol, encoding="utf-8") as dosya:
-        for satir in dosya:
-            if "=" in satir:
-                ad, _, deger = satir.partition("=")
-                degerler[ad.strip().upper()] = deger.strip()
-    return degerler
-```
-
-Konu 1'in dosya okuma bilgisi burada işe yarıyor; bu sefer dosyayı **satır satır** geziyoruz.
-
-`"../anahtar.txt"`: `..` **bir üst klasör** demek. Komutu konu klasöründen verdiğimiz için
-bu yol `gita3111/anahtar.txt`'yi gösterir; bütün konular aynı anahtar dosyasını kullanır.
-
------
-
-## Okuduğumuzu kullanalım
-
-```python
-anahtarlar = anahtarlari_oku()
+anahtarlar = {}
+with open("../anahtar.txt", encoding="utf-8") as dosya:  # ".." = bir üst klasör
+    for satir in dosya:
+        ad, _, deger = satir.partition("=")  # "=" işaretinden ikiye böl
+        anahtarlar[ad.strip()] = deger.strip()
 
 hesap = anahtarlar["ACCOUNT_ID"]
 anahtar = anahtarlar["API_TOKEN"]
 
-print("Account ID okundu mu:", "evet" if hesap else "hayır")
-print("Token'ın ilk 6 karakteri:", anahtar[:6] + "...")
+print("Hesap:", hesap)
+print("Anahtar okundu.")
 ```
 
+-----
+
+## Adım 1 — satır satır ne oldu?
+
+| Aşama | Değer |
+|---|---|
+| Dosyadaki satır | `'API_TOKEN = xyz789\n'` |
+| `partition("=")` sonrası | `('API_TOKEN ', '=', ' xyz789\n')` |
+| `ad.strip()` | `'API_TOKEN'` |
+| `deger.strip()` | `'xyz789'` |
+
 - `anahtarlar` bir **sözlük** — Konu 1'in konusu
-- Anahtarı **asla tam olarak** ekrana basma; sadece okunduğunu doğrula
+- `"../anahtar.txt"`: `..` **bir üst klasör**; bütün konular aynı dosyayı kullanır
+- Anahtarı **ekrana basmıyoruz**; sadece okunduğunu söylüyoruz
 
 -----
 
@@ -143,7 +140,6 @@ print("Token'ın ilk 6 karakteri:", anahtar[:6] + "...")
 
 ```python
 MODEL = "@cf/google/gemma-4-26b-a4b-it"
-
 adres = f"https://api.cloudflare.com/client/v4/accounts/{hesap}/ai/run/{MODEL}"
 basliklar = {"Authorization": f"Bearer {anahtar}"}
 govde = {"prompt": "Müşterilerinin sessiz bir çalışma yeri olarak anlattığı bir kafe için üç kısa slogan yaz."}
@@ -167,81 +163,87 @@ govde = {"prompt": "Müşterilerinin sessiz bir çalışma yeri olarak anlattı�
 
 ## Adım 2 — İsteği gönder
 
+Dosyanın en üstüne iki kütüphane:
+
 ```python
+import json
+
 import requests
+```
 
+En alta istek:
+
+```python
 cevap = requests.post(adres, headers=basliklar, json=govde, timeout=60)
-
 print("Durum kodu:", cevap.status_code)
-
-yanit = cevap.json()
 ```
 
 - `post` demek "sana bir şey gönderiyorum, karşılığında cevap bekliyorum"
-- `timeout=60` → "60 saniyede cevap gelmezse vazgeç". Bu olmazsa program sonsuza
-  kadar bekleyebilir
-- `status_code` işlerin yolunda gidip gitmediğini söyleyen sayı
-- `cevap` henüz bir **yanıt nesnesi**; içindeki veriye ulaşmak için `.json()`
-  diyoruz ve elimize tanıdık bir **sözlük** geçiyor
+- `timeout=60` → "60 saniyede cevap gelmezse vazgeç"
+- `status_code` işlerin yolunda gidip gitmediğini söyleyen sayı; `200` = yolunda
 
 -----
 
 ## Gelen cevap: JSON
 
 ```python
-import json
-
+yanit = cevap.json()
 print(json.dumps(yanit, ensure_ascii=False, indent=2))
 ```
 
-- `json.dumps` sözlüğü okunabilir metne çevirir — ekrana basmak için
-- `ensure_ascii=False` → Türkçe harfler bozulmadan görünsün
-- `indent=2` → iç içe yapı girintili yazılsın, gözle takip edilebilsin
+- `cevap.json()` gelen içeriği tanıdık bir **sözlüğe** çevirir
+- `json.dumps` sözlüğü okunabilir metne çevirir; `indent=2` girintili yazar
 
-Ekranda gördüğün şey:
+Gelen yanıtın biçimi (`veri/ornek_yanit.json`, kayıtlı bir yanıt):
 
 ```json
 {
   "result": {
-    "response": "1) Sessizliğin adresi. 2) Kahven, prizin, zamanın. ...",
+    "response": "1) Sessizliğin adresi. 2) Kahven, prizin, zamanın. 3) Burada odaklanırsın.",
     "usage": {"prompt_tokens": 24, "completion_tokens": 22, "total_tokens": 46}
   },
   "success": true,
-  "errors": []
+  "errors": [],
+  "messages": []
 }
 ```
 
-JSON = sözlüğün ağ üzerinde yazılmış hâli. Yani tanıdık bir şey.
+-----
+
+## Adım 3 — Yanıtın içine bak
+
+Kayıtlı bir yanıtla çalışıyoruz — **anahtarsız da çalışır**:
+
+```python
+with open("veri/ornek_yanit.json", encoding="utf-8") as dosya:
+    yanit = json.load(dosya)
+
+print(list(yanit.keys()))
+print(list(yanit["result"].keys()))
+```
+
+```text
+['result', 'success', 'errors', 'messages']
+['response', 'usage']
+```
+
+**Kural:** Yanıtın yapısını bilmiyorsan önce katlarını sor, sonra içine gir.
 
 -----
 
-## Adım 3 — Metni içinden çek
+## Adım 3 — Metni ve belirteci çek
 
 ```python
 metin = yanit["result"]["response"]
-
 print(metin)
-```
 
-- İki kat içeri giriyoruz: önce `result`, sonra `response`
-- `yanit["response"]` yazarsan **KeyError** alırsın — bu konunun en sık hatası
-- `errors` bir **liste**: `yanit["errors"][0]["message"]`
-
-**Kural:** Yanıtın yapısını bilmiyorsan önce ham hâlini bas, sonra içine gir.
-
------
-
-## Kaç belirteç harcadık?
-
-```python
 kullanim = yanit["result"]["usage"]
-
 print("Harcanan belirteç:", kullanim["total_tokens"])
 ```
 
-- Üç kat içeride: `result` → `usage` → `total_tokens`
+- İki kat içeri: önce `result`, sonra `response`
+- `yanit["response"]` yazarsan **KeyError** — bu konunun en sık hatası
 - Belirteç (token) kelime değil, kelime parçası — Konu 5'te açacağız
-- Ücretsiz kotan günde 10.000 "neuron" ile ölçülür; belirteç sayısı bunun kaba göstergesi
 
 -----
 
@@ -255,27 +257,26 @@ print("Harcanan belirteç:", kullanim["total_tokens"])
 | **429** | Kota doldu | Kota her gün 00:00 UTC'de sıfırlanır |
 | **500** | Sunucu hatası | Senin kodunda sorun yok, tekrar dene |
 
-Birazdan kasten yanlış anahtar gönderip **401'i canlı göreceğiz.**
+İlk hane kime bakacağını söyler: **4xx senin tarafın**, **5xx sunucunun.**
 
 -----
 
-## Hatayı kodla karşılamak
+## Adım 4 — Kasten yanlış anahtar
 
 ```python
-def durum_acikla(kod):
-    aciklama = {
-        200: "Her şey yolunda.",
-        401: "Yetki yok. Anahtarı kontrol et.",
-        429: "Kota doldu. Yarın sıfırlanır.",
-        500: "Sunucu hatası. Tekrar dene.",
-    }
-    return aciklama.get(kod, "Tanımadığım bir kod.")
+sahte_basliklar = {"Authorization": "Bearer bu-anahtar-sahte"}
 
+cevap = requests.post(adres, headers=sahte_basliklar, json={"prompt": "merhaba"}, timeout=60)
 
-print(durum_acikla(cevap.status_code))
+if cevap.status_code == 200:
+    print(cevap.json()["result"]["response"])
+else:
+    print("İstek başarısız:", cevap.status_code)
+    print(cevap.text)
 ```
 
-`.get(kod, "...")` — Konu 1'deki sayacın kalıbının aynısı: varsa değeri, yoksa yedek.
+**Yanıtı okuma sırası:** önce durum kodu, 200 ise içine gir.
+`cevap.text` sunucunun gönderdiği ham metin — hatanın açıklaması orada.
 
 -----
 
@@ -296,36 +297,17 @@ Kodunda yazım hatası yok — **istek başarısız olmuş.** Sebep bir önceki 
 
 -----
 
-## Yanıtı okuma sırası
+## Adım 5 — Soruyu fonksiyona koyalım
 
 ```python
-if cevap.status_code == 200:
-    metin = cevap.json()["result"]["response"]
-    print(metin)
-else:
-    print("İstek başarısız:", cevap.status_code)
-    print(cevap.text[:300])
-```
-
-**1.** Önce durum kodu. **2.** 200 ise içine gir.
-
-Kodun ilk hanesi kime bakacağını söyler: **4xx senin tarafın**, **5xx sunucunun.**
-
------
-
-## Adım 4 — Soruyu fonksiyona koyalım
-
-```python
-def modele_sor(soru, hesap, anahtar):
-    adres = f"https://api.cloudflare.com/client/v4/accounts/{hesap}/ai/run/{MODEL}"
-    basliklar = {"Authorization": f"Bearer {anahtar}"}
+def modele_sor(soru):
     cevap = requests.post(adres, headers=basliklar, json={"prompt": soru}, timeout=60)
-    if cevap.status_code != 200:
-        return f"[HATA {cevap.status_code}]"
     return cevap.json()["result"]["response"]
 ```
 
-Dağınık duran adımları tek isim altında topladık. Artık tek satırla soru sorabiliriz.
+- Gönder ve metni çek: iki adım tek isim altında
+- `adres` ve `basliklar` yukarıda bir kez hazırlandı; fonksiyon onları kullanıyor
+- Artık tek satırla soru sorabiliriz: `modele_sor("...")`
 
 -----
 
@@ -333,8 +315,7 @@ Dağınık duran adımları tek isim altında topladık. Artık tek satırla sor
 
 ```python
 soru = input("Modele ne sormak istiyorsun? ")
-metin = modele_sor(soru, hesap, anahtar)
-
+metin = modele_sor(soru)
 print(metin)
 
 with open("cevap.txt", "w", encoding="utf-8") as dosya:
@@ -352,14 +333,13 @@ with open("cevap.txt", "w", encoding="utf-8") as dosya:
 ```python
 sorular = []
 with open("veri/ornek_sorular.txt", encoding="utf-8") as dosya:
-    for satir in dosya:                    # her satır bir soru
-        if satir.strip():                  # boş satırları atla
-            sorular.append(satir.strip())
+    for satir in dosya:  # her satır bir soru
+        sorular.append(satir.strip())
 
 kayitlar = []
 for soru in sorular:
-    metin = modele_sor(soru, hesap, anahtar)
-    kayitlar.append({"soru": soru, "cevap": metin})
+    print(soru)
+    kayitlar.append({"soru": soru, "cevap": modele_sor(soru)})
 
 with open("cevaplar.json", "w", encoding="utf-8") as dosya:
     json.dump(kayitlar, dosya, ensure_ascii=False, indent=2)
@@ -371,14 +351,14 @@ Kodun asıl gücü burada başlıyor: aynı işi elli kez yapmak — arayüzde y
 
 ## Ne kaydettik?
 
-`cevaplar.json` dosyasının içi:
+`cevaplar.json` dosyasının biçimi:
 
 ```json
 [
   {"soru": "Müşterilerinin sessiz bir çalışma yeri ... üç kısa slogan yaz.",
-   "cevap": "1) Sessizliğin adresi. 2) Kahven, prizin, zamanın. ..."},
+   "cevap": "..."},
   {"soru": "Sessiz bir çalışma kafesinin logosu için hangi üç rengi önerirsin, neden?",
-   "cevap": "Koyu yeşil, kırık beyaz, meşe tonu: ..."}
+   "cevap": "..."}
 ]
 ```
 
@@ -398,65 +378,59 @@ Aynı istek, iki biçim:
 | **bağlamlı** | Müşterilerinin sessiz bir çalışma yeri olarak anlattığı bir kafe için üç kısa slogan yaz. |
 
 Her birini **üç kez** soruyoruz (model her seferinde başka cümle kurar),
-sonra cevaplarda kahve klişelerini sayıyoruz.
+sonra cevaplarda kahve kelimelerini ve çalışma yeri kelimelerini sayıyoruz.
 
 -----
 
 ## Bağlamı ölçmek
 
 ```python
-KLISE = ["kahve", "fincan", "çekirdek", "aroma"]
+KELIMELER = ["kahve", "fincan", "aroma", "köpü", "yudum", "sessiz", "odak", "çalış", "priz", "sakin"]
 
-def klise_say(cevaplar):
-    toplam = 0
-    for cevap in cevaplar:
-        for kelime in KLISE:
-            toplam = toplam + cevap.lower().count(kelime)
-    return toplam
+baglamsiz = ""
+baglamli = ""
+for _ in range(3):  # model her seferinde başka cümle kurar; üçer kez soruyoruz
+    baglamsiz = baglamsiz + modele_sor("Bir kafe için üç kısa slogan yaz.") + "\n"
+    baglamli = baglamli + modele_sor("Müşterilerinin sessiz bir çalışma yeri olarak anlattığı bir kafe için üç kısa slogan yaz.") + "\n"
 
-baglamsiz = []
-baglamli = []
-for _ in range(3):
-    baglamsiz.append(modele_sor("Bir kafe için üç kısa slogan yaz.", hesap, anahtar))
-    baglamli.append(modele_sor("Müşterilerinin sessiz bir çalışma yeri olarak anlattığı bir kafe için üç kısa slogan yaz.", hesap, anahtar))
+print(baglamsiz)
+print(baglamli)
 
-print("Klişe — bağlamsız:", klise_say(baglamsiz), "/ bağlamlı:", klise_say(baglamli))
+for kelime in KELIMELER:
+    print(kelime, baglamsiz.lower().count(kelime), baglamli.lower().count(kelime))
 ```
 
-Tam hâli: `09_baglam_farki.py` (çalışma yeri kelimelerini de sayıyor).
+Her satır: kelime, bağlamsız cevaplarda kaç kez, bağlamlı cevaplarda kaç kez.
 
 -----
 
 ## Bulgu: soru yazmak da tasarım
 
-Demo modundaki kayıtlı örnek cevaplarla:
+Kendi sayılarına bak:
 
-| | kahve klişesi | çalışma yeri |
-|---|---|---|
-| bağlamsız | 11 | 0 |
-| bağlamlı | 1 | 12 |
+- Bağlamsız cevaplarda hangi kelimeler çok: `kahve`, `fincan`, `aroma` mı?
+- Bağlamlı cevaplarda `sessiz`, `odak`, `priz` geçiyor mu?
+- Sayım yön gösterir; kararı **cevapları okuyarak** verirsin
 
-- Bulguyu söylemezsen model **ortalama bir kafeyi** anlatıyor
-- Konu 1'de veriden bulduğumuz şey ancak soruya yazınca cevaba giriyor
-- Model senin kafeni tanımıyor; soruyu yazmak bir **brief** yazmak gibi
-
-Kendi anahtarınla dene: aynı örüntü çıkıyor mu?
+Model senin kafeni tanımıyor; ona ne söylersen onu biliyor.
+Konu 1'de veriden bulduğumuz şey ancak soruya yazınca cevaba girer.
+Soruyu yazmak bir **brief** yazmak gibi.
 
 -----
 
-## Programın tamamı — yedi adım
+## Adımlar ve dosyalar
 
 | Adım | Ne yaptık | Elimizde ne oluştu |
 |---|---|---|
 | 1 | Anahtarı okuduk | `hesap`, `anahtar` |
 | 2 | İsteği kurup gönderdik | `adres`, `basliklar`, `govde` → `yanit` |
 | 3 | İçinden metni çektik | `metin` |
-| 4 | Fonksiyona sardık | `modele_sor()` |
-| 5 | Soru alıp dosyaya yazdık | `cevap.txt` |
+| 4 | Hata kodunu okuduk | `if cevap.status_code == 200` |
+| 5 | Fonksiyona sardık, dosyaya yazdık | `modele_sor()`, `cevap.txt` |
 | 6 | Döngüye soktuk | `cevaplar.json` |
-| 7 | Bağlamın etkisini ölçtük | klişe sayımı |
+| 7 | Bağlamın etkisini ölçtük | kelime sayımı |
 
-Her adım bir öncekinin çıktısını kullandı.
+Her dosya bir öncekinin üstüne kuruluyor.
 
 -----
 
@@ -464,10 +438,10 @@ Her adım bir öncekinin çıktısını kullandı.
 
 | Mesaj | Anlamı |
 |---|---|
+| `FileNotFoundError: ... '../anahtar.txt'` | Anahtar dosyası yok ya da yanlış yerde |
 | `KeyError: 'response'` | Bir kat atladın: `["result"]["response"]` |
 | `TypeError: list indices must be integers...` | `errors` listesini adla açtın: `[0]` |
 | `TypeError: 'NoneType' object is not subscriptable` | İstek başarısız; önce durum kodu |
-| `FileNotFoundError: ... '...'` | Komutu konu klasörünün (`02-api-ile-konusmak`) dışından verdin |
 | `requests.exceptions.ConnectionError` | İnternet yok; istek hiç gitmedi |
 
 Hata mesajını **sondan** oku: en alt satır hatanın türü ve açıklaması.
@@ -493,7 +467,7 @@ Doğru cevap yok — herkesin etiketi farklı olacak, mesele de bu.
 **1. Bir istek üç şeyden oluşur:** nereye, kim olduğun, ne istediğin.
 
 **2. Gelen cevap düz metin değil**, içine girilecek bir sözlüktür. Bilmiyorsan
-önce ham hâlini bas.
+önce katlarını sor.
 
 **3. Anahtar koda yazılmaz.** Ayrı dosyada durur, teslime konmaz, ekranda
 gösterilmez.

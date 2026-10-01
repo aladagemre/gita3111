@@ -8,9 +8,11 @@
 
 `06_coklu_soru.py` dosyasını `ornekler` klasöründe yeni bir adla kopyala (örneğin
 `odev2_sorularim.py`) ve **kendi beş sorunla** çalıştır. Sorularını da
-`veri/ornek_sorular.txt` dosyasının yeni adlı bir kopyasına yaz; kopyadaki
-`SORULAR_DOSYASI` satırını o dosyaya çevir. Depodaki dosyaları değiştirmezsen
+`veri/ornek_sorular.txt` dosyasının yeni adlı bir kopyasına yaz (boş satır bırakma);
+kopya programdaki `open("veri/ornek_sorular.txt", ...)` satırının yolunu o dosyaya çevir. Depodaki dosyaları değiştirmezsen
 `git pull` çakışmaz.
+
+Bu parça kendi `anahtar.txt` dosyanı ister (kurulum yönergesinin 6. adımı).
 
 Sorular senin ilgi alanından olsun: tasarım, müzik, oyun, yemek — fark etmez.
 Tek kural: hepsi aynı konudan olsun ki cevapları karşılaştırabilelim.

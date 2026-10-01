@@ -7,7 +7,7 @@ gönderip cevabını alacaksın. Konu 1'in bulgusundan (müşteriler kafeyi sess
 | Klasör / dosya | Ne işe yarıyor |
 |---|---|
 | `ornekler/` | Derste birlikte yazacağımız dosyalar (00-09) |
-| `veri/` | Örnek sorular, kayıtlı yanıtlar (demo modu için), renk listesi |
+| `veri/` | Örnek sorular, kayıtlı bir yanıt (Adım 3 için), renk listesi |
 | `alistirma/` | Derste kendi başına dolduracağın alıştırma |
 | `odevler/odev2.md` | Bu konunun ödevi — iki parça |
 | `ders_notu.md` | Konu notu — adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
@@ -21,7 +21,7 @@ dosyasında), sonra çalıştır:
 ```
 cd 02-api-ile-konusmak
 uv sync
-uv run ornekler/02_ilk_istek.py
+uv run ornekler/01_anahtar_oku.py
 ```
 
 `uv sync`'i atlarsan ilk `uv run` kütüphaneleri kendisi indirir; sadece biraz bekletir.
@@ -38,21 +38,26 @@ kopyala**, kopyada çalış; böylece `git pull` hiç çakışmaz.
 
 ## Anahtarın yoksa ne olacak?
 
-Örneklerin çoğu **DEMO modunda** çalışır: `anahtar.txt` yoksa kayıtlı bir yanıtla
-aynı şeyi gösterirler. Yani derse yetişebilirsin. Ama ödev için kendi anahtarın
-gerekiyor — kurulum yönergesinin 6. adımını bugün bitir.
+Örneklerin çoğu gerçek istek atar ve önce `anahtar.txt`'yi okur; dosya yoksa
+`FileNotFoundError: ... '../anahtar.txt'` hatasıyla durur. Anahtarın henüz yoksa:
+
+- Derste **yanındakiyle birlikte** çalış: istekleri onun ekranında izle, kodu sen de yaz.
+- `00_isinma.py`, `03_yaniti_coz.py`, `07_bozuk_kodlar.py` ve sınıf alıştırması
+  anahtarsız çalışır.
+- Kurulum yönergesinin 6. adımını (Cloudflare hesabı, `../00-hazirlik/kurulum-yonergesi.md`)
+  **bugün** bitir. Ödev için kendi anahtarın gerekiyor.
 
 ## Dosyalar
 
 | Dosya | Ne zaman |
 |---|---|
-| `00_isinma.py` | Ders başında, iç içe sözlük provası |
-| `01_anahtar_oku.py` | Anahtarı dosyadan okumak |
-| `02_ilk_istek.py` | İlk istek, ham yanıt |
-| `03_yaniti_coz.py` | Yanıtın içinden metni çekmek |
-| `04_hata_kodlari.py` | 401, 429, 500 ne demek |
-| `05_soru_sor.py` | Konunun hedef çıktısı |
-| `06_coklu_soru.py` | Döngüyle beş soru, JSON kaydı |
-| `07_bozuk_kodlar.py` | Alıştırma: beş bozuk kod |
+| `00_isinma.py` | Ders başında, iç içe sözlük provası (iki bozuk satır) |
+| `01_anahtar_oku.py` | Adım 1: anahtarı dosyadan okumak |
+| `02_ilk_istek.py` | Adım 2: ilk istek, ham yanıt |
+| `03_yaniti_coz.py` | Adım 3: yanıtın içinden metni çekmek (anahtarsız çalışır) |
+| `04_hata_kodlari.py` | Adım 4: kasten yanlış anahtar, durum kodu |
+| `05_soru_sor.py` | Adım 5: konunun hedef çıktısı (`cevap.txt`) |
+| `06_coklu_soru.py` | Adım 6: döngüyle beş soru, `cevaplar.json` |
+| `07_bozuk_kodlar.py` | Alıştırma: beş bozuk parça (yeni bir adla kopyala, kopyada düzelt) |
 | `08_cevap_raporu.py` | Bonus: cevaplardan kelime bulutu |
 | `09_baglam_farki.py` | Adım 7: soruya bağlam yazmak cevabı nasıl değiştiriyor |

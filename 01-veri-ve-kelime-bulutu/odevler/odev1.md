@@ -28,12 +28,12 @@ En az 300 kelime olsun, yoksa bulut boş görünür.
 
 Metnini bir `.txt` dosyası olarak `veri` klasörüne kaydet. `ornekler/05_kelime_bulutu.py`
 dosyasını aynı klasörde yeni bir adla kopyala (örneğin `odev1_bulut.py`); depodaki
-dosyayı değiştirmezsen `git pull` çakışmaz. Kopyada `DOSYA` satırını kendi metninin
-yoluna çevir (örneğin `"veri/benim-metnim.txt"`), konunun klasöründen çalıştır:
+dosyayı değiştirmezsen `git pull` çakışmaz. Kopyada `"veri/kafe-yorumlari.txt"` yolunu
+kendi metninin yoluna çevir (örneğin `"veri/benim-metnim.txt"`), konunun klasöründen çalıştır:
 `uv run ornekler/odev1_bulut.py`.
 
 Elemesiz sürümü almak için durak kelime listesini boşalt:
-`durak_kelimeler = set()` yazman yeterli.
+`durak_kelimeler = set(dosya.read().split())` satırını `durak_kelimeler = set()` yap.
 
 ## Takılırsan
 

@@ -43,13 +43,13 @@ kopyala**, kopyada çalış; böylece `git pull` hiç çakışmaz.
 | Dosya | Ne zaman |
 |---|---|
 | `00_isinma.py` | Ders başında, CSV satırını sözlüğe çevirme |
-| `01_veriyi_oku.py` | Sınıfın verisine bakmak: dağılım, anlaşmazlık, tavan |
-| `02_ozellik_etiket.py` | Rengi sayıya çevirmek |
-| `03_egitim_test.py` | Veriyi ikiye bölmek |
-| `04_model_egit.py` | Modeli eğitmek ve ölçmek |
-| `05_yanilgilari_gor.py` | Modelin yanıldığı renkler |
-| `06_veri_miktari.py` | Veri arttıkça doğruluk nasıl değişiyor |
-| `07_bozuk_kodlar.py` | Alıştırma: beş bozuk kod |
+| `01_veriyi_oku.py` | Adım 1: sınıfın verisi, renk renk anlaşmazlık ve tavan |
+| `02_ozellik_etiket.py` | Adım 2: rengi sayıya çevirmek (X ve y) |
+| `03_egitim_test.py` | Adım 3: veriyi ikiye bölmek |
+| `04_model_egit.py` | Adım 4: modeli eğitmek, kör tahminle kıyaslamak |
+| `05_yanilgilari_gor.py` | Adım 5: modelin yanıldığı renkler (`yanilgilar.png`) |
+| `06_veri_miktari.py` | Adım 6: veri arttıkça doğruluk (`veri-miktari.png`) |
+| `07_bozuk_kodlar.py` | Alıştırma: beş bozuk parça, hepsi sessizce yanlış sonuç yazıyor |
 | `08_kendi_rengin.py` | Bonus: kendi renklerini tahmin ettir |
-| `09_modeli_yokla.py` | Adım 7: model ne öğrendi? Yeni renkler ve kafe paleti |
+| `09_modeli_yokla.py` | Adım 7: model ne öğrendi? Kafe paletini sormak |
 | `10_gorulmemis_renkler.py` | Adım 8: hiç görmediği renklerde dürüst sınav |

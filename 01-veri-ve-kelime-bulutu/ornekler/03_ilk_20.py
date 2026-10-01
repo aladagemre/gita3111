@@ -1,45 +1,21 @@
-"""3. adım — En sık geçen kelimeler.
+# Adım 4 — En sık geçen 20 kelime
+# Çalıştır: uv run ornekler/03_ilk_20.py
 
-Çalıştırma (önce konunun klasörüne gir: cd 01-veri-ve-kelime-bulutu):
-    uv run ornekler/03_ilk_20.py
-"""
+with open("veri/kafe-yorumlari.txt", encoding="utf-8") as dosya:
+    metin = dosya.read()
 
-DOSYA = "veri/kafe-yorumlari.txt"
-NOKTALAMA = ".,!?:;()[]\"'…-–—/"
+temiz = metin.replace("I", "ı").replace("İ", "i").lower()
+for isaret in ".,!?:;()[]\"'…-–—/":
+    temiz = temiz.replace(isaret, " ")
+kelimeler = temiz.split()
 
+sayac = {}
+for kelime in kelimeler:
+    if kelime in sayac:
+        sayac[kelime] = sayac[kelime] + 1
+    else:
+        sayac[kelime] = 1
 
-def turkce_kucult(metin):
-    return metin.replace("I", "ı").replace("İ", "i").lower()
-
-
-def temizle(metin):
-    for isaret in NOKTALAMA:
-        metin = metin.replace(isaret, " ")
-    return turkce_kucult(metin)
-
-
-def kelimeleri_say(kelimeler):
-    """Kelime listesinden {kelime: adet} sözlüğü üretir."""
-    sayac = {}
-    for kelime in kelimeler:
-        sayac[kelime] = sayac.get(kelime, 0) + 1
-    return sayac
-
-
-with open(DOSYA, encoding="utf-8") as dosya:
-    kelimeler = temizle(dosya.read()).split()
-
-sayac = kelimeleri_say(kelimeler)
-
-# Sıralama:
-#   sorted(sayac)                          -> anahtarları alfabetik sıralar
-#   sorted(sayac, key=sayac.get)           -> anahtarları DEĞERLERİNE göre sıralar
-#   reverse=True                           -> büyükten küçüğe
-#
-# key=sayac.get  satırında parantez YOK. Fonksiyonun kendisini veriyoruz;
-# sıralama her kelime için onu kendisi çağıracak.
-sirali = sorted(sayac, key=sayac.get, reverse=True)
-
-print("En sık geçen 20 kelime:\n")
+sirali = sorted(sayac, key=sayac.get, reverse=True)   # değere göre; parantez yok
 for kelime in sirali[:20]:
-    print(f"{sayac[kelime]:>3}  {kelime}")
+    print(sayac[kelime], kelime)

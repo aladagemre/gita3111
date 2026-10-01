@@ -6,10 +6,13 @@
 
 `06_veri_miktari.py` dosyasını çalıştır ve çıkan grafiğe bak.
 
-Sonra iki ölçüm yap:
+Sonra iki ölçüme bak:
 
-1. Modeli **eğitim verisinin yarısıyla** eğit, doğruluğu yaz
-2. Modeli **tamamıyla** eğit, doğruluğu yaz
+1. Modeli **eğitim verisinin yarısıyla** eğitince doğruluk kaç?
+2. Modeli **tamamıyla** eğitince doğruluk kaç?
+
+İkisi de dosyanın çıktısında var: ilk liste eğitim örneği sayıları, ikinci liste
+doğruluklar. Yarısı üçüncü sırada (%50), tamamı en sonda (%100).
 
 Kodu değiştireceksen önce dosyayı `ornekler` klasöründe yeni bir adla kopyala, kopyada
 değiştir; depodaki dosyaya dokunmazsan `git pull` çakışmaz. Komutları konunun

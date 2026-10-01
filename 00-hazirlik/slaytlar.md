@@ -47,6 +47,10 @@ serbest, nerede yasak, baştan net olsun:
 
 Kullandığın her yerde üretim günlüğüne yazacaksın.
 
+**Güvenlik kuralı:** yapay zeka aracının terminal komutlarını **onaysız çalıştırmasını
+kapat.** Her komutu okuyup sen onayla. Araç `anahtar.txt` dosyanı okuyup bir yere
+gönderebilir; bunu durduran şey senin onayın.
+
 -----
 
 ## Bu dersten sonra: kurulum

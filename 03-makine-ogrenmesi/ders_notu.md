@@ -1,9 +1,10 @@
 # Konu 3 — Makine Öğrenmesi Nedir? (matematiksiz)
 
 Bu not konunun özetidir; ısınmadan sonra slaytlarla **aynı sırada** ilerler. Derste
-kaçırdığın bir yer olursa buradan oku, sonra ilgili örnek dosyayı çalıştır. Notun
-içindeki kod parçaları birbirinin devamıdır: hepsini sırayla tek bir dosyaya
-yapıştırırsan baştan sona çalışan bir program elde edersin.
+kaçırdığın bir yer olursa buradan oku, sonra ilgili örnek dosyayı çalıştır. Her adım
+bir dosya ve her dosya kendi başına çalışır: bir önceki adımın dosyasını kopyalayıp
+birkaç satır eklersin. Nottaki kod parçaları o dosyalardan birebir alındı; dosyanın
+başı bir önceki adımla aynıysa notta yalnızca yeni kısmı görürsün.
 
 **Konu 2'de:** hazır bir modele soru sorduk; model kutunun içindeydi.
 **Bu konuda:** kutuyu açıyoruz ve kendi modelimizi eğitiyoruz. Veri: sınıfın Konu 2
@@ -35,22 +36,25 @@ farklı; ikisi aynı kütüphane.
 
 ## Isınma: CSV satırını sözlüğe çevirmek
 
-Bu konuda tablo hâlinde veriyle çalışıyoruz. `00_isinma.py` iki küçük tamir içeriyor:
+Bu konuda tablo hâlinde veriyle çalışıyoruz. `00_isinma.py` iki küçük tamir içeriyor;
+ikisi de hata mesajı vermeden **yanlış sonuç** yazıyor. Her tamirin üstünde doğru
+çıktı yazılı; kendi çıktınla karşılaştır.
 
 1. **Satırı sözlüğe çevir.** CSV'nin ilk satırındaki sütun adları anahtar olur,
    satırdaki değerler değer olur:
-   `["#E63946", "kırmızı", "enerjik"]` → `{"hex": "#E63946", "ad": "kırmızı", "etiket": "enerjik"}`.
-2. **Etiketleri say.** Konu 1'in sayacı; ama sayılan şey kaydın kendisi değil,
-   `kayit["etiket"]`.
+   `["#E63946", "kırmızı", "enerjik"]` → `{'hex': '#E63946', 'ad': 'kırmızı', 'etiket': 'enerjik'}`.
+   Bozuk hâli `{'#E63946': 'hex', ...}` yazıyor: anahtarla değer yer değiştirmiş.
+2. **Etiketleri say.** Konu 1'in sayacı; ama sayılması gereken şey `kayit["etiket"]`.
+   Bozuk hâli renk adlarını sayıyor: `{'kırmızı': 1, 'orta mavi': 1, 'şeftali': 1}`.
 
-İkinci tamirdeki hatayı düzeltmeden çalıştırırsan Python şunu söyler:
+Kaydın tamamını saymaya kalkarsan (`sayac[kayit]`) Python bu kez hata verir:
 
 ```text
 TypeError: unhashable type: 'dict'
 ```
 
-Okuması: "sözlük (dict) başka bir sözlüğün anahtarı olamaz." Sayaca kaydın tamamını
-koymaya çalışıyorsun; oysa saymak istediğin şey kaydın içindeki etiket.
+Okuması: "sözlük (dict) başka bir sözlüğün anahtarı olamaz." Saymak istediğin şey
+kaydın kendisi değil, içindeki bir alan.
 
 ---
 
@@ -84,92 +88,72 @@ yazmıyorsun, **örnek veriyorsun** ve kuralı modelin bulmasını istiyorsun.
 
 ## Adım 1 — Sınıfın verisine bak
 
+Dosya: `01_veriyi_oku.py`
+
 ```python
 import csv
 
-VERI = "veri/renkler-etiketli.csv"
-
-with open(VERI, encoding="utf-8") as dosya:
+with open("veri/renkler-etiketli.csv", encoding="utf-8") as dosya:
     kayitlar = list(csv.DictReader(dosya))
 
-print("Toplam satır:", len(kayitlar))
-print("İlk kayıt   :", kayitlar[0])
+print(len(kayitlar))
+print(kayitlar[0])
 ```
 
 `csv.DictReader` her satırı bir **sözlüğe** çevirir (ısınmada elle yaptığımız iş).
-Dosyada dört sütun var: `hex`, `ad`, `ogrenci`, `etiket`. Yani her kayıt tanıdık bir
-sözlük: `kayit["hex"]`, `kayit["etiket"]`. Her satır **bir öğrencinin bir renge
-verdiği etiket**. 12 öğrenci × 20 renk = 240 satır. Aynı renk dosyada 12 kez geçiyor,
-her seferinde başka bir öğrencinin gözünden.
+`list(...)` bu satırları bir listede toplar. Dosyada dört sütun var: `hex`, `ad`,
+`ogrenci`, `etiket`. Yani her kayıt tanıdık bir sözlük: `kayit["hex"]`,
+`kayit["etiket"]`. Her satır **bir öğrencinin bir renge verdiği etiket**. 12 öğrenci ×
+20 renk = 240 satır. Aynı renk dosyada 12 kez geçiyor, her seferinde başka bir
+öğrencinin gözünden.
 
 Bu yapıyı aklında tut; bu konunun en ilginç bulguları bu "12 kez" gerçeğinden çıkıyor.
 
-### Etiket dağılımı
+### Sınıf anlaşabilmiş mi?
+
+Her renk için "hangi etiket kaç kez verilmiş?" sorusunu soralım:
 
 ```python
-sayac = {}
+renkler = {}  # her renk için ayrı bir sayaç
 for kayit in kayitlar:
-    sayac[kayit["etiket"]] = sayac.get(kayit["etiket"], 0) + 1
+    ad = kayit["ad"]
+    if ad not in renkler:
+        renkler[ad] = {}
+    renkler[ad][kayit["etiket"]] = renkler[ad].get(kayit["etiket"], 0) + 1
 
-for etiket in sorted(sayac, key=sayac.get, reverse=True):
-    print(sayac[etiket], etiket)
+for ad in renkler:
+    print(ad, renkler[ad])
 ```
 
-Konu 1'in kelime sayacı; sadece kelime yerine etiket sayıyoruz. Yedek veride sonuç:
-100 enerjik, 78 sakin, 62 ciddi.
+Burada sözlüğün içinde sözlük var: `renkler["krem"]` kendi başına bir sayaç. Konu 1'deki
+sayacın aynısı, sadece her renk için ayrı bir tane. `if ad not in renkler:` satırı,
+bir rengi ilk kez gördüğümüzde ona boş bir sayaç açıyor.
 
-Neden bakıyoruz? Bir etiket ezici çoğunluktaysa (diyelim 240'ın 220'si "enerjik")
-model tembelleşir: hep onu der ve yine de çoğu zaman haklı çıkar. Böyle bir modelin
-"yüksek doğruluğu" hiçbir şey öğrenmediğini gizler. Bizim dağılım o kadar dengesiz
-değil, ama "enerjik" biraz önde. Bu bilgiye Adım 4'te "kör tahmin" hesaplarken
-ihtiyacımız olacak.
+Çıktının 20 satırından beşi:
 
-### Sınıf anlaşabilmiş mi?
+| Renk | Dağılım |
+|---|---|
+| krem | 5 enerjik, 5 sakin, 2 ciddi |
+| koyu yeşil | 6 ciddi, 4 sakin, 2 enerjik |
+| hardal | 7 enerjik, 3 sakin, 2 ciddi |
+| kırık beyaz | 11 sakin, 1 enerjik |
+| bordo | 11 enerjik, 1 ciddi |
 
 Yedek veride 20 rengin 20'sinde de aynı renge farklı etiketler verilmiş. Bu bir hata
 değil; gerçek veri böyledir, insanlar aynı şeye farklı etiket verir. Ama "anlaşamamak"
-her renkte aynı ölçüde değil. Her renk için "en çok verilen etiketi kaç kişi seçmiş?"
-sorusunu soralım:
-
-```python
-renk_sayaclari = {}
-for kayit in kayitlar:
-    ad = kayit["ad"]
-    if ad not in renk_sayaclari:
-        renk_sayaclari[ad] = {}
-    renk_sayaclari[ad][kayit["etiket"]] = renk_sayaclari[ad].get(kayit["etiket"], 0) + 1
-
-uzlasma = {}
-for ad in renk_sayaclari:
-    uzlasma[ad] = max(renk_sayaclari[ad].values())
-
-print("En çok tartışılan renkler:")
-for ad in sorted(uzlasma, key=uzlasma.get)[:3]:
-    print(f"  {ad:<12} {uzlasma[ad]}/12  {renk_sayaclari[ad]}")
-
-print("En çok anlaşılan renkler:")
-for ad in sorted(uzlasma, key=uzlasma.get, reverse=True)[:3]:
-    print(f"  {ad:<12} {uzlasma[ad]}/12  {renk_sayaclari[ad]}")
-```
-
-Burada sözlüğün içinde sözlük var: `renk_sayaclari["krem"]` kendi başına bir sayaç.
-Konu 1'deki sayacın aynısı, sadece her renk için ayrı bir tane.
-
-Yedek veride tablo şöyle:
-
-| Renk | En çok verilen etiket | Kaç kişi | Dağılım |
-|---|---|---|---|
-| krem | (berabere) | 5/12 | 5 enerjik, 5 sakin, 2 ciddi |
-| koyu yeşil | ciddi | 6/12 | 6 ciddi, 4 sakin, 2 enerjik |
-| hardal | enerjik | 7/12 | 7 enerjik, 3 sakin, 2 ciddi |
-| kırık beyaz | sakin | 11/12 | 11 sakin, 1 enerjik |
-| bordo | enerjik | 11/12 | 11 enerjik, 1 ciddi |
+her renkte aynı ölçüde değil.
 
 **Tasarım açısından okuması:** kırık beyaz ile krem ekranda neredeyse aynı renk.
 Ama sınıf kırık beyaza neredeyse oybirliğiyle "sakin" derken, krem tam ortadan
 ikiye bölünmüş. Aradaki tek fark kremdeki hafif sarılık. Demek ki küçük bir sıcaklık
 kayması, rengin hissettirdiği şeyi değiştirebiliyor; kafe paleti için bir "sakin
 beyaz" seçerken bu fark önemli. Bu iki rengi Adım 8'de tekrar göreceğiz.
+
+**Kendin dene:** Konu 1'in tek sayacıyla bütün etiketleri say
+(`sayac[kayit["etiket"]] = sayac.get(kayit["etiket"], 0) + 1`). Yedek veride sonuç:
+100 enerjik, 78 sakin, 62 ciddi. "Enerjik" biraz önde; bu bilgiye Adım 4'te "kör
+tahmin" hesaplarken ihtiyacımız olacak. Bir etiket ezici çoğunlukta olsaydı (diyelim
+240'ın 220'si) model tembelleşirdi: hep onu der ve yine de çoğu zaman haklı çıkardı.
 
 ### Anlaşmazlığın koyduğu tavan
 
@@ -179,38 +163,56 @@ verebilir. En iyi ihtimalle çoğunluğun cevabını verir ve azınlıktakilerin
 yanılır. O hâlde hiçbir model şundan iyi olamaz:
 
 ```python
-tavan = sum(uzlasma.values()) / len(kayitlar)
-print(f"Sadece renge bakan bir modelin çıkabileceği en yüksek doğruluk: {tavan:.2f}")
+tutan = 0  # model her renkte en iyi ihtimalle çoğunluğu bilir
+for ad in renkler:
+    tutan = tutan + max(renkler[ad].values())
+print("Tavan:", round(tutan / len(kayitlar), 2))
 ```
+
+`max(renkler[ad].values())` o renge en çok verilen etiketin kaç kez verildiği:
+kırık beyazda 11, kremde 5. Bunları toplayıp satır sayısına bölünce, sadece renge
+bakan en iyi modelin doğruluğunu buluruz. `round(..., 2)` sayıyı virgülden sonra iki
+basamağa yuvarlar.
 
 Yedek veride bu sayı **0.74**. Yani mükemmel bir model bile her dört cevaptan birini
 "yanlış" bilecek. Bu yanlışlar modelin kusuru değil; sınıfın kendi içindeki görüş
-ayrılığı. `sum(...)` bir listedeki ya da sözlük değerlerindeki sayıları toplar.
+ayrılığı.
 
 ## Adım 2 — Rengi sayıya çevir
 
+Dosya: `02_ozellik_etiket.py`
+
 Model "kırmızı" kelimesini anlamaz, sayı ister. Renk kodu (`#E63946`) üç sayının
-yan yana yazılmış hâlidir: kırmızı, yeşil, mavi miktarı (RGB).
+yan yana yazılmış hâlidir: kırmızı, yeşil, mavi miktarı (RGB). Dosyanın başı Adım 1
+ile aynı (`import csv` ve dosyayı okuyan iki satır); sonrası yeni:
 
 ```python
-def hex_to_rgb(hex_kod):
-    hex_kod = hex_kod.lstrip("#")          # "#E63946" → "E63946"
-    kirmizi = int(hex_kod[0:2], 16)        # "E6" → 230
-    yesil = int(hex_kod[2:4], 16)
-    mavi = int(hex_kod[4:6], 16)
-    return (kirmizi, yesil, mavi)
+X = []
+y = []
+for kayit in kayitlar:
+    kod = kayit["hex"]
+    X.append((int(kod[1:3], 16), int(kod[3:5], 16), int(kod[5:7], 16)))
+    y.append(kayit["etiket"])
 
-
-print(hex_to_rgb("#E63946"))   # (230, 57, 70)
+print(len(X), len(y))
+print(kayitlar[0]["hex"], X[0], y[0])
 ```
 
-- `.lstrip("#")` baştaki `#` işaretini siler.
-- `hex_kod[0:2]` Konu 1'in dilimlemesi: 0. karakterden başla, 2.'den önce dur, yani
-  ilk iki karakter. `[2:4]` sonraki iki, `[4:6]` son iki.
+Çıktı:
+
+```text
+240 240
+#E63946 (230, 57, 70) enerjik
+```
+
+- `kod[1:3]` Konu 1'in dilimlemesi: 1. karakterden başla, 3.'den önce dur. 0.
+  karakter `#` olduğu için onu atlıyoruz; `"#E63946"` → `"E6"`. `[3:5]` sonraki iki,
+  `[5:7]` son iki karakter.
 - `int("E6", 16)`: renk kodları onaltılık (16 tabanında) yazılır; `int` onu bildiğimiz
-  sayıya çevirir.
-- Sonuç `hex_to_rgb("#E63946")` → `(230, 57, 70)`. Parantez içindeki bu üçlüye
-  **demet** (tuple) denir: liste gibi sıralıdır ama değiştirilemez.
+  sayıya çevirir: 230.
+- `(230, 57, 70)` parantez içindeki bu üçlüye **demet** (tuple) denir: liste gibi
+  sıralıdır ama değiştirilemez. `X.append((...))` satırındaki çift parantez bu yüzden:
+  dıştaki `append`'in, içteki demetin.
 
 `16`'yı unutursan Python kodu onluk sayı sanar ve `E` harfinde takılır:
 
@@ -219,7 +221,8 @@ ValueError: invalid literal for int() with base 10: 'E6'
 ```
 
 Okuması: "`'E6'` metnini 10 tabanında (base 10) bir sayı olarak okuyamadım."
-Mesajın sonundaki `base 10` sana eksik olanı söylüyor.
+Mesajın sonundaki `base 10` sana eksik olanı söylüyor. Dilimi `[0:2]` diye yazarsan
+`#` da sayının içine girer: `invalid literal for int() with base 16: '#E'`.
 
 ### Üç sayıyı okumayı öğren
 
@@ -239,25 +242,10 @@ yakınsa renk grimsidir, biri öbürlerinden çok büyükse renk o yöne doygund
 
 ### Başta yazdığımız kural ne kadar iş görüyor?
 
-Artık kuralı gerçek veride sınayabiliriz:
+Artık kuralı gerçek veride sınayabiliriz: her kayıt için üç sayıyı hesapla, etiket
+"enerjik" ise ve `kirmizi > 200 and yesil < 100` şartı tutuyorsa say. Yedek veride
+sonuç: 100 "enerjik" etiketinden kural yalnızca **8**'ini yakalıyor.
 
-```python
-yakalanan = 0
-enerjik_sayisi = 0
-for kayit in kayitlar:
-    kirmizi, yesil, mavi = hex_to_rgb(kayit["hex"])
-    if kayit["etiket"] == "enerjik":
-        enerjik_sayisi = enerjik_sayisi + 1
-        if kirmizi > 200 and yesil < 100:
-            yakalanan = yakalanan + 1
-
-print(f"Sınıfın {enerjik_sayisi} 'enerjik' etiketinden kuralın yakaladığı: {yakalanan}")
-```
-
-`kirmizi, yesil, mavi = hex_to_rgb(...)`: fonksiyon üç sayı döndürüyor, Python da
-sırayla üç değişkene dağıtıyor.
-
-Yedek veride sonuç: 100 "enerjik" etiketinden kural yalnızca **8**'ini yakalıyor.
 Kural 20 renkten sadece birini (kırmızıyı) tanıyor. Bordo, şeftali, somon, tarçın ve
 bal da sınıfın çoğunluğuna göre enerjik; ama hiçbiri "kırmızı 200'den büyük, yeşil
 100'den küçük" şartına uymuyor. Sınıfın "enerjik" kavramı, kuralı yazan kişininkinden
@@ -267,15 +255,7 @@ kendisi taşıyor.
 
 ## Öznitelik ve etiket: X ve y
 
-```python
-X = []
-y = []
-for kayit in kayitlar:
-    X.append(hex_to_rgb(kayit["hex"]))
-    y.append(kayit["etiket"])
-
-print(X[0], "->", y[0])
-```
+Adım 2'nin döngüsü iki liste dolduruyor:
 
 - **X** (öznitelikler): modelin **baktığı** şey; burada üç sayı.
 - **y** (etiket): modelin **tahmin etmesi gereken** şey; burada "enerjik", "sakin", "ciddi".
@@ -307,9 +287,11 @@ atlamadın. İki durum var:
 - **Uzunluklar aynı ama sıra kaymışsa** hiçbir hata mesajı almazsın. Model lacivertin
   cevabı olarak şeftalinin etiketini öğrenir ve sessizce saçma sonuçlar üretir. Bunu
   önlemenin yolu basit: X ve y'yi **aynı döngüde, aynı kayıttan** doldur.
-  `07_bozuk_kodlar.py`'nin 2. sorusu tam bu hata.
+  `07_bozuk_kodlar.py`'nin 2. parçası tam bu hata.
 
 ## Adım 3 — Veriyi ikiye böl: eğitim ve test
+
+Dosya: `03_egitim_test.py`
 
 Modeli 240 örnekle eğitip yine aynı 240 örnekle sınarsak ne ölçmüş oluruz? **Ezberi.**
 Sınavda çıkmış soruyla sınav yapmak gibi: öğrenip öğrenmediğini anlamak için
@@ -318,16 +300,21 @@ Sınavda çıkmış soruyla sınav yapmak gibi: öğrenip öğrenmediğini anlam
 - **Eğitim verisi:** model bunlara bakarak öğrenir.
 - **Test verisi:** model bunları hiç görmez; ölçüm burada yapılır.
 
-```python
-from sklearn.model_selection import train_test_split
+`02`'yi kopyala; en üste bir `import` ekle, en alttaki iki `print` yerine bölmeyi yaz:
 
+```python
+import csv
+from sklearn.model_selection import train_test_split
+```
+
+```python
 X_egitim, X_test, y_egitim, y_test = train_test_split(
     X, y, test_size=0.25, random_state=42
 )
-
-print("Eğitim örneği:", len(X_egitim))
-print("Test örneği  :", len(X_test))
+print(len(X_egitim), len(X_test))
 ```
+
+Çıktı: `180 60`.
 
 - Soldaki **dört değişken tek satırda** dolar: fonksiyon dört şey döndürür, Python
   sırayla dağıtır (Konu 2'deki `ad, _, deger = satir.partition("=")` gibi). Sıra
@@ -345,9 +332,11 @@ print("Test örneği  :", len(X_test))
 
 Kimse bilerek kopya çekmez; test verisi genellikle kazara sızar. Üç tanıdık yol:
 
-1. **Aynı veride eğitip ölçmek.** En açık olanı. `07_bozuk_kodlar.py`'nin 5. sorusu.
-2. **Cevabı özniteliğin içine koymak.** Örneğin X'e renk kodunun yanına etiketi de
-   eklemek. Model cevabı sorudan okur, doğruluk %100'e fırlar. `07`'nin 3. sorusu.
+1. **Aynı veride eğitip ölçmek.** En açık olanı. `07_bozuk_kodlar.py`'nin 5. parçası.
+2. **Cevabı özniteliğin içine koymak.** Örneğin X'e üç sayının yanına etiketi de
+   eklemek. Model cevabı sorudan okuyabilir, sonuç gerçekte olduğundan iyi görünür.
+   (Etiketi metin olarak eklersen scikit-learn şikâyet eder; ama sayıya çevrilmiş bir
+   etiket sessizce geçer.)
 3. **Test sonucuna bakıp ayar yapmak, sonra yine aynı testte ölçmek.** Diyelim komşu
    sayısını 5'ten 9'a çıkardın, testte doğruluk arttı, 9'da karar kıldın. Bunu elli
    kez yaparsan test verisine göre ayar çekmiş olursun; test artık "görülmemiş" değildir.
@@ -358,6 +347,8 @@ model renkleri %98 doğru etiketliyor" dediğini, sonra yeni renklerde modelin y
 tura gibi davrandığını düşün.
 
 ## Adım 4 — Model: en yakın komşular
+
+Dosya: `04_model_egit.py`
 
 Kullandığımız modelin adı **k-NN** (k en yakın komşu). Mantığı tek cümle:
 
@@ -379,19 +370,23 @@ bizim modelimiz pratikte şunu yapıyor: "bu renge en çok benzeyen renk hangisi
 onu etiketleyen arkadaşlarından beşine sor, çoğunluk ne dediyse onu de." Adım 7'de
 bunu kendi gözünle göreceksin.
 
-```python
-from sklearn.neighbors import KNeighborsClassifier
+`03`'ü kopyala; en üste ikinci `import`u ekle, en alttaki `print` yerine şunu yaz:
 
-model = KNeighborsClassifier(n_neighbors=5)   # kur: kaç komşuya bakacak?
-model.fit(X_egitim, y_egitim)                 # öğren: bu örneklere bak
-dogruluk = model.score(X_test, y_test)        # ölç: görmediklerinin kaçını bildin?
-print(f"Test doğruluğu: {dogruluk:.2f}")
+```python
+model = KNeighborsClassifier(n_neighbors=5)
+model.fit(X_egitim, y_egitim)
+print("Model:", round(model.score(X_test, y_test), 2))
+
+print("Hep enerjik:", round(y_test.count("enerjik") / len(y_test), 2))
 ```
 
-İlk satır modeli **oluşturur**. `fit` ve `score` ise `metin.split()` ya da
-`sayac.get()` gibi, bir şeyin arkasına nokta koyup verilen komutlar; yeni olan tek şey
-bu kez o şeyin bir model olması. Bir komut daha var, `predict`: "şu yeni örnek sence
-hangisi?" Onu Adım 5'te kullanıyoruz.
+İlk satır modeli **oluşturur**: kaç komşuya bakacağını söylüyoruz. `fit` ve `score`
+ise `metin.split()` ya da `sayac.get()` gibi, bir şeyin arkasına nokta koyup verilen
+komutlar; yeni olan tek şey bu kez o şeyin bir model olması.
+
+- `fit`: "bu örneklere bak ve öğren."
+- `score`: "hiç görmediklerinin kaçını bildin?" 0 ile 1 arası bir sayı döndürür.
+- Bir komut daha var, `predict`: "şu yeni örnek sence hangisi?" Onu Adım 5'te kullanıyoruz.
 
 `fit` ile k-NN aslında hiçbir hesap yapmaz; eğitim örneklerini bir kenara kaydeder.
 Asıl iş, soru geldiğinde (`score` ya da `predict` sırasında) yapılır: en yakın beş
@@ -410,25 +405,24 @@ dikkatle oku.
 
 ## Sonuç bir şey ifade ediyor mu?
 
-`dogruluk` 0 ile 1 arası bir sayı: 0.77, test renklerinin %77'sini bildi demek.
-Doğruluk tek başına anlamsız; iki kıyas noktası gerekir.
+Çıktı:
 
-**Alttan kıyas — kör tahmin:** hiç düşünmeden hep eğitim verisindeki en sık etiketi
-deseydik test verisinde kaçını bilirdik?
-
-```python
-sayac = {}
-for etiket in y_egitim:
-    sayac[etiket] = sayac.get(etiket, 0) + 1
-en_sik = sorted(sayac, key=sayac.get, reverse=True)[0]
-
-kor_tahmin = y_test.count(en_sik) / len(y_test)
-print(f"Hep '{en_sik}' deseydik: {kor_tahmin:.2f}")
+```text
+Model: 0.77
+Hep enerjik: 0.45
 ```
 
+0.77, test renklerinin %77'sini bildi demek. Doğruluk tek başına anlamsız; iki kıyas
+noktası gerekir.
+
+**Alttan kıyas — kör tahmin:** hiç düşünmeden hep en sık etiketi deseydik test
+verisinde kaçını bilirdik? Adım 1'de en sık etiketin "enerjik" olduğunu gördük.
+`y_test.count("enerjik")` test verisindeki "enerjik" etiketlerini sayar; toplam test
+satırına bölünce kör tahminin doğruluğu çıkar.
+
 **Üstten kıyas — tavan:** Adım 1'de gördük; sınıf anlaşamadığı için sadece renge bakan
-hiçbir model belli bir sayıyı geçemez. Yedek verinin bu 60 test satırında o tavan
-0.78 (60 satırdan 47'si).
+hiçbir model belli bir sayıyı geçemez. Aynı hesabı yalnızca bu 60 test satırı için
+yapınca tavan 0.80 çıkıyor (60 satırdan 48'i).
 
 Üç sayıyı yan yana koyunca tablo netleşiyor:
 
@@ -436,23 +430,17 @@ hiçbir model belli bir sayıyı geçemez. Yedek verinin bu 60 test satırında 
 |---|---|---|
 | Kör tahmin (hep "enerjik") | 0.45 | Hiç düşünmeden alınabilecek puan |
 | Bizim model | 0.77 | 60 test satırından 46'sı |
-| Tavan | 0.78 | Sınıfın anlaşmazlığı yüzünden aşılamayacak sınır |
+| Tavan | 0.80 | Sınıfın anlaşmazlığı yüzünden aşılamayacak sınır |
 
-Model kör tahmini açık farkla geçti: gerçekten bir örüntü öğrenmiş. Ve tavana bir
+Model kör tahmini açık farkla geçti: gerçekten bir örüntü öğrenmiş. Ve tavana iki
 cevap kalmış. Yani bu veriyle modeli daha "akıllı" yapmaya çalışmak boşuna; kalan
-yanlışlar modelin değil, **sınıfın görüş ayrılığının** payı. Bu sonucu doğru okumak,
-doğruluğu yükseltmeye çalışmaktan daha değerli.
+yanlışların neredeyse hepsi modelin değil, **sınıfın görüş ayrılığının** payı. Bu
+sonucu doğru okumak, doğruluğu yükseltmeye çalışmaktan daha değerli.
 
 ### k'yı değiştirmek: kaç arkadaşa sormalı?
 
-```python
-for k in [1, 5, 15, 45]:
-    deneme = KNeighborsClassifier(n_neighbors=k)
-    deneme.fit(X_egitim, y_egitim)
-    print(f"k={k:<3} test doğruluğu: {deneme.score(X_test, y_test):.2f}")
-```
-
-Yedek veride: k=1 → 0.70, k=5 → 0.77, k=15 → 0.73, k=45 → 0.72.
+`04`'te `n_neighbors=5` yerine başka sayılar yazıp çalıştır. Yedek veride: k=1 → 0.70,
+k=5 → 0.77, k=15 → 0.73, k=45 → 0.72.
 
 - **k=1** "tek bir arkadaşa sor" demek. O arkadaş azınlıktaysa model de azınlığın
   cevabını verir. Tek bir örneğe fazla güvenmek, **ezberlemenin** en basit hâli:
@@ -462,71 +450,76 @@ Yedek veride: k=1 → 0.70, k=5 → 0.77, k=15 → 0.73, k=45 → 0.72.
   büyük olunca model başka renklerin oylarını da saymaya başlıyor; lacivertin
   kararına petrolün etiketleri karışıyor.
 
-Bu deneme bir tuzak da içeriyor: en iyi k'yı test verisine bakarak seçtik. Yukarıda
-"test sonucuna bakıp ayar yapmak" dediğimiz şey tam bu. Burada sadece fikri görmek
-için yapıyoruz; ciddi bir işte ayar için ayrı bir veri parçası kullanılır.
+Bu deneme bir tuzak da içeriyor: en iyi k'yı test verisine bakarak seçersek, yukarıda
+"test sonucuna bakıp ayar yapmak" dediğimiz şeyi yapmış oluruz. (Nitekim k=9 bu testte
+0.78 veriyor; 5'ten iyi görünüyor ama bu, bu 60 satıra özgü olabilir.) Burada sadece
+fikri görmek için deniyoruz; ciddi bir işte ayar için ayrı bir veri parçası kullanılır.
 
 ### Tek sayıya güvenme
 
-`random_state=42` yerine başka sayılar verirsek bölme değişir, doğruluk da değişir:
-
-```python
-for tohum in [0, 1, 2, 3, 4]:
-    X_e, X_t, y_e, y_t = train_test_split(X, y, test_size=0.25, random_state=tohum)
-    deneme = KNeighborsClassifier(n_neighbors=5)
-    deneme.fit(X_e, y_e)
-    print(f"random_state={tohum}  doğruluk: {deneme.score(X_t, y_t):.2f}")
-```
-
-Yedek veride sonuçlar 0.65, 0.67, 0.72, 0.68, 0.78. Aynı model, aynı veri; sadece
-hangi 60 satırın teste düştüğü değişiyor. Test verisi küçük olunca tek bir satır bile
-sonucu yaklaşık iki puan oynatıyor (1/60 ≈ 0.017). O yüzden "0.77" demek yerine "0.65
-ile 0.78 arasında bir yerde" demek daha dürüst. Adım 6'daki grafiğin neden
-dalgalandığını anlamak için bu bilgiye ihtiyacın olacak.
+`random_state=42` yerine başka sayılar verirsen bölme değişir, doğruluk da değişir.
+Yedek veride `random_state` 0, 1, 2, 3, 4 için sonuçlar: 0.65, 0.67, 0.72, 0.68, 0.78.
+Aynı model, aynı veri; sadece hangi 60 satırın teste düştüğü değişiyor. Test verisi
+küçük olunca tek bir satır bile sonucu yaklaşık iki puan oynatıyor (1/60 ≈ 0.017). O
+yüzden "0.77" demek yerine "0.65 ile 0.78 arasında bir yerde" demek daha dürüst.
+Adım 6'daki grafiğin neden dalgalandığını anlamak için bu bilgiye ihtiyacın olacak.
 
 ### Eğitim verisinde ölçseydik?
 
-```python
-print(f"Eğitim verisinde: {model.score(X_egitim, y_egitim):.2f}")
-print(f"Test verisinde  : {model.score(X_test, y_test):.2f}")
-```
-
-Genelde eğitim verisindeki sayı testtekinden **yüksek** çıkar; model görmüş olduğu
-soruları daha iyi bilir. `07_bozuk_kodlar.py`'deki küçük veride bu fark çok açık.
-Bizim veride ise şaşırtıcı bir şey oluyor: eğitimde 0.69, testte 0.77. Neden?
-Çünkü eğitim verisinde de her renk birden çok kez, farklı etiketlerle geçiyor.
-Model bir renk için tek cevap verebildiğinden, eğitimde gördüğü azınlık etiketlerinde
-de yanılıyor. Ezber, anlaşmazlığı çözemiyor. Bu, "tavan" fikrinin başka bir
-görünüşü. Kural yine değişmez: **doğruluk test verisinde ölçülür.**
+`model.score(X_test, y_test)` yerine `model.score(X_egitim, y_egitim)` yazarsan model
+gördüğü sorularla sınanır. Genelde bu sayı testtekinden **yüksek** çıkar; model görmüş
+olduğu soruları daha iyi bilir. `07_bozuk_kodlar.py`'nin 5. parçasındaki küçük veride
+bu fark çok açık (1.0). Bizim veride ise şaşırtıcı bir şey oluyor: eğitimde 0.69,
+testte 0.77. Neden? Çünkü eğitim verisinde de her renk birden çok kez, farklı
+etiketlerle geçiyor. Model bir renk için tek cevap verebildiğinden, eğitimde gördüğü
+azınlık etiketlerinde de yanılıyor. Ezber, anlaşmazlığı çözemiyor. Bu, "tavan"
+fikrinin başka bir görünüşü. Kural yine değişmez: **doğruluk test verisinde ölçülür.**
 
 ## Adım 5 — Yanıldığı yere bak
 
-Doğruluk tek bir sayı; asıl öğretici olan modelin **nerede** yanıldığı.
-`model.predict(X_test)` ile her test satırı için tahmin alıp gerçek etiketle
-karşılaştırıyoruz. Hangi rengin yanlış gittiğini görmek için renk adlarını da bölmeye
-katıyoruz; `train_test_split` kaç liste verirsen hepsini aynı karıştırmayla böler:
+Dosya: `05_yanilgilari_gor.py`
+
+Doğruluk tek bir sayı; asıl öğretici olan modelin **nerede** yanıldığı. Dosyanın başı
+`04` gibi (bir de `import matplotlib.pyplot as plt` var); bölmeden sonrası yeni:
 
 ```python
-adlar = []
-for kayit in kayitlar:
-    adlar.append(kayit["ad"])
-
-X_egitim, X_test, y_egitim, y_test, ad_egitim, ad_test = train_test_split(
-    X, y, adlar, test_size=0.25, random_state=42
+X_egitim, X_test, y_egitim, y_test, k_egitim, k_test = train_test_split(
+    X, y, kayitlar, test_size=0.25, random_state=42
 )
 
+model = KNeighborsClassifier(n_neighbors=5)
+model.fit(X_egitim, y_egitim)
 tahminler = model.predict(X_test)
 
+yazilar = []
+kodlar = []
 for i in range(len(y_test)):
     if tahminler[i] != y_test[i]:
-        print(f"{ad_test[i]:<14} öğrenci: {y_test[i]:<8} model: {tahminler[i]:<8}"
-              f"sınıfın tamamı: {renk_sayaclari[ad_test[i]]}")
+        yazi = k_test[i]["ad"] + ": öğrenci " + y_test[i] + ", model " + tahminler[i]
+        print(yazi)
+        yazilar.append(yazi)
+        kodlar.append(k_test[i]["hex"])
+
+plt.barh(range(len(yazilar)), 1, color=kodlar, tick_label=yazilar)
+plt.xticks([])
+plt.savefig("yanilgilar.png", bbox_inches="tight")
 ```
 
-Aynı `random_state=42` ile böldüğümüz için bölme Adım 3'tekiyle birebir aynı; model
-yeniden eğitilmeden kullanılabiliyor. Son sütunda Adım 1'deki `renk_sayaclari`
-sözlüğünü kullanıyoruz: her yanlışın yanında o renge sınıfın tamamının ne dediğini
-görmek, yanılgıyı okumanın anahtarı.
+- **Bölmeye `kayitlar`'ı da katıyoruz.** `train_test_split` kaç liste verirsen hepsini
+  aynı karıştırmayla böler. `k_test[i]`, `X_test[i]` satırının kaydı: adını ve kodunu
+  oradan okuyoruz. Soldaki değişken sayısı altıya çıktı; sıra yine eğitim, test,
+  eğitim, test.
+- `model.predict(X_test)` her test satırı için bir tahmin verir; `tahminler[i]` ile
+  `y_test[i]` farklıysa model yanılmış.
+- `plt.barh` yatay çubuk çizer: her yanlış için bir çubuk. `color=kodlar` her çubuğu
+  o rengin kendi koduyla boyar; `tick_label=yazilar` çubuğun yanına rengin adını,
+  öğrencinin ve modelin cevabını yazar. Çubukların uzunluğu bir anlam taşımıyor, o
+  yüzden `plt.xticks([])` alttaki sayıları siler.
+- `plt.savefig` görseli dosyaya kaydeder; `bbox_inches="tight"` uzun yazıların
+  kesilmemesi için.
+
+Bilgi yalnızca renkte değil, yazıda da var: rengi ayırt etmekte zorlanan biri de
+görseli okuyabilir. Aynı satırlar ekrana da yazılıyor.
 
 `predict` her zaman bir **liste** ister, tek renk sorsan bile. `model.predict((230, 57, 70))`
 yazarsan uzun bir mesaj alırsın:
@@ -543,8 +536,8 @@ bir kütüphanenin yolu.
 
 ### Yanılgıları okumak
 
-Yedek veride 60 test satırından 14'ünde model yanılıyor. Hepsine son sütunla birlikte
-bakınca iki grup çıkıyor:
+Yedek veride 60 test satırından 14'ünde model yanılıyor. Her yanlışı Adım 1'in
+çıktısıyla (o renge sınıfın tamamının ne dediğiyle) yan yana koyunca iki grup çıkıyor:
 
 **Birinci grup (14 yanılgının 12'si): öğrenci azınlıkta.** Örneğin bir öğrenci
 şeftaliye "ciddi" demiş; sınıfın 10 kişisi "enerjik" demiş, model de "enerjik" diyor.
@@ -573,48 +566,58 @@ içinde "ciddi" diyenler ağır basmış. Koyu yeşilde de benzer bir durum var 
   modelde, bazen etikette, bazen de sorunun kendisinde: "Bu renk sakin mi?" sorusunun
   tek bir doğru cevabı olmayabilir.
 
-`05_yanilgilari_gor.py` aynı yanlışları renk karesi olarak çizer (`yanilgilar.png`);
-her karenin üstünde rengin adı ve kodu da yazar. Görsele bakarken kendine şunu sor:
-"Ben olsam bu kareye ne derdim, model mi haklı, öğrenci mi?"
+`yanilgilar.png`'ye bakarken kendine şunu sor: "Ben olsam bu renge ne derdim, model
+mi haklı, öğrenci mi?"
 
 ## Adım 6 — Veri arttıkça ne oluyor?
 
-`06_veri_miktari.py` modeli eğitim verisinin önce %10'u, sonra %25'i, %50'si, %75'i
-ve tamamıyla eğitip her seferinde aynı test verisinde ölçer, sonra sonucu
-`veri-miktari.png` grafiğine çizer. Çekirdeği şu döngü:
+Dosya: `06_veri_miktari.py`
+
+Modeli eğitim verisinin önce %10'u, sonra %25'i, %50'si, %75'i ve tamamıyla eğitip
+her seferinde aynı test verisinde ölçüyoruz, sonra sonucu `veri-miktari.png`
+grafiğine çiziyoruz. Dosyanın başı `04` gibi (bir de `matplotlib` importu var);
+bölmeden sonrası yeni:
 
 ```python
+adetler = []
+dogruluklar = []
 for oran in [0.1, 0.25, 0.5, 0.75, 1.0]:
     adet = int(len(X_egitim) * oran)
-    deneme = KNeighborsClassifier(n_neighbors=5)
-    deneme.fit(X_egitim[:adet], y_egitim[:adet])
-    print(adet, "örnek ->", round(deneme.score(X_test, y_test), 2))
+    model = KNeighborsClassifier(n_neighbors=5)
+    model.fit(X_egitim[:adet], y_egitim[:adet])
+    adetler.append(adet)
+    dogruluklar.append(round(model.score(X_test, y_test), 2))
+
+print(adetler)
+print(dogruluklar)
+plt.plot(adetler, dogruluklar, marker="o")
+plt.xlabel("Eğitim örneği sayısı")
+plt.ylabel("Test doğruluğu")
+plt.savefig("veri-miktari.png")
 ```
 
 - `int(...)` kesirli sayıyı tam sayıya çevirir: 180 × 0.1 = 18.0 → 18.
 - `X_egitim[:adet]` Konu 1'in dilimlemesi: baştan `adet` tane örnek.
-- `round(..., 2)` sayıyı virgülden sonra iki basamağa yuvarlar.
+- `plt.plot` noktaları çizgiyle birleştirir; `marker="o"` her ölçümü bir nokta olarak
+  gösterir. `xlabel` ve `ylabel` eksenlerin adı.
 
-Yedek veride sonuç:
+Yedek veride çıktı:
 
-| Eğitim örneği | Doğruluk |
-|---|---|
-| 18 | 0.48 |
-| 45 | 0.72 |
-| 90 | 0.62 |
-| 135 | 0.75 |
-| 180 | 0.77 |
+```text
+[18, 45, 90, 135, 180]
+[0.48, 0.72, 0.62, 0.75, 0.77]
+```
 
 Eğri genelde önce hızlı yükselir, sonra düzleşir. **Düzleştiği yer önemli:** oradan
 sonra veri eklemek pek işe yaramıyor demektir. Bizim veride düzleşme noktası tavanın
-hemen altı: 180 örnekle 0.77'ye, tavana (0.78) bir cevap kalana kadar geldik. Aynı
+hemen altı: 180 örnekle 0.77'ye, tavana (0.80) iki cevap kalana kadar geldik. Aynı
 20 renge daha çok öğrenci etiketi eklemek bu tavanı yükseltmez. Tavanı yükseltmek
 için **başka türlü** veri gerekir: daha çok renk ya da rengin kullanıldığı bağlam gibi
 yeni bilgiler.
 
-**18 örnekle neden bu kadar kötü?** 18 örnekte 20 rengin ancak 14'ü var; 6 renk hiç yok. Model
-görmediği bir rengi sorulduğunda ona en çok benzeyen başka bir rengin etiketlerini
-kullanmak zorunda kalıyor. Az veri, "tanıdık renk" sayısını azaltıyor.
+**18 örnekle neden bu kadar kötü?** 18 örnekte 20 rengin ancak 14'ü var; 6 renk hiç
+yok. Model görmediği bir rengi sorulduğunda ona en çok benzeyen başka bir rengin
+etiketlerini kullanmak zorunda kalıyor. Az veri, "tanıdık renk" sayısını azaltıyor.
 
 **Eğri ortada düşebilir.** Yedek veride 45 örnekten 90 örneğe çıkınca doğruluk
 0.72'den 0.62'ye iniyor. Bu bir hata değil; düzeltmeye çalışma. İpucu: 90 örneklik
@@ -626,43 +629,38 @@ Konu 4'ün başında birlikte konuşacağız.
 
 ## Adım 7 — Model ne öğrendi? Yeni renklerle yoklamak
 
+Dosya: `09_modeli_yokla.py`
+
 Modelin içini açıp "kuralını" okuyamayız. Ama bir tasarımcının kullanıcı testinde
 yaptığını yapabiliriz: ona hiç görmediği renkler gösterip cevaplarına bakmak. Bunun
 için modeli bu kez **tüm veriyle** eğitiyoruz; ölçüm yapmıyoruz, sadece soru
-soruyoruz. Her cevabın yanında `kneighbors` ile modelin hangi komşulara baktığını da
-yazdırıyoruz:
+soruyoruz. Dosyanın başı Adım 2 gibi (bir de `KNeighborsClassifier` importu var);
+X ve y'den sonrası yeni:
 
 ```python
-tam_model = KNeighborsClassifier(n_neighbors=5)
-tam_model.fit(X, y)
+model = KNeighborsClassifier(n_neighbors=5)
+model.fit(X, y)
 
-for hex_kod in ["#0A1F44", "#4A7FB0", "#CFE3F2", "#E8DCC4", "#A3B18A"]:
-    rgb = hex_to_rgb(hex_kod)
-    tahmin = tam_model.predict([rgb])[0]
-    mesafeler, siralar = tam_model.kneighbors([rgb])
-    komsular = set()
-    for sira in siralar[0]:
-        komsular.add(adlar[sira])
-    print(hex_kod, "->", tahmin, " komşusu:", komsular)
+for kod in ["#E8DCC4", "#D4A373", "#A3B18A", "#344E41", "#F5F5F5"]:
+    rgb = (int(kod[1:3], 16), int(kod[3:5], 16), int(kod[5:7], 16))
+    # kneighbors: cevabı hangi komşulara bakarak verdin?
+    mesafeler, siralar = model.kneighbors([rgb])
+    print(kod, model.predict([rgb])[0], "en yakın:", kayitlar[siralar[0][0]]["ad"])
 ```
 
+- Listedeki beş kod, Konu 1'deki "sessiz çalışma kafesi" için aday bir palet: bej,
+  sütlü kahve, adaçayı, orman yeşili, kirli beyaz.
+- `rgb = (...)`: Adım 2'deki çevirme, bu kez yeni renk için.
 - `kneighbors` iki şey döndürür: en yakın beş komşunun uzaklıkları ve veri içindeki
-  sıra numaraları. Biz uzaklıkları kullanmıyoruz; sıra numarasıyla `adlar` listesinden
-  komşunun adını okuyoruz.
-- `[0]`: `predict` ve `kneighbors` birden çok renk için çalışacak şekilde tasarlandı,
-  cevabı liste olarak verir. Biz tek renk sorduğumuz için ilk elemanı alıyoruz.
-- `set()` aynı adı bir kez tutar; beş komşu aynı renkse tek ad görürsün.
+  sıra numaraları. Biz uzaklıkları (`mesafeler`) kullanmıyoruz; sıra numarasıyla
+  komşunun kaydını buluyoruz.
+- `siralar[0][0]`: `kneighbors` birden çok renk için çalışacak şekilde tasarlandı,
+  cevabı liste içinde liste olarak verir. İlk `[0]` sorduğumuz tek rengin cevabı,
+  ikinci `[0]` onun en yakın komşusu. X'i `kayitlar` ile aynı sırada doldurduğumuz
+  için o sıra numarası `kayitlar`'da da aynı rengi gösterir.
+- `predict([rgb])[0]`: aynı sebeple tahmin de liste içinde gelir; ilk elemanı alıyoruz.
 
-`09_modeli_yokla.py` aynı işi üç grup renk için yapar. Yedek verideki bulgular:
-
-**Koyuluk maviyi ciddileştiriyor, kırmızıyı ciddileştirmiyor.** Aynı mavinin koyudan
-açığa üç sürümü: çok koyu mavi → ciddi, orta mavi → sakin, buz mavisi → sakin. Aynı
-deneyi kırmızıyla yapınca çok koyu kırmızı da, canlı kırmızı da, toz pembe de
-"enerjik". Sınıfın gözünde koyuluk tek başına ciddiyet getirmiyor; renk tonu (hue)
-koyuluktan güçlü basıyor. Bordoya 12 kişiden 11'inin "enerjik" demesi bunun kaynağı.
-
-**Kafe paleti için ikinci görüş.** Konu 1'deki "sessiz çalışma kafesi" için aday bir
-palet:
+Yedek veride çıktı:
 
 | Renk | Modelin cevabı | En yakın bildiği renk |
 |---|---|---|
@@ -687,10 +685,18 @@ Bu, veriyi kimin ve hangi renklerle topladığının da bir tasarım kararı old
 gösteriyor. Kafe paleti hakkında güvenilir bir model istiyorsan, etiketleme ödevine
 bej ve kahve tonları da koymak gerekirdi.
 
+**Kendin dene: koyuluk her renkte aynı işi mi yapıyor?** Listeyi aynı rengin koyudan
+açığa üç sürümüyle değiştir. Maviler (`#0A1F44`, `#4A7FB0`, `#CFE3F2`) yedek veride
+ciddi, sakin, sakin çıkıyor. Kırmızılar (`#5C0010`, `#D62828`, `#FAD4D4`) ise üçü de
+enerjik. Sınıfın gözünde koyuluk tek başına ciddiyet getirmiyor; renk tonu koyuluktan
+güçlü basıyor. Bordoya 12 kişiden 11'inin "enerjik" demesi bunun kaynağı.
+
 ## Adım 8 — Hiç görmediği renkler: dürüst sınav
 
+Dosya: `10_gorulmemis_renkler.py`
+
 Adım 3'teki bölmeye geri dönelim. Satırları karıştırıp dörtte birini teste ayırdık;
-ama her renk dosyada 12 kez geçtiği için, testteki bir lacivert satırının 9 kardeşi
+ama her renk dosyada 12 kez geçtiği için, testteki bir lacivert satırının kardeşleri
 eğitimde duruyor. Model teste gelmeden lacivertin ne olduğunu başka öğrencilerden
 zaten duymuş. Adım 3'teki test aslında şunu ölçüyor: "bilinen bir renk için başka bir
 öğrencinin ne diyeceğini tahmin edebiliyor mu?"
@@ -698,42 +704,52 @@ zaten duymuş. Adım 3'teki test aslında şunu ölçüyor: "bilinen bir renk i�
 Bu kötü bir soru değil. Ama "yeni bir renk gelince model ne der?" sorusunun cevabı
 değil. Onu ölçmek için bir rengi **tamamen** dışarıda bırakmak gerekir: model o rengin
 hiçbir satırını görmeden eğitilir, sonra o renk sorulur. Bunu 20 rengin her biri için
-sırayla yaparız. `10_gorulmemis_renkler.py` tam bunu yapar; çekirdeği şu:
+sırayla yaparız. Dosyanın başı Adım 1 gibi; sonrası:
 
 ```python
-renk_kodlari = {}
+renkler = {}
 for kayit in kayitlar:
-    renk_kodlari[kayit["ad"]] = kayit["hex"]
+    renkler[kayit["ad"]] = kayit["hex"]
 
 tutan = 0
-for disarida in renk_kodlari:
-    X_e = []
-    y_e = []
-    y_t = []
+for disarida in renkler:
+    # Bu rengin hiçbir satırını görmeyen bir model
+    X = []
+    y = []
     for kayit in kayitlar:
-        if kayit["ad"] == disarida:
-            y_t.append(kayit["etiket"])
-        else:
-            X_e.append(hex_to_rgb(kayit["hex"]))
-            y_e.append(kayit["etiket"])
-    deneme = KNeighborsClassifier(n_neighbors=5)
-    deneme.fit(X_e, y_e)
-    tahmin = deneme.predict([hex_to_rgb(renk_kodlari[disarida])])[0]
-    tutan = tutan + y_t.count(tahmin)
+        if kayit["ad"] != disarida:
+            kod = kayit["hex"]
+            X.append((int(kod[1:3], 16), int(kod[3:5], 16), int(kod[5:7], 16)))
+            y.append(kayit["etiket"])
+    model = KNeighborsClassifier(n_neighbors=5)
+    model.fit(X, y)
 
-print(f"Hiç görmediği renklerde doğruluk: {tutan / len(kayitlar):.2f}")
+    kod = renkler[disarida]
+    tahmin = model.predict([(int(kod[1:3], 16), int(kod[3:5], 16), int(kod[5:7], 16))])[0]
+    print(disarida, tahmin)
+    for kayit in kayitlar:
+        if kayit["ad"] == disarida and kayit["etiket"] == tahmin:
+            tutan = tutan + 1
+
+print("Hiç görmediği renklerde doğruluk:", round(tutan / len(kayitlar), 2))
 ```
 
-`renk_kodlari` her rengin adını koduyla eşleyen küçük bir sözlük; 20 rengi tek tek
-gezmek için onu kullanıyoruz. `y_t.count(tahmin)`: dışarıda kalan rengin 12 etiketinden kaçı modelin
-tahminiyle aynı, onu sayıyor.
+- `renkler` her rengin adını koduyla eşleyen küçük bir sözlük; 20 rengi tek tek
+  gezmek için onu kullanıyoruz. Aynı ad 12 kez yazılsa da sözlükte bir kez durur.
+- Dış döngü her tur bir rengi "dışarıda" bırakıyor. İçteki ilk döngü X ve y'yi o
+  rengin satırları **hariç** dolduruyor; model o rengi hiç görmüyor.
+- Sonra dışarıdaki rengin kodunu çevirip modele soruyoruz.
+- Son döngü, dışarıdaki rengin 12 etiketinden kaçının modelin tahminiyle aynı
+  olduğunu sayıyor. 20 tur bitince `tutan`'ı 240'a bölüyoruz.
 
-Yedek veride sonuç: **0.60**. Rastgele bölmede 0.77 idi. Aradaki fark "tanıdık renk"
+Yedek veride sonuç: **0.6**. Rastgele bölmede 0.77 idi. Aradaki fark "tanıdık renk"
 avantajının büyüklüğü. İkisi de doğru sayı, ama farklı soruların cevabı. Bir sonucu
 raporlarken **hangi soruyu sorduğunu** da söylemen gerekir.
 
-`10_gorulmemis_renkler.py`'nin çıktısında model 20 rengin 4'ünde sınıfın çoğunluğundan
-ayrılıyor. İkisi özellikle öğretici:
+Çıktıdaki 20 satırı Adım 1'in çıktısıyla karşılaştır: model 20 rengin 4'ünde (kırık
+beyaz, gri mavi, gül kurusu, zeytin) sınıfın çoğunluğundan ayrılıyor. İkisi özellikle
+öğretici. (Modelin hangi renge baktığını görmek için Adım 7'deki `kneighbors`
+satırını buraya da ekleyebilirsin.)
 
 - **Kırık beyaz → model "enerjik" diyor, sınıf "sakin" (11/12).** Kırık beyazı hiç
   görmeyen modelin en yakın bildiği renk krem. Sayılarda neredeyse ikiz: (241, 250,
@@ -758,10 +774,10 @@ Konu 4'ün sorusu tam burada başlıyor: **bir şeyi hangi sayılarla temsil ede
 
 | Adım | Ne yaptık | Elimizde ne oluştu | Dosya |
 |---|---|---|---|
-| 1 | Veriyi okuduk, dağılıma ve anlaşmazlığa baktık | `kayitlar`, `uzlasma`, tavan | `01_veriyi_oku.py` |
+| 1 | Veriyi okuduk, anlaşmazlığa ve tavana baktık | `kayitlar`, `renkler`, tavan | `01_veriyi_oku.py` |
 | 2 | Sayıya çevirdik | `X`, `y` | `02_ozellik_etiket.py` |
 | 3 | İkiye böldük | `X_egitim`, `X_test`, `y_egitim`, `y_test` | `03_egitim_test.py` |
-| 4 | Eğittik, ölçtük, kör tahminle kıyasladık | `model`, `dogruluk` | `04_model_egit.py` |
+| 4 | Eğittik, ölçtük, kör tahminle kıyasladık | `model` | `04_model_egit.py` |
 | 5 | Yanılgılara baktık | `yanilgilar.png` | `05_yanilgilari_gor.py` |
 | 6 | Veri miktarını değiştirdik | `veri-miktari.png` | `06_veri_miktari.py` |
 | 7 | Modeli yeni renklerle yokladık | kafe paleti için ikinci görüş | `09_modeli_yokla.py` |
@@ -772,11 +788,15 @@ Her dosyayı konunun klasöründen (`03-makine-ogrenmesi`) çalıştır:
 bu klasöre kaydedilir.
 
 Derste kendi başına dolduracağın alıştırma: `alistirma/sinif_alistirmasi.py`
-(scikit-learn gerekmez).
+(scikit-learn gerekmez). Önce aynı klasörde yeni bir adla kopyala, kopyayı doldur;
+böylece `git pull` çakışmaz. Boşluklar `___` ile gösterildi: doldurmadığın boşluk
+`NameError` verir, o yüzden soruları sırayla çöz. Her sorunun üstünde doğru çıktı
+yazılı.
 
-Ek alıştırma: `07_bozuk_kodlar.py` (beş bozuk kod; bazıları programı çökertir,
-bazıları hata mesajı vermeden sessizce yanlış sonuç üretir; asıl tehlikeli olanlar
-bunlar). Bonus: `08_kendi_rengin.py` (kendi seçtiğin renkleri modele tahmin ettir).
+Ek alıştırma: `07_bozuk_kodlar.py` (beş bozuk parça; hepsi hata mesajı vermeden
+yanlış sonuç yazıyor, asıl tehlikeli hatalar da bunlar). Bonus: `08_kendi_rengin.py`
+(listeye kendi seçtiğin renkleri yaz, modelin ne dediğine bak). İkisini de önce yeni
+bir adla kopyala.
 
 ---
 
@@ -791,7 +811,8 @@ ve satır numarasını orada ararsın.
 |---|---|---|
 | `ModuleNotFoundError: No module named 'sklearn'` | Dosyayı `uv run` yerine `python` ile ya da konu klasörünün dışından çalıştırdın | Konu klasöründe `uv run ...`; olmazsa orada `uv sync` |
 | `FileNotFoundError: [Errno 2] No such file or directory: 'veri/renkler-etiketli.csv'` | Komut yanlış klasörden çalıştırıldı | `cd 03-makine-ogrenmesi` ile konu klasörüne geç, oradan çalıştır |
-| `ValueError: invalid literal for int() with base 10: 'E6'` | `int(...)` içinde `16` unutuldu | `int(hex_kod[0:2], 16)` |
+| `ValueError: invalid literal for int() with base 10: 'E6'` | `int(...)` içinde `16` unutuldu | `int(kod[1:3], 16)` |
+| `ValueError: invalid literal for int() with base 16: '#E'` | Dilim `#` işaretinden başlıyor | `kod[1:3]`, `kod[3:5]`, `kod[5:7]` |
 | `ValueError: Found input variables with inconsistent numbers of samples: [200, 240]` | X ve y farklı uzunlukta | İkisini aynı döngüde doldur |
 | `NotFittedError: This KNeighborsClassifier instance is not fitted yet.` | `fit` çağrılmadan `predict` ya da `score` | Önce `model.fit(X_egitim, y_egitim)` |
 | `ValueError: Expected 2D array, got 1D array instead` | `predict`'e tek renk liste içine konmadan verildi | `model.predict([rgb])` |
@@ -813,15 +834,15 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 1. Veride bir renk 12 kez geçiyor ve 12 kişinin 12'si de aynı etiketi vermiş.
    Sadece bu renkten oluşan bir test verisinde modelin doğruluğu en fazla kaç olabilir?
    Peki 6 kişi "sakin", 6 kişi "ciddi" demişse?
-2. Arkadaşın "modelim %98 doğru" diyor. Kör tahmin %45, tavan %78. Ona ilk soracağın
+2. Arkadaşın "modelim %98 doğru" diyor. Kör tahmin %45, tavan %80. Ona ilk soracağın
    soru ne olmalı?
 3. `train_test_split(X, y, test_size=0.25, random_state=42)` satırında
    `random_state`'i silersen ne değişir? Kod çalışmaya devam eder mi?
 4. `X_egitim, X_test, y_egitim, y_test` yerine yanlışlıkla
-   `X_egitim, y_egitim, X_test, y_test` yazdın. Program hata verir mi? Ne olur?
+   `X_egitim, y_egitim, X_test, y_test` yazdın. `04_model_egit.py` hata verir mi? Ne olur?
 5. k=1 ile k=5 arasındaki farkı "arkadaşa sormak" benzetmesiyle bir cümlede anlat.
 6. Adım 7'de bej için model "enerjik" dedi. Bu cevaba neden fazla güvenmemelisin?
-7. Adım 8'deki "hiç görmediği renkler" doğruluğu (0.60), Adım 4'teki doğruluktan (0.77)
+7. Adım 8'deki "hiç görmediği renkler" doğruluğu (0.6), Adım 4'teki doğruluktan (0.77)
    düşük. Hangisi yanlış?
 8. Etiketleme ödevini yeniden tasarlasan, kafe paleti hakkında daha güvenilir bir model
    elde etmek için neyi değiştirirdin?
@@ -839,13 +860,13 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 - **Eğitim ve test ayrımı.** Model test verisini hiç görmez. Görürse ölçtüğün şey
   öğrenme değil ezber olur. Sızıntı çoğu zaman kazara olur ve hata mesajı vermez.
 - **Doğruluk iki kıyasla anlam kazanır.** Alttan kör tahmin, üstten tavan. Bizim model
-  kör tahmini açık farkla geçti ve tavana bir cevap yaklaştı.
+  kör tahmini açık farkla geçti ve tavana iki cevap yaklaştı.
 - **Tek sayıya güvenme.** Farklı bölmeler farklı sonuç verir; küçük test verisinde
   tek bir satır bile sonucu oynatır.
 - **Yanılgılar veriden haber verir.** Modelin yanılgılarının çoğu sınıfın azınlık
   görüşleriydi; model bir "çoğunluk sesi" üretir.
 - **"Test" hangi soruyu soruyor?** Bilinen renklerde 0.77, hiç görülmemiş renklerde
-  0.60. İkisi de doğru, ama farklı soruların cevabı.
+  0.6. İkisi de doğru, ama farklı soruların cevabı.
 - **Benzerlik, temsile bağlıdır.** RGB'de yakın olan iki renk (gri mavi ile gül kurusu)
   gözümüze hiç benzemeyebilir. Bu, Konu 4'ün başlangıç noktası.
 
@@ -899,23 +920,26 @@ daha da önemli hâle geliyor: sayılar, bizim "benzer" dediğimiz şeyi yakalı
 1. Herkes aynı etiketi verdiyse en fazla **1.0** (12'de 12). 6'ya 6 bölünmüşse en fazla
    **0.5**: model tek bir cevap verebilir, hangisini seçerse seçsin öbür altı kişide
    yanılır. Tavan fikri budur.
-2. "Nerede ölçtün?" Tavan %78 iken %98 doğruluk, aynı renklere verilen farklı
+2. "Nerede ölçtün?" Tavan %80 iken %98 doğruluk, aynı renklere verilen farklı
    etiketleri de bildiği anlamına gelir; bu imkânsız. Büyük ihtimalle eğitim verisinde
    ölçülmüş ya da etiket özniteliğe karışmış.
 3. Kod çalışmaya devam eder, ama her çalıştırmada bölme farklı olur, doğruluk da
    değişir (yedek veride 0.65 ile 0.78 arası gibi). Sonuçları başkalarıyla ya da kendi
    önceki denemenle kıyaslayamazsın.
-4. Evet, hata verir, çünkü `y_egitim` adlı değişkene aslında test öznitelikleri
-   düşer ve uzunluklar tutmaz (`inconsistent numbers of samples`). Hata vermese bile
-   model yanlış şeyi öğrenir. Sıra her zaman: eğitim X, test X, eğitim y, test y.
+4. Evet, `fit` satırında hata verir: `y_egitim` adlı değişkene aslında test öznitelikleri
+   (60 satır) düşer, `X_egitim` ise 180 satır kalır:
+   `ValueError: Found input variables with inconsistent numbers of samples: [180, 60]`.
+   `07_bozuk_kodlar.py`'nin 3. parçasında ise veri ikiye eşit bölündüğü için uzunluklar
+   tutuyor ve hiçbir hata çıkmıyor; yanlışlığı ancak `y_egitim`'in içine bakınca
+   görürsün. Sıra her zaman: eğitim X, test X, eğitim y, test y.
 5. k=1 tek bir arkadaşa sormak, o azınlıktaysa yanılırsın; k=5 beş arkadaşa sorup
    çoğunluğa uymak, tek kişinin farklı görüşü seni yanıltmaz.
 6. Çünkü cevabı bej hakkında bir şey bilen biri değil, en yakın bildiği renk olan
    kremi etiketleyenler veriyor ve krem sınıfın en çok tartıştığı renk (5'e 5).
    Model 20 rengin dışını bilmiyor.
 7. İkisi de yanlış değil; farklı soruların cevabı. 0.77 "bilinen bir renk için başka
-   birinin etiketini tahmin etme" başarısı, 0.60 "hiç görülmemiş bir renge etiket
-   verme" başarısı. Yeni renkler hakkında karar vereceksen 0.60'a bakmalısın.
+   birinin etiketini tahmin etme" başarısı, 0.6 "hiç görülmemiş bir renge etiket
+   verme" başarısı. Yeni renkler hakkında karar vereceksen 0.6'ya bakmalısın.
 8. Birkaç iyi cevap: etiketleme listesine kafede kullanılabilecek tonları (bejler,
    kahveler, yeşillerin açık tonları) eklemek; rengi tek başına değil bir mekân
    görselinin içinde göstermek; etiketleyenlere kafenin kullanıcılarına benzeyen

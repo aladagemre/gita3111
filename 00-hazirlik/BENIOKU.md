@@ -22,4 +22,5 @@ gördük. Kurulumu **bu dersten sonra evde**, `kurulum-yonergesi.md` dosyasına 
   gösterir.
 - **Yapay zekayla kod yazmak (vibecoding):** üretim konularında serbest, vizede
   yasak. Kavram konularında da serbest; ama vizede tek başına yazacağını unutma.
+  Aracın terminal komutlarını **onaysız çalıştırmasını kapat**; her komutu okuyup sen onayla.
 - **Maliyet:** dersin tamamı ücretsiz katmanlarla tasarlandı. Kimseden para istenmiyor.

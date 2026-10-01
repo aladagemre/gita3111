@@ -31,8 +31,9 @@ indirir. Yapmazsan ilk `uv run` komutu indirir, ama ders sırasında beklersin.
 
 - Her adımda üç şey var: **ne yapıyoruz**, **neden gerekiyor**, **atlarsan ne olur**.
 - `Kendini dene` kutuları küçük kontrol sorularıdır. Cevapları notun sonunda.
-- Kod parçalarının çoğu anahtarsız da çalışır. Gerçek anahtar isteyenlerin başında
-  **(anahtar gerekir)** yazıyor.
+- Örneklerin çoğu gerçek istek atar ve `anahtar.txt` ister; isteyen adımların başında
+  **(anahtar gerekir)** yazıyor. Anahtarsız çalışanlar: ısınma, Adım 3, bozuk kodlar ve
+  sınıf alıştırması.
 - Kodları bu konunun klasöründen çalıştır: önce `cd 02-api-ile-konusmak`, sonra
   `uv run ornekler/...`. Nedenini Konu 1'de gördün; `anahtar.txt` için Adım 1'de bir kez
   daha bakacağız.
@@ -41,11 +42,12 @@ indirir. Yapmazsan ilk `uv run` komutu indirir, ama ders sırasında beklersin.
 
 ## Isınma: iç içe sözlük
 
-`00_isinma.py` iki küçük tamir içeriyor. Birazdan sunucudan gelecek cevap tam olarak
-bu yapıda olacak; ısınma onun provası.
+`00_isinma.py` iki bozuk satır içeriyor. Birazdan sunucudan gelecek cevap tam olarak
+bu yapıda olacak; ısınma onun provası. Dosyayı çalıştır, hatayı oku, satırı düzelt,
+tekrar çalıştır.
 
 ```python
-YANIT = {
+yanit = {
     "success": True,
     "result": {
         "response": "Merhaba!",
@@ -54,13 +56,23 @@ YANIT = {
     "errors": [],
 }
 
-print(YANIT["result"]["response"])
+hatali_yanit = {
+    "success": False,
+    "result": None,
+    "errors": [{"code": 10000, "message": "Authentication error"}],
+}
+
+# Tamir 1: Merhaba! yazmalı
+print(yanit["response"])
+
+# Tamir 2: Authentication error yazmalı
+print(hatali_yanit["errors"]["message"])
 ```
 
 1. **Sözlüğün içindeki sözlük.** Metin dıştaki sözlükte değil, `result` içinde:
-   `YANIT["response"]` değil, `YANIT["result"]["response"]`.
+   `yanit["response"]` değil, `yanit["result"]["response"]`.
 2. **Sözlüğün içindeki liste.** Hatalı bir yanıtta `errors` bir liste olur; önce
-   sırayla elemana, sonra anahtara gidilir: `yanit["errors"][0]["message"]`.
+   sırayla elemana, sonra anahtara gidilir: `hatali_yanit["errors"][0]["message"]`.
 
 Kural aynı: her köşeli parantez **bir kat** içeri girer. Liste katında sıra numarası,
 sözlük katında anahtar adı yazılır.
@@ -69,11 +81,11 @@ sözlük katında anahtar adı yazılır.
 
 | İfade | Elde ettiğin şey | Türü |
 |---|---|---|
-| `YANIT` | Bütün yanıt | sözlük |
-| `YANIT["result"]` | İçteki sözlük | sözlük |
-| `YANIT["result"]["usage"]` | Kullanım bilgisi | sözlük |
-| `YANIT["result"]["usage"]["prompt_tokens"]` | `4` | sayı |
-| `YANIT["errors"]` | Hata listesi (burada boş) | liste |
+| `yanit` | Bütün yanıt | sözlük |
+| `yanit["result"]` | İçteki sözlük | sözlük |
+| `yanit["result"]["usage"]` | Kullanım bilgisi | sözlük |
+| `yanit["result"]["usage"]["prompt_tokens"]` | `4` | sayı |
+| `yanit["errors"]` | Hata listesi (burada boş) | liste |
 
 ### Hata mesajını sondan oku
 
@@ -86,47 +98,41 @@ KeyError: 'response'
 ```
 
 "Bu sözlükte `response` diye bir anahtar yok." Bir kat atladın demektir: `result`
-katına girmeden `response`'u aradın.
+katına girmeden `response`'u aradın. Isınma dosyasını ilk çalıştırdığında tam olarak
+bunu görürsün.
 
 ```text
 TypeError: list indices must be integers or slices, not str
 ```
 
 "Listeyi bir adla açmaya çalıştın; liste sadece sıra numarasıyla açılır." `errors`
-bir liste; `yanit["errors"]["message"]` yazınca bu hatayı alırsın. Doğrusu
-`yanit["errors"][0]["message"]`.
+bir liste; `hatali_yanit["errors"]["message"]` yazınca bu hatayı alırsın (ısınmanın
+ikinci satırı). Doğrusu `hatali_yanit["errors"][0]["message"]`.
 
-> **Kendini dene 1.** Yukarıdaki `YANIT` için:
+> **Kendini dene 1.** Yukarıdaki `yanit` için:
 > (a) `completion_tokens` değerine hangi ifadeyle ulaşırsın?
-> (b) `YANIT["errors"][0]` yazarsan hangi hatayı alırsın, neden?
-> (c) `YANIT["usage"]["prompt_tokens"]` yazarsan?
+> (b) `yanit["errors"][0]` yazarsan hangi hatayı alırsın, neden?
+> (c) `yanit["usage"]["prompt_tokens"]` yazarsan?
 
 ---
 
-## Anahtarın yoksa? Demo modu
+## Anahtarın yoksa?
 
-Örneklerin çoğu **DEMO modunda** çalışır: `anahtar.txt` yoksa kayıtlı bir cevap
-kullanılır. Kod aynı kod, sadece cevap kutudan gelir. Yani dersi takip edebilirsin.
+Bugünkü örneklerin çoğu **gerçek istek** atar ve ilk iş `anahtar.txt` dosyasını okur.
+Dosya yoksa program ilk satırda durur:
 
-Ama bu bir köprü, çözüm değil. Ödev için kendi anahtarın gerekiyor ve Konu 4'ten
-itibaren demo modu yetmiyor. Hesabı kurulum yönergesinin 6. adımıyla
-aç (`../00-hazirlik/kurulum-yonergesi.md`).
+```text
+FileNotFoundError: [Errno 2] No such file or directory: '../anahtar.txt'
+```
 
-Örnek dosyalar anahtar dosyasını üç durumdan birinde bulur:
+Anahtarın henüz yoksa:
 
-| Durum | Ekranda ne görürsün | Ne oluyor |
-|---|---|---|
-| **tamam** | Hiçbir uyarı yok, "İstek gönderiliyor..." | Gerçek modelle konuşuyorsun |
-| **yok** | `[DEMO MODU] anahtar.txt yok; ...` | Kayıtlı cevap kullanılıyor |
-| **bozuk** | `[UYARI] anahtar.txt var ama ... okunamadı` | Dosya var ama içinde `ACCOUNT_ID` ya da `API_TOKEN` satırı yok; yine kayıtlı cevap kullanılıyor |
-
-"Yok" ile "bozuk" neden ayrı? Dosyası olmayan kişi bunu zaten bilir. Ama dosyası
-bozuk olan kişi "dosyam var, demek ki çalışıyor" sanar ve günlerce kayıtlı cevaba
-bakar. `[UYARI]` satırını görürsen dosyanı düzelt.
-
-**Demo modunda olduğunu nasıl anlarsın?** Her soruya **aynı** cevap gelir: "1)
-Sessizliğin adresi. 2) Kahven, prizin, zamanın. 3) Burada odaklanırsın." Farklı
-sorular sorduğun hâlde bu cümleyi görüyorsan gerçek modelle konuşmuyorsun.
+- Ders boyunca **yanındakiyle birlikte** çalış: istekleri onun ekranında izle, kodu sen
+  de kendi dosyana yaz.
+- Adım 3 (`03_yaniti_coz.py`) anahtarsız da çalışır: kayıtlı bir yanıtı okur. Isınma,
+  bozuk kodlar ve sınıf alıştırması da internet istemez.
+- Hesabı **bugün** aç: kurulum yönergesinin 6. adımı (`../00-hazirlik/kurulum-yonergesi.md`).
+  Ödev için kendi anahtarın gerekiyor; Konu 4'ten itibaren her derste de gerekecek.
 
 ---
 
@@ -214,17 +220,20 @@ API_TOKEN = xyz789...
 ve **token** (sen misin). Hesap kimliği tek başına bir işe yaramaz; token ise
 gizlidir.
 
-`anahtarlari_oku()` fonksiyonu bu dosyayı satır satır okuyup bir **sözlük** döndürür:
+`01_anahtar_oku.py` bu dosyayı satır satır okuyup bir **sözlüğe** koyar:
 
 ```python
-def anahtarlari_oku(yol="../anahtar.txt"):
-    degerler = {}
-    with open(yol, encoding="utf-8") as dosya:
-        for satir in dosya:                         # dosyayı satır satır gez
-            if "=" in satir:
-                ad, _, deger = satir.partition("=")  # "=" işaretinden ikiye böl
-                degerler[ad.strip().upper()] = deger.strip()
-    return degerler
+anahtarlar = {}
+with open("../anahtar.txt", encoding="utf-8") as dosya:  # ".." = bir üst klasör
+    for satir in dosya:
+        ad, _, deger = satir.partition("=")  # "=" işaretinden ikiye böl
+        anahtarlar[ad.strip()] = deger.strip()
+
+hesap = anahtarlar["ACCOUNT_ID"]
+anahtar = anahtarlar["API_TOKEN"]
+
+print("Hesap:", hesap)
+print("Anahtar okundu.")
 ```
 
 Konu 1'de dosyayı `dosya.read()` ile tek parça okumuştuk. Burada üç yeni şey var:
@@ -234,8 +243,7 @@ Konu 1'de dosyayı `dosya.read()` ile tek parça okumuştuk. Burada üç yeni ş
   sağı. Soldaki üç değişken bu üç parçayı sırayla alır; ortadakini kullanmayacağımız
   için adı `_`.
 - `.strip()` baştaki ve sondaki boşlukları (satır sonundaki görünmez `\n` dahil)
-  siler; `.upper()` büyük harfe çevirir. Böylece `account_id = ...` diye yazsan da
-  `ACCOUNT_ID` olarak okunur.
+  siler.
 
 Tek bir satırın yolculuğunu adım adım izleyelim:
 
@@ -243,31 +251,29 @@ Tek bir satırın yolculuğunu adım adım izleyelim:
 |---|---|
 | Dosyadaki satır | `'API_TOKEN = xyz789\n'` |
 | `partition("=")` sonrası | `('API_TOKEN ', '=', ' xyz789\n')` |
-| `ad.strip().upper()` | `'API_TOKEN'` |
+| `ad.strip()` | `'API_TOKEN'` |
 | `deger.strip()` | `'xyz789'` |
-| Sözlüğe yazılan | `degerler["API_TOKEN"] = "xyz789"` |
+| Sözlüğe yazılan | `anahtarlar["API_TOKEN"] = "xyz789"` |
 
 **Neden `split` değil de `partition`?** Token'ların içinde bazen `=` işareti olur.
 `partition` sadece **ilk** eşittirden böler, gerisini değere bırakır:
 `"API_TOKEN = ab=cd"` satırından değer olarak `ab=cd` çıkar. Kırpılmış bir token
 401 hatası verirdi.
 
-**Neden `if "=" in satir`?** Dosyada boş satır ya da kendine yazdığın bir not
-olabilir. Eşittir içermeyen satırlar atlanır, program bozulmaz.
+Satır adları **harfi harfine** aranır: `anahtarlar["ACCOUNT_ID"]` büyük harfle yazılmış
+`ACCOUNT_ID` satırını bulur, `account_id` satırını bulmaz.
 
-Kullanımı:
+Anahtarı **ekrana basmıyoruz**; sadece okunduğunu söylüyoruz. Hesap kimliği (Account ID)
+tek başına bir işe yaramaz, onu basmak güvenli. Anahtar dosyasında `ACCOUNT_ID = hesap123` yazıyorsa çıktı:
 
-```python
-anahtarlar = anahtarlari_oku()
-hesap = anahtarlar["ACCOUNT_ID"]
-anahtar = anahtarlar["API_TOKEN"]
-
-print("Account ID okundu mu:", "evet" if hesap else "hayır")
-print("Token'ın ilk 6 karakteri:", anahtar[:6] + "...")
+```text
+Hesap: hesap123
+Anahtar okundu.
 ```
 
-Anahtarı **asla tam olarak** ekrana basma; sadece okunduğunu doğrula. İlk 6 karakter
-"doğru dosyayı mı okudum?" sorusuna cevap vermeye yeter, anahtarı kullanmaya yetmez.
+Sonraki dosyalar (`02`, `04`, `05`, `06`, `09`) aynı okuma satırlarıyla başlar; her
+dosya tek başına çalışsın diye. Derste bu satırları bir kez yazarız, sonra açık olan
+dosyaya eklenerek ilerleriz.
 
 ### Dosya nerede olmalı? Çalışma klasörü
 
@@ -288,24 +294,24 @@ gita3111/
     └── veri/ornek_yanit.json
 ```
 
-Terminalde `ornekler` klasörüne girip `uv run 02_ilk_istek.py` dersen iki yol da
-kayar: `..` artık `02-api-ile-konusmak` klasörünü gösterir (orada `anahtar.txt` yok,
-program demo moduna geçer), `veri/...` de `ornekler/veri/...` olarak aranır:
+Terminalde `ornekler` klasörüne girip çalıştırırsan iki yol da kayar: `..` artık
+`02-api-ile-konusmak` klasörünü gösterir (orada `anahtar.txt` yok), `veri/...` de
+`ornekler/veri/...` olarak aranır. Örneğin `03_yaniti_coz.py`:
 
 ```text
 FileNotFoundError: [Errno 2] No such file or directory: 'veri/ornek_yanit.json'
 ```
 
 Çözüm: `cd ..` ile konu klasörüne (`02-api-ile-konusmak`) dön, komutu oradan ver:
-`uv run ornekler/02_ilk_istek.py`.
+`uv run ornekler/03_yaniti_coz.py`.
 
 ### Adım 1'de sık yapılan hatalar
 
 | Ne oldu | Ne görürsün | Çare |
 |---|---|---|
-| Windows dosyayı `anahtar.txt.txt` diye kaydetti (uzantılar gizli) | `anahtar.txt bulunamadı` ya da demo modu | Dosya gezgininde "Dosya adı uzantılarını göster"i aç, fazla `.txt`'yi sil |
+| Windows dosyayı `anahtar.txt.txt` diye kaydetti (uzantılar gizli) | `FileNotFoundError: ... '../anahtar.txt'` | Dosya gezgininde "Dosya adı uzantılarını göster"i aç, fazla `.txt`'yi sil |
 | Değeri tırnak içine yazdın: `API_TOKEN = "xyz789"` | Okuma çalışır ama istek **401** döner | Tırnaklar da token'ın parçası sanılıyor; tırnakları sil |
-| Satır adında boşluk: `API TOKEN = ...` | `KeyError: 'API_TOKEN'` ya da `[UYARI]` | Alt çizgiyle yaz: `API_TOKEN` |
+| Satır adında boşluk ya da küçük harf: `API TOKEN = ...`, `api_token = ...` | `KeyError: 'API_TOKEN'` | Tam olarak `API_TOKEN` yaz: büyük harf, alt çizgi |
 | Token'ı kopyalarken son karakteri kaçırdın | **401** | Token'ı panelden yeniden üretmek en hızlısı |
 
 > **Kendini dene 2.** `anahtar.txt` dosyasının içi şu olsun:
@@ -316,7 +322,8 @@ FileNotFoundError: [Errno 2] No such file or directory: 'veri/ornek_yanit.json'
 > not: bu satırda eşittir yok
 > ```
 >
-> `anahtarlari_oku()` ne döndürür? Bu dosyayla istek atarsan ne olur?
+> `anahtarlar` sözlüğünde ne olur? `01_anahtar_oku.py` hangi satırda, hangi hatayla durur?
+> Küçük harfi düzeltsen bu dosyayla istek atınca ne olur?
 
 ---
 
@@ -334,7 +341,6 @@ Bir kargo gönderisi gibi düşünebilirsin: adres (kime gidiyor), gönderen bil
 
 ```python
 MODEL = "@cf/google/gemma-4-26b-a4b-it"
-
 adres = f"https://api.cloudflare.com/client/v4/accounts/{hesap}/ai/run/{MODEL}"
 basliklar = {"Authorization": f"Bearer {anahtar}"}
 govde = {"prompt": "Müşterilerinin sessiz bir çalışma yeri olarak anlattığı bir kafe için üç kısa slogan yaz."}
@@ -382,15 +388,21 @@ https://api.cloudflare.com  /client/v4  /accounts/{hesap}  /ai/run/{MODEL}
 
 ## Adım 2 — İsteği gönder
 
-**(anahtar gerekir)** Bu kod gerçekten internete çıkar. Anahtarın yoksa
-`02_ilk_istek.py` aynı adımları demo modunda gösterir.
+**(anahtar gerekir)** Bu kod gerçekten internete çıkar. Dosyası: `02_ilk_istek.py`.
+
+Dosyanın en üstüne iki kütüphane:
 
 ```python
-import requests
+import json
 
+import requests
+```
+
+En alta istek:
+
+```python
 cevap = requests.post(adres, headers=basliklar, json=govde, timeout=60)
 print("Durum kodu:", cevap.status_code)
-yanit = cevap.json()
 ```
 
 Satır satır:
@@ -407,7 +419,6 @@ Satır satır:
 - `cevap` bir sözlük değil, cevabın bütününü taşıyan bir nesne: durum kodu, içerik vs.
   `print(cevap)` yazarsan sadece `<Response [200]>` görürsün.
 - `status_code`: işin yolunda gidip gitmediğini söyleyen sayı. `200` her şey yolunda.
-- `cevap.json()` gelen içeriği tanıdık bir **sözlüğe** çevirir.
 
 ### Adım 2'de sık yapılan hatalar
 
@@ -453,22 +464,19 @@ veri böyle taşınır. İnternetten bir Python sözlüğü gönderemezsin, sade
 gönderebilirsin. JSON o metnin ortak biçimi: Python da, tarayıcı da, sunucu da onu
 okuyabilir.
 
-Anahtarın yoksa sunucudan gelecek yanıtın kayıtlı bir kopyasını dosyadan
-yükleyebilirsin. Aşağıdaki iki satır demo modunun yaptığı işin aynısı:
+Sunucu düz metin göndermiyor, iç içe bir sözlük gönderiyor. `02_ilk_istek.py` onu
+sözlüğe çevirip okunaklı basarak bitiyor:
 
 ```python
-import json
-
-with open("veri/ornek_yanit.json", encoding="utf-8") as dosya:
-    yanit = json.load(dosya)
-```
-
-Sunucu düz metin göndermiyor, iç içe bir sözlük gönderiyor. Görmek için ham hâlini
-okunaklı basıyoruz:
-
-```python
+yanit = cevap.json()
 print(json.dumps(yanit, ensure_ascii=False, indent=2))
 ```
+
+- `cevap.json()` gelen içeriği tanıdık bir **sözlüğe** çevirir.
+- `json.dumps` sözlüğü ekrana basılacak, girintili bir metne çevirir.
+
+Gelen yanıt şu biçimde. Bu, `veri/ornek_yanit.json` dosyasında kayıtlı duran bir yanıt;
+Adım 3'te onu okuyacağız:
 
 ```json
 {
@@ -481,8 +489,6 @@ print(json.dumps(yanit, ensure_ascii=False, indent=2))
   "messages": []
 }
 ```
-
-(Bu, demo modunun kullandığı `veri/ornek_yanit.json` dosyası.)
 
 - `ensure_ascii=False` Türkçe harfler bozulmasın diye. Yazmazsan `ılık yeşil` yerine
   `ılık yeşil` görürsün. Veri bozulmamıştır ama okunmaz.
@@ -512,7 +518,7 @@ bir metne mi)? Sonunda **s** olanlar metinle (string) çalışır.
 |---|---|---|---|
 | `json.dumps(sozluk)` | sözlük → metin | ekrana basmak için metin | ham yanıtı görmek |
 | `json.dump(sozluk, dosya)` | sözlük → metin | doğrudan dosyaya | `cevaplar.json` yazmak |
-| `json.load(dosya)` | metin → sözlük | dosyadan | demo yanıtını okumak |
+| `json.load(dosya)` | metin → sözlük | dosyadan | kayıtlı yanıtı okumak (Adım 3) |
 | `json.loads(metin)` | metin → sözlük | bir metinden | (`cevap.json()` bunu senin yerine yapar) |
 
 > **Kendini dene 4.** Sunucudan şu yanıt geldi:
@@ -530,48 +536,54 @@ bir metne mi)? Sonunda **s** olanlar metinle (string) çalışır.
 
 ## Adım 3 — Metni içinden çek
 
+`03_yaniti_coz.py` sunucuya gitmez; `veri/ornek_yanit.json` dosyasında kayıtlı duran
+bir yanıtı okur. Bu yüzden **anahtarsız da çalışır**. Konu kayıtlı bir JSON yanıtının
+içine girmek; yanıt ister sunucudan, ister dosyadan gelsin, içi aynı.
+
+```python
+with open("veri/ornek_yanit.json", encoding="utf-8") as dosya:
+    yanit = json.load(dosya)
+
+print(list(yanit.keys()))
+print(list(yanit["result"].keys()))
+```
+
+```text
+['result', 'success', 'errors', 'messages']
+['response', 'usage']
+```
+
+`keys()` bir sözlüğün anahtarlarını verir. Her satır bir sonraki adımın yolunu
+gösteriyor: en dışta `result` var, onun içinde `response` var, demek ki
+`yanit["result"]["response"]`.
+
+> **Kural:** Yanıtın yapısını bilmiyorsan önce katlarını sor, sonra içine gir.
+> Dönemin geri kalanında en çok kullanacağın alışkanlık bu.
+
+Bu kural sadece bugünkü model için değil. Konu 8'de görsel üreten bir modele, Konu 10'da
+video üreten bir modele istek atacağız; yanıtların yapısı farklı olacak. Her
+seferinde aynı yöntemle keşfedeceğiz: katları tek tek sorarak.
+
 ```python
 metin = yanit["result"]["response"]
 print(metin)
+
+kullanim = yanit["result"]["usage"]
+print("Harcanan belirteç:", kullanim["total_tokens"])
+```
+
+```text
+1) Sessizliğin adresi. 2) Kahven, prizin, zamanın. 3) Burada odaklanırsın.
+Harcanan belirteç: 46
 ```
 
 - İki kat içeri giriyoruz: önce `result`, sonra `response`.
 - `yanit["response"]` yazarsan **KeyError** alırsın; bu konunun en sık hatası.
 - `errors` bir **liste**; ilk hatanın mesajı: `yanit["errors"][0]["message"]`.
 
-> **Kural:** Yanıtın yapısını bilmiyorsan önce ham hâlini bas, sonra içine gir.
-> Dönemin geri kalanında en çok kullanacağın alışkanlık bu.
-
-Bu kural sadece bugünkü model için değil. Konu 8'de görsel üreten bir modele, Konu 10'da
-video üreten bir modele istek atacağız; yanıtların yapısı farklı olacak. Her
-seferinde aynı yöntemle keşfedeceğiz: `03_yaniti_coz.py` dosyasının yaptığı gibi
-katları tek tek sorarak.
-
-```python
-print("En dıştaki anahtarlar:", list(yanit.keys()))
-print("result'ın türü       :", type(yanit["result"]).__name__)
-print("result'ın anahtarları:", list(yanit["result"].keys()))
-```
-
-```text
-En dıştaki anahtarlar: ['result', 'success', 'errors', 'messages']
-result'ın türü       : dict
-result'ın anahtarları: ['response', 'usage']
-```
-
-`dict` Python'da sözlüğün adı. Her satır bir sonraki adımın yolunu gösteriyor:
-`result` bir sözlük, içinde `response` var, demek ki `yanit["result"]["response"]`.
-
 ### Kaç belirteç harcadık?
 
-Aynı yöntemle üç kat içeri:
-
-```python
-kullanim = yanit["result"]["usage"]
-print("Soru     :", kullanim["prompt_tokens"], "belirteç")
-print("Cevap    :", kullanim["completion_tokens"], "belirteç")
-print("Toplam   :", kullanim["total_tokens"], "belirteç")
-```
+`usage` üç sayı tutar; dosya yalnızca toplamı basıyor:
 
 - `prompt_tokens`: senin sorun kaç parçaya bölündü.
 - `completion_tokens`: modelin cevabı kaç parça tuttu.
@@ -588,14 +600,14 @@ kelime_sayisi = len(metin.split())
 print("Cevap:", kelime_sayisi, "kelime,", kullanim["completion_tokens"], "belirteç")
 ```
 
-Demo yanıtında `split()` 10 kelime sayıyor (numaralar dahil), model ise 22 belirteç.
+Kayıtlı yanıtta `split()` 10 kelime sayıyor (numaralar dahil), model ise 22 belirteç.
 Yani bir kelime ortalama iki parçadan fazla. Türkçede kelimeler eklerle uzadığı için (`odaklanırsın`,
 `sessizliğin`) bir kelime çoğu zaman birkaç parçaya bölünür. Kendi anahtarınla
 kendi sorunun sayılarına bak; Konu 5'te bunun neden önemli olduğunu göreceğiz.
 
 ---
 
-## Hata kodları
+## Adım 4 — Hata kodları
 
 Durum kodları üç haneli sayılardır ve **ilk hane** sana kimin tarafına bakacağını
 söyler:
@@ -624,8 +636,26 @@ yüzden koda ek olarak **sunucunun kendi açıklamasını** da oku: `errors` lis
 
 ### 401'i canlı görmek
 
-Derste kasten yanlış anahtarla 401 hatası ürettik (`04_hata_kodlari.py`). Sunucunun
-gönderdiği yanıt şuna benzer:
+**(anahtar gerekir)** `04_hata_kodlari.py` hesap kimliğini dosyadan okur ama başlığa
+kasten **sahte** bir anahtar koyar, sonra durum koduna bakar:
+
+```python
+sahte_basliklar = {"Authorization": "Bearer bu-anahtar-sahte"}
+
+cevap = requests.post(adres, headers=sahte_basliklar, json={"prompt": "merhaba"}, timeout=60)
+
+if cevap.status_code == 200:
+    print(cevap.json()["result"]["response"])
+else:
+    print("İstek başarısız:", cevap.status_code)
+    print(cevap.text)
+```
+
+- `if cevap.status_code == 200:` önce durum koduna bakar; ancak 200 ise içine girer.
+- `cevap.text` sunucunun gönderdiği ham metindir; sözlüğe çevrilmemiş hâli. Hata
+  açıklaması orada yazar.
+
+Sunucunun gönderdiği yanıt şuna benzer:
 
 ```json
 {
@@ -649,24 +679,15 @@ olmuş**. Asıl sebep bir önceki satırda: durum kodu 200 değildi.
 
 ### Yanıtı okuma sırası
 
-Bu yüzden bir yanıtı her zaman aynı sırayla okuruz:
+`04_hata_kodlari.py`'deki `if` bir yanıtı okuma sırasının ta kendisi:
 
-1. **Durum koduna bak.** 200 değilse içine girme; kodu ve `errors` mesajını bas.
+1. **Durum koduna bak.** 200 değilse içine girme; kodu ve sunucunun mesajını bas.
 2. **200 ise** `result` katına, oradan `response`'a in.
 
-```python
-if cevap.status_code == 200:
-    metin = cevap.json()["result"]["response"]
-    print(metin)
-else:
-    print("İstek başarısız:", cevap.status_code)
-    print(cevap.text[:300])
-```
+### İstersen: kodu açıklamaya çevirmek
 
-### Hatayı kodla karşılamak
-
-Her koda bir açıklama yazan bir sözlük ve Konu 1'deki `.get` kalıbı yeterli
-(dosyadaki sözlük tablodaki bütün kodları içerir; burada kısaltıldı):
+Her koda bir açıklama yazan bir sözlük ve Konu 1'deki `.get` kalıbı yeterli. Örnek
+dosyada yok; istersen `04`'ün kopyasına ekleyebilirsin:
 
 ```python
 HATA_SOZLUGU = {
@@ -674,12 +695,8 @@ HATA_SOZLUGU = {
     401: "Yetki yok. Anahtarı kontrol et.",
     429: "Kota doldu. 00:00 UTC'de sıfırlanır.",
 }
-
-def acikla(kod):
-    return HATA_SOZLUGU.get(kod, "Tanımadığım bir kod.")   # varsa açıklama, yoksa yedek cümle
-
-print(acikla(401))
-print(acikla(418))
+print(HATA_SOZLUGU.get(401, "Tanımadığım bir kod."))
+print(HATA_SOZLUGU.get(418, "Tanımadığım bir kod."))
 ```
 
 ```text
@@ -691,8 +708,8 @@ Tanımadığım bir kod.
 program durmasın diye yedek cümleyi döndürür.
 
 > **Kendini dene 5.** Her durumda ne görürsün, ne yaparsın?
-> (a) Akşam 50 soruluk bir döngü çalıştırdın; 38. sorudan sonra bütün cevaplar
->     `[HATA 429]`.
+> (a) Akşam 50 soruluk bir döngü çalıştırdın; 38. sorudan sonra her isteğin durum
+>     kodu `429`.
 > (b) Panelden yeni token ürettin, eskisini sildin ama `anahtar.txt` dosyasını
 >     güncellemeyi unuttun.
 > (c) Wi-Fi kapalıyken programı çalıştırdın.
@@ -700,53 +717,40 @@ program durmasın diye yedek cümleyi döndürür.
 
 ---
 
-## Adım 4 — Soruyu fonksiyona koy
+## Adım 5 — Soruyu fonksiyona koy
 
-Şimdiye kadar yazdığımız dağınık adımları (adres, başlık, gövde, gönder, kontrol
-et, metni çek) tek isim altında topluyoruz:
+**(anahtar gerekir)** `05_soru_sor.py`, `02`'deki gibi anahtarı okuyup `adres` ve
+`basliklar`'ı hazırlayarak başlar. Sonra iki adımı (gönder, metni çek) tek isim
+altında topluyoruz:
 
 ```python
-def modele_sor(soru, hesap, anahtar):
-    """Soruyu modele gönderir, cevabın METNİNİ döndürür."""
-    adres = f"https://api.cloudflare.com/client/v4/accounts/{hesap}/ai/run/{MODEL}"
-    basliklar = {"Authorization": f"Bearer {anahtar}"}
+def modele_sor(soru):
     cevap = requests.post(adres, headers=basliklar, json={"prompt": soru}, timeout=60)
-    if cevap.status_code != 200:
-        return f"[HATA {cevap.status_code}]"
     return cevap.json()["result"]["response"]
 ```
-
-Tam hâli `05_soru_sor.py` içinde.
 
 **Neden fonksiyon?** Az sonra aynı işi beş kez, ileride elli kez yapacağız. Beş
 satırı her soru için kopyalamak hem uzun hem tehlikeli: birinde `Bearer`'ın
 boşluğunu unutursun, beşten biri bozulur. Fonksiyonda bir kez doğru yazarsın, hep
 doğru çalışır.
 
-**Neden `hesap` ve `anahtar` parametre?** Fonksiyonun içine anahtarı yazsaydık
-(`anahtar="cf_..."`) anahtar koda gömülmüş olurdu. Parametre olunca fonksiyon
-anahtarı bilmez; kim çağırırsa o verir. `07_bozuk_kodlar.py` dosyasının 4.
-sorusu tam olarak bunu düzeltiyor.
+**`adres` ve `basliklar` nereden geliyor?** Fonksiyonun dışında, dosyanın üstünde bir
+kez hazırlandılar; fonksiyon onları oradan kullanıyor. Fonksiyona yalnızca her
+seferinde değişen şeyi, yani soruyu veriyoruz. Anahtar yine koda yazılmıyor:
+dosyadan okunuyor.
 
-**Neden hata olunca metin döndürüyor?** Fonksiyon hata kodunu görünce durmuyor,
-`"[HATA 401]"` gibi bir metin döndürüyor. Böylece beş soruluk bir döngüde tek
-bir soru başarısız olursa diğer dördü yine sorulur. Bedeli şu: hata metni de
-cevap gibi dosyaya yazılır. Dosyayı açtığında `[HATA` ile başlayan cevaplara bak.
+**İstek başarısız olursa?** Fonksiyon durum koduna bakmıyor. Kota bitmişse ya da
+anahtar yanlışsa `result` boş gelir ve program
+`TypeError: 'NoneType' object is not subscriptable` ile durur. Böyle bir hata görürsen
+Adım 4'e dön: `04_hata_kodlari.py`'deki `if` ile durum koduna bak.
 
-**Kullanımı (anahtar gerekir):** artık tek satırla soru sorabiliriz:
+Artık tek satırla soru sorabiliriz: `modele_sor("Sessiz bir çalışma kafesi için üç renk öner.")`.
 
-```python
-metin = modele_sor("Sessiz bir çalışma kafesi için üç renk öner.", hesap, anahtar)
-print(metin)
-```
-
----
-
-## Adım 5 — Konunun çıktısı
+### Konunun çıktısı
 
 ```python
 soru = input("Modele ne sormak istiyorsun? ")
-metin = modele_sor(soru, hesap, anahtar)
+metin = modele_sor(soru)
 print(metin)
 
 with open("cevap.txt", "w", encoding="utf-8") as dosya:
@@ -755,46 +759,44 @@ with open("cevap.txt", "w", encoding="utf-8") as dosya:
 
 - `input()` programı durdurup senden bir satır bekler; yazdığın metni döndürür.
 - Cevap hem ekrana hem Konu 1'deki gibi dosyaya yazılır.
-- `\n` satır sonu demek; `\n\n` araya boş bir satır koyar. `cevap.txt` şöyle görünür:
+- `\n` satır sonu demek; `\n\n` araya boş bir satır koyar. `cevap.txt` şu biçimde
+  olur (cevap kısmı modelin yazdığı metin):
 
 ```text
 SORU: Sessiz bir çalışma kafesi için üç renk öner.
 
 CEVAP:
-Koyu yeşil, kırık beyaz, meşe tonu: ...
+...
 ```
 
 - `"w"` kipi dosyayı **her seferinde sıfırdan** yazar. Programı ikinci kez
   çalıştırırsan ilk cevap silinir. Bunu bilerek seçtik: `cevap.txt` hep son soruyu
   tutar. Bütün cevapları biriktirmek Adım 6'nın işi.
 
-Anahtarın yoksa `05_soru_sor.py` yine sorunu alır, kayıtlı cevabı dosyaya yazar;
-böylece akışın tamamını görebilirsin.
-
 ---
 
 ## Adım 6 — Aynı işi beş kez yap
 
-`06_coklu_soru.py` soruları `veri/ornek_sorular.txt` dosyasından satır satır
+**(anahtar gerekir)** `06_coklu_soru.py`, `05` gibi anahtarı okuyup `modele_sor`'u
+tanımlayarak başlar. Sonra soruları `veri/ornek_sorular.txt` dosyasından satır satır
 okuyup `sorular` listesine koyar. Hazır dosyadaki beş soru aynı konuda: Konu 1'in
 bulgusuyla, sessiz bir çalışma kafesinin yeni kimliği (slogan, renk, yazı tipi,
 gönderi fikri, kaçınılacak klişeler). Kendi sorularını sormak için bu iki dosyayı
 değiştirme, kopyala: soru dosyasını `veri` klasöründe, `06_coklu_soru.py`'yi `ornekler`
-klasöründe yeni bir adla kopyala. Sorularını kopyaya yaz, `06`'nın kopyasında da başındaki
-`SORULAR_DOSYASI` satırının yolunu yeni dosyana çevir. Depodaki dosyalara dokunmazsan
+klasöründe yeni bir adla kopyala. Sorularını kopyaya yaz, `06`'nın kopyasında da
+`open("veri/ornek_sorular.txt", ...)` satırındaki yolu yeni dosyana çevir. Depodaki dosyalara dokunmazsan
 `git pull` çakışmaz.
 
 ```python
 sorular = []
 with open("veri/ornek_sorular.txt", encoding="utf-8") as dosya:
-    for satir in dosya:                    # her satır bir soru
-        if satir.strip():                  # boş satırları atla
-            sorular.append(satir.strip())
+    for satir in dosya:  # her satır bir soru
+        sorular.append(satir.strip())
 
 kayitlar = []
 for soru in sorular:
-    metin = modele_sor(soru, hesap, anahtar)
-    kayitlar.append({"soru": soru, "cevap": metin})
+    print(soru)
+    kayitlar.append({"soru": soru, "cevap": modele_sor(soru)})
 
 with open("cevaplar.json", "w", encoding="utf-8") as dosya:
     json.dump(kayitlar, dosya, ensure_ascii=False, indent=2)
@@ -802,8 +804,8 @@ with open("cevaplar.json", "w", encoding="utf-8") as dosya:
 
 - Her soru–cevap çifti bir sözlük; bunların her birine **kayıt** diyoruz. Sonuç bir
   **liste** içinde **sözlükler**. Konu 3'ten itibaren veri hep bu biçimde gelecek.
-- Dosya her istekten sonra 1 saniye bekler (`time.sleep`), sunucuyu yormamak için.
-  Art arda çok hızlı istek atan programları sunucu **429** ile durdurabilir.
+- `print(soru)` sadece ilerlemeyi görmek için: beş istek birkaç saniye sürer.
+- Soru dosyasında boş satır bırakma: boş satır da bir "soru" olarak modele gider.
 - `json.dumps` (sonunda **s**) sözlüğü metne çevirip ekrana basmak içindi;
   `json.dump` doğrudan **dosyaya** yazar. İkinci bilgiyi, yani dosyayı vermeyi
   unutursan: `TypeError: dump() missing 1 required positional argument: 'fp'`
@@ -812,44 +814,53 @@ with open("cevaplar.json", "w", encoding="utf-8") as dosya:
   Sohbet penceresine elli soruyu tek tek yapıştırıp cevapları tek tek kopyalamayı
   düşün.
 
-`cevaplar.json` dosyasının içi şöyle görünür:
+`cevaplar.json` dosyasının biçimi (cevaplar modelin yazdığı metinler):
 
 ```json
 [
   {"soru": "Müşterilerinin sessiz bir çalışma yeri ... üç kısa slogan yaz.",
-   "cevap": "1) Sessizliğin adresi. 2) Kahven, prizin, zamanın. ..."},
+   "cevap": "..."},
   {"soru": "Sessiz bir çalışma kafesinin logosu için hangi üç rengi önerirsin, neden?",
-   "cevap": "Koyu yeşil, kırık beyaz, meşe tonu: ..."}
+   "cevap": "..."}
 ]
 ```
 
 ### Kaydettiğini geri oku
 
-Dosyaya yazmanın asıl faydası, sonradan açıp üzerinde çalışabilmek. Aşağıdaki kod
-`cevaplar.json`'u okur ve her cevabın kaç kelime olduğunu yazar:
+Dosyaya yazmanın asıl faydası, sonradan açıp üzerinde çalışabilmek. Bonus dosya
+`08_cevap_raporu.py` `cevaplar.json`'u okur ve her cevabın kaç kelime olduğunu yazar:
 
 ```python
 with open("cevaplar.json", encoding="utf-8") as dosya:
-    okunan = json.load(dosya)
-
-for kayit in okunan:
-    print(len(kayit["cevap"].split()), "kelime —", kayit["soru"][:45])
+    kayitlar = json.load(dosya)
 ```
 
-- `for kayit in okunan` her adımda bir **sözlük** verir, metin değil. Bu yüzden
+```python
+butun_metin = ""
+for kayit in kayitlar:
+    print(len(kayit["cevap"].split()), "kelime:", kayit["soru"])
+    butun_metin = butun_metin + " " + kayit["cevap"]
+```
+
+Döngü her cevabın kelime sayısını basarken bütün cevapları da tek bir metinde
+birleştiriyor.
+
+- `for kayit in kayitlar` her adımda bir **sözlük** verir, metin değil. Bu yüzden
   `kayit.split()` değil, `kayit["cevap"].split()`. (Sınıf alıştırmasının 3. sorusu
   bu hatayı arıyor.)
 - Gerçek modelle çalıştırınca cevap uzunlukları çok farklı çıkar: slogan sorusuna
   birkaç satır, gönderi fikri sorusuna uzun bir liste. Hangi soruya ne kadar
   uzun cevap geldiğine bakmak, hangi sorunun modeli "konuşturduğunu" gösterir.
-- Demo modunda beş satırın beşi de aynı sayıyı verir. Sebebini artık biliyorsun.
 
-Bonus: `08_cevap_raporu.py` aynı dosyadan Konu 1'deki kelime bulutunu üretir
-(`cevaplar-bulutu.png`). Kendi metnin değil, modelin yazdığı metin hangi kelimelere
-yaslanıyor?
+`08` sonra aynı metinden Konu 1'deki kelime bulutunu üretir (`cevaplar-bulutu.png`).
+Bu kez `WordCloud`'a sayacı değil metnin kendisini veriyoruz (`generate`); durak
+kelimeleri `stopwords=` ile kütüphane eler. Kendi metnin değil, modelin yazdığı metin
+hangi kelimelere yaslanıyor?
 
-> **Kendini dene 6.** `cevaplar.json` dosyanı açtın; beş kaydın beşinde de `cevap`
-> aynı. Bunun iki olası sebebi ne, hangisi olduğunu nasıl anlarsın?
+> **Kendini dene 6.** `06_coklu_soru.py`'yi çalıştırdın; üçüncü sorudan sonra program
+> `TypeError: 'NoneType' object is not subscriptable` ile durdu ve `cevaplar.json`
+> hiç oluşmadı. (a) İlk iki soru sorulmuştu; dosya neden yine de yok? (b) Sorunun ne
+> olduğunu nasıl öğrenirsin?
 
 ---
 
@@ -859,7 +870,7 @@ Buraya kadar hep aynı uzun soruyu sorduk: "Müşterilerinin sessiz bir çalış
 olarak anlattığı bir kafe için üç kısa slogan yaz." Neden sadece "Bir kafe için üç
 kısa slogan yaz" demedik?
 
-`09_baglam_farki.py` bu soruyu ölçüyor. Aynı isteği iki biçimde soruyor:
+**(anahtar gerekir)** `09_baglam_farki.py` bu soruyu ölçüyor. Aynı isteği iki biçimde soruyor:
 
 | Tür | Soru |
 |---|---|
@@ -867,66 +878,51 @@ kısa slogan yaz" demedik?
 | **bağlamlı** | Müşterilerinin sessiz bir çalışma yeri olarak anlattığı bir kafe için üç kısa slogan yaz. |
 
 Her soruyu **üç kez** soruyor, çünkü model aynı soruya her seferinde başka cümleler
-kurar; tek bir cevaba bakıp karar vermek yanıltıcı olur. Sonra cevaplarda iki grup
-kelimeyi sayıyor: kahve klişeleri (`kahve`, `fincan`, `aroma`...) ve çalışma yerini
-anlatan kelimeler (`sessiz`, `odak`, `priz`...).
-
-Sayma işi Konu 1'deki sayacın kardeşi:
+kurar; tek bir cevaba bakıp karar vermek yanıltıcı olur. Cevapları iki uzun metinde
+biriktiriyor, ikisini de ekrana basıyor, sonra listedeki her kelimenin iki metinde kaç
+kez geçtiğini sayıyor. Listenin ilk yarısı kahve klişeleri (`kahve`, `fincan`,
+`aroma`...), ikinci yarısı çalışma yerini anlatan kelimeler (`sessiz`, `odak`, `priz`...).
 
 ```python
-def turkce_kucult(metin):
-    return metin.replace("I", "ı").replace("İ", "i").lower()
+KELIMELER = ["kahve", "fincan", "aroma", "köpü", "yudum", "sessiz", "odak", "çalış", "priz", "sakin"]
 
+baglamsiz = ""
+baglamli = ""
+for _ in range(3):  # model her seferinde başka cümle kurar; üçer kez soruyoruz
+    baglamsiz = baglamsiz + modele_sor("Bir kafe için üç kısa slogan yaz.") + "\n"
+    baglamli = baglamli + modele_sor("Müşterilerinin sessiz bir çalışma yeri olarak anlattığı bir kafe için üç kısa slogan yaz.") + "\n"
 
-def kelime_say(cevaplar, kelimeler):
-    """Cevaplarda, listedeki kelimelerin toplam kaç kez geçtiğini sayar."""
-    toplam = 0
-    for cevap in cevaplar:
-        kucuk = turkce_kucult(cevap)
-        for kelime in kelimeler:
-            toplam = toplam + kucuk.count(kelime)
-    return toplam
+print(baglamsiz)
+print(baglamli)
 
-
-KLISE = ["kahve", "fincan", "çekirdek", "aroma", "köpü", "yudum"]
-ornek = ["Güne bir fincan kahveyle başla.", "Köpüğü bol, sohbeti koyu."]
-print(kelime_say(ornek, KLISE))
+for kelime in KELIMELER:
+    print(kelime, baglamsiz.lower().count(kelime), baglamli.lower().count(kelime))
 ```
 
-```text
-3
-```
-
+- `for _ in range(3)` döngüyü üç kez döndürür; sayaca ihtiyacımız olmadığı için adı `_`.
 - `metin.count(kelime)` bir metnin içinde başka bir metnin kaç kez geçtiğini sayar.
   Kelimenin sadece **başını** yazıyoruz: `kahve` hem `kahve`yi hem `kahveyle`yi
   yakalar.
 - Listede neden `köpük` değil de `köpü` var? Türkçede ek alınca `k` harfi `ğ` olur:
   `köpük` → `köpüğü`. `köpük` diye arasaydık `Köpüğü bol` cümlesini kaçırırdık.
-- Konu 1'deki `turkce_kucult` burada da gerekli: `lower()` büyük `I`'yı `i` yapar,
-  Türkçede ise `ı` olmalı.
+- Son döngünün her satırı üç şey basar: kelime, bağlamsız cevaplarda kaç kez geçtiği,
+  bağlamlı cevaplarda kaç kez geçtiği.
+- `lower()` Türkçe `I`'yı `ı` değil `i` yapar (Konu 1'deki sorun). Listedeki
+  kelimelerde `ı` olmadığı için burada sorun çıkarmaz.
 
-`09_baglam_farki.py` dosyasının demo modunda (kayıtlı örnek cevaplarla,
-`veri/baglam_ornek_cevaplar.json`) çıktısı:
+**Bulguyu kendi sayılarınla kur.** Bağlamsız cevaplarda kahve kelimeleri mi çok?
+Bağlamlı cevaplarda `sessiz`, `odak`, `priz` geçiyor mu? Beklenen örüntü şu: bulguyu
+söylemezsen model "ortalama bir kafe"yi anlatır; Konu 1'de 30 yorumu sayarak
+bulduğumuz şey (müşteri buraya çalışmaya geliyor) ancak soruya yazınca cevaba girer.
+Model senin kafeni tanımıyor; ona ne söylersen onu biliyor. Soruyu yazmak, bir brief
+yazmak gibi bir tasarım işi.
 
-```text
---- Sayım (3'er cevapta) ---
-               kahve klişesi    çalışma yeri
-bağlamsız                 11               0
-bağlamlı                   1              12
-```
-
-**Bulgu:** Bulguyu söylemeyince model "ortalama bir kafe"yi anlatıyor: kahve, fincan,
-aroma. Konu 1'de 30 yorumu sayarak bulduğumuz şey (müşteri buraya çalışmaya geliyor)
-ancak soruya yazınca cevaba giriyor. Model senin kafeni tanımıyor; ona ne söylersen
-onu biliyor. Soruyu yazmak, bir brief yazmak gibi bir tasarım işi.
-
-Bu sonuç kayıtlı örnek cevaplardan. Kendi anahtarınla çalıştır ve kendi sayılarına
-bak: aynı örüntü çıkıyor mu? Çıkmıyorsa cevapları oku; belki model başka klişelere
+Örüntü senin sayılarında çıkmıyorsa cevapları oku; belki model başka klişelere
 (`sıcak`, `sohbet`) yaslanıyor ve listeye eklemen gerekiyor.
 
-**Sayımın sınırı:** Bağlamlı cevaplarda sayım bir kahve klişesi buldu: "Kahven,
-prizin, zamanın." Ama bu cümle kahveyi övmüyor, kahveyi çalışma düzeninin bir
-parçası olarak anıyor. Sayım yön gösterir; kararı cevapları okuyarak sen verirsin.
+**Sayımın sınırı:** "Kahven, prizin, zamanın." gibi bir cümle sayımda bir `kahve`
+olarak görünür, ama kahveyi övmüyor; çalışma düzeninin bir parçası olarak anıyor.
+Sayım yön gösterir; kararı cevapları okuyarak sen verirsin.
 
 Ödevdeki soru ("beş cevaptan hangisi işe yaramazdı, neden?") buraya bağlanıyor:
 işe yaramayan bir cevabın sebebi çoğu zaman modelde değil, **soruda** eksik kalan
@@ -947,21 +943,23 @@ bağlamdadır.
 | 1 | Anahtarı okuduk | `hesap`, `anahtar` | `01_anahtar_oku.py` |
 | 2 | İsteği kurup gönderdik | `yanit` | `02_ilk_istek.py` |
 | 3 | Metni çektik, belirteç saydık | `metin` | `03_yaniti_coz.py` |
-| — | Hata kodlarını tanıdık | `HATA_SOZLUGU`, `acikla()` | `04_hata_kodlari.py` |
-| 4–5 | Fonksiyona sardık, soru alıp kaydettik | `modele_sor()`, `cevap.txt` | `05_soru_sor.py` |
+| 4 | Hata kodunu okuduk | `if cevap.status_code == 200` | `04_hata_kodlari.py` |
+| 5 | Fonksiyona sardık, soru alıp kaydettik | `modele_sor()`, `cevap.txt` | `05_soru_sor.py` |
 | 6 | Döngüye soktuk | `cevaplar.json` | `06_coklu_soru.py` |
-| 7 | Bağlamın etkisini ölçtük | kahve klişesi / çalışma yeri sayımı | `09_baglam_farki.py` |
+| 7 | Bağlamın etkisini ölçtük | kelime sayımı | `09_baglam_farki.py` |
 
 Her dosyayı konunun klasöründen (`02-api-ile-konusmak`) çalıştır:
 `uv run ornekler/01_anahtar_oku.py`. Ürettikleri dosyalar (`cevap.txt`, `cevaplar.json`)
 de bu klasöre yazılır.
 
-`05`, `06` ve `09`, önceki dosyalardaki fonksiyonları kendi içlerinde tekrar içerir;
-her dosya tek başına çalışsın diye. Kendi programında bunları yeniden yazmana gerek yok.
+`02`, `04`, `05`, `06` ve `09` aynı anahtar okuma satırlarıyla; `06` ve `09` ayrıca
+`05`'teki `modele_sor` fonksiyonuyla başlar. Her dosya tek başına çalışsın diye böyle.
+Kendi programında bunları yeniden yazmana gerek yok.
 
 Derste kendi başına dolduracağın alıştırma: `alistirma/sinif_alistirmasi.py`.
-Ek alıştırma: `07_bozuk_kodlar.py` (beş bozuk kod; anahtar gerekmez, vizedeki soru
-tipine benzer). Bonus: `08_cevap_raporu.py` (cevaplarından kelime bulutu, Konu 1'in
+Ek alıştırma: `07_bozuk_kodlar.py` (beş bozuk parça; anahtar gerekmez, vizedeki soru
+tipine benzer). Dosya ilk çalıştırmada hata verir; parçaları sırayla düzelt, her
+düzeltmeden sonra yeniden çalıştır. Depodaki dosyayı değil, yeni bir adla kopyasını düzelt. Bonus: `08_cevap_raporu.py` (cevaplarından kelime bulutu, Konu 1'in
 kodu yeni veriyle). Önce `06` çalışmış olmalı; çıktısı `cevaplar-bulutu.png`.
 
 ---
@@ -970,11 +968,10 @@ kodu yeni veriyle). Önce `06` çalışmış olmalı; çıktısı `cevaplar-bulu
 
 | Ne görüyorsun | Sebebi | Ne yapmalı |
 |---|---|---|
-| `anahtar.txt bulunamadı` | Hesap açılmamış, dosya yanlış klasörde ya da adı `anahtar.txt.txt` | Demo moduyla devam et; dosyayı `gita3111` klasörüne (konu klasörlerinin bir üstüne) koy, uzantıyı kontrol et; komutu konu klasöründen verdiğinden emin ol |
+| `FileNotFoundError: ... '../anahtar.txt'` | Hesap açılmamış, dosya yanlış klasörde ya da adı `anahtar.txt.txt` | Dosyayı `gita3111` klasörüne (konu klasörlerinin bir üstüne) koy, uzantıyı kontrol et; komutu konu klasöründen verdiğinden emin ol. Anahtarın yoksa derste yanındakiyle çalış |
 | `FileNotFoundError: ... 'veri/...'` | Komutu yanlış klasörden verdin | `cd` ile konu klasörüne (`02-api-ile-konusmak`) geç |
 | `ModuleNotFoundError: No module named 'requests'` | Dosyayı `uv run` yerine `python` ile ya da konu klasörünün dışından çalıştırdın | Konu klasöründe `uv run ...`; olmazsa orada `uv sync` |
-| `[UYARI] anahtar.txt var ama ... okunamadı` | Dosyada `ACCOUNT_ID` ya da `API_TOKEN` satırı eksik | Dosyayı Adım 1'deki biçime göre düzelt |
-| Beş soruya beş aynı cevap | Demo modundasın | Gerçek anahtarla çalıştır |
+| `KeyError: 'ACCOUNT_ID'` ya da `KeyError: 'API_TOKEN'` | Dosyada o satır yok ya da adı farklı yazılmış (küçük harf, boşluk) | Dosyayı Adım 1'deki biçime göre düzelt |
 | `KeyError: 'response'` | Bir kat atlandı | `yanit["result"]["response"]`; emin değilsen önce ham yanıtı bas |
 | `TypeError: list indices must be integers or slices, not str` | `errors` listesini adla açtın | `yanit["errors"][0]["message"]` |
 | `TypeError: 'NoneType' object is not subscriptable` | İstek başarısız, `result` boş | Önce durum koduna bak |
@@ -1033,7 +1030,6 @@ kodu yeni veriyle). Önce `06` çalışmış olmalı; çıktısı `cevaplar-bulu
 | **Neuron** | Cloudflare'in ücretsiz kotayı ölçtüğü birim; günde 10.000 |
 | **Kota** | Bir günde kullanabileceğin ücretsiz harcama sınırı |
 | **Zaman aşımı (timeout)** | Cevap için beklenecek en uzun süre; burada 60 saniye |
-| **Demo modu** | Anahtar yokken kayıtlı bir cevapla çalışma; kod aynı, cevap kutudan |
 | **Bağlam** | Soruya eklediğin ve modelin bilmediği bilgi; burada Konu 1'in bulgusu |
 | **Kayıt** | Tek bir soru–cevap çifti; bir sözlük |
 
@@ -1041,15 +1037,19 @@ kodu yeni veriyle). Önce `06` çalışmış olmalı; çıktısı `cevaplar-bulu
 
 ## Kendini dene — cevaplar
 
-**1.** (a) `YANIT["result"]["usage"]["completion_tokens"]` → `2`.
+**1.** (a) `yanit["result"]["usage"]["completion_tokens"]` → `2`.
 (b) `IndexError: list index out of range`. `errors` listesi boş; sıfırıncı eleman
 bile yok. (c) `KeyError: 'usage'`. `usage` en dıştaki sözlükte değil, `result`
 içinde; bir kat atlandı.
 
-**2.** `{"ACCOUNT_ID": "a1b2", "API_TOKEN": '"xyz789"'}`. Küçük harfli `account_id`
-büyük harfe çevrilir; eşittir içermeyen not satırı atlanır. Ama token'ın değeri
-tırnaklarla birlikte okunur: `"xyz789"`. İstek atarsan sunucu tırnaklı token'ı
-tanımaz ve **401** döner. Çare: tırnakları sil.
+**2.** Sözlük şu olur:
+`{'account_id': 'a1b2', 'API_TOKEN': '"xyz789"', 'not: bu satırda eşittir yok': ''}`.
+Eşittir içermeyen not satırı da sözlüğe girer (değeri boş), ama zararsızdır. Program
+`hesap = anahtarlar["ACCOUNT_ID"]` satırında `KeyError: 'ACCOUNT_ID'` ile durur:
+satır adı küçük harfle yazıldığı için `ACCOUNT_ID` diye bir anahtar yok. Adı
+düzeltsen bile token'ın değeri tırnaklarla birlikte okunur: `"xyz789"`. İstek atarsan
+sunucu tırnaklı token'ı tanımaz ve **401** döner. Çare: adı büyük harfle yaz,
+tırnakları sil.
 
 **3.** (a) Başlık: `Bearer`'dan sonra boşluk yok, sunucuya `Bearerxyz...` gider →
 **401**. (b) Adres: baştaki `f` yok; adrese hesap kimliği yerine `{hesap}` yazısı
@@ -1062,15 +1062,16 @@ sunucu soruyu `prompt` alanında bekliyor, `soru` alanını tanımıyor → **40
 alanına bakmak gerekirdi.
 
 **5.** (a) **429**: günlük kota bitti. Türkiye saatiyle 03:00'te sıfırlanır.
-Döngüyü küçült, soruları kısalt; bu sırada demo moduyla çalışmaya devam edebilirsin.
+Döngüyü küçült, soruları kısalt; kota dolunca beklemekten başka çare yok.
 (b) **401**: eski token silindiği için artık geçersiz. `anahtar.txt`'yi güncelle.
 (c) Durum kodu gelmez, program `ConnectionError` ile durur; istek sunucuya hiç
 ulaşmadı. (d) **500** sunucu tarafı demek; kodunu değiştirme, biraz sonra tekrar dene.
 
-**6.** Birinci ihtimal: demo modundasın. Ekranın başında `[DEMO MODU]` ya da
-`[UYARI]` satırı olur, cevap da "Sessizliğin adresi..." diye başlar. İkinci ihtimal:
-her istek aynı hatayı aldı. O zaman beş cevabın beşi de `[HATA 401]` ya da
-`[HATA 429]` gibi `[HATA` ile başlar; koda göre hata kodları tablosuna bak.
+**6.** (a) `json.dump` döngüden **sonra** geliyor. Döngü üçüncü soruda hatayla
+durunca program o satıra hiç ulaşmadı; ilk iki cevap sadece bellekteydi ve kayboldu.
+(b) Hata `result`'ın boş geldiğini söylüyor, yani istek başarısız oldu. Sebebi durum
+kodunda: `04_hata_kodlari.py`'deki gibi `cevap.status_code`'u bas (ya da `modele_sor`'a
+o `if`'i ekle). 429 ise kota bitmiştir, 401 ise anahtar yanlıştır.
 
 **7.** (a) O cevabı klişesiz sayardı; "yudum" kahveyi doğrudan söylemeden anıyor.
 Sayım sadece listede yazan kelimeleri görür; listeyi cevapları okuyarak genişletmek
@@ -1093,7 +1094,7 @@ senin veriden bulduğun bir bilgiyi eklemek.
 İkinci parça **Konu 3'ün verisi**. Yapılmazsa eğitecek veri olmaz. Doğru cevap
 yok; herkesin etiketi farklı olacak, mesele de bu.
 
-Birinci parça gerçek anahtar ister: demo modunda beş soruya aynı cevap gelir.
+Birinci parça gerçek anahtar ister.
 
 ## Sonraki konu
 
