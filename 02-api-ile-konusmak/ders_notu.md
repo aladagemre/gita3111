@@ -274,7 +274,7 @@ with open("../anahtar.txt", encoding="utf-8") as dosya:
 
 hesap = anahtarlar["ACCOUNT_ID"]
 anahtar = anahtarlar["API_TOKEN"]
-print(hesap)
+print("Anahtar okundu")
 ```
 
 Konu 1'de dosyayı `dosya.read()` ile tek parça okumuştuk. Burada üç yeni şey var:
@@ -299,12 +299,11 @@ Döngü bitince sözlükte iki kayıt var; son iki satır onları birer değişk
 Satır adları **harfi harfine** aranır: `anahtarlar["ACCOUNT_ID"]` büyük harfle yazılmış
 `ACCOUNT_ID` satırını bulur, `account_id` satırını bulmaz.
 
-Anahtarı **ekrana basmıyoruz**; yalnızca hesap kimliğini basıyoruz. Hesap kimliği tek
-başına bir işe yaramaz, onu basmak güvenli. Anahtar dosyasında `ACCOUNT_ID = hesap123`
-yazıyorsa çıktı:
+Anahtarı da hesap kimliğini de **ekrana basmıyoruz**; yalnızca okunduğunu söylüyoruz.
+Ekran paylaşırken (derste, sunumda) bu ikisi görünmesin. Çıktı:
 
 ```text
-hesap123
+Anahtar okundu
 ```
 
 ### Dosya nerede olmalı?
@@ -373,7 +372,7 @@ Bir kargo gönderisi gibi düşünebilirsin: adres (kime gidiyor), gönderen bil
 ```python
 import requests
 
-MODEL = "@cf/google/gemma-4-26b-a4b-it"
+MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 adres = f"https://api.cloudflare.com/client/v4/accounts/{hesap}/ai/run/{MODEL}"
 basliklar = {"Authorization": f"Bearer {anahtar}"}
 govde = {"prompt": "Sessiz bir çalışma kafesi için üç kısa slogan yaz."}
@@ -393,7 +392,7 @@ https://api.cloudflare.com  /client/v4  /accounts/{hesap}  /ai/run/{MODEL}
 - Adresin içine `f"..."` ile hesap kimliğini ve model adını yerleştiriyoruz. Baştaki
   `f`, Python'a "süslü parantezlerin içine değişkenin değerini koy" der.
 - Model adı `@cf/` ile başlar ve **harfi harfine** doğru olmalı. Dönem boyunca metin
-  için hep aynı modeli kullanacağız: `@cf/google/gemma-4-26b-a4b-it`.
+  için hep aynı modeli kullanacağız: `@cf/meta/llama-3.3-70b-instruct-fp8-fast`.
 - **En sık hata:** baştaki `f` harfini unutmak. O zaman Python süslü parantezleri
   doldurmaz ve sunucuya kelimesi kelimesine `.../accounts/{hesap}/...` gider.
   Sunucu "`{hesap}`" adında bir hesap bulamaz, istek hata koduyla döner. Şüphelenirsen

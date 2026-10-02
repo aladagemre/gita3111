@@ -76,7 +76,7 @@ if anahtar_dosyasi.exists():
         import urllib.request
 
         adres = (f"https://api.cloudflare.com/client/v4/accounts/{hesap}"
-                 "/ai/run/@cf/google/gemma-4-26b-a4b-it")
+                 "/ai/run/@cf/meta/llama-3.3-70b-instruct-fp8-fast")
         govde = json.dumps({"prompt": "Merhaba de."}).encode("utf-8")
         istek = urllib.request.Request(
             adres,

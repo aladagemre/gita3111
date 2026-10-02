@@ -161,7 +161,7 @@ with open("../anahtar.txt", encoding="utf-8") as dosya:
 
 hesap = anahtarlar["ACCOUNT_ID"]
 anahtar = anahtarlar["API_TOKEN"]
-print(hesap)
+print("Anahtar okundu")
 ```
 
 -----
@@ -177,7 +177,7 @@ print(hesap)
 
 - `..` **bir üst klasör**: bütün konular aynı `anahtar.txt`'yi kullanır
 - `anahtarlar` bir **sözlük** — Konu 1'in konusu
-- Ekrana yalnızca **hesap kimliğini** basıyoruz; anahtarın kendisini değil
+- Ekrana ne anahtarı ne hesap kimliğini basıyoruz; yalnızca "Anahtar okundu"
 
 -----
 
@@ -192,7 +192,7 @@ print(hesap)
 ```python
 import requests
 
-MODEL = "@cf/google/gemma-4-26b-a4b-it"
+MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 adres = f"https://api.cloudflare.com/client/v4/accounts/{hesap}/ai/run/{MODEL}"
 basliklar = {"Authorization": f"Bearer {anahtar}"}
 govde = {"prompt": "Sessiz bir çalışma kafesi için üç kısa slogan yaz."}
