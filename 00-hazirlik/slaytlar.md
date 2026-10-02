@@ -185,14 +185,13 @@ Masaüstünde artık `gita3111` adında bir klasör var.
 
 ```text
 gita3111/
+├── pyproject.toml              ← dersin kütüphane listesi
 ├── anahtar.txt                 ← sen oluşturacaksın (Adım 6)
 ├── 00-hazirlik/                ← bu konu
-│   ├── pyproject.toml
 │   ├── kurulum-yonergesi.md
 │   ├── ilk_defter.ipynb
 │   └── ornekler/kurulum_testi.py
 ├── 01-veri-ve-kelime-bulutu/
-│   ├── pyproject.toml
 │   ├── ders.ipynb              ← derste birlikte çalıştıracağımız defter
 │   ├── alistirma.ipynb         ← kendi başına çözeceğin alıştırmalar
 │   ├── ders_notu.md            ← evde okuyacağın konu notu
@@ -208,29 +207,31 @@ gita3111/
 
 -----
 
-## Her konu kendi başına bir uv projesi
+## Depo tek bir uv projesi
 
-Her konu klasöründe bir `pyproject.toml` dosyası var:
+`gita3111` klasöründe bir `pyproject.toml` dosyası var:
 
 ```toml
 [project]
-name = "gita3111-01-veri-ve-kelime-bulutu"
+name = "gita3111"
 version = "0.1.0"
 requires-python = ">=3.13,<3.15"
 dependencies = [
     "matplotlib>=3.10",
+    "requests>=2.32",
+    "scikit-learn>=1.6",
     "wordcloud>=1.9",
 ]
 ```
 
-- Bu dosya o konunun **hangi Python'u** ve **hangi kütüphaneleri** kullandığını yazar
-- Konunun klasöründe `uv sync` dersen uv bu dosyayı okur, eksik ne varsa **kendisi kurar**
-  ve klasörde `.venv` adlı bir ortam oluşturur
+- Bu dosya dersin **hangi Python'u** ve **hangi kütüphaneleri** kullandığını yazar
+- `gita3111` klasöründe `uv sync` dersen uv bu dosyayı okur, eksik ne varsa **kendisi kurar**
+  ve `gita3111` klasöründe `.venv` adlı tek bir ortam oluşturur
 - Defteri açınca VS Code'a "bu ortamı kullan" diyeceğiz (Adım 5)
 - Sen hiçbir zaman "şu kütüphaneyi kur" diye uğraşmazsın
 
-Tek şart: komutu **konunun klasörünün içinden** çalıştırmak. uv bu dosyayı komutu
-çalıştırdığın klasörde arar.
+Tek şart: komutu **`gita3111` klasörünün ya da bir konu klasörünün içinden** çalıştırmak.
+uv bu dosyayı bulunduğun klasörde ve onun üstündeki klasörlerde arar.
 
 -----
 
@@ -273,7 +274,7 @@ görüntüsünü al, derse onunla gel.
 Bu dönem göreceğin hataların çoğu bu türden olacak:
 
 - **"No such file or directory"** → büyük ihtimalle yanlış klasördesin
-- **"No module named ..."** → büyük ihtimalle yine yanlış klasördesin; uv o konunun `pyproject.toml` dosyasını bulamadı
+- **"No module named ..."** → büyük ihtimalle yine yanlış klasördesin; uv `pyproject.toml` dosyasını bulamadı
 - Önce `pwd` yaz, nerede olduğuna bak
 
 Hatanın sebebi çoğu zaman kodda değil, **nerede durduğunda.**
@@ -339,13 +340,13 @@ VS Code'un içinde terminal de var: **Terminal → New Terminal**.
 Önce terminalde ortamı hazırla:
 
 ```text
-cd 00-hazirlik
+cd gita3111
 uv sync
 ```
 
-Sonra VS Code'da `00-hazirlik/ilk_defter.ipynb` dosyasını aç:
+Sonra VS Code'da **File → Open Folder** ile `gita3111` klasörünü aç, `00-hazirlik/ilk_defter.ipynb` dosyasını aç:
 
-- Sağ üstte **Select Kernel** → **Python Environments** → `00-hazirlik/.venv` seç
+- Sağ üstte **Select Kernel** → **Python Environments** → `.venv` seç
 - Bir hücreye tıkla, **Shift + Enter**: hücre çalışır, sonucu altında görünür
 - Grafik hücresindeki iki listeyi kendi verinle değiştir ve yeniden çalıştır:
 
@@ -412,7 +413,7 @@ Anahtarı kaydettikten sonra kurulum testini bir kez daha çalıştır: Cloudfla
 | İnternet hatası (`uv sync`, `git clone`) | Üniversite ağı bazı adresleri kapatıyor | Telefon internetini paylaşıp tekrar dene |
 | "No such file or directory" | Yanlış klasördesin | `pwd` ile bak, `cd gita3111/00-hazirlik` |
 | "Repository not found" | Depo adresi yanlış yazıldı | Adresi kopyala-yapıştır yap |
-| Defterde **Select Kernel** listesinde `.venv` yok | O konunun klasöründe `uv sync` çalıştırılmadı | Terminalde konunun klasörüne gir, `uv sync`, VS Code'da listeyi yenile |
+| Defterde **Select Kernel** listesinde `.venv` yok | `uv sync` çalıştırılmadı ya da VS Code'da alt klasör açıldı | `gita3111` klasöründe `uv sync`; VS Code'da `gita3111` klasörünü aç, listeyi yenile |
 | Cloudflare satırı HTTP 401 | Token yanlış kopyalandı | Yeni token üret, `anahtar.txt`'ye yapıştır |
 | Cloudflare satırı HTTP 403 | Token'ın izinleri eksik | Token'ı hazır bilgileri değiştirmeden yeniden üret |
 
@@ -434,17 +435,16 @@ geçmeyeceğiz.
 
 -----
 
-## Her dersten önce: dört adım
+## Her dersten önce: üç adım
 
 ```text
 cd gita3111
 git pull
-cd 01-veri-ve-kelime-bulutu
 uv sync
 ```
 
 - `git pull` → yeni konuyu getirir
-- Konunun klasörüne gir, `uv sync` → o konunun kütüphanelerini kurar
-- VS Code'da konunun `ders.ipynb` defterini aç, çekirdek olarak o klasörün `.venv`'ini seç
+- `uv sync` → yeni konunun kütüphaneleri varsa onları kurar
+- VS Code'da konunun `ders.ipynb` defterini aç, çekirdek olarak `.venv`'i seç
 
-Bu dönemin ritmi bu: **çek, gir, kur, aç.**
+Bu dönemin ritmi bu: **çek, kur, aç.**

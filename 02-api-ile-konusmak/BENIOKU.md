@@ -14,18 +14,18 @@ gönderip cevabını alacaksın. Konu 1'in bulgusundan (müşteriler kafeyi sess
 
 ## Çalıştırma
 
-Dersten önce bir kez, **bu konunun klasörünün içinde** kütüphaneleri indir (liste
-klasördeki `pyproject.toml` dosyasında):
+Dersten önce bir kez, **`gita3111` klasöründe** kütüphaneleri indir (liste
+`gita3111` klasöründeki `pyproject.toml` dosyasında):
 
 ```
-cd 02-api-ile-konusmak
+cd gita3111
 uv sync
 ```
 
 Sonra:
 
 1. VS Code'da `ders.ipynb`'yi aç.
-2. Sağ üstten çekirdek (kernel) olarak bu klasörün **`.venv`**'ini seç.
+2. Sağ üstten çekirdek (kernel) olarak **`.venv`**'i seç.
 3. Hücreleri yukarıdan aşağı, **Shift + Enter** ile sırayla çalıştır. Her hücre bir
    öncekinin değişkenini kullanır; atlarsan `NameError` alırsın.
 

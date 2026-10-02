@@ -119,9 +119,9 @@ Bu komut yalnızca yeni ve değişen dosyaları indirir.
 
 ## Adım 4 — Kurulumu test et
 
-Her konu klasörü kendi başına bir **uv projesi**: içindeki `pyproject.toml` dosyası o konunun
-hangi Python sürümünü ve hangi kütüphaneleri kullandığını yazar. Komutları hep **konunun
-klasörünün içinden** çalıştırırız:
+Deponun tamamı tek bir **uv projesi**: `gita3111` klasöründeki `pyproject.toml` dosyası dersin
+hangi Python sürümünü ve hangi kütüphaneleri kullandığını yazar. Kurulum testini
+`00-hazirlik` klasörünün içinden çalıştırırız:
 
 ```
 cd gita3111/00-hazirlik
@@ -138,13 +138,9 @@ KURULUM TAMAM
 Görmüyorsan betik zaten sana neyin eksik olduğunu yazacak. Çıktının tamamının ekran
 görüntüsünü al, derse onunla gel.
 
-> **Yeni bir konuya başlarken:** o konunun klasörüne gir ve dersten önce bir kez `uv sync`
-> çalıştır. Kütüphaneler iner ve klasörde `.venv` adlı ortam oluşur; defteri açınca VS Code'a
-> bu ortamı seçeceksin (Adım 5).
-> ```
-> cd ../01-veri-ve-kelime-bulutu
-> uv sync
-> ```
+> **Ortam nerede?** Bu komut `gita3111` klasöründe `.venv` adlı bir ortam oluşturur. Bütün
+> konuların kütüphaneleri bu tek ortamda; defteri açınca VS Code'a bu ortamı seçeceksin (Adım 5).
+> `git pull` ile yeni konu geldiğinde `gita3111` klasöründe bir kez `uv sync` çalıştır.
 
 ---
 
@@ -157,16 +153,16 @@ kutulara (**hücre**) bölünmüş; her hücreyi ayrı çalıştırıp sonucunu 
 2. VS Code'da sol menüden **Extensions**'ı aç; **Python** ve **Jupyter** eklentilerini kur
    (ikisinin de yayıncısı Microsoft).
 3. **File → Open Folder** ile `gita3111` klasörünü aç.
-4. Terminalde `00-hazirlik` klasörünün ortamını hazırla (Adım 4'te kurulum testini
-   çalıştırdıysan bu zaten hazırdır, yine de bir kez çalıştırmanın zararı yok):
+4. Terminalde ortamı hazırla (Adım 4'te kurulum testini çalıştırdıysan bu zaten hazırdır,
+   yine de bir kez çalıştırmanın zararı yok):
 
 ```
-cd gita3111/00-hazirlik
+cd gita3111
 uv sync
 ```
 
 5. VS Code'da `00-hazirlik/ilk_defter.ipynb` dosyasını aç. Sağ üstte **Select Kernel** →
-   **Python Environments** → `00-hazirlik/.venv` seç.
+   **Python Environments** → `.venv` seç.
 6. İlk hücreye tıkla ve **Shift + Enter**'a bas. Altında `Merhaba, defterim çalışıyor!`
    yazmalı.
 
@@ -252,6 +248,7 @@ Muhtemelen yanlış klasördesin. Komutları konunun klasörünün **içinden** 
 Depo adresini yanlış yazmış olabilirsin; yukarıdan kopyala-yapıştır yap. Yine olmuyorsa bana yaz.
 
 **Defterde "Select Kernel" listesinde `.venv` görünmüyor**
-O konunun klasöründe `uv sync` çalıştırılmamış. Terminalde konunun klasörüne gir, `uv sync`
-yaz, sonra VS Code'da listeyi yenile. Yine görünmüyorsa **Python** ve **Jupyter** eklentilerinin
-kurulu olduğundan emin ol.
+İki sebebi olabilir: `uv sync` çalıştırılmamış ya da VS Code'da `gita3111` yerine bir alt
+klasör açılmış. Terminalde `gita3111` klasörüne gir, `uv sync` yaz; VS Code'da **File → Open
+Folder** ile `gita3111` klasörünü aç ve listeyi yenile. Yine görünmüyorsa **Python** ve
+**Jupyter** eklentilerinin kurulu olduğundan emin ol.

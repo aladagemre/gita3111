@@ -13,10 +13,9 @@ yorum olsaydı? Bu yüzden kelimeleri **kodla sayacağız**.
 **Konunun sonunda elinde:** kendi ürettiğin bir kelime bulutu, en sık geçen kelimelerin
 listesi ve aynı sonucun çubuk grafiği. Hepsi defterin içinde, hücrelerin altında görünür.
 
-**Kurulum ve çalıştırma:** bu konunun kütüphaneleri (`wordcloud`, `matplotlib`) klasördeki
-`pyproject.toml` dosyasında yazılı. Dersten önce bir kez terminalde konunun klasörüne gir
-(`cd 01-veri-ve-kelime-bulutu`) ve `uv sync` çalıştır; bu, klasörde `.venv` adında bir
-ortam kurar. Sonra:
+**Kurulum ve çalıştırma:** bu konunun kütüphaneleri (`wordcloud`, `matplotlib`) `gita3111`
+klasöründeki `pyproject.toml` dosyasında yazılı. Dersten önce bir kez terminalde `gita3111`
+klasöründe `uv sync` çalıştır; bu, `gita3111` klasöründe `.venv` adında bir ortam kurar. Sonra:
 
 1. VS Code'da `ders.ipynb`'yi aç.
 2. Sağ üstten **çekirdek** (kernel) olarak `.venv` seç.
@@ -1014,7 +1013,7 @@ kendini kahveyle anlatıyor, müşteri sessizlikle. Yeni kimlik hangisini öne �
 |---|---|---|
 | `FileNotFoundError: ... No such file or directory` | Defter konu klasöründe değil ya da yolda yazım hatası var | Defteri `01-veri-ve-kelime-bulutu` içinden aç; yol `veri/...` ile başlamalı. Emin değilsen bir hücrede `import os` ve `print(os.getcwd())` |
 | `NameError: name 'metin' is not defined` (ya da `kelimeler`, `sayac`...) | Önceki bir hücreyi çalıştırmadın ya da çekirdek yeniden başladı | Defterin başından itibaren hücreleri sırayla çalıştır |
-| `ModuleNotFoundError: No module named 'wordcloud'` | Çekirdek olarak `.venv` seçili değil ya da `uv sync` yapılmadı | Sağ üstten çekirdeği `.venv` yap; olmadıysa terminalde konu klasöründe `uv sync` |
+| `ModuleNotFoundError: No module named 'wordcloud'` | Çekirdek olarak `.venv` seçili değil ya da `uv sync` yapılmadı | Sağ üstten çekirdeği `.venv` yap; olmadıysa terminalde `gita3111` klasöründe `uv sync` |
 | `Ã§alÄ±ÅŸmak` gibi bozuk harfler ya da `UnicodeDecodeError` | `open(...)` içinde `encoding="utf-8"` yok | `encoding="utf-8"` ekle |
 | `KeyError: 0` | Sözlüğü sayıyla açmaya çalıştın | Anahtarla aç: `sayac["sessiz"]`. (`Counter`'da hata vermez, sessizce `0` döner) |
 | `KeyError: 'kelime'` | Sayaçta olmayan bir kelimeyi okumaya ya da artırmaya çalıştın | Sayarken `if / else`; okurken önce `in` ile kontrol |

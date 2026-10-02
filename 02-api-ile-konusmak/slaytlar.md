@@ -40,7 +40,7 @@ Hepsi tek bir defterde: `ders.ipynb`
 ## Defteri çalıştırmak
 
 - VS Code'da `02-api-ile-konusmak` klasöründeki `ders.ipynb`'yi aç
-- Sağ üstten çekirdek olarak bu klasörün **`.venv`**'ini seç
+- Sağ üstten çekirdek olarak **`.venv`**'i seç
 - Hücreye tıkla, **Shift + Enter**: hücre çalışır, alttakine geçer
 - Hücreler **yukarıdan aşağı, sırayla**: her hücre bir öncekinin değişkenini kullanır
 

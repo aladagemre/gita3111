@@ -12,16 +12,15 @@ Bu klasörde ne var:
 
 ## Çalıştırma
 
-Dersten önce bir kez, terminalde bu konunun klasörüne girip kütüphaneleri indir
-(`gita3111` klasöründeysen):
+Dersten önce bir kez, terminalde `gita3111` klasöründe kütüphaneleri indir:
 
 ```
-cd 01-veri-ve-kelime-bulutu
+cd gita3111
 uv sync
 ```
 
-Bu konunun kütüphaneleri (`wordcloud`, `matplotlib`) klasördeki `pyproject.toml`
-dosyasında yazılı; `uv sync` onları klasördeki `.venv` ortamına kurar. Sonra:
+Bu konunun kütüphaneleri (`wordcloud`, `matplotlib`) `gita3111` klasöründeki `pyproject.toml`
+dosyasında yazılı; `uv sync` onları `gita3111/.venv` ortamına kurar. Sonra:
 
 1. VS Code'da `ders.ipynb`'yi aç.
 2. Sağ üstten **çekirdek** (kernel) olarak `.venv` seç.

@@ -18,13 +18,13 @@ sessiz bir çalışma kafesinin yeni kimliği için slogan, renk, yazı tipi.
   (`cevaplar.txt`),
 - ve bir bulgu: **soruya bağlam yazmak cevabı nasıl değiştiriyor?**
 
-**Kurulum (dersten önce):** konunun klasörüne gir (`cd 02-api-ile-konusmak`) ve bir kez
-`uv sync` çalıştır. Bu konunun kütüphanesi (internete istek atan `requests`) ve defteri
-çalıştıran parça klasördeki `pyproject.toml` dosyasında yazılı; `uv sync` onları indirip
-klasörün içinde bir `.venv` klasörü kurar.
+**Kurulum (dersten önce):** `gita3111` klasöründe bir kez `uv sync` çalıştır. Bu konunun
+kütüphanesi (internete istek atan `requests`) ve defteri çalıştıran parça `gita3111`
+klasöründeki `pyproject.toml` dosyasında yazılı; `uv sync` onları indirip `gita3111`
+klasörünün içinde bir `.venv` klasörü kurar.
 
 **Defteri açmak:** VS Code'da `02-api-ile-konusmak` klasöründeki `ders.ipynb`'yi aç.
-Sağ üstten çekirdek (kernel) olarak bu klasörün **`.venv`**'ini seç. Sonra hücreleri
+Sağ üstten çekirdek (kernel) olarak **`.venv`**'i seç. Sonra hücreleri
 yukarıdan aşağı, **Shift + Enter** ile sırayla çalıştır.
 
 > Bu dönemin **kritik konusu**: Konu 4, 5, 8, 9, 10 ve 11 bunun üstüne kuruluyor.
@@ -883,7 +883,7 @@ Alıştırma defteri internete çıkmaz, anahtar istemez.
 | `FileNotFoundError: ... '../anahtar.txt'` | Hesap açılmamış, dosya yanlış klasörde ya da adı `anahtar.txt.txt` | Dosyayı `gita3111` klasörüne (konu klasörlerinin bir üstüne) koy, uzantıyı kontrol et; defterin kopyası konu klasöründe dursun. Anahtarın yoksa derste yanındakiyle çalış |
 | `IndexError: list index out of range` (Adım 1) | `anahtar.txt`'de boş ya da `=` içermeyen bir satır var | O satırı sil |
 | `KeyError: 'ACCOUNT_ID'` ya da `KeyError: 'API_TOKEN'` | Dosyada o satır yok ya da adı farklı yazılmış (küçük harf, boşluk) | Dosyayı Adım 1'deki biçime göre düzelt |
-| `ModuleNotFoundError: No module named 'requests'` | Defter `.venv` dışındaki bir çekirdekle çalışıyor | Sağ üstten çekirdek olarak konu klasörünün `.venv`'ini seç; yoksa konu klasöründe `uv sync` |
+| `ModuleNotFoundError: No module named 'requests'` | Defter `.venv` dışındaki bir çekirdekle çalışıyor | Sağ üstten çekirdek olarak `.venv`'i seç; yoksa `gita3111` klasöründe `uv sync` |
 | `KeyError: 'response'` | Bir kat atlandı | Önce `sonuc = yanit["result"]`, sonra `sonuc["response"]`; emin değilsen `print(yanit)` |
 | `TypeError: 'NoneType' object is not subscriptable` | İstek başarısız, `result` boş | Önce durum koduna bak (Adım 5) |
 | `requests.exceptions.ConnectionError` | İstek sunucuya ulaşmadı | İnternet bağlantını kontrol et |
@@ -940,7 +940,7 @@ Alıştırma defteri internete çıkmaz, anahtar istemez.
 | **Bağlam** | Soruya eklediğin ve modelin bilmediği bilgi; burada Konu 1'in bulgusu |
 | **Defter (notebook)** | Kodun hücre hücre yazılıp çalıştırıldığı `.ipynb` dosyası |
 | **Hücre** | Defterdeki tek bir kutu; yazı ya da kod |
-| **Çekirdek (kernel)** | Defterdeki kodu çalıştıran Python; bu konuda klasörün `.venv`'i |
+| **Çekirdek (kernel)** | Defterdeki kodu çalıştıran Python; `gita3111` klasöründeki `.venv` |
 
 ---
 

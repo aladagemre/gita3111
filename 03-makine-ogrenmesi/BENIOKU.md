@@ -14,18 +14,18 @@ kaldığın adımdan devam et.
 
 ## Çalıştırma
 
-Dersten önce bir kez, **bu konunun klasörünün içinde** kütüphaneleri indir (liste
-klasördeki `pyproject.toml` dosyasında; `scikit-learn` büyük, indirme biraz sürüyor):
+Dersten önce bir kez, **`gita3111` klasöründe** kütüphaneleri indir (liste
+`gita3111` klasöründeki `pyproject.toml` dosyasında; `scikit-learn` büyük, indirme biraz sürüyor):
 
 ```
-cd 03-makine-ogrenmesi
+cd gita3111
 uv sync
 ```
 
 Sonra:
 
 1. VS Code'da `ders.ipynb`'yi aç.
-2. Sağ üstten çekirdek (kernel) olarak bu klasörün **`.venv`**'ini seç.
+2. Sağ üstten çekirdek (kernel) olarak **`.venv`**'i seç.
 3. Hücreleri yukarıdan aşağı, **Shift + Enter** ile sırayla çalıştır. Her hücre bir
    öncekinin değişkenini kullanır; atlarsan `NameError` alırsın.
 

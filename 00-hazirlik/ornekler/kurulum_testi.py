@@ -22,7 +22,7 @@ print("GİTA3111 kurulum testi")
 print("-" * 40)
 
 # 0) Doğru klasörde miyiz? Komutlar konunun klasörünün içinden çalıştırılır.
-dogru_klasor = Path("pyproject.toml").exists() and Path("ornekler/kurulum_testi.py").exists()
+dogru_klasor = Path("../pyproject.toml").exists() and Path("ornekler/kurulum_testi.py").exists()
 bildir("Doğru klasördesin", dogru_klasor, f"şu an: {Path.cwd()}")
 if not dogru_klasor:
     print("      -> Önce `cd gita3111/00-hazirlik` yaz, sonra `uv run ornekler/kurulum_testi.py`.")
@@ -40,7 +40,7 @@ for paket in ("matplotlib", "wordcloud", "ipykernel"):
         __import__(paket)
         bildir(f"{paket} kurulu", True)
     except ImportError:
-        bildir(f"{paket} kurulu", False, "00-hazirlik klasörünün içinde `uv sync` komutunu çalıştır")
+        bildir(f"{paket} kurulu", False, "depo kökünde (gita3111 klasöründe) `uv sync` komutunu çalıştır")
 
 # 3) Gerçekten bir görsel üretebiliyor muyuz?
 try:

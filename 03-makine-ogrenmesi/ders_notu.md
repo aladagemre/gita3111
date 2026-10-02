@@ -20,14 +20,14 @@ ne söylediği.
 renkleri kendi renkleriyle gösteren bir grafik ve kafe paleti için modelden alınmış bir
 "ikinci görüş".
 
-**Kurulum (dersten önce):** konunun klasörüne gir (`cd 03-makine-ogrenmesi`) ve bir kez
-`uv sync` çalıştır; indirme birkaç dakika sürebilir. Bu konunun kütüphaneleri ve defteri
-çalıştıran parça klasördeki `pyproject.toml` dosyasında yazılı; `uv sync` onları indirip
-klasörün içinde bir `.venv` klasörü kurar. Dikkat: paketin adı `scikit-learn`, ama kodda
+**Kurulum (dersten önce):** `gita3111` klasöründe bir kez `uv sync` çalıştır; indirme
+birkaç dakika sürebilir. Bu konunun kütüphaneleri ve defteri çalıştıran parça `gita3111`
+klasöründeki `pyproject.toml` dosyasında yazılı; `uv sync` onları indirip `gita3111`
+klasörünün içinde bir `.venv` klasörü kurar. Dikkat: paketin adı `scikit-learn`, ama kodda
 `sklearn` diye çağrılır (`from sklearn... import ...`). Adlar farklı; ikisi aynı kütüphane.
 
 **Defteri açmak:** VS Code'da `03-makine-ogrenmesi` klasöründeki `ders.ipynb`'yi aç.
-Sağ üstten çekirdek (kernel) olarak bu klasörün **`.venv`**'ini seç. Sonra hücreleri
+Sağ üstten çekirdek (kernel) olarak **`.venv`**'i seç. Sonra hücreleri
 yukarıdan aşağı, **Shift + Enter** ile sırayla çalıştır. Her hücre bir öncekinin
 oluşturduğu değişkeni kullanır (`kayitlar`, `X`, `model`...); bir hücreyi atlarsan
 sonraki hücre `NameError` verir. Takılırsan üstteki menüden "Restart" ile çekirdeği
@@ -890,7 +890,7 @@ Python bir hata verdiğinde en alttaki satır en önemlisidir: önce hatanın **
 | Ne görüyorsun | Sebebi | Ne yapmalı |
 |---|---|---|
 | `NameError: name 'kayitlar' is not defined` | Bir hücreyi atladın ya da defteri yeni açtın | Hücreleri baştan, sırayla çalıştır |
-| `ModuleNotFoundError: No module named 'sklearn'` | Defter `.venv` dışındaki bir çekirdekle çalışıyor | Sağ üstten çekirdek olarak konu klasörünün `.venv`'ini seç; yoksa konu klasöründe `uv sync` |
+| `ModuleNotFoundError: No module named 'sklearn'` | Defter `.venv` dışındaki bir çekirdekle çalışıyor | Sağ üstten çekirdek olarak `.venv`'i seç; yoksa `gita3111` klasöründe `uv sync` |
 | `FileNotFoundError: [Errno 2] No such file or directory: 'veri/renkler-etiketli.csv'` | Defterin kopyası konu klasörünün dışında | Defter `03-makine-ogrenmesi` klasöründe durmalı; kopyayı oraya al |
 | `KeyError: 'r'` | Veri dosyası eski (sütunlar `hex,ad,ogrenci,etiket`) | `gita3111` klasöründe `git pull` |
 | `ValueError: dtype='numeric' is not compatible with arrays of bytes/strings.` | X'in içine metin girmiş: `int(...)` unutuldu ya da etiket X'e karıştı | `r = int(kayit["r"])`; X'te yalnızca sayılar olmalı |
