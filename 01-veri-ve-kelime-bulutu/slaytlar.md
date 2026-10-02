@@ -240,7 +240,9 @@ Hata mesajını oku: `KeyError: 0` → "0 diye bir anahtar aradım, bulamadım".
 
 -----
 
-## Adım 3 — Saymak
+## Adım 3 — Elle say: sözlükle sayaç
+
+Önce işi **elle** yapıyoruz ki sayacın nasıl çalıştığını görelim:
 
 ```python
 sayac = {}
@@ -274,20 +276,35 @@ Sonuca her zaman bir göz at: "her kelime bir kez geçmiş" makul değil.
 
 -----
 
-## Adım 4 — Değere göre sıralamak
+## Adım 4 — Hazır araçla say: `Counter`
 
-Sözlük sıralı değil. En sık geçenleri görmek için sıralamalıyız:
+Adım 3'te elle yazdığımız sayacın aynısını Python'un hazır aracı `Counter` tek satırda kurar:
 
 ```python
-sirali = sorted(sayac, key=sayac.get, reverse=True)
-for kelime in sirali[:20]:
-    print(sayac[kelime], kelime)
+from collections import Counter
+
+sayac = Counter(kelimeler)
+print(sayac["sessiz"])
 ```
 
-- `key=sayac.get` "değerine göre sırala" demek; `reverse=True` büyükten küçüğe
-- Dikkat: `sayac.get` yazarken **parantez yok**. Parantez koyarsan:
-  `TypeError: get expected at least 1 argument, got 0`
-- `sirali` bir **kelime listesi**; sayıya yine sözlükten ulaşıyoruz: `sayac[kelime]`
+- Çıktı yine **8**. Adım 3'te elle bulduğumuz sayının aynısı
+- `Counter` da bir sözlük gibi çalışır: `sayac["sessiz"]` → anahtarla açılır
+- Önce elle yazdık ki içini bilelim; artık hazır aracı güvenle kullanabiliriz
+
+-----
+
+## Adım 4 — En sık geçenler: `most_common`
+
+`Counter`'ın bir becerisi daha var: en sık geçenleri sıralar.
+
+```python
+for kelime, adet in sayac.most_common(20):
+    print(adet, kelime)
+```
+
+- `most_common(20)`: en sık 20 kelime, en çoktan aza
+- Döngüde **iki değişken** var: her turda bir ikili gelir, kelime ve adedi
+- İlk tur: `kelime` = `"için"`, `adet` = `10`; ikinci tur: `"sessiz"`, `8`; ...
 
 -----
 
@@ -321,34 +338,33 @@ print(durak_kelimeler[:10])
 
 -----
 
-## Adım 5 — Sayaca tek koşul
+## Adım 5 — Anlamlı kelimeleri ayır
 
-Adım 3'teki sayaç, başına **tek satır** eklenmiş hâliyle:
+Durak kelimeleri ve iki harfli artıkları atıp **anlamlı** kelimeleri ayrı bir listeye alıyoruz:
 
 ```python
-sayac = {}
+anlamli = []
 for kelime in kelimeler:
     if kelime not in durak_kelimeler and len(kelime) > 2:
-        if kelime in sayac:
-            sayac[kelime] = sayac[kelime] + 1
-        else:
-            sayac[kelime] = 1
+        anlamli.append(kelime)
+
+print(len(kelimeler), len(anlamli))
 ```
 
 - `not in` "listede yoksa" demek
-- Altındaki dört satır bir girinti içeri kaydı: yalnızca koşul doğruysa çalışırlar
 - `len(kelime) > 2` koşulu tek-iki harfli artıkları da atıyor
+- Çıktı: `298 221`. 77 kelime elendi
 
 -----
 
-## Yeni sayacı sıralayalım
+## Yeni listeyi sayalım
 
-Adım 4'teki sıralama, bu kez ilk 10:
+Yeni listeyi `Counter`'a veriyoruz, bu kez ilk 10:
 
 ```python
-sirali = sorted(sayac, key=sayac.get, reverse=True)
-for kelime in sirali[:10]:
-    print(sayac[kelime], kelime)
+sayac = Counter(anlamli)
+for kelime, adet in sayac.most_common(10):
+    print(adet, kelime)
 ```
 
 Şimdi listenin başı anlamlı: **sessiz · çalışmak · yer · priz · internet · öğrenci**
@@ -370,7 +386,7 @@ bulut.generate_from_frequencies(sayac)
 bulut.to_image()
 ```
 
-- Girdi olarak doğrudan **sayaç sözlüğümüzü** veriyoruz
+- Girdi olarak doğrudan **sayacımızı** (`Counter`) veriyoruz
 - Kelimenin boyutu, sözlükteki değeriyle orantılı
 - Son satır `bulut.to_image()`: defter görseli hücrenin altında gösterir
 
@@ -458,15 +474,16 @@ gelinen bir yerde iç mekân okumak için karanlık.
 
 ## Adım 8 — Aynı sonuç, çubuk grafik
 
-`plt.bar` iki liste ister: adlar ve boylar. Adlar hazır (`sirali`), boyları topluyoruz:
+`plt.bar` iki liste ister: adlar ve boylar. `most_common(10)`'dan ikisini ayırıyoruz:
 
 ```python
 import matplotlib.pyplot as plt
 
-etiketler = sirali[:10]
+etiketler = []
 degerler = []
-for kelime in etiketler:
-    degerler.append(sayac[kelime])
+for kelime, adet in sayac.most_common(10):
+    etiketler.append(kelime)
+    degerler.append(adet)
 ```
 
 Sonra çiziyoruz:
@@ -479,7 +496,7 @@ plt.xticks(rotation=45)
 plt.show()
 ```
 
-- Sayıyı yine **anahtarla** alıyoruz: `sayac[kelime]`
+- Her turda gelen ikiliyi böldük: kelime `etiketler`e, adedi `degerler`e
 - `rotation=45`: alttaki kelimeler üst üste binmesin
 - Başlık ve eksen adı olmayan grafik, izleyiciye "ne ölçtüğümü tahmin et" der
 
@@ -505,9 +522,9 @@ Hangisini seçeceğin, izleyicine ne söylemek istediğine bağlı. Bu bir **tas
 |---|---|---|
 | 1 | Dosyayı açtık | `metin` |
 | 2 | Kelimelere ayırdık, küçülttük, noktalamayı attık | `kelimeler`, `temiz` |
-| 3 | Saydık | `sayac` |
-| 4 | Sıraladık | `sirali` |
-| 5 | Durak kelimeleri eledik | yeni `sayac`, yeni `sirali` |
+| 3 | Elle saydık | `sayac` (sözlük) |
+| 4 | `Counter` ile saydık, `most_common` ile sıraladık | `sayac` (Counter) |
+| 5 | Durak kelimeleri eledik, yeniden saydık | `anlamli`, yeni `sayac` |
 | 6 | Çizdirdik | kelime bulutu |
 | 7 | Ekleri topladık, bağlamda okuduk | bulgu |
 | 8 | Çubuk grafik çizdik | grafik |
@@ -515,6 +532,7 @@ Hangisini seçeceğin, izleyicine ne söylemek istediğine bağlı. Bu bir **tas
 Her adım bir öncekinin ürettiğini kullandı. Dosyayı **bir kez** okuduk.
 
 Erken bitirirsen: `alistirma.ipynb` ve defterin sonundaki **Bonus** (kafenin kendi gönderileri).
+Bonus'ta fark: Adım 3'ün elle sayacı olmayan kelimede `KeyError` verir, `Counter` `0` der.
 
 -----
 

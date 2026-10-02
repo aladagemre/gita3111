@@ -618,9 +618,9 @@ Modeli eğitim verisinin önce ilk 18 örneğiyle, sonra 45, 90, 135 ve 180 örn
 adetler = [18, 45, 90, 135, 180]
 dogruluklar = []
 for adet in adetler:
-    model = KNeighborsClassifier(n_neighbors=5)
-    model.fit(X_egitim[:adet], y_egitim[:adet])
-    dogruluk = model.score(X_test, y_test)
+    yeni_model = KNeighborsClassifier(n_neighbors=5)
+    yeni_model.fit(X_egitim[:adet], y_egitim[:adet])
+    dogruluk = yeni_model.score(X_test, y_test)
     print(adet, round(dogruluk, 2))
     dogruluklar.append(dogruluk)
 ```
@@ -628,7 +628,8 @@ for adet in adetler:
 - `X_egitim[:adet]` Konu 1'in dilimlemesi: baştan `adet` tane örnek. `adet` 18 iken
   ilk 18 renk, 90 iken ilk 90 renk.
 - Döngü her tur yeni bir model kurup eğitiyor, ölçüyor, sonucu yazdırıp
-  `dogruluklar` listesine ekliyor. Son turda (180 örnek) model Adım 4'tekinin aynısı.
+  `dogruluklar` listesine ekliyor. Bu modellere `yeni_model` adını verdik ki Adım 4'teki
+  `model` değişmesin. Son turda (180 örnek) `yeni_model` Adım 4'teki modelin aynısı.
 
 Yedek veride çıktı:
 
@@ -793,7 +794,7 @@ Kırık beyazı hiç görmeyen modelin en yakın bildiği renk krem; kremi etike
 yarısı da "enerjik" demişti.
 
 **Kendin dene:** `"kırık beyaz"` yerine `"gri mavi"` yaz, `kirik_beyaz` listesinin
-sayılarını `[141, 153, 174]` yap ve iki hücreyi yeniden çalıştır. Yedek veride gri
+sayılarını `[141, 153, 174]` yap ve Adım 8'in üç hücresini sırayla yeniden çalıştır. Yedek veride gri
 maviyi hiç görmeyen model de "enerjik" diyor (sınıfın 10/12'si "sakin" demişti).
 
 ### Aynı şeyi 20 renk için yapınca

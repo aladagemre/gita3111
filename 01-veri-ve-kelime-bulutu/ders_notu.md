@@ -37,9 +37,9 @@ Tek bir defter yazıyoruz. Dosyayı **bir kez** okuyoruz; her adım bir öncekin
 şeyi alıp yeni bir şey üretiyor:
 
 ```
-dosya ──► metin ──► kelimeler ──► sayac ──► sirali ──► kelime bulutu
-                        │                       │
-                (temizlik, durak kelime)        └──► çubuk grafik
+dosya ──► metin ──► kelimeler ──► sayac ──► kelime bulutu
+                        │               │
+                (temizlik, durak kelime) └──► most_common ──► çubuk grafik
 ```
 
 | Bölüm | Adımlar | Ne öğreniyorsun |
@@ -47,14 +47,14 @@ dosya ──► metin ──► kelimeler ──► sayac ──► sirali ─�
 | Isınma | — | Sözlükten anahtarla okuma, `return`'ün yeri |
 | Veriyi içeri almak | 1 | Dosya yolu, dosya okuma, `utf-8` |
 | Veriyi temizlemek | 2 | Bölme, noktalama, Türkçe küçültme |
-| Saymak ve sıralamak | 3–4 | Sözlükle sayaç, değere göre sıralama |
+| Saymak ve sıralamak | 3–4 | Elle sözlükle sayaç; aynı işi yapan hazır araç `Counter` ve `most_common` |
 | Sonucu anlamlı kılmak | 5 | Durak kelimeler |
 | Görselleştirmek | 6 | Kelime bulutu |
 | Derinleşme | 7–8 | Bulutun göremedikleri; aynı sonucun çubuk grafiği |
 
 Bu konu bir derste bitmeyebilir. Bitmezse sonraki derste defteri açıp kaldığımız adıma
 kadar hücreleri yeniden sırayla çalıştırırız; değişkenler (`metin`, `kelimeler`, `sayac`,
-`sirali`) yeniden oluşur.
+`anlamli`) yeniden oluşur.
 
 ---
 
@@ -432,7 +432,11 @@ anahtarla açarsın: `sayac[kelime]`.
 > **Kendini dene 5:** `fiyatlar = {"kahve": 45, "çay": 30}` için `fiyatlar["çay"]`,
 > `fiyatlar[1]` ve `"latte" in fiyatlar` ne verir?
 
-## Adım 3 — Say
+## Adım 3 — Elle say: sözlükle sayaç
+
+Önce işi **elle** yapıyoruz ki sayacın nasıl çalıştığını görelim. Bir sonraki adımda
+Python'un hazır aracı aynı işi tek satırda yapacak; ama içinde ne olduğunu bilmeden
+hazır araca güvenmek zor.
 
 ```python
 sayac = {}
@@ -495,44 +499,68 @@ henüz öyle bir anahtar yok.
 > **Kendini dene 6:** `["kahve", "çay", "kahve", "kahve"]` listesi için döngü bitince
 > `sayac` ne olur? `sayac["çay"]` kaç?
 
-## Adım 4 — Değere göre sırala
+## Adım 4 — Hazır araçla say ve sırala: `Counter`
 
-Sözlük kendiliğinden "en çok geçen başta" diye sıralı değil; kelimeler, ilk
-görüldükleri sırayla durur. En sık geçenleri görmek için sıralıyoruz:
+Adım 3'te elle yazdığımız sayacın aynısını Python'un hazır aracı `Counter` tek satırda
+kurar:
 
 ```python
-sirali = sorted(sayac, key=sayac.get, reverse=True)
-for kelime in sirali[:20]:
-    print(sayac[kelime], kelime)
+from collections import Counter
+
+sayac = Counter(kelimeler)
+print(sayac["sessiz"])
 ```
 
-Bu satırı **kalıp** olarak öğreniyoruz; parça parça:
-
-- **`sorted(sayac)`** tek başına anahtarları **alfabetik** sıralar. Bize bu lazım değil.
-- **`key=sayac.get`** "her kelimeyi, sayaçtaki **değerine göre** sırala" demek.
-- **`reverse=True`** büyükten küçüğe. Yazmazsan en az geçenler başa gelir.
-- **Sonuç bir liste**, ve içinde yalnızca **kelimeler** var, sayılar yok. Sayıya
-  ulaşmak için yine sözlüğü anahtarla açıyoruz: `sayac[kelime]`.
-
-**`sayac.get` yazarken parantez yok.** Fonksiyonun **kendisini** veriyoruz; `sorted`
-onu her kelime için kendisi çağıracak. Parantez koyarsan, `sorted`'a vermeden önce
-fonksiyonu kendin çağırmış olursun, hem de kelimesiz:
-
 ```
-TypeError: get expected at least 1 argument, got 0
+8
 ```
 
-"`get` en az 1 değer bekliyordu, 0 aldı." Bu mesajı görürsen parantezi sil.
+- **`from collections import Counter`** Python'un içinde gelen `collections`
+  kütüphanesinden `Counter` aracını alıyoruz. Ayrıca kurmak gerekmez.
+- **`Counter(kelimeler)`** listeyi gezer ve her kelimenin kaç kez geçtiğini sayar;
+  Adım 3'teki altı satırlık döngünün yaptığı iş.
+- **Sonuç yine 8.** Adım 3'te elle bulduğumuz sayının aynısı. İşte elle yazmanın
+  getirisi: hazır aracın ne yaptığını artık biliyorsun ve sonucunu kendi sayınla
+  doğrulayabiliyorsun.
+- `Counter` bir sözlük gibi çalışır: anahtar kelime, değer kaç kez geçtiği. Yine
+  **anahtarla** açılır: `sayac["sessiz"]`. Yeni `sayac`, Adım 3'teki sözlüğün yerine geçer.
+
+**Bir fark:** Adım 3'teki sözlük, içinde olmayan bir kelimede `KeyError` verir.
+`Counter` ise hata vermez, `0` der; hiç geçmeyen kelime 0 kez geçmiştir. Bunu defterin
+sonundaki Bonus'ta göreceksin.
+
+### En sık geçenler: `most_common`
+
+Sözlük kendiliğinden "en çok geçen başta" diye sıralı değil; kelimeler, ilk
+görüldükleri sırayla durur. `Counter`'ın bir becerisi daha var: en sık geçenleri sıralar.
+
+```python
+for kelime, adet in sayac.most_common(20):
+    print(adet, kelime)
+```
+
+- **`sayac.most_common(20)`** en sık 20 kelimeyi verir, en çoktan aza.
+- **`for kelime, adet in ...`** Döngüde bu kez **iki değişken** var. Her turda bir
+  ikili gelir: kelime ve adedi. Python ikiliyi kendisi böler; ilki `kelime`'ye,
+  ikincisi `adet`'e girer.
+
+| Tur | `kelime` | `adet` | Yazdırılan |
+|---|---|---|---|
+| 1 | `"için"` | `10` | `10 için` |
+| 2 | `"sessiz"` | `8` | `8 sessiz` |
+| 3 | `"var"` | `6` | `6 var` |
 
 **Eşitlik olursa?** Aynı sayıda geçen kelimeler (ör. 5'er kez geçen `çalışmak`, `yer`,
-`priz`) sözlükte bulundukları sırayı korur; yani metinde ilk görüldükleri sıra.
+`priz`) metinde ilk görüldükleri sırayla gelir.
 
-İnternette aynı işi `lambda` ile yapan kalıplar görebilirsin. Bu derste kullanmıyoruz:
-`lambda` konumuz değil ve o kalıplar sayıyı `x[1]` gibi **sıra numarasıyla** açar;
-ısınmada düzelttiğimiz alışkanlık tam olarak buydu.
+İnternette sıralama için `sorted` ve `lambda` kullanan kalıplar görebilirsin. Bu
+derste kullanmıyoruz: `lambda` konumuz değil ve o kalıplar sayıyı `x[1]` gibi **sıra
+numarasıyla** açar; ısınmada düzelttiğimiz alışkanlık tam olarak buydu.
+`most_common` ve `for kelime, adet in` aynı işi adlarla yapar.
 
-> **Kendini dene 7:** `sirali[0]` ne verir, `sayac[sirali[0]]` ne verir? `sayac[0]` ne
-> verir?
+> **Kendini dene 7:** Yukarıdaki döngünün ilk turunda `kelime` ve `adet` nedir? Metinde
+> hiç geçmeyen bir kelime için `sayac["latte"]` ne verir? Adım 3'teki elle kurduğumuz
+> sözlükte ne verirdi?
 
 ## Adım 5 — Durak kelimeleri ele
 
@@ -576,34 +604,52 @@ print(durak_kelimeler[:10])
 Dosyada her satırda bir kelime var, toplam 171. Açıp içine bak; bu bir kara kutu değil,
 sıradan bir metin dosyası. `durak_kelimeler` düz bir **liste**.
 
-Sonra Adım 3'teki sayacı yeniden kuruyoruz; tek fark, başına eklenen **bir koşul**:
+Sonra kelime listesinden durak kelimeleri ve iki harfli artıkları atıp **anlamlı**
+kelimeleri ayrı bir listeye alıyoruz:
 
 ```python
-sayac = {}
+anlamli = []
 for kelime in kelimeler:
     if kelime not in durak_kelimeler and len(kelime) > 2:
-        if kelime in sayac:
-            sayac[kelime] = sayac[kelime] + 1
-        else:
-            sayac[kelime] = 1
+        anlamli.append(kelime)
+
+print(len(kelimeler), len(anlamli))
 ```
 
-- **Yeni olan tek satır** `if kelime not in durak_kelimeler and len(kelime) > 2:`.
-  Altındaki dört satır Adım 3'teki sayma satırları; bir girinti içeri kaydılar, yani
-  yalnızca koşul doğruysa çalışırlar.
+```
+298 221
+```
+
+- **`anlamli = []`** boş bir liste kuruyoruz; koşulu geçen her kelimeyi içine
+  ekleyeceğiz (`.append`).
 - **`kelime not in durak_kelimeler`** "kelime listede yoksa" demek. `in`'in tersi.
 - **`len(kelime) > 2`** bir-iki harfli artıkları da atar. Noktalamayı boşluğa
   çevirdiğimizde `8'de` gibi yazılışlardan `8` ve `de` gibi parçalar kalabilir.
-- **`and`** iki koşulun **ikisi de** doğruysa kelimeyi sayar.
-- `sayac = {}` ile **yeni**, boş bir sayaç kuruyoruz; Adım 3'teki sayacın yerine geçer.
+- **`and`** iki koşulun **ikisi de** doğruysa kelimeyi listeye ekler.
+- Çıktı: 298 kelimeden 221'i kaldı; 77 kelime elendi. `kelimeler` olduğu gibi duruyor.
 
-Sonra yeni sayacı Adım 4'teki gibi sıralıyoruz, bu kez ilk 10:
+Yeni listeyi `Counter`'a veriyoruz ve bu kez ilk 10'a bakıyoruz:
 
 ```python
-sirali = sorted(sayac, key=sayac.get, reverse=True)
-for kelime in sirali[:10]:
-    print(sayac[kelime], kelime)
+sayac = Counter(anlamli)
+for kelime, adet in sayac.most_common(10):
+    print(adet, kelime)
 ```
+
+```
+8 sessiz
+5 çalışmak
+5 yer
+5 priz
+4 internet
+4 öğrenci
+3 ders
+3 ortam
+3 güzel
+3 uygun
+```
+
+`sayac` artık durak kelimeleri elenmiş sayaç; Adım 4'tekinin yerine geçer.
 
 İki listeyi yan yana koyalım:
 
@@ -662,8 +708,8 @@ bulut.to_image()
 - **`WordCloud(...)`** boş bir bulut **tuvali** hazırlar: boyutu 1200×800 piksel,
   arka planı beyaz. Henüz içinde kelime yok.
 - **`generate_from_frequencies(sayac)`** kelimeleri yerleştirir. Girdi olarak doğrudan
-  **sayaç sözlüğümüzü** (durak kelimeleri elenmiş hâlini) veriyoruz; kelimenin boyutu
-  sözlükteki değeriyle orantılı.
+  **sayacımızı** (`Counter`, durak kelimeleri elenmiş hâlini) veriyoruz; kelimenin
+  boyutu sayaçtaki değeriyle orantılı.
 - **`bulut.to_image()`** bulutu resim olarak verir. Hücrenin **son satırı** bir resim
   olunca defter onu hücrenin altında gösterir.
 
@@ -875,16 +921,17 @@ ikinci sıradakinden **ne kadar** fazla?" ya da "priz mi daha sık, internet mi?
 sorularını buluttan cevaplayamazsın; kelimelerin boyu harf sayısına göre de değişir.
 Karşılaştırma için çubuk grafik daha doğru bir araçtır.
 
-Önce çizilecek iki listeyi hazırlıyoruz. `sirali` ve `sayac` Adım 5'ten hazır
-(durak kelimeler elenmiş hâlleri):
+Önce çizilecek iki listeyi hazırlıyoruz. `sayac` Adım 5'ten hazır (durak kelimeler
+elenmiş hâli):
 
 ```python
 import matplotlib.pyplot as plt
 
-etiketler = sirali[:10]
+etiketler = []
 degerler = []
-for kelime in etiketler:
-    degerler.append(sayac[kelime])
+for kelime, adet in sayac.most_common(10):
+    etiketler.append(kelime)
+    degerler.append(adet)
 ```
 
 Sonra çiziyoruz:
@@ -902,8 +949,8 @@ Satır satır:
 - **`import matplotlib.pyplot as plt`** Çizim araçlarını `plt` kısa adıyla alıyoruz.
   Bu kısaltma her yerde böyle kullanılır; internette gördüğün örnekler de `plt` der.
 - **İki liste.** `plt.bar` iki ayrı liste ister: çubukların **adları** ve **boyları**.
-  Adlar hazır: `sirali[:10]`, en sık 10 kelime. Boyları döngüyle topluyoruz; sayıyı
-  yine **anahtarla** alıyoruz: `sayac[kelime]`.
+  `most_common(10)` bize en sık 10 ikiliyi verir; döngü her turda gelen ikiliyi böler:
+  kelime `etiketler`e, adedi `degerler`e eklenir.
 - **`plt.bar(etiketler, degerler, color=...)`** Çubukları çizer. Renk, tasarım
   programlarından bildiğin onaltılık renk koduyla (`#4a6fa5`) verilebilir.
 - **`plt.title`, `plt.ylabel`** Başlık ve dikey eksenin adı. Başlıksız ve eksen adı
@@ -938,9 +985,9 @@ kullanıyor. Dosyayı yalnızca Adım 1'de okuyoruz.
 | Isınma | İki tamir | — |
 | Adım 1 | Dosyayı açtık | `metin` |
 | Adım 2 | Kelimelere ayırdık (ham), sonra küçültüp noktalamayı attık, yeniden ayırdık | `temiz`, `kelimeler` |
-| Adım 3 | Saydık | `sayac` |
-| Adım 4 | Sıraladık | `sirali` |
-| Adım 5 | Durak kelimeleri eledik, yeniden saydık ve sıraladık | `durak_kelimeler`, yeni `sayac`, yeni `sirali` |
+| Adım 3 | Elle saydık (sözlükle) | `sayac` (sözlük) |
+| Adım 4 | `Counter` ile saydık, `most_common` ile sıraladık | `sayac` (Counter) |
+| Adım 5 | Durak kelimeleri eledik, anlamlı kelimeleri yeniden saydık | `durak_kelimeler`, `anlamli`, yeni `sayac` |
 | Adım 6 | Bulutu çizdirdik | `bulut` |
 | Adım 7 | Ekleri topladık, bağlamda okuduk | bulgu |
 | Adım 8 | Çubuk grafik çizdik | `etiketler`, `degerler` |
@@ -953,7 +1000,9 @@ Erken bitirirsen defterin sonundaki **Bonus**: Adım 1'deki dosya adını
 `veri/kafe-gonderileri.txt` yap ve hücreleri yeniden sırayla çalıştır. Bu kez metin
 müşterilerin değil, **kafenin kendi** gönderileri. Adım 3'teki `print(sayac["sessiz"])`
 satırı `KeyError: 'sessiz'` verir: kafe kendi gönderilerinde "sessiz" kelimesini **hiç**
-kullanmamış. Hata veren hücreden sonrakileri tek tek çalıştırmaya devam et; eleme
+kullanmamış. Adım 4'teki aynı satır ise `0` yazar: elle kurduğumuz sözlük olmayan
+kelimede hata verir, `Counter` 0 der. Hata veren hücreden sonrakileri tek tek
+çalıştırmaya devam et; eleme
 sonrası ilk sıralar **kahve (8), yeni (7), bugün (5), hafta (4), soğuk (3)**. Kafe
 kendini kahveyle anlatıyor, müşteri sessizlikle. Yeni kimlik hangisini öne çıkarmalı?
 
@@ -967,10 +1016,12 @@ kendini kahveyle anlatıyor, müşteri sessizlikle. Yeni kimlik hangisini öne �
 | `NameError: name 'metin' is not defined` (ya da `kelimeler`, `sayac`...) | Önceki bir hücreyi çalıştırmadın ya da çekirdek yeniden başladı | Defterin başından itibaren hücreleri sırayla çalıştır |
 | `ModuleNotFoundError: No module named 'wordcloud'` | Çekirdek olarak `.venv` seçili değil ya da `uv sync` yapılmadı | Sağ üstten çekirdeği `.venv` yap; olmadıysa terminalde konu klasöründe `uv sync` |
 | `Ã§alÄ±ÅŸmak` gibi bozuk harfler ya da `UnicodeDecodeError` | `open(...)` içinde `encoding="utf-8"` yok | `encoding="utf-8"` ekle |
-| `KeyError: 0` | Sözlüğü sayıyla açmaya çalıştın | Anahtarla aç: `sayac["sessiz"]` ya da `sayac[sirali[0]]` |
+| `KeyError: 0` | Sözlüğü sayıyla açmaya çalıştın | Anahtarla aç: `sayac["sessiz"]`. (`Counter`'da hata vermez, sessizce `0` döner) |
 | `KeyError: 'kelime'` | Sayaçta olmayan bir kelimeyi okumaya ya da artırmaya çalıştın | Sayarken `if / else`; okurken önce `in` ile kontrol |
 | `TypeError: list indices must be integers or slices, not str` | Sayacı `[]` ile liste olarak kurdun | `sayac = {}` |
-| `TypeError: get expected at least 1 argument, got 0` | `key=sayac.get()` yazdın | Parantezi sil: `key=sayac.get` |
+| `NameError: name 'Counter' is not defined` | `from collections import Counter` satırını çalıştırmadın | Adım 4'ün ilk hücresini çalıştır |
+| Sayaçta `a`, `k`, `e` gibi tek harfler | `Counter(metin)`: metni bölmeden verdin, harfleri saydı | Önce kelimelere böl: `Counter(metin.split())` ya da `Counter(kelimeler)` |
+| `ValueError: too many values to unpack (expected 2)` | `for kelime, adet in sayac:` yazdın; `most_common(...)` yok | İki değişkenli döngü ikili ister: `for kelime, adet in sayac.most_common(10):` |
 | `AttributeError: 'list' object has no attribute 'items'` | Buluta sayaç yerine kelime listesi verdin | `generate_from_frequencies(sayac)` |
 | `ValueError: We need at least 1 word ...` | Sayaç boş | Dosya dolu mu, eleme her şeyi silmiş mi? `print(len(sayac))` |
 | Bulut görünmüyor | `bulut.to_image()` hücrenin son satırı değil | Görseli göstermek istediğin satırı hücrenin en sonuna koy |
@@ -995,8 +1046,10 @@ kendini kahveyle anlatıyor, müşteri sessizlikle. Yeni kimlik hangisini öne �
 - **`.replace()` metni değiştirmez, yeni metin üretir.** Sonucu değişkene geri koy.
 - **Sözlük sayaçtır.** Anahtar kelimedir, değer kaç kez geçtiği. Anahtarla açılır,
   sayıyla değil.
-- **`sorted(sayac, key=sayac.get, reverse=True)`** kelimeleri sıklığına göre sıralar ve
-  bir kelime **listesi** verir; sayıya yine sözlükten ulaşırsın.
+- **`Counter` elle yazdığın sayacın hazır hâlidir.** `Counter(kelimeler)` sayar,
+  `sayac.most_common(10)` en sık 10'u verir. Önce elle yazdın ki ne yaptığını bil.
+- **`for kelime, adet in sayac.most_common(10):`** Her turda bir ikili gelir: kelime
+  ve adedi.
 - **Durak kelimeler elenmezse sonucu onlar kaplar.** Elenecek kelime listesi bir
   karardır.
 - **Kelime bulutunda yalnızca boyut veri taşır.** Konum ve renk rastgeledir.
@@ -1016,6 +1069,8 @@ kendini kahveyle anlatıyor, müşteri sessizlikle. Yeni kimlik hangisini öne �
 | **Dilimleme** | Bir yazının ya da listenin bir parçasını almak: `metin[:150]`, `kelimeler[:8]` |
 | **Anahtar / değer** | Sözlükte aradığın şey (anahtar) ve karşılığında bulduğun şey (değer) |
 | **Sayaç** | Her şeyin kaç kez geçtiğini tutan sözlük: `{"sessiz": 8, ...}` |
+| **`Counter`** | Python'un hazır sayacı: `Counter(kelimeler)`. Sözlük gibi anahtarla açılır; olmayan kelimede hata vermez, `0` der |
+| **`most_common`** | `Counter`'ın en sık geçenleri en çoktan aza veren becerisi: `sayac.most_common(10)` |
 | **Durak kelime (stopword)** | Her metinde sık geçen ama bir şey anlatmayan kelime: ve, bir, için, ama |
 | **Ek** | Kelimenin sonuna gelip onu değiştiren parça: kahve**si**, bahçe**de**. Kod ekleri bilmez; bu konuda "içinde geçen" diye yaklaşık olarak topladık |
 | **Bağlam** | Bir kelimenin geçtiği cümle. Kelimenin **nasıl** kullanıldığını gösterir |
@@ -1043,8 +1098,9 @@ kendini kahveyle anlatıyor, müşteri sessizlikle. Yeni kimlik hangisini öne �
 5. `fiyatlar["çay"]` → `30`. `fiyatlar[1]` → `KeyError: 1`. `"latte" in fiyatlar` →
    `False`.
 6. `{"kahve": 3, "çay": 1}`. `sayac["çay"]` → `1`.
-7. `sirali[0]` → `"sessiz"` (en sık kelime). `sayac[sirali[0]]` → `8` (onun sayısı).
-   `sayac[0]` → `KeyError: 0`. Sıralanmış **liste** sayıyla, **sözlük** anahtarla açılır.
+7. İlk turda `kelime` → `"için"`, `adet` → `10` (en sık kelime ve adedi).
+   `sayac["latte"]` → `0`: `Counter` olmayan kelimede hata vermez. Adım 3'teki elle
+   kurduğumuz sözlükte aynı satır `KeyError: 'latte'` verirdi.
 8. İlk 10'dan yalnızca **yer** (3 harf) kaybolur; yerine 11. sıradaki `masalar` girer.
    Kısa ama anlamlı kelimeleri de atabileceğin için eşik de bir karardır.
 9. **için** (10 kez). Elemesiz sayaçta en üstte o var (Adım 4'ün çıktısı); bulutta en
@@ -1056,7 +1112,7 @@ kendini kahveyle anlatıyor, müşteri sessizlikle. Yeni kimlik hangisini öne �
     ayıracak? Örneğin canlı müzik gecelerinin önceden ve açıkça duyurulması, ya da
     çalışma alanıyla etkinlik alanının ayrılması. Bu bir kod sorusu değil, tasarım
     sorusu; ama onu soruya kod getirdi.
-12. `etiketler = sirali[:10]` satırında `10` yerine `15` yaz. Başlığı da
+12. `for kelime, adet in sayac.most_common(10):` satırında `10` yerine `15` yaz. Başlığı da
     ("en sık 10 kelime") güncellemeyi unutma.
 
 ---

@@ -379,9 +379,9 @@ Aynı model, beş farklı veri miktarı. `X_egitim[:adet]` → baştan `adet` ta
 adetler = [18, 45, 90, 135, 180]
 dogruluklar = []
 for adet in adetler:
-    model = KNeighborsClassifier(n_neighbors=5)
-    model.fit(X_egitim[:adet], y_egitim[:adet])
-    dogruluk = model.score(X_test, y_test)
+    yeni_model = KNeighborsClassifier(n_neighbors=5)
+    yeni_model.fit(X_egitim[:adet], y_egitim[:adet])
+    dogruluk = yeni_model.score(X_test, y_test)
     print(adet, round(dogruluk, 2))
     dogruluklar.append(dogruluk)
 ```

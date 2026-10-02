@@ -30,7 +30,8 @@ En az 300 kelime olsun, yoksa bulut boş görünür.
 2. `ders.ipynb`'yi aynı klasörde yeni bir adla kopyala (ör. `odev1.ipynb`); depodaki
    defteri değiştirmezsen `git pull` çakışmaz. Kopyayı VS Code'da aç, çekirdek `.venv`.
 3. Adım 1'in hücresinde `"veri/kafe-yorumlari.txt"` yolunu kendi metninin yoluna çevir.
-4. Adım 3'teki `print(sayac["sessiz"])` satırını sil (senin metninde "sessiz" olmayabilir).
+4. Adım 3'teki `print(sayac["sessiz"])` satırını sil (senin metninde "sessiz" olmayabilir;
+   Adım 4'teki aynı satır hata vermez, `0` yazar).
 5. Hücreleri sırayla **Adım 6'ya kadar** çalıştır. Bulut, elemeli olanı.
 6. Bulut hücresinde `bulut.to_image()` satırının **üstüne** şu satırı ekle ve hücreyi yeniden
    çalıştır; görsel klasörde bir dosya olarak da oluşur:
@@ -41,7 +42,7 @@ En az 300 kelime olsun, yoksa bulut boş görünür.
 
 **Elemesiz bulut için:** Adım 5'te durak kelimeleri okuyan hücreden sonra yeni bir hücre
 aç, içine `durak_kelimeler = []` yaz ve çalıştır (liste boşaldı, hiçbir kelime elenmez).
-Ardından eleme yapan sayaç hücresini, sıralama hücresini ve bulut hücresini yeniden çalıştır;
+Ardından `anlamli` listesini kuran hücreyi, `Counter(anlamli)` hücresini ve bulut hücresini yeniden çalıştır;
 bu kez eklediğin satırdaki dosya adını `"elemesiz.png"` yap.
 
 ## Takılırsan
