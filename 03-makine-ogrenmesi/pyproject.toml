@@ -6,3 +6,8 @@ dependencies = [
     "matplotlib>=3.10",
     "scikit-learn>=1.6",
 ]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.4.0",
+]

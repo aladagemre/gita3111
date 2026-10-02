@@ -1,92 +1,98 @@
 # Konu 1 — Veriyi Kodla İşlemek ve Kelime Bulutu
 
-Bu not konunun özetidir; ısınmadan sonra slaytlarla **aynı sırada** ilerler. Derste
-kaçırdığın bir yer olursa buradan oku, sonra ilgili örnek dosyayı çalıştır. Derste
-anlatılanlardan biraz daha uzun: her adımda **neden** o adımı attığımızı, atmazsak ne
-olduğunu ve en sık karşılaşacağın hata mesajlarını da yazdık.
+Bu not konunun özetidir; ısınmadan sonra slaytlarla ve defterle (`ders.ipynb`) **aynı
+sırada** ilerler. Derste kaçırdığın bir yer olursa buradan oku, sonra defterde o adımın
+hücrelerini çalıştır. Derste anlatılanlardan biraz daha uzun: her adımda **neden** o
+adımı attığımızı, atmazsak ne olduğunu ve en sık karşılaşacağın hata mesajlarını da yazdık.
 
 **Bu konunun sorusu:** Bir kafenin görsel kimliğini yenileyeceksin. Elinde
 müşterilerin yazdığı 30 yorum var. Tasarıma başlamadan önce bilmek istediğin şey:
 **müşteriler bu kafeyi nasıl anlatıyor?** 30 yorumu gözle okuyabilirsin; ama 3000
 yorum olsaydı? Bu yüzden kelimeleri **kodla sayacağız**.
 
-**Konunun sonunda elinde:** kendi ürettiğin bir kelime bulutu (`kelime-bulutu.png`),
-en sık 20 kelimenin listesi (`sonuc.txt`) ve isteğe bağlı olarak aynı sonucun çubuk
-grafiği (`kelime-grafik.png`).
+**Konunun sonunda elinde:** kendi ürettiğin bir kelime bulutu, en sık geçen kelimelerin
+listesi ve aynı sonucun çubuk grafiği. Hepsi defterin içinde, hücrelerin altında görünür.
 
-**Kurulum:** bu konunun kütüphaneleri (`wordcloud`, `matplotlib`) klasördeki
-`pyproject.toml` dosyasında yazılı. Terminalde bu konunun klasörüne gir
-(`cd 01-veri-ve-kelime-bulutu`); ilk `uv run ...` komutu kütüphaneleri kendisi indirir.
-Ders sırasında beklememek için dersten önce aynı klasörde bir kez `uv sync` çalıştır.
+**Kurulum ve çalıştırma:** bu konunun kütüphaneleri (`wordcloud`, `matplotlib`) klasördeki
+`pyproject.toml` dosyasında yazılı. Dersten önce bir kez terminalde konunun klasörüne gir
+(`cd 01-veri-ve-kelime-bulutu`) ve `uv sync` çalıştır; bu, klasörde `.venv` adında bir
+ortam kurar. Sonra:
 
-**Notu nasıl kullanmalısın:** Kod bloklarını okurken yanında örnek dosyayı çalıştır.
-Arada **Kendini dene** kutuları var; önce kendin cevapla, sonra notun sonundaki
+1. VS Code'da `ders.ipynb`'yi aç.
+2. Sağ üstten **çekirdek** (kernel) olarak `.venv` seç.
+3. Hücrelere sırayla tıklayıp **Shift + Enter** ile çalıştır.
+
+Her hücre bir öncekinin oluşturduğu değişkeni kullanır. Bir hücreyi atlarsan sonraki
+hücre `NameError` verir; geri dönüp atladığını çalıştır.
+
+**Notu nasıl kullanmalısın:** Kod bloklarını okurken yanında defterdeki aynı hücreyi
+çalıştır. Arada **Kendini dene** kutuları var; önce kendin cevapla, sonra notun sonundaki
 cevaplara bak. Bir cevabı yanlış bulduysan o adımı bir kez daha oku.
 
 ---
 
 ## Konunun haritası
 
-Tek bir program yazıyoruz. Her adım bir öncekinin ürettiği şeyi alıp yeni bir şey
-üretiyor:
+Tek bir defter yazıyoruz. Dosyayı **bir kez** okuyoruz; her adım bir öncekinin ürettiği
+şeyi alıp yeni bir şey üretiyor:
 
 ```
-dosya ──► metin ──► kelimeler ──► sayac ──► sirali ──► sonuc.txt
-                        │                                  │
-                  (temizlik, durak kelime)          kelime-bulutu.png
-                                                    kelime-grafik.png
+dosya ──► metin ──► kelimeler ──► sayac ──► sirali ──► kelime bulutu
+                        │                       │
+                (temizlik, durak kelime)        └──► çubuk grafik
 ```
 
 | Bölüm | Adımlar | Ne öğreniyorsun |
 |---|---|---|
 | Isınma | — | Sözlükten anahtarla okuma, `return`'ün yeri |
-| Veriyi içeri almak | 0–1 | Dosya yolu, dosya okuma, `utf-8` |
+| Veriyi içeri almak | 1 | Dosya yolu, dosya okuma, `utf-8` |
 | Veriyi temizlemek | 2 | Bölme, noktalama, Türkçe küçültme |
 | Saymak ve sıralamak | 3–4 | Sözlükle sayaç, değere göre sıralama |
-| Sonucu anlamlı kılmak | 5–6 | Durak kelimeler, dosyaya yazma |
-| Görselleştirmek | 7 | Kelime bulutu |
-| Derinleşme | 8–9 | Bulutun göremedikleri; aynı sonucun çubuk grafiği |
+| Sonucu anlamlı kılmak | 5 | Durak kelimeler |
+| Görselleştirmek | 6 | Kelime bulutu |
+| Derinleşme | 7–8 | Bulutun göremedikleri; aynı sonucun çubuk grafiği |
 
-Bu konu bir derste bitmeyebilir. Bitmezse sonraki derse kaldığımız adımdan, o ana
-kadar üretilen değişkenleri hatırlayarak başlarız (yukarıdaki şema tam da bunun için).
+Bu konu bir derste bitmeyebilir. Bitmezse sonraki derste defteri açıp kaldığımız adıma
+kadar hücreleri yeniden sırayla çalıştırırız; değişkenler (`metin`, `kelimeler`, `sayac`,
+`sirali`) yeniden oluşur.
 
 ---
 
 ## Isınma: geçen dönemin iki hatası
 
-`00_isinma.py` iki küçük bozuk fonksiyon içeriyor. Bu konunun tamamı sözlüğe
-dayandığı için önce bu ikisini düzeltiyoruz. Dosyayı olduğu gibi çalıştırınca şunu
-görürsün:
-
-```
-10
-Traceback (most recent call last):
-  File ".../ornekler/00_isinma.py", line 16, in <module>
-    print(puani_getir({"ad": "Deniz", "puan": 85}))
-          ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File ".../ornekler/00_isinma.py", line 6, in puani_getir
-    return ogrenci[1]
-           ~~~~~~~^^^
-KeyError: 1
-```
-
-İlk satır `topla`'nın sonucu (60 olmalıydı); hata mesajı ise `puani_getir`'den geliyor.
+Defterin en başında iki küçük bozuk fonksiyon var. Bu konunun tamamı sözlüğe dayandığı
+için önce bu ikisini düzeltiyoruz.
 
 ### Tamir 1 — Sözlük anahtarla açılır
 
 ```python
 def puani_getir(ogrenci):
     return ogrenci[1]
+
+print(puani_getir({"ad": "Deniz", "puan": 85}))
 ```
 
-Fonksiyona verilen öğrenci `{"ad": "Deniz", "puan": 85}`.
+Hücreyi çalıştırınca hata mesajının son satırı:
+
+```
+KeyError: 1
+```
 
 `ogrenci[1]` yazan kişi aklında bir **liste** canlandırıyor: "ad birinci, puan ikinci,
 o zaman puan 1 numarada". Ama `ogrenci` bir sözlük; sözlükte sıra numarası yoktur.
 Python `1` diye bir **anahtar** arar, bulamaz: `KeyError: 1`.
 
-Doğrusu `ogrenci["puan"]`. Bu konuda yazacağımız sayaç da bir sözlük olacak; aynı hatayı
-orada `sayac[0]` olarak göreceksin.
+Doğrusu `ogrenci["puan"]`:
+
+```python
+def puani_getir(ogrenci):
+    return ogrenci["puan"]
+
+print(puani_getir({"ad": "Deniz", "puan": 85}))
+```
+
+Çıktı `85`. Bu konuda yazacağımız sayaç da bir sözlük olacak; aynı hatayı orada
+`sayac[0]` olarak göreceksin.
 
 ### Tamir 2 — `return` nerede durur?
 
@@ -96,6 +102,8 @@ def topla(sayilar):
     for sayi in sayilar:
         toplam = toplam + sayi
         return toplam
+
+print(topla([10, 20, 30]))
 ```
 
 `return` fonksiyonu **o anda** bitirir. Burada `return` döngünün içinde olduğu için
@@ -110,6 +118,8 @@ def topla(sayilar):
     for sayi in sayilar:
         toplam = toplam + sayi
     return toplam
+
+print(topla([10, 20, 30]))
 ```
 
 > **Kural:** Bir şeyi *biriktiriyorsan* (toplam, liste, sözlük) `return` döngünün
@@ -118,20 +128,22 @@ def topla(sayilar):
 
 ### Hata mesajı nasıl okunur?
 
-Bu konu boyunca çok hata mesajı göreceksin. Hepsi aynı biçimde okunur:
+Bu konu boyunca çok hata mesajı göreceksin. Defterde hepsi hücrenin altında, aynı biçimde
+çıkar. Örneğin dosya adını yanlış yazarsan (`kafe-yorumlari` yerine `kafe_yorumlari`):
 
 ```
-Traceback (most recent call last):
-  File ".../ornekler/01_dosya_oku.py", line 4, in <module>
-    with open("veri/kafe-yorumlari.txt", encoding="utf-8") as dosya:
-         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: 'veri/kafe-yorumlari.txt'
+FileNotFoundError                         Traceback (most recent call last)
+Cell In[1], line 1
+----> 1 with open("veri/kafe_yorumlari.txt", encoding="utf-8") as dosya:
+      2     metin = dosya.read()
+
+FileNotFoundError: [Errno 2] No such file or directory: 'veri/kafe_yorumlari.txt'
 ```
 
 1. **En alttan başla.** Son satır iki parça: hatanın **türü** (`FileNotFoundError`) ve
    **açıklaması** (böyle bir dosya ya da klasör yok).
-2. **Bir üste çık.** `line 4` hangi satırda patladığını, altındaki `^^^^` işaretleri de
-   o satırın tam olarak hangi parçasında patladığını gösterir.
+2. **Oka bak.** `---->` işareti hücrenin hangi satırında patladığını gösterir
+   (`line 1`).
 3. **Tırnak içindekine bak.** Açıklamada tırnak içinde bir değer varsa (burada dosya
    yolu, `KeyError`'da aranan anahtar), çoğu zaman ipucu tam oradadır.
 
@@ -139,59 +151,44 @@ FileNotFoundError: [Errno 2] No such file or directory: 'veri/kafe-yorumlari.txt
 
 ---
 
-## Adım 0 — Kod dosyayı nerede arıyor?
+## Kod dosyayı nerede arıyor?
 
-```python
+```py
 open("veri/kafe-yorumlari.txt")
 ```
 
 Bu yol **göreli** bir yoldur: "bulunduğum klasörün içindeki `veri` klasörüne gir,
 oradaki dosyayı aç" demek. Peki "bulunduğum klasör" hangisi?
 
-Python bu dosyayı **komutu çalıştırdığın klasöre** göre arar; kod dosyasının durduğu
-yere göre değil. Bu yüzden komutları hep konunun klasöründen
-(`gita3111/01-veri-ve-kelime-bulutu`) çalıştırıyoruz: önce `cd 01-veri-ve-kelime-bulutu`,
-sonra `uv run ornekler/...`.
+Defter, **kendi durduğu klasörde** çalışır. `ders.ipynb` `01-veri-ve-kelime-bulutu`
+klasöründe durduğu için Python dosyayı
+`01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt` olarak arar ve bulur.
 
-Aynı kodu iki farklı yerden çalıştıralım:
-
-| Komutu nereden çalıştırdın | Python dosyayı nerede aradı | Sonuç |
+| Defter nerede duruyor | Python dosyayı nerede aradı | Sonuç |
 |---|---|---|
 | `gita3111/01-veri-ve-kelime-bulutu/` | `gita3111/01-veri-ve-kelime-bulutu/veri/kafe-yorumlari.txt` | Çalışır |
-| `gita3111/` | `gita3111/veri/kafe-yorumlari.txt` | `FileNotFoundError` |
+| Masaüstüne kopyalanmış | `Masaüstü/veri/kafe-yorumlari.txt` | `FileNotFoundError` |
 
-İkinci satırda konu klasörüne girilmemiş; `gita3111`'in hemen içinde `veri` diye bir
-klasör yok.
+Hangi klasörde çalıştığını bilmiyorsan bir hücrede sor:
 
-Kodun hangi klasörden çalıştığını bilmiyorsan sor:
-
-```python
+```py
 import os
 print(os.getcwd())    # "current working directory": şu an çalıştığım klasör
 ```
 
-Çıktının sonu `01-veri-ve-kelime-bulutu` ile bitmiyorsa, terminalde önce `cd` ile konu
-klasörüne geç.
-
-> "No such file or directory" hatasının sebebi neredeyse her zaman budur. Geri kalan
-> durumlarda sebep genellikle yolda bir yazım hatasıdır: `kafe-yorumlari.txt` yerine
-> `kafe_yorumlari.txt` gibi.
+> "No such file or directory" hatasının sebebi neredeyse her zaman ya budur ya da yolda
+> bir yazım hatasıdır: `kafe-yorumlari.txt` yerine `kafe_yorumlari.txt` gibi.
 
 **Mutlak yol** ise diskin kökünden başlayan tam yoldur (`C:/Users/...` ya da
 `/home/...`). Her yerden çalışır ama başkasının bilgisayarında çalışmaz; çünkü onun
 kullanıcı adı ve klasörleri farklıdır. Bu yüzden derste göreli yol kullanıyoruz.
 
-> **Kendini dene 2:** Terminalin `gita3111/01-veri-ve-kelime-bulutu/ornekler` klasöründe
-> açık. `uv run 01_dosya_oku.py` yazarsan dosya bulunur mu? Neden?
+> **Kendini dene 2:** `ders.ipynb`'yi masaüstüne kopyalayıp orada açtın. Adım 1'in hücresi
+> çalışır mı? Neden?
 
 ## Adım 1 — Dosyayı aç
 
-`01_dosya_oku.py`'nin ilk yarısı:
-
 ```python
-# Adım 1 — Dosyayı aç, kelimelere böl
-# Çalıştır: uv run ornekler/01_dosya_oku.py
-
 with open("veri/kafe-yorumlari.txt", encoding="utf-8") as dosya:
     metin = dosya.read()
 
@@ -201,8 +198,6 @@ print(metin[:150])
 
 Satır satır:
 
-- **İlk iki satır** yorum: Python `#` ile başlayan satırları okumaz. Her örnek dosya
-  böyle başlar: adımın adı ve dosyanın nasıl çalıştırılacağı.
 - **`with open(...) as dosya:`** Dosyayı açar ve `dosya` adıyla kullanmamızı sağlar.
   `with` bloğu bitince dosyayı **kendisi kapatır**. Açık unutulan dosya, özellikle
   yazarken, içeriğin diske yazılmamasına yol açabilir.
@@ -211,6 +206,8 @@ Satır satır:
 - **`encoding="utf-8"`** Dosyadaki baytların hangi kurala göre harfe çevrileceğini
   söyler. Bizim dosyalarımız `utf-8` ile kaydedildi.
 - Başka bir metinle denemek istersen değiştireceğin tek yer, tırnak içindeki dosya yolu.
+  Dosyayı defterde **yalnızca burada** okuyoruz; sonraki bütün adımlar `metin`'den
+  türetilir.
 
 `encoding` yazmazsan ne olur? macOS ve Linux'ta çoğu zaman bir şey olmaz, çünkü
 varsayılan zaten `utf-8`. Ama **Windows'ta** Python başka bir kural kullanır ve
@@ -227,7 +224,7 @@ Sınıfta herkesin bilgisayarı farklı olduğu için bunu **her zaman** yazıyo
 **Dilimleme.** `metin[:150]` "baştan 150 karakter" demek. Köşeli parantezin içindeki
 iki nokta, "şuradan şuraya" anlamına gelir:
 
-```python
+```py
 print(metin[:4])       # baştan 4 karakter  → "Ders"
 print(metin[5:13])     # 5'ten 13'e kadar   → "çalışmak"
 ```
@@ -243,8 +240,7 @@ parça, uzun bir yazı. Bu yazıda 30 satır var, her satır bir yorum.
 
 ## Adım 2 — Kelimelere ayır ve temizle
 
-Tek parça metinle kelime sayamayız. Önce parçalara ayırıyoruz; `01_dosya_oku.py`'nin
-devamı:
+Tek parça metinle kelime sayamayız. Önce parçalara ayırıyoruz:
 
 ```python
 kelimeler = metin.split()
@@ -284,8 +280,13 @@ kopyaları.
 `.lower()` tek başına yetmez:
 
 ```python
-print("İnternet".lower() == "internet")   # False
-print("Işık".lower())                      # işık
+print("İnternet".lower() == "internet")
+print("Işık".lower())
+```
+
+```
+False
+işık
 ```
 
 İki ayrı sorun var:
@@ -303,24 +304,20 @@ sayaç bunu iki ayrı kelime olarak tutar: biri 3, biri 1. Ekranda ikisi aynı g
 en sık kelimeler listesinde "internet" 4 yerine 3 ile daha aşağıda çıkar ve neden
 olduğunu anlayamazsın.
 
-Çözüm, önce bu iki harfi kendimiz çevirmek, sonra `.lower()` demek. Yeni dosya
-`02_kelime_say.py`; okuma satırları `01` ile aynı:
+Çözüm, önce bu iki harfi kendimiz çevirmek, sonra küçültmek. Her satır tek iş yapıyor:
 
 ```python
-# Adım 2–3 — Temizle ve say
-# Çalıştır: uv run ornekler/02_kelime_say.py
-
-with open("veri/kafe-yorumlari.txt", encoding="utf-8") as dosya:
-    metin = dosya.read()
-
-temiz = metin.replace("I", "ı").replace("İ", "i").lower()   # .lower() en sonda
+temiz = metin.replace("I", "ı")
+temiz = temiz.replace("İ", "i")
+temiz = temiz.lower()
 ```
+
+- **İlk satır:** `metin`'deki her büyük I'yı noktasız ı yap, sonucu `temiz`'e koy.
+- **İkinci satır:** `temiz`'deki her büyük İ'yi i yap, sonucu yine `temiz`'e koy.
+- **Üçüncü satır:** geri kalan her şeyi küçült.
 
 Sıra önemli: `.lower()` **en sonda**. Önce çağırsaydık İ çoktan iki parçaya
 bölünmüş olurdu, `.replace("İ", "i")` onu bulamazdı.
-
-`.replace(...).replace(...).lower()` gibi arka arkaya yazılan komutlar soldan sağa
-çalışır; her biri bir öncekinin ürettiği yeni metinle çalışır.
 
 Sonucu **yeni bir değişkene**, `temiz`'e koyduk. `metin` olduğu gibi duruyor; ona ileride
 ihtiyacımız olabilir.
@@ -328,24 +325,26 @@ ihtiyacımız olabilir.
 ### Sorun 2 — Noktalama
 
 `sessiz` ile `sessiz,` de hâlâ iki ayrı kelime. Çözüm: noktalama işaretlerini
-**boşluğa çevirmek**, sonra bölmek:
+**boşluğa çevirmek**, sonra yeniden bölmek:
 
 ```python
-for isaret in ".,!?:;()[]\"'…-–—/":
+for isaret in ".,;:!?'()-":
     temiz = temiz.replace(isaret, " ")
+
 kelimeler = temiz.split()
 print(kelimeler[:8])
 ```
 
 - Tırnak içindeki yazı noktalama işaretlerinin listesi; `for isaret in ...` onu
-  **karakter karakter** gezer.
-- `\"` tırnak işaretinin kendisi. Yazının sınırı da tırnak olduğu için önüne `\`
-  koyuyoruz; "bu tırnak yazının sonu değil, içindeki bir karakter" demek.
+  **karakter karakter** gezer: önce nokta, sonra virgül, ...
+- Listenin içinde kesme işareti (`'`) de var: `8'de` gibi yazılışlar için.
+- `kelimeler` değişkenine **yeni**, temiz listeyi koyuyoruz; eski ham liste gitti.
+  Bundan sonra `kelimeler` hep bu temiz liste.
 
 **Neden silmiyoruz da boşluğa çeviriyoruz?** Yorum yazan insanlar her zaman
 noktadan sonra boşluk bırakmaz:
 
-```python
+```py
 print("yer.Sessiz".replace(".", ""))     # yerSessiz   ← yapışık, anlamsız bir kelime
 print("yer.Sessiz".replace(".", " "))    # yer Sessiz  ← iki ayrı kelime
 ```
@@ -355,7 +354,7 @@ görür.
 
 **Sık hata: sonucu değişkene geri koymamak.** Şu kod hiçbir şey değiştirmez:
 
-```python
+```py
 metin = "Sessiz ve sakin."
 metin.replace(".", " ")
 print(metin)               # Sessiz ve sakin.   ← nokta hâlâ orada
@@ -368,7 +367,7 @@ vermeyen bir hata olduğu için dikkat ister.
 
 ### Temiz liste
 
-Döngünün ardından gelen `print(kelimeler[:8])` satırının çıktısı:
+Hücrenin son satırı `print(kelimeler[:8])`'in çıktısı:
 
 ```
 ['ders', 'çalışmak', 'için', 'en', 'sevdiğim', 'yer', 'sessiz', 'her']
@@ -378,17 +377,14 @@ Baştaki listeyle karşılaştır: noktalama gitti, hepsi küçük harf. Kelime 
 değişmedi (298): hiçbir kelimeyi atmadık, sadece yazılışlarını birleştirdik. Değişen,
 **farklı** kelime sayısı.
 
-Bundan sonra hep bu temiz `kelimeler` listesiyle çalışıyoruz. Bütün örnek dosyalar aynı
-okuma ve temizleme satırlarıyla başlar; dosyayı açınca bu satırları tanıyacaksın.
-
 > **Kendini dene 4:** Dosyadaki metin yalnızca `Işıklandırma SICAK, ortam sakin.` olsaydı,
-> temizlik satırlarından sonra `temiz` ne olurdu? `kelimeler` kaç kelime olurdu?
+> temizlik hücrelerinden sonra `temiz` ne olurdu? `kelimeler` kaç kelime olurdu?
 
 ## Hatırlatma — Sözlük: anahtar ve değer
 
 Saymaya başlamadan önce, sayacı tutacağımız yapıyı hatırlayalım.
 
-```python
+```py
 renkler = ["bordo", "mercan"]
 renkler[0]           # liste sırayla numaralanır → "bordo"
 
@@ -416,14 +412,14 @@ saymadan **önce** yaptığımızı bu da gösteriyor.
 
 Bir anahtarın sözlükte olup olmadığını hata almadan sormanın yolu `in`:
 
-```python
+```py
 print("sessiz" in sayac)     # True
 print("wifi" in sayac)       # False
 ```
 
 Bir de sözlüğü döngüyle gezerken ne gezdiğini bil:
 
-```python
+```py
 for kelime in sayac:
     print(kelime, sayac[kelime])
 ```
@@ -437,8 +433,6 @@ anahtarla açarsın: `sayac[kelime]`.
 > `fiyatlar[1]` ve `"latte" in fiyatlar` ne verir?
 
 ## Adım 3 — Say
-
-`02_kelime_say.py`'nin devamı:
 
 ```python
 sayac = {}
@@ -474,7 +468,7 @@ Döngüyü küçük bir örnekle adım adım izleyelim. `kelimeler` şu olsun:
 **Neden `if / else` gerekli?** Hiç görmediğimiz bir kelimeyi doğrudan artırmaya
 çalışırsak:
 
-```python
+```py
 sayac = {}
 sayac["sessiz"] = sayac["sessiz"] + 1
 ```
@@ -486,26 +480,13 @@ KeyError: 'sessiz'
 Sağ taraf önce çalışır: Python `sayac["sessiz"]` değerini okumaya çalışır, ama sözlükte
 henüz öyle bir anahtar yok.
 
-Aynı işin kısa hâli (örnek dosyalarda uzun hâli kullanıyoruz; kısa hâli internette
-çok göreceğin için burada):
-
-```python
-sayac = {}
-for kelime in kelimeler:
-    sayac[kelime] = sayac.get(kelime, 0) + 1
-```
-
-`sayac.get(kelime, 0)` şu demek: **varsa değerini ver, yoksa 0 ver.** Yoksa 0 + 1 = 1
-olarak eklenir; varsa bir artırılır. `if / else` bloğunun tamamı tek satıra indi. İkisi
-birebir aynı sonucu verir; istediğini kullan.
-
 ### Sayaçta sık yapılan üç hata
 
 | Yazdığın | Ne olur | Neden |
 |---|---|---|
 | `sayac = []` | `TypeError: list indices must be integers or slices, not str` | Boş **liste** kurdun. Liste yalnızca sayıyla açılır; sen kelimeyle açmaya çalıştın. Boş sözlük `{}` ile kurulur |
 | `sayac = {}` döngünün **içinde** | Hata yok, ama her kelime 1 görünür | Sözlük her turda sıfırlanır. Başlangıç değeri döngüden **önce** kurulur |
-| `sayac.get(kelime) + 1` | `TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'` | İkinci değeri (`0`) unuttun. Kelime yoksa `.get` "hiçbir şey" (`None`) verir; hiçbir şeye 1 eklenemez |
+| `else` kısmını unutmak | `KeyError: 'ders'` | İlk görüşte kelime sözlükte henüz yok; artırılacak bir değer de yok |
 
 İkinci satırdaki hata, ısınmadaki `return` hatası gibi **sessiz** bir hatadır: kod
 çalışır ama sonuç yanlıştır. Sonucun makul görünüp görünmediğine her zaman bak:
@@ -517,39 +498,21 @@ birebir aynı sonucu verir; istediğini kullan.
 ## Adım 4 — Değere göre sırala
 
 Sözlük kendiliğinden "en çok geçen başta" diye sıralı değil; kelimeler, ilk
-görüldükleri sırayla durur. En sık geçenleri görmek için.
-`03_ilk_20.py`: `02`'nin okuma, temizleme ve sayma satırları aynen; sondaki iki `print`
-yerine:
+görüldükleri sırayla durur. En sık geçenleri görmek için sıralıyoruz:
 
 ```python
-sirali = sorted(sayac, key=sayac.get, reverse=True)   # değere göre; parantez yok
+sirali = sorted(sayac, key=sayac.get, reverse=True)
 for kelime in sirali[:20]:
     print(sayac[kelime], kelime)
 ```
 
-Parça parça:
+Bu satırı **kalıp** olarak öğreniyoruz; parça parça:
 
 - **`sorted(sayac)`** tek başına anahtarları **alfabetik** sıralar. Bize bu lazım değil.
-- **`key=sayac.get`** "her kelimeyi, `sayac.get(kelime)` sonucuna göre, yani **değerine
-  göre** sırala" demek.
+- **`key=sayac.get`** "her kelimeyi, sayaçtaki **değerine göre** sırala" demek.
 - **`reverse=True`** büyükten küçüğe. Yazmazsan en az geçenler başa gelir.
 - **Sonuç bir liste**, ve içinde yalnızca **kelimeler** var, sayılar yok. Sayıya
   ulaşmak için yine sözlüğü anahtarla açıyoruz: `sayac[kelime]`.
-
-Küçük bir örnekle:
-
-```python
-fiyatlar = {"kahve": 45, "çay": 30, "latte": 60}
-
-print(sorted(fiyatlar))                                   # ['kahve', 'latte', 'çay']
-print(sorted(fiyatlar, key=fiyatlar.get))                 # ['çay', 'kahve', 'latte']
-print(sorted(fiyatlar, key=fiyatlar.get, reverse=True))   # ['latte', 'kahve', 'çay']
-```
-
-İlk satırdaki alfabetik sıraya dikkat: `çay` **en sonda**. Python harfleri kendi
-numaralarına göre sıralar ve ç, ş, ö, ü gibi Türkçe harflerin numaraları z'den
-büyüktür. Bu konuda alfabetik sıralamaya ihtiyacımız yok, ama ileride karşına
-çıkarsa şaşırma.
 
 **`sayac.get` yazarken parantez yok.** Fonksiyonun **kendisini** veriyoruz; `sorted`
 onu her kelime için kendisi çağıracak. Parantez koyarsan, `sorted`'a vermeden önce
@@ -564,10 +527,9 @@ TypeError: get expected at least 1 argument, got 0
 **Eşitlik olursa?** Aynı sayıda geçen kelimeler (ör. 5'er kez geçen `çalışmak`, `yer`,
 `priz`) sözlükte bulundukları sırayı korur; yani metinde ilk görüldükleri sıra.
 
-İnternette `sorted(sayac.items(), key=lambda x: x[1])` kalıbını görebilirsin. Aynı
-işi yapar ama bu derste kullanmıyoruz: `lambda` henüz konumuz değil ve `x[1]` neyin
-açıldığını söylemediği için okuması zor. Üstelik "sayıyla açma" alışkanlığını
-güçlendirir; ısınmada düzelttiğimiz hata tam olarak buydu.
+İnternette aynı işi `lambda` ile yapan kalıplar görebilirsin. Bu derste kullanmıyoruz:
+`lambda` konumuz değil ve o kalıplar sayıyı `x[1]` gibi **sıra numarasıyla** açar;
+ısınmada düzelttiğimiz alışkanlık tam olarak buydu.
 
 > **Kendini dene 7:** `sirali[0]` ne verir, `sayac[sirali[0]]` ne verir? `sayac[0]` ne
 > verir?
@@ -594,13 +556,29 @@ Türkçe metinde en üste çıkarlar ve anlamlı kelimeleri aşağı iterler. Bu
 dilin özelliği: bir şarkı sözünde, bir haberde ya da bir tezde de aynı kelimeler
 başta olur. Bunlara **durak kelime** (İngilizcesi *stopword*) denir.
 
-`04_durak_kelime.py`: okuma ve temizleme aynı. Sonra durak kelimeleri okuyup sayma
-döngüsüne **tek satır** ekliyoruz:
+Durak kelime listesi hazır bir dosya: `veri/turkce-durak-kelimeler.txt`. Adım 1'deki
+gibi okuyup Adım 2'deki gibi bölüyoruz:
 
 ```python
 with open("veri/turkce-durak-kelimeler.txt", encoding="utf-8") as dosya:
-    durak_kelimeler = dosya.read().split()
+    durak_metni = dosya.read()
 
+durak_kelimeler = durak_metni.split()
+print(len(durak_kelimeler))
+print(durak_kelimeler[:10])
+```
+
+```
+171
+['acaba', 'ama', 'ancak', 'artık', 'asla', 'aslında', 'ayrıca', 'az', 'bana', 'bazen']
+```
+
+Dosyada her satırda bir kelime var, toplam 171. Açıp içine bak; bu bir kara kutu değil,
+sıradan bir metin dosyası. `durak_kelimeler` düz bir **liste**.
+
+Sonra Adım 3'teki sayacı yeniden kuruyoruz; tek fark, başına eklenen **bir koşul**:
+
+```python
 sayac = {}
 for kelime in kelimeler:
     if kelime not in durak_kelimeler and len(kelime) > 2:
@@ -610,11 +588,6 @@ for kelime in kelimeler:
             sayac[kelime] = 1
 ```
 
-- **Durak kelime listesi** hazır bir dosya: `veri/turkce-durak-kelimeler.txt`. İçinde
-  her satırda bir kelime var (`ama`, `ancak`, `bana`, `bazen`, `bir`, `biraz`, ...),
-  toplam 171 kelime. Açıp içine bak; bu bir kara kutu değil, sıradan bir metin dosyası.
-- **`dosya.read().split()`** dosyadaki kelimeleri bir **liste** yapar. `in` ve `not in`
-  listede de çalışır: "bu kelime listede var mı?"
 - **Yeni olan tek satır** `if kelime not in durak_kelimeler and len(kelime) > 2:`.
   Altındaki dört satır Adım 3'teki sayma satırları; bir girinti içeri kaydılar, yani
   yalnızca koşul doğruysa çalışırlar.
@@ -622,6 +595,7 @@ for kelime in kelimeler:
 - **`len(kelime) > 2`** bir-iki harfli artıkları da atar. Noktalamayı boşluğa
   çevirdiğimizde `8'de` gibi yazılışlardan `8` ve `de` gibi parçalar kalabilir.
 - **`and`** iki koşulun **ikisi de** doğruysa kelimeyi sayar.
+- `sayac = {}` ile **yeni**, boş bir sayaç kuruyoruz; Adım 3'teki sayacın yerine geçer.
 
 Sonra yeni sayacı Adım 4'teki gibi sıralıyoruz, bu kez ilk 10:
 
@@ -667,82 +641,34 @@ bulguyu yok edebilir. Hangi kelimeleri elediğini bil ve söyle.
 
 > **Sınır:** `bahçe`, `bahçesi`, `bahçede` ayrı kelimeler olarak sayılıyor. Kod Türkçenin
 > eklerini bilmiyor; bu yüzden bazı konular olduğundan küçük görünür. Bunun ne kadar
-> fark yarattığını Adım 8'de ölçeceğiz.
+> fark yarattığını Adım 7'de ölçeceğiz.
 
 > **Kendini dene 8:** `len(kelime) > 2` koşulunu `len(kelime) > 3` yapsaydık, ilk 10
 > listesinden hangi kelime(ler) kaybolurdu?
 
-## Adım 6 — Sonucu dosyaya yaz
-
-Ekrana basılan sonuç, terminali kapatınca kaybolur. Saklamak, bir arkadaşına göndermek
-ya da iki metni karşılaştırmak için dosyaya yazıyoruz. `04`'ün son satırları:
-
-```python
-with open("sonuc.txt", "w", encoding="utf-8") as dosya:   # "w": yazma modu
-    for kelime in sirali[:20]:
-        dosya.write(f"{sayac[kelime]}\t{kelime}\n")
-```
-
-- **`"w"`** yazma modu: dosya yoksa oluşturur, varsa **içini silip baştan yazar**.
-  Programı iki kez çalıştırırsan ikinci sonuç birincinin yerine geçer; alt alta
-  eklenmez.
-- **`\t`** sekme (sütunlar hizalı dursun diye), **`\n`** satır sonu. `.write()` kendi
-  başına satır atlamaz; `\n` yazmazsan 20 kelimenin hepsi tek satıra yapışır.
-- **`f"..."`** Başında `f` olan metinde süslü parantezin içi, değişkenin **değeriyle**
-  değiştirilir: `f"{sayac[kelime]}\t{kelime}"` → `8	sessiz`.
-- **`encoding="utf-8"`** okurken olduğu gibi yazarken de gerekli; yoksa Windows'ta
-  `ç`, `ş` gibi harfler bozuk yazılabilir.
-- Dosya, komutu çalıştırdığın klasöre, yani `01-veri-ve-kelime-bulutu` klasörüne
-  yazılır (Adım 0'daki kural yazarken de geçerli).
-
-`sonuc.txt`'nin ilk satırları şöyle:
-
-```
-8	sessiz
-5	çalışmak
-5	yer
-5	priz
-4	internet
-```
-
-**Sık hata: modu unutmak.** `open("sonuc.txt")` yazarsan dosya **okuma** modunda açılır
-ve `.write()` şu hatayı verir (dosya hiç yoksa ondan önce `FileNotFoundError` gelir):
-
-```
-io.UnsupportedOperation: not writable
-```
-
-"Bu dosyaya yazılamaz" demek. Çaresi `"w"` eklemek.
-
-> **Kendini dene 9:** `dosya.write(f"{kelime}: {sayac[kelime]} kez\n")` yazsaydık
-> `sonuc.txt`'nin ilk satırı ne olurdu?
-
-## Adım 7 — Kelime bulutu
-
-`05_kelime_bulutu.py`: `04`'ün okuma, temizleme, eleme ve sayma satırları aynen.
-En üste:
+## Adım 6 — Kelime bulutu
 
 ```python
 from wordcloud import WordCloud
-```
 
-En alta:
-
-```python
 bulut = WordCloud(width=1200, height=800, background_color="white")
 bulut.generate_from_frequencies(sayac)
-bulut.to_file("kelime-bulutu.png")
+bulut.to_image()
 ```
 
 - **`from wordcloud import WordCloud`** `wordcloud` kütüphanesinden `WordCloud` aracını
-  alıyoruz. Kütüphane kurulu değilse bu satır `ModuleNotFoundError` verir.
+  alıyoruz. Kütüphane bulunamazsa bu satır `ModuleNotFoundError` verir (çekirdek olarak
+  `.venv` seçili mi?).
 - **`WordCloud(...)`** boş bir bulut **tuvali** hazırlar: boyutu 1200×800 piksel,
   arka planı beyaz. Henüz içinde kelime yok.
 - **`generate_from_frequencies(sayac)`** kelimeleri yerleştirir. Girdi olarak doğrudan
   **sayaç sözlüğümüzü** (durak kelimeleri elenmiş hâlini) veriyoruz; kelimenin boyutu
   sözlükteki değeriyle orantılı.
-- **`to_file(...)`** görseli PNG olarak kaydeder. Program ekrana bir şey yazmaz;
-  konunun klasöründe `kelime-bulutu.png` oluşur.
+- **`bulut.to_image()`** bulutu resim olarak verir. Hücrenin **son satırı** bir resim
+  olunca defter onu hücrenin altında gösterir.
+
+Görseli dosya olarak kaydetmek istersen (ödevde gerekecek) `bulut.to_image()` satırının
+üstüne bir satır eklersin: `bulut.to_file("kelime-bulutu.png")`. Dosya, defterin durduğu klasörde oluşur.
 
 **Neden kendi sayacımızı veriyoruz?** Kütüphanenin, ham metni doğrudan alan bir
 `generate(metin)` komutu da var. Ama o kendi temizliğini yapar ve bu temizlik
@@ -754,24 +680,35 @@ Kütüphanenin kendi yazı tipi ç, ğ, ı, İ, ö, ş, ü harflerini gösterir.
 tipi seçmek istersen `WordCloud(..., font_path="yazı tipi dosyasının yolu")` yazarsın;
 seçtiğin yazı tipinde Türkçe harfler yoksa harfler kutu gibi çıkar.
 
+**Bulutun tasarımı.** `WordCloud(...)` parantezinin içine başka ayarlar da yazabilirsin;
+hücreyi değiştirip yeniden çalıştır, sonucu karşılaştır:
+
+| Ayar | Ne yapar | Örnek değerler |
+|---|---|---|
+| `background_color` | Arka plan rengi | `"white"`, `"black"`, `"#1a1a2e"` |
+| `colormap` | Renk paleti | `"magma"`, `"viridis"`, `"cividis"`, `"Pastel1"` |
+| `max_words` | En fazla kaç kelime | `25` |
+| `prefer_horizontal` | Yatay kelime oranı | `1` (hepsi yatay), `0.5` |
+
+Hepsi görünüşü değiştirir; hangi kelimenin büyük olduğunu değiştirmez.
+
 ### Bulutu okurken
 
 Kelime bulutunda **yalnızca boyut** veri taşır. Kelimenin yeri, rengi ve yönü
-rastgeledir; programı her çalıştırdığında değişebilir. "sessiz ortada, demek ki en
+rastgeledir; hücreyi her çalıştırdığında değişebilir. "sessiz ortada, demek ki en
 önemli" ya da "priz yeşil, demek ki olumlu" gibi okumalar yanlıştır. Bir tasarımcı
 olarak bunu bilmen önemli: izleyici her görsel farkın bir anlamı olduğunu varsayar.
 Bulutu bir sunumda kullanırsan, bu yanlış okumayı engellemek senin işin.
-
-`08_bulut_tasarimi.py` ile renk paleti, arka plan, kelime sayısı ve yazı yönüyle
-oynayabilirsin. Hepsi görünüşü değiştirir; hangi kelimenin büyük olduğunu değiştirmez.
 
 ### Bulutta sık yaşanan iki sorun
 
 **Sayaç yerine listeyi vermek:**
 
-```python
+```py
 bulut.generate_from_frequencies(kelimeler)
 ```
+
+Hata mesajı uzun (kütüphanenin içinden geliyor), ama en alt satırı:
 
 ```
 AttributeError: 'list' object has no attribute 'items'
@@ -790,14 +727,17 @@ ValueError: We need at least 1 word to plot a word cloud, got 0.
 "Çizmek için en az 1 kelime lazım, 0 geldi." Sayacın boş: ya dosya boş, ya da eleme
 her şeyi silmiş. `print(len(sayac))` ile kontrol et.
 
-> **Kendini dene 10:** Aynı programı iki kez çalıştırdın; ikinci bulutta "priz" sağ
+> **Kendini dene 9:** Adım 5'i atlayıp buluta Adım 3'teki (elemesiz) sayacı verseydin,
+> bulutta en büyük kelime hangisi olurdu?
+
+> **Kendini dene 10:** Bulut hücresini iki kez çalıştırdın; ikinci bulutta "priz" sağ
 > üstte ve mor, birincide sol altta ve sarıydı. Bir şey mi değişti?
 
 ---
 
-## Adım 8 — Bulutun söylemediği iki şey
+## Adım 7 — Bulutun söylemediği iki şey
 
-Bu adım ve bir sonraki, derinleşme bölümüdür. Dosyası: `09_kok_ve_baglam.py`.
+Bu adım ve bir sonraki, derinleşme bölümüdür.
 
 Buraya kadarki bulgumuz: "müşteriler kafeyi sessiz bir çalışma yeri olarak anlatıyor."
 Bir tasarım kararını bir kelime sayımına dayandırmadan önce iki soruyu sormalıyız.
@@ -805,30 +745,40 @@ Bir tasarım kararını bir kelime sayımına dayandırmadan önce iki soruyu so
 ### Soru 1 — Ekler sonucu değiştiriyor mu?
 
 Adım 5'in sonundaki sınırı hatırla: `bahçe`, `bahçesi` ve `bahçede` ayrı sayılıyor.
-Basit bir çözüm: **aynı harflerle başlayan** kelimeleri toplamak. `09_kok_ve_baglam.py`:
-okuma ve temizleme aynı (bu dosyada durak kelime elemesi yok), sonra:
+Basit bir çözüm: içinde **aynı harfler geçen** kelimeleri toplamak. Temiz `kelimeler`
+listesini kullanıyoruz (durak kelime elemesi burada önemli değil):
 
 ```python
-for kok in ["sessiz", "kahve", "bahçe", "priz", "ışık"]:
-    bulunanlar = []
-    for kelime in kelimeler:
-        if kelime.startswith(kok):   # bu harflerle mi başlıyor?
-            bulunanlar.append(kelime)
-    print(kok, len(bulunanlar), bulunanlar)
+aranan = "kahve"
+bulunanlar = []
+for kelime in kelimeler:
+    if aranan in kelime:
+        bulunanlar.append(kelime)
+
+print(len(bulunanlar))
+print(bulunanlar)
 ```
 
-- **`kelime.startswith(kok)`** "kelime bu harflerle başlıyor mu?" sorusunu sorar.
-- Her kök için boş bir `bulunanlar` listesi kuruyoruz ve o harflerle başlayan her kelimeyi
-  içine atıyoruz. Listenin uzunluğu (`len`) kaç kez geçtiğini verir.
+- **`aranan in kelime`** `in`'i bu kez bir **yazının içinde** kullanıyoruz: "`kahve`
+  harfleri bu kelimenin içinde geçiyor mu?" `kahvesi`, `kahvenin` için cevap evet.
+- Boş bir `bulunanlar` listesi kurup bulduğumuz her kelimeyi içine atıyoruz. Listenin
+  uzunluğu (`len`) kaç kez geçtiğini verir.
 - Listeyi de yazdırıyoruz: **neyi topladığını görmeden bir toplama güvenme.**
 
 ```
-sessiz 9 ['sessiz', 'sessiz', 'sessiz', 'sessiz', 'sessiz', 'sessiz', 'sessizlik', 'sessiz', 'sessiz']
-kahve 6 ['kahvesi', 'kahve', 'kahve', 'kahvenin', 'kahveleri', 'kahveli']
-bahçe 5 ['bahçesi', 'bahçede', 'bahçe', 'bahçe', 'bahçede']
-priz 5 ['priz', 'priz', 'priz', 'priz', 'priz']
-ışık 3 ['ışık', 'ışıklandırma', 'ışık']
+6
+['kahvesi', 'kahve', 'kahve', 'kahvenin', 'kahveleri', 'kahveli']
 ```
+
+`"kahve"` yerine başka kelimeler yazıp hücreyi yeniden çalıştırınca:
+
+| Aranan | Tek başına (Adım 3) | İçinde geçenler | Bulunanlar |
+|---|---|---|---|
+| `sessiz` | 8 | 9 | 8 × `sessiz`, `sessizlik` |
+| `kahve` | 2 | **6** | `kahvesi`, `kahve` ×2, `kahvenin`, `kahveleri`, `kahveli` |
+| `bahçe` | 2 | 5 | `bahçesi`, `bahçede` ×2, `bahçe` ×2 |
+| `priz` | 5 | 5 | 5 × `priz` |
+| `ışık` | 2 | 3 | `ışık` ×2, `ışıklandırma` |
 
 İki şey değişti:
 
@@ -837,10 +787,10 @@ priz 5 ['priz', 'priz', 'priz', 'priz', 'priz']
 - **Kahve** tek başına 2 idi, toplayınca **6** oldu ve prizi geçti. Bulgumuz
   ("müşteri kahveden değil, çalışma ortamından söz ediyor") çöktü mü?
 
-**Dikkat, bu yöntem de kusurlu.** `"çalış"` ile başlayanları toplarsan `çalışmak`,
-`çalışmaya`, `çalışırken` yanında `çalışanlar`'ı da (kafenin personeli) sayarsın. Başka
-bir konu olduğu hâlde. Kısa bir başlangıç çok şey yakalar, bazen de yanlış şeyi.
-`bulunanlar` listesini yazdırmamızın sebebi bu.
+**Dikkat, bu yöntem de kusurlu.** `"çalış"` aratırsan `çalışmak`, `çalışmaya`,
+`çalışırken` yanında `çalışanlar`'ı da (kafenin personeli) sayarsın. Başka bir konu olduğu
+hâlde. Kısa bir parça çok şey yakalar, bazen de yanlış şeyi. `bulunanlar` listesini
+yazdırmamızın sebebi bu.
 
 ### Soru 2 — Kelime hangi bağlamda geçiyor?
 
@@ -848,34 +798,28 @@ Sayı, bir kelimenin **kaç kez** geçtiğini söyler; **nasıl** geçtiğini s�
 harika" ile "kahve fena değil" sayaç için aynı şeydir. Kahve sorusunu cevaplamak için
 yorumların kendisini okumamız gerek; ama hepsini değil, yalnızca kahveden söz edenleri.
 
-Aynı dosyanın devamı:
-
 ```python
-for aranan in ["kahve", "ışık"]:
-    print(aranan)
-    for satir in temiz.splitlines():   # her satır bir yorum
-        if aranan in satir:
-            print("  ", satir)
+for satir in temiz.splitlines():
+    if "kahve" in satir:
+        print(satir)
 ```
 
 - **`temiz.splitlines()`** metni satırlarına böler. Dosyamızda her satır bir yorum.
   Temizlik satır sonlarına dokunmadı; `temiz` de 30 satır.
-- **`aranan in satir`** `in`'i bu kez bir **yazının içinde** kullanıyoruz: "bu parça
-  satırın içinde geçiyor mu?" Böylece `kahvesi`, `kahveleri` gibi ekli hâlleri de
-  yakalar.
+- **`"kahve" in satir`** yine yazının içinde arama: "bu parça satırın içinde geçiyor
+  mu?" Böylece `kahvesi`, `kahveleri` gibi ekli hâlleri de yakalar.
 - Neden `metin` değil de `temiz`? `temiz` küçültülmüş; `Kahve` ile başlayan cümleler ve
   `Işıklandırma` da bulunur. Noktalama gitmiş ama cümle hâlâ okunuyor.
 
-`kahve` turunun çıktısı:
+Çıktı:
 
 ```
-kahve
-   kahvesi fena değil ama asıl sebep ortam  sessiz ve sakin  saatlerce oturabiliyorsunuz 
-   kahve ortalama  tatlılar güzel  ama buraya ders çalışmaya geliyorum  o yüzden sorun değil 
-   kahve biraz pahalı ama saatlerce oturmana kimse bir şey demiyor 
-   cheesecake çok güzel  kahvenin yanına mutlaka deneyin 
-   kahveleri iyi  özellikle soğuk demleme  ama menü biraz kısa 
-   laptop ile gelenler çoğunlukta  kütüphane gibi ama kahveli 
+kahvesi fena değil ama asıl sebep ortam  sessiz ve sakin  saatlerce oturabiliyorsunuz 
+kahve ortalama  tatlılar güzel  ama buraya ders çalışmaya geliyorum  o yüzden sorun değil 
+kahve biraz pahalı ama saatlerce oturmana kimse bir şey demiyor 
+cheesecake çok güzel  kahvenin yanına mutlaka deneyin 
+kahveleri iyi  özellikle soğuk demleme  ama menü biraz kısa 
+laptop ile gelenler çoğunlukta  kütüphane gibi ama kahveli 
 ```
 
 Altı yorumu okuyunca tablo netleşiyor:
@@ -893,13 +837,18 @@ cümle olurdu.
 
 ### Bir bulgu daha: ışık
 
-Döngünün ikinci turu `"ışık"`:
+Defterdeki sonraki hücre aynı döngü, bu kez `"ışık"` için:
+
+```python
+for satir in temiz.splitlines():
+    if "ışık" in satir:
+        print(satir)
+```
 
 ```
-ışık
-   laptop ile çalışmak için ideal  masalar geniş  ışık yeterli  müzik sessiz 
-   bahçe akşamları çok keyifli  ışıklandırma sıcak  ortam sakin 
-   içerisi biraz karanlık  kitap okumak için ışık yetmiyor  bahçe daha aydınlık 
+laptop ile çalışmak için ideal  masalar geniş  ışık yeterli  müzik sessiz 
+bahçe akşamları çok keyifli  ışıklandırma sıcak  ortam sakin 
+içerisi biraz karanlık  kitap okumak için ışık yetmiyor  bahçe daha aydınlık 
 ```
 
 Işık yalnızca 3 kez geçiyor; bulutta neredeyse görünmez. Ama bağlamında okununca
@@ -912,42 +861,40 @@ kullanımı da bu işin parçası olabilir.
 Sıklık listesi seni kahveye ve ışığa yönlendirir, asıl bulguyu ise yorumları okuyunca
 bulursun. Veriyle çalışan her tasarımcı bu iki adımı birlikte atar.
 
-> **Kendini dene 11:** `["kahve", "ışık"]` listesine `"müzik"` eklersen iki yorum gelir. Kafenin
-> kendi gönderilerinde ise "Hafta sonu canlı müzik var" yazıyor (`kafe-gonderileri.txt`).
+> **Kendini dene 11:** Son hücrede `"ışık"` yerine `"müzik"` yazarsan iki yorum gelir. Kafenin
+> kendi gönderilerinde ise "Hafta sonu canlı müzik var" yazıyor (`veri/kafe-gonderileri.txt`).
 > Bu iki bilgi yan yana konunca bir tasarımcı için nasıl bir soru doğar?
 
-## Adım 9 — Aynı sonuç, çubuk grafik olarak
+## Adım 8 — Aynı sonuç, çubuk grafik olarak
 
-Dosyası: `10_cubuk_grafik.py`. Hazırlık klasöründeki `grafik.py`'yi yalnızca
-çalıştırmıştın; burada grafik kodunu satır satır yazıyoruz.
+Hazırlıktaki ilk defterde (`../00-hazirlik/ilk_defter.ipynb`) grafiği yalnızca verini
+değiştirerek çalıştırmıştın; burada grafik kodunu satır satır yazıyoruz.
 
 Kelime bulutu bir **izlenim** verir: "sessiz büyük, gerisi daha küçük." Ama "sessiz,
 ikinci sıradakinden **ne kadar** fazla?" ya da "priz mi daha sık, internet mi?"
 sorularını buluttan cevaplayamazsın; kelimelerin boyu harf sayısına göre de değişir.
 Karşılaştırma için çubuk grafik daha doğru bir araçtır.
 
-`10_cubuk_grafik.py`: `04`'ün okuma, temizleme, eleme ve sayma satırları aynen.
-En üste:
+Önce çizilecek iki listeyi hazırlıyoruz. `sirali` ve `sayac` Adım 5'ten hazır
+(durak kelimeler elenmiş hâlleri):
 
 ```python
 import matplotlib.pyplot as plt
-```
 
-En alta:
-
-```python
-sirali = sorted(sayac, key=sayac.get, reverse=True)
 etiketler = sirali[:10]
 degerler = []
 for kelime in etiketler:
     degerler.append(sayac[kelime])
+```
 
+Sonra çiziyoruz:
+
+```python
 plt.bar(etiketler, degerler, color="#4a6fa5")
 plt.title("Müşteri yorumlarında en sık 10 kelime")
 plt.ylabel("Kaç kez geçti")
-plt.xticks(rotation=45, ha="right")   # kelimeler üst üste binmesin
-plt.tight_layout()                    # kenardaki yazılar kesilmesin
-plt.savefig("kelime-grafik.png", dpi=150)
+plt.xticks(rotation=45)
+plt.show()
 ```
 
 Satır satır:
@@ -961,11 +908,9 @@ Satır satır:
   programlarından bildiğin onaltılık renk koduyla (`#4a6fa5`) verilebilir.
 - **`plt.title`, `plt.ylabel`** Başlık ve dikey eksenin adı. Başlıksız ve eksen adı
   olmayan grafik, izleyiciye "ne ölçtüğümü tahmin et" demektir.
-- **`plt.xticks(rotation=45, ha="right")`** Alttaki kelimeleri 45 derece yatırır ki üst
-  üste binmesinler.
-- **`plt.tight_layout()`** Kenarlardaki yazıların kesilmemesi için boşlukları ayarlar.
-- **`plt.savefig(...)`** Dosyaya kaydeder; `dpi=150` çözünürlüğü belirler. Grafik
-  ekranda açılmaz; konunun klasöründe `kelime-grafik.png` oluşur.
+- **`plt.xticks(rotation=45)`** Alttaki kelimeleri 45 derece yatırır ki üst üste
+  binmesinler.
+- **`plt.show()`** Grafiği hücrenin altında gösterir.
 
 Grafikte ilk bakışta görülen şey, bulutta görülmeyen şey: **sessiz (8)**, arkasından
 gelen üç kelimeden (5'er) belirgin biçimde yukarıda; `çalışmak`, `yer` ve `priz` ise
@@ -983,45 +928,34 @@ tam olarak eşit. Bulut bunu sezdirir, grafik ölçer.
 
 ---
 
-## Adımlar ve dosyalar
+## Defterin bölümleri
 
-Slaytlardaki program adım adım büyüyor; her adım bir öncekinin çıktısını kullanıyor.
-Aynı sıra `ornekler/` klasöründe de var. Her dosya tek başına çalışır: okuma ve temizleme
-satırlarıyla başlar, sonra o adımın yeni satırlarını ekler. Her dosyayı konunun klasöründen
-(`01-veri-ve-kelime-bulutu`) çalıştır:
+Slaytlardaki program `ders.ipynb`'de adım adım büyüyor; her adım bir öncekinin ürettiğini
+kullanıyor. Dosyayı yalnızca Adım 1'de okuyoruz.
 
-```
-uv run ornekler/01_dosya_oku.py
-```
+| Defterde | Ne yaptık | Elimizde ne oluştu |
+|---|---|---|
+| Isınma | İki tamir | — |
+| Adım 1 | Dosyayı açtık | `metin` |
+| Adım 2 | Kelimelere ayırdık (ham), sonra küçültüp noktalamayı attık, yeniden ayırdık | `temiz`, `kelimeler` |
+| Adım 3 | Saydık | `sayac` |
+| Adım 4 | Sıraladık | `sirali` |
+| Adım 5 | Durak kelimeleri eledik, yeniden saydık ve sıraladık | `durak_kelimeler`, yeni `sayac`, yeni `sirali` |
+| Adım 6 | Bulutu çizdirdik | `bulut` |
+| Adım 7 | Ekleri topladık, bağlamda okuduk | bulgu |
+| Adım 8 | Çubuk grafik çizdik | `etiketler`, `degerler` |
 
-| Adım | Ne yaptık | Elimizde ne oluştu | Dosya |
-|---|---|---|---|
-| Isınma | İki tamir | — | `00_isinma.py` |
-| 0–1 | Dosyayı açtık | `metin` | `01_dosya_oku.py` |
-| 2 | Kelimelere ayırdık (ham), sonra temizleyip yeniden ayırdık | `kelimeler`, `temiz` | `01_dosya_oku.py`, `02_kelime_say.py` |
-| 3 | Saydık | `sayac` | `02_kelime_say.py` |
-| 4 | Sıraladık | `sirali` | `03_ilk_20.py` |
-| 5 | Durak kelimeleri eledik | yeni `sayac` | `04_durak_kelime.py` |
-| 6 | Dosyaya yazdık | `sonuc.txt` | `04_durak_kelime.py` |
-| 7 | Çizdirdik | `kelime-bulutu.png` | `05_kelime_bulutu.py` |
-| 8 | Ekleri topladık, bağlamda okuduk | bulgu | `09_kok_ve_baglam.py` |
-| 9 | Çubuk grafik çizdik | `kelime-grafik.png` | `10_cubuk_grafik.py` |
+Derste kendi başına dolduracağın alıştırma: `alistirma.ipynb`. Önce beş bozuk kod
+(sırayla düzelt; hata mesajı okumak için iyi bir alıştırma), sonra boşluk doldurma
+soruları. Soru tipleri vizeyle aynı. Defteri önce yeni bir adla kopyala, kopyada çalış.
 
-Tablodaki adım numarası bu notun adımıdır; dosya adındaki sayı dosyanın sırasıdır.
-İkisi her zaman aynı değil (ör. 7. adım `05` dosyasında).
-
-Derste kendi başına dolduracağın alıştırma: `alistirma/sinif_alistirmasi.py`. Soru
-tipleri vizeyle aynı: boşluk doldurma ve hata bulma.
-
-Erken bitirirsen:
-
-- `06_iki_metin.py`: `04`'ün kodu, tek fark dosya yolu: kafenin **kendi** gönderileri.
-  Kafe kendini kahveyle anlatıyor, müşteri başka bir şeyle. Kimlik hangisini öne
-  çıkarmalı?
-- `07_bozuk_kodlar.py`: beş bozuk kod, beş farklı hata türü. Sırayla düzelt; her
-  düzeltmeden sonra yeniden çalıştır. Hata mesajı okumak için iyi bir alıştırma.
-- `08_bulut_tasarimi.py`: `05`'in bulutu, daha çok ayarla: renk paleti, arka plan,
-  kelime sayısı ve yazı yönü.
+Erken bitirirsen defterin sonundaki **Bonus**: Adım 1'deki dosya adını
+`veri/kafe-gonderileri.txt` yap ve hücreleri yeniden sırayla çalıştır. Bu kez metin
+müşterilerin değil, **kafenin kendi** gönderileri. Adım 3'teki `print(sayac["sessiz"])`
+satırı `KeyError: 'sessiz'` verir: kafe kendi gönderilerinde "sessiz" kelimesini **hiç**
+kullanmamış. Hata veren hücreden sonrakileri tek tek çalıştırmaya devam et; eleme
+sonrası ilk sıralar **kahve (8), yeni (7), bugün (5), hafta (4), soğuk (3)**. Kafe
+kendini kahveyle anlatıyor, müşteri sessizlikle. Yeni kimlik hangisini öne çıkarmalı?
 
 ---
 
@@ -1029,29 +963,31 @@ Erken bitirirsen:
 
 | Ne görüyorsun | Sebebi | Ne yapmalı |
 |---|---|---|
-| `FileNotFoundError: ... No such file or directory` | Komut yanlış klasörden çalıştırıldı ya da yolda yazım hatası var | `cd 01-veri-ve-kelime-bulutu` ile konu klasörüne geç; yol `veri/...` ile başlamalı. Emin değilsen `print(os.getcwd())` |
-| `ModuleNotFoundError: No module named 'wordcloud'` | Dosyayı `uv run` yerine `python` ile ya da konu klasörünün dışından çalıştırdın | Konu klasörüne gir, `uv run ...` ile çalıştır; olmazsa orada `uv sync` |
-| `Ã§alÄ±ÅŸmak` gibi bozuk harfler ya da `UnicodeDecodeError` | `open(...)` içinde `encoding="utf-8"` yok | Okurken de yazarken de `encoding="utf-8"` ekle |
+| `FileNotFoundError: ... No such file or directory` | Defter konu klasöründe değil ya da yolda yazım hatası var | Defteri `01-veri-ve-kelime-bulutu` içinden aç; yol `veri/...` ile başlamalı. Emin değilsen bir hücrede `import os` ve `print(os.getcwd())` |
+| `NameError: name 'metin' is not defined` (ya da `kelimeler`, `sayac`...) | Önceki bir hücreyi çalıştırmadın ya da çekirdek yeniden başladı | Defterin başından itibaren hücreleri sırayla çalıştır |
+| `ModuleNotFoundError: No module named 'wordcloud'` | Çekirdek olarak `.venv` seçili değil ya da `uv sync` yapılmadı | Sağ üstten çekirdeği `.venv` yap; olmadıysa terminalde konu klasöründe `uv sync` |
+| `Ã§alÄ±ÅŸmak` gibi bozuk harfler ya da `UnicodeDecodeError` | `open(...)` içinde `encoding="utf-8"` yok | `encoding="utf-8"` ekle |
 | `KeyError: 0` | Sözlüğü sayıyla açmaya çalıştın | Anahtarla aç: `sayac["sessiz"]` ya da `sayac[sirali[0]]` |
-| `KeyError: 'kelime'` | Sayaçta olmayan bir kelimeyi okumaya ya da artırmaya çalıştın | Sayarken `if / else` ya da `.get(kelime, 0)`; okurken önce `in` ile kontrol |
+| `KeyError: 'kelime'` | Sayaçta olmayan bir kelimeyi okumaya ya da artırmaya çalıştın | Sayarken `if / else`; okurken önce `in` ile kontrol |
 | `TypeError: list indices must be integers or slices, not str` | Sayacı `[]` ile liste olarak kurdun | `sayac = {}` |
 | `TypeError: get expected at least 1 argument, got 0` | `key=sayac.get()` yazdın | Parantezi sil: `key=sayac.get` |
-| `io.UnsupportedOperation: not writable` | Dosyayı `"w"` olmadan açıp yazmaya çalıştın | `open("sonuc.txt", "w", encoding="utf-8")` |
 | `AttributeError: 'list' object has no attribute 'items'` | Buluta sayaç yerine kelime listesi verdin | `generate_from_frequencies(sayac)` |
 | `ValueError: We need at least 1 word ...` | Sayaç boş | Dosya dolu mu, eleme her şeyi silmiş mi? `print(len(sayac))` |
+| Bulut görünmüyor | `bulut.to_image()` hücrenin son satırı değil | Görseli göstermek istediğin satırı hücrenin en sonuna koy |
 | Bulutta harfler kutu (□□□) | `font_path=` ile seçtiğin yazı tipi Türkçe harfleri içermiyor | `font_path=` ayarını sil (kütüphanenin kendi yazı tipi Türkçe harfleri gösterir) ya da Türkçe harfli bir yazı tipi seç |
 | Bulutta 3-5 kelime var | Metin çok kısa | Daha uzun bir metin kullan (ödevde en az 300 kelime) |
 | Her kelime 1 kez sayılmış | `sayac = {}` döngünün içinde | Döngüden önceye al |
-| Sayaçta `internet` iki kez görünüyor | Yalnızca `.lower()` kullandın | Önce `.replace("I", "ı").replace("İ", "i")`, sonra `.lower()` |
+| Sayaçta `internet` iki kez görünüyor | Yalnızca `.lower()` kullandın | Önce I ve İ'yi `.replace` ile çevir, sonra `.lower()` |
 
 ---
 
 ## Bu konuda öğrendiklerin
 
-- **Dosya yolu, çalıştığın klasöre göredir.** Komutları konunun klasöründen
-  (`01-veri-ve-kelime-bulutu`) çalıştır; `FileNotFoundError` görürsen önce bunu kontrol et.
-- **Dosyayı okurken ve yazarken `encoding="utf-8"` yaz.** Yazmazsan Windows'ta Türkçe
-  harfler bozulur.
+- **Defterde hücreler sırayla çalışır.** Her hücre öncekinin değişkenini kullanır; dosyayı
+  bir kez okur, sonra hep aynı değişkenlerle ilerlersin.
+- **Dosya yolu, defterin durduğu klasöre göredir.** `FileNotFoundError` görürsen önce
+  bunu kontrol et.
+- **Dosyayı okurken `encoding="utf-8"` yaz.** Yazmazsan Windows'ta Türkçe harfler bozulur.
 - **Temizlik saymadan önce gelir.** Noktalama ve büyük harf temizlenmezse aynı kelime
   birkaç farklı kelime gibi sayılır; bu veride asıl bulgu ("sessiz") kaybolurdu.
 - **Türkçe küçültme özel iş.** `"İ".lower()` beklediğini vermez; önce İ ve I'yı kendin
@@ -1071,6 +1007,9 @@ Erken bitirirsen:
 
 | Terim | Anlamı |
 |---|---|
+| **Defter (notebook)** | Kodun küçük parçalar (hücreler) hâlinde yazıldığı ve çalıştırıldığı dosya: `ders.ipynb` |
+| **Hücre** | Defterde tek seferde çalışan kod parçası. Shift + Enter ile çalışır, çıktısı altında görünür |
+| **Çekirdek (kernel)** | Defterin hücrelerini çalıştıran Python. Bu konuda `.venv` seçilir |
 | **Göreli yol** | Çalıştığın klasörden başlayan dosya yolu (`veri/...`) |
 | **Mutlak yol** | Diskin kökünden başlayan tam yol (`C:/Users/...`, `/home/...`) |
 | **Kodlama (encoding)** | Dosyadaki baytların hangi kurala göre harfe çevrileceği. Bizde hep `utf-8` |
@@ -1078,7 +1017,7 @@ Erken bitirirsen:
 | **Anahtar / değer** | Sözlükte aradığın şey (anahtar) ve karşılığında bulduğun şey (değer) |
 | **Sayaç** | Her şeyin kaç kez geçtiğini tutan sözlük: `{"sessiz": 8, ...}` |
 | **Durak kelime (stopword)** | Her metinde sık geçen ama bir şey anlatmayan kelime: ve, bir, için, ama |
-| **Kök / başlangıç** | Bir kelimenin eklerden önceki kısmı. Bu konuda "aynı harflerle başlayan" diye yaklaşık olarak kullandık |
+| **Ek** | Kelimenin sonuna gelip onu değiştiren parça: kahve**si**, bahçe**de**. Kod ekleri bilmez; bu konuda "içinde geçen" diye yaklaşık olarak topladık |
 | **Bağlam** | Bir kelimenin geçtiği cümle. Kelimenin **nasıl** kullanıldığını gösterir |
 | **Hata mesajı (traceback)** | Python'un hatayı anlattığı metin. Aşağıdan yukarı okunur |
 | **Sessiz hata** | Hata mesajı vermeyen ama yanlış sonuç üreten hata. En tehlikeli tür |
@@ -1093,10 +1032,8 @@ Erken bitirirsen:
 
 1. **10** döndürür. Hata mesajı almazsın; `return` döngünün içinde olduğu için ilk
    sayıyı ekleyip çıkar. Sessiz hata.
-2. **Bulunmaz.** Python yolu çalıştığın klasöre (`ornekler`) göre arar:
-   `01-veri-ve-kelime-bulutu/ornekler/veri/kafe-yorumlari.txt` diye bir yer yok.
-   Önce `cd ..` ile bir üst klasöre, yani `01-veri-ve-kelime-bulutu`'ya çık; komutu
-   oradan yaz: `uv run ornekler/01_dosya_oku.py`.
+2. **Çalışmaz:** `FileNotFoundError`. Defter kendi durduğu klasörde (masaüstü) çalışır ve
+   `Masaüstü/veri/kafe-yorumlari.txt` diye bir dosya yok. Defteri konu klasöründen aç.
 3. `metin[:1]` → `"D"` (ilk karakter, yazı olarak). `metin[0]` da `"D"` verir. Farkı
    boş metinde görürsün: boş bir yazıda `[:1]` boş yazı verir, `[0]` hata verir. Bu
    konuda ikisi aynı işi görür.
@@ -1110,7 +1047,8 @@ Erken bitirirsen:
    `sayac[0]` → `KeyError: 0`. Sıralanmış **liste** sayıyla, **sözlük** anahtarla açılır.
 8. İlk 10'dan yalnızca **yer** (3 harf) kaybolur; yerine 11. sıradaki `masalar` girer.
    Kısa ama anlamlı kelimeleri de atabileceğin için eşik de bir karardır.
-9. `sessiz: 8 kez`
+9. **için** (10 kez). Elemesiz sayaçta en üstte o var (Adım 4'ün çıktısı); bulutta en
+   büyük kelime de o olurdu. Ödevde göreceğin fark tam olarak bu.
 10. **Hayır.** Konum ve renk her çalıştırmada rastgele seçilir; veri taşımaz. Değişmeyen
     tek şey kelimelerin boyutu, çünkü o sayaçtan geliyor.
 11. Müşteriler bu kafeye sessizlik için geliyor ("çalışmak için yanlış günü seçmişim");

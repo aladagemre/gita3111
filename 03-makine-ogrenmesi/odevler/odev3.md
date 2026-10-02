@@ -4,19 +4,24 @@
 
 ## Yapılacak
 
-`06_veri_miktari.py` dosyasını çalıştır ve çıkan grafiğe bak.
+`ders.ipynb`'yi aynı klasörde yeni bir adla kopyala (ör. `ders-ayse.ipynb`), kopyayı aç
+ve hücreleri baştan Adım 6'nın sonuna kadar sırayla çalıştır. Depodaki dosyaya
+dokunmazsan `git pull` çakışmaz.
 
-Sonra iki ölçüme bak:
+Adım 6'nın ilk hücresi her satırda iki sayı yazıyor: eğitim örneği sayısı ve doğruluk.
+İki satıra bak:
 
-1. Modeli **eğitim verisinin yarısıyla** eğitince doğruluk kaç?
-2. Modeli **tamamıyla** eğitince doğruluk kaç?
+1. Modeli **eğitim verisinin yarısıyla** (90 örnek) eğitince doğruluk kaç?
+2. Modeli **tamamıyla** (180 örnek) eğitince doğruluk kaç?
 
-İkisi de dosyanın çıktısında var: ilk liste eğitim örneği sayıları, ikinci liste
-doğruluklar. Yarısı üçüncü sırada (%50), tamamı en sonda (%100).
+Adım 6'nın ikinci hücresi grafiği çiziyor. Grafiği dosyaya kaydetmek için o hücrede
+`plt.show()` satırının **üstüne** şu satırı ekle ve hücreyi yeniden çalıştır:
 
-Kodu değiştireceksen önce dosyayı `ornekler` klasöründe yeni bir adla kopyala, kopyada
-değiştir; depodaki dosyaya dokunmazsan `git pull` çakışmaz. Komutları konunun
-klasöründen ver (`cd 03-makine-ogrenmesi`, sonra `uv run ornekler/...`).
+```py
+plt.savefig("veri-miktari.png")
+```
+
+`veri-miktari.png` defterin yanına, konu klasörüne kaydedilir.
 
 ## Teslim edeceğin
 
@@ -27,12 +32,13 @@ klasöründen ver (`cd 03-makine-ogrenmesi`, sonra `uv run ornekler/...`).
 ## Dikkat
 
 Eğri her zaman düzgün yükselmeyebilir; ortada düşebilir. Bu bir hata değil —
-gördüğün şeyi yaz, düzeltmeye çalışma. Neden düştüğünü derste konuşacağız. İpucu için `ders_notu.md`'nin Adım 6 bölümüne bak.
+gördüğün şeyi yaz, düzeltmeye çalışma. Neden düştüğünü derste konuşacağız. İpucu için
+`ders_notu.md`'nin Adım 6 bölümüne bak.
 
 ## İstersen (zorunlu değil)
 
-`08_kendi_rengin.py` dosyasını yeni bir adla kopyala, kopyaya kendi seçtiğin 5 rengi
-ekle ve modele tahmin ettir.
+Kopyandaki **Bonus** hücresine kendi seçtiğin 5 rengi sırayla yaz (RGB sayılarını renk
+seçiciden al) ve modele tahmin ettir.
 
 Modelle aynı fikirde misin? Ayrıldığınız bir renk varsa onu getir — sınıfça
 bakalım, kim haklı?

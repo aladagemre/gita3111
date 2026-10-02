@@ -6,10 +6,11 @@
 
 ## Parça 1 — Beş soru, tek dosya
 
-`06_coklu_soru.py` dosyasını `ornekler` klasöründe yeni bir adla kopyala (örneğin
-`odev2_sorularim.py`) ve **kendi beş sorunla** çalıştır. Sorularını da
-`veri/ornek_sorular.txt` dosyasının yeni adlı bir kopyasına yaz (boş satır bırakma);
-kopya programdaki `open("veri/ornek_sorular.txt", ...)` satırının yolunu o dosyaya çevir. Depodaki dosyaları değiştirmezsen
+`ders.ipynb` defterini aynı klasörde yeni bir adla kopyala (örneğin
+`odev2-sorularim.ipynb`). Kopyada **Adım 7**'deki `sorular` listesini sil, yerine
+**kendi beş sorunu** yaz: her soru tırnak içinde, sonunda virgül. Sonra hücreleri
+yukarıdan aşağı, sırayla çalıştır (Adım 1'den başla; `modele_sor` Adım 6'da tanımlanıyor).
+Adım 7 bitince klasörde `cevaplar.txt` oluşur. Depodaki `ders.ipynb`'yi değiştirmezsen
 `git pull` çakışmaz.
 
 Bu parça kendi `anahtar.txt` dosyanı ister (kurulum yönergesinin 6. adımı).
@@ -17,14 +18,15 @@ Bu parça kendi `anahtar.txt` dosyanı ister (kurulum yönergesinin 6. adımı).
 Sorular senin ilgi alanından olsun: tasarım, müzik, oyun, yemek — fark etmez.
 Tek kural: hepsi aynı konudan olsun ki cevapları karşılaştırabilelim.
 
-**Teslim edeceğin:** `cevaplar.json` dosyan ve şu tek cümle:
+**Teslim edeceğin:** `cevaplar.txt` dosyan ve şu tek cümle:
 
 > Beş cevaptan hangisi işe yaramazdı, sence neden?
 
-İpucu: ders notundaki Adım 7'yi hatırla. İşe yaramayan bir cevabın sebebi bazen
+İpucu: ders notundaki Adım 8'i hatırla. İşe yaramayan bir cevabın sebebi bazen
 modelde değil, soruda eksik kalan bağlamdadır.
 
-**İstersen (zorunlu değil):** `08_cevap_raporu.py` ile cevaplarının kelime bulutunu da üret.
+`cevaplar.txt` dosyasını gönderirken **`anahtar.txt`'yi gönderme**; defterin kopyasını
+da göndermen gerekmiyor.
 
 ---
 

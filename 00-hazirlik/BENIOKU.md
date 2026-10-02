@@ -8,7 +8,7 @@ gördük. Kurulumu **bu dersten sonra evde**, `kurulum-yonergesi.md` dosyasına 
 | `kurulum-yonergesi.md` | Kurulumun adım adım yazılı hâli — evde buna bakarak ilerle |
 | `slaytlar.md` | Derste gösterilen slaytlar |
 | `ornekler/kurulum_testi.py` | Kurulumun tamam olup olmadığını denetler |
-| `ornekler/grafik.py` | Kurulumdan sonraki ısınma: kendi verinle ilk grafiğin |
+| `ilk_defter.ipynb` | İlk defterin: VS Code'da defter açmayı dene, kendi verinle ilk grafiğini çiz |
 
 ## Dönemin haritası (ilk derste konuştuklarımızın özeti)
 

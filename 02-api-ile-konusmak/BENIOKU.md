@@ -6,58 +6,60 @@ gönderip cevabını alacaksın. Konu 1'in bulgusundan (müşteriler kafeyi sess
 
 | Klasör / dosya | Ne işe yarıyor |
 |---|---|
-| `ornekler/` | Derste birlikte yazacağımız dosyalar (00-09) |
-| `veri/` | Örnek sorular, kayıtlı bir yanıt (Adım 3 için), renk listesi |
-| `alistirma/` | Derste kendi başına dolduracağın alıştırma |
+| `ders.ipynb` | Derste birlikte çalıştıracağımız defter: Isınma ve Adım 1–8 |
+| `alistirma.ipynb` | Derste kendi başına çözeceğin defter: bozuk kodlar ve boşluklu sorular |
+| `veri/renkler.csv` | Ödevin ikinci parçası için 20 renk (Konu 3'ün verisi) |
 | `odevler/odev2.md` | Bu konunun ödevi — iki parça |
 | `ders_notu.md` | Konu notu — adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
 
 ## Çalıştırma
 
-Komutları **bu konunun klasörünün içinden** çalıştır. `gita3111` klasöründeysen önce
-içeri gir, dersten önce kütüphaneleri indir (liste klasördeki `pyproject.toml`
-dosyasında), sonra çalıştır:
+Dersten önce bir kez, **bu konunun klasörünün içinde** kütüphaneleri indir (liste
+klasördeki `pyproject.toml` dosyasında):
 
 ```
 cd 02-api-ile-konusmak
 uv sync
-uv run ornekler/01_anahtar_oku.py
 ```
 
-`uv sync`'i atlarsan ilk `uv run` kütüphaneleri kendisi indirir; sadece biraz bekletir.
+Sonra:
+
+1. VS Code'da `ders.ipynb`'yi aç.
+2. Sağ üstten çekirdek (kernel) olarak bu klasörün **`.venv`**'ini seç.
+3. Hücreleri yukarıdan aşağı, **Shift + Enter** ile sırayla çalıştır. Her hücre bir
+   öncekinin değişkenini kullanır; atlarsan `NameError` alırsın.
 
 `anahtar.txt` bütün konular için tek dosya: konu klasöründe değil, bir üstte,
-`gita3111` klasörünün içinde durur. Kodlar onu `"../anahtar.txt"` yoluyla okur
+`gita3111` klasörünün içinde durur. Defter onu `"../anahtar.txt"` yoluyla okur
 (`..` = bir üst klasör).
 
 ## Güncel kalmak
 
 Yeni materyal geldiğinde `gita3111` klasöründe `git pull` çalıştır. Depodaki bir dosyayı
-(örneğin bir alıştırmayı) değiştirmek istersen önce aynı klasörde **yeni bir adla
+(örneğin alıştırma defterini) değiştirmek istersen önce aynı klasörde **yeni bir adla
 kopyala**, kopyada çalış; böylece `git pull` hiç çakışmaz.
 
 ## Anahtarın yoksa ne olacak?
 
-Örneklerin çoğu gerçek istek atar ve önce `anahtar.txt`'yi okur; dosya yoksa
-`FileNotFoundError: ... '../anahtar.txt'` hatasıyla durur. Anahtarın henüz yoksa:
+`ders.ipynb`'nin Adım 1'i `anahtar.txt`'yi okur; dosya yoksa
+`FileNotFoundError: ... '../anahtar.txt'` hatasıyla durur, sonraki adımlar da çalışmaz.
+Anahtarın henüz yoksa:
 
-- Derste **yanındakiyle birlikte** çalış: istekleri onun ekranında izle, kodu sen de yaz.
-- `00_isinma.py`, `03_yaniti_coz.py`, `07_bozuk_kodlar.py` ve sınıf alıştırması
-  anahtarsız çalışır.
+- Derste **yanındakiyle birlikte** çalış: istekleri onun ekranında izle, hücreleri sen de yaz.
+- Isınma (defterin ilk bölümü) ve `alistirma.ipynb` anahtarsız çalışır.
 - Kurulum yönergesinin 6. adımını (Cloudflare hesabı, `../00-hazirlik/kurulum-yonergesi.md`)
   **bugün** bitir. Ödev için kendi anahtarın gerekiyor.
 
-## Dosyalar
+## Defterin bölümleri
 
-| Dosya | Ne zaman |
-|---|---|
-| `00_isinma.py` | Ders başında, iç içe sözlük provası (iki bozuk satır) |
-| `01_anahtar_oku.py` | Adım 1: anahtarı dosyadan okumak |
-| `02_ilk_istek.py` | Adım 2: ilk istek, ham yanıt |
-| `03_yaniti_coz.py` | Adım 3: yanıtın içinden metni çekmek (anahtarsız çalışır) |
-| `04_hata_kodlari.py` | Adım 4: kasten yanlış anahtar, durum kodu |
-| `05_soru_sor.py` | Adım 5: konunun hedef çıktısı (`cevap.txt`) |
-| `06_coklu_soru.py` | Adım 6: döngüyle beş soru, `cevaplar.json` |
-| `07_bozuk_kodlar.py` | Alıştırma: beş bozuk parça (yeni bir adla kopyala, kopyada düzelt) |
-| `08_cevap_raporu.py` | Bonus: cevaplardan kelime bulutu |
-| `09_baglam_farki.py` | Adım 7: soruya bağlam yazmak cevabı nasıl değiştiriyor |
+| Bölüm | Ne yapılıyor | Anahtar |
+|---|---|---|
+| Isınma | İç içe sözlüğe kat kat inmek | gerekmez |
+| Adım 1 | Anahtarı dosyadan okumak | gerekir |
+| Adım 2 | İsteğin üç parçası: adres, başlık, gövde | gerekir |
+| Adım 3 | İsteği göndermek, durum kodu | gerekir |
+| Adım 4 | Gelen yanıta bakmak, metni çekmek | gerekir |
+| Adım 5 | Kasten yanlış anahtar, 401, önce durum koduna bakmak | gerekir |
+| Adım 6 | `modele_sor` fonksiyonu | gerekir |
+| Adım 7 | Döngüyle birden çok soru, cevaplar `cevaplar.txt`'ye | gerekir |
+| Adım 8 | Soruya bağlam yazmak cevabı nasıl değiştiriyor | gerekir |

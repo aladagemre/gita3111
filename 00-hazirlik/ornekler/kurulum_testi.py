@@ -35,7 +35,7 @@ if surum not in ("3.13", "3.14"):
           " kelime bulutu kütüphanesi sorun çıkarabilir. Hocaya bildir.")
 
 # 2) Kütüphaneler
-for paket in ("matplotlib", "wordcloud"):
+for paket in ("matplotlib", "wordcloud", "ipykernel"):
     try:
         __import__(paket)
         bildir(f"{paket} kurulu", True)

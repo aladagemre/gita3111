@@ -6,50 +6,46 @@ kaldığın adımdan devam et.
 
 | Klasör / dosya | Ne işe yarıyor |
 |---|---|
-| `ornekler/` | Derste birlikte yazacağımız ve çalıştıracağımız dosyalar (00-10) |
-| `veri/renkler-etiketli.csv` | Sınıfın etiketleri, tek dosyada |
-| `alistirma/` | Derste kendi başına dolduracağın alıştırma |
+| `ders.ipynb` | Derste birlikte çalıştıracağımız defter: Isınma, Adım 1–8 ve Bonus |
+| `alistirma.ipynb` | Derste kendi başına çözeceğin defter: bozuk kodlar ve boşluklu sorular |
+| `veri/renkler-etiketli.csv` | Sınıfın etiketleri, tek dosyada (`hex,ad,r,g,b,ogrenci,etiket`) |
 | `odevler/odev3.md` | Bu konunun ödevi |
-| `ders_notu.md` | Konu özeti — derste kaçırdığın yer olursa buraya bak |
+| `ders_notu.md` | Konu notu — adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
 
-## Kurulum
+## Çalıştırma
 
-Bu konunun kütüphaneleri (`scikit-learn`, `matplotlib`) bu klasördeki `pyproject.toml`
-dosyasında yazılı. **Dersten önce** konunun klasörüne girip bir kez çalıştır; indirme
-biraz sürüyor:
+Dersten önce bir kez, **bu konunun klasörünün içinde** kütüphaneleri indir (liste
+klasördeki `pyproject.toml` dosyasında; `scikit-learn` büyük, indirme biraz sürüyor):
 
 ```
 cd 03-makine-ogrenmesi
 uv sync
 ```
 
-## Çalıştırma
+Sonra:
 
-Komutları **bu konunun klasörünün içinden** çalıştır (`gita3111` klasöründeysen önce
-`cd 03-makine-ogrenmesi`):
-
-```
-uv run ornekler/01_veriyi_oku.py
-```
+1. VS Code'da `ders.ipynb`'yi aç.
+2. Sağ üstten çekirdek (kernel) olarak bu klasörün **`.venv`**'ini seç.
+3. Hücreleri yukarıdan aşağı, **Shift + Enter** ile sırayla çalıştır. Her hücre bir
+   öncekinin değişkenini kullanır; atlarsan `NameError` alırsın.
 
 ## Güncel kalmak
 
 Yeni materyal geldiğinde `gita3111` klasöründe `git pull` çalıştır. Depodaki bir dosyayı
-(örneğin bir alıştırmayı) değiştirmek istersen önce aynı klasörde **yeni bir adla
+(örneğin alıştırma defterini) değiştirmek istersen önce aynı klasörde **yeni bir adla
 kopyala**, kopyada çalış; böylece `git pull` hiç çakışmaz.
 
-## Dosyalar
+## Defterin bölümleri
 
-| Dosya | Ne zaman |
+| Bölüm | Ne yapılıyor |
 |---|---|
-| `00_isinma.py` | Ders başında, CSV satırını sözlüğe çevirme |
-| `01_veriyi_oku.py` | Adım 1: sınıfın verisi, renk renk anlaşmazlık ve tavan |
-| `02_ozellik_etiket.py` | Adım 2: rengi sayıya çevirmek (X ve y) |
-| `03_egitim_test.py` | Adım 3: veriyi ikiye bölmek |
-| `04_model_egit.py` | Adım 4: modeli eğitmek, kör tahminle kıyaslamak |
-| `05_yanilgilari_gor.py` | Adım 5: modelin yanıldığı renkler (`yanilgilar.png`) |
-| `06_veri_miktari.py` | Adım 6: veri arttıkça doğruluk (`veri-miktari.png`) |
-| `07_bozuk_kodlar.py` | Alıştırma: beş bozuk parça, hepsi sessizce yanlış sonuç yazıyor |
-| `08_kendi_rengin.py` | Bonus: kendi renklerini tahmin ettir |
-| `09_modeli_yokla.py` | Adım 7: model ne öğrendi? Kafe paletini sormak |
-| `10_gorulmemis_renkler.py` | Adım 8: hiç görmediği renklerde dürüst sınav |
+| Isınma | Sayaç neyi sayıyor? Sessiz bir hatayı bulmak |
+| Adım 1 | Sınıfın verisi; bir rengin etiketlerini saymak |
+| Adım 2 | Rengi sayıya çevirmek (X ve y) |
+| Adım 3 | Veriyi ikiye bölmek: eğitim ve test |
+| Adım 4 | Modeli eğitmek, kör tahminle kıyaslamak |
+| Adım 5 | Modelin yanıldığı renkler ve grafiği |
+| Adım 6 | Veri arttıkça doğruluk: öğrenme eğrisi |
+| Adım 7 | Model ne öğrendi? Kafe paletini sormak |
+| Adım 8 | Hiç görmediği bir renkte sınamak |
+| Bonus | Kendi seçtiğin rengi sormak |

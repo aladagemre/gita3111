@@ -105,7 +105,7 @@ git pull
 Bu komut yalnızca yeni ve değişen dosyaları indirir.
 
 > **Depodaki bir dosyayı değiştireceksen önce kopyala.** Örneğin alıştırmayı doldurmadan önce
-> `sinif_alistirmasi.py` dosyasını aynı klasörde `benim_alistirmam.py` adıyla kopyala ve
+> `alistirma.ipynb` defterini aynı klasörde `benim_alistirmam.ipynb` adıyla kopyala ve
 > kopyada çalış. Kendi adını verdiğin dosyalara `git pull` hiç dokunmaz.
 >
 > `git pull` "your local changes would be overwritten" diye hata verirse bir depo dosyasını
@@ -139,7 +139,8 @@ Görmüyorsan betik zaten sana neyin eksik olduğunu yazacak. Çıktının tamam
 görüntüsünü al, derse onunla gel.
 
 > **Yeni bir konuya başlarken:** o konunun klasörüne gir ve dersten önce bir kez `uv sync`
-> çalıştır. Kütüphaneler önceden inmiş olur, derste beklemezsin.
+> çalıştır. Kütüphaneler iner ve klasörde `.venv` adlı ortam oluşur; defteri açınca VS Code'a
+> bu ortamı seçeceksin (Adım 5).
 > ```
 > cd ../01-veri-ve-kelime-bulutu
 > uv sync
@@ -147,30 +148,40 @@ görüntüsünü al, derse onunla gel.
 
 ---
 
-## Isınma — ilk grafiğin
+## Adım 5 — VS Code ve ilk defterin
 
-`00-hazirlik/ornekler/grafik.py` hazır bir grafik betiği. Kod yazmanı beklemiyorum;
-yalnızca veriyi değiştireceksin:
+Bu dönem kodu **defterlerde** (notebook, `.ipynb` dosyası) çalıştıracağız. Defterde kod küçük
+kutulara (**hücre**) bölünmüş; her hücreyi ayrı çalıştırıp sonucunu hemen altında görürsün.
 
-1. Dosyayı aynı klasörde `benim_grafigim.py` adıyla kopyala (neden kopyaladığımızı
-   "Dönem boyunca: depoyu güncel tut" bölümünde anlattım).
-2. Kopyada `DEĞİŞTİRECEĞİN YER` arasındaki iki listeyi ve başlığı kendi verinle değiştir:
-   bir haftada kaç saat çizim yaptığın, en çok kullandığın beş rengi kaç kez kullandığın…
-3. `00-hazirlik` klasörünün içinden çalıştır:
+1. VS Code yoksa https://code.visualstudio.com adresinden indir ve kur.
+2. VS Code'da sol menüden **Extensions**'ı aç; **Python** ve **Jupyter** eklentilerini kur
+   (ikisinin de yayıncısı Microsoft).
+3. **File → Open Folder** ile `gita3111` klasörünü aç.
+4. Terminalde `00-hazirlik` klasörünün ortamını hazırla (Adım 4'te kurulum testini
+   çalıştırdıysan bu zaten hazırdır, yine de bir kez çalıştırmanın zararı yok):
 
 ```
-uv run ornekler/benim_grafigim.py
+cd gita3111/00-hazirlik
+uv sync
 ```
 
-`00-hazirlik` klasöründe `grafik.png` oluşur. Grafik kodunun nasıl yazıldığını Konu 01'de
-öğreneceğiz.
+5. VS Code'da `00-hazirlik/ilk_defter.ipynb` dosyasını aç. Sağ üstte **Select Kernel** →
+   **Python Environments** → `00-hazirlik/.venv` seç.
+6. İlk hücreye tıkla ve **Shift + Enter**'a bas. Altında `Merhaba, defterim çalışıyor!`
+   yazmalı.
 
----
+### İlk grafiğin
 
-## Adım 5 — VS Code
+Defterin ikinci hücresinde hazır bir grafik var. Kod yazmanı beklemiyorum; yalnızca veriyi
+değiştireceksin:
 
-Geçen dönemden kuruluysa bir şey yapma. Değilse: https://code.visualstudio.com adresinden indir,
-kur, `gita3111` klasörünü aç (File → Open Folder).
+1. Önce defteri aynı klasörde `benim_defterim.ipynb` adıyla kopyala (neden kopyaladığımızı
+   "Dönem boyunca: depoyu güncel tut" bölümünde anlattım) ve kopyayı aç.
+2. `gunler` ve `saatler` listelerini ve başlığı kendi verinle değiştir: bir haftada kaç saat
+   çizim yaptığın, en çok kullandığın beş rengi kaç kez kullandığın…
+3. Hücreyi **Shift + Enter** ile çalıştır; grafik hücrenin altında çıkar.
+
+Grafik kodunun nasıl yazıldığını Konu 01'de öğreneceğiz.
 
 ---
 
@@ -216,7 +227,7 @@ API_TOKEN = buraya_anahtar
 - [ ] `uv --version` ve `git --version` birer sürüm numarası yazıyor
 - [ ] `git clone` ile indirdiğim `gita3111` klasörüm var
 - [ ] `00-hazirlik` klasörünün içinde `uv run ornekler/kurulum_testi.py` → **KURULUM TAMAM** yazdı
-- [ ] Kendi verimle `grafik.png` ürettim
+- [ ] `ilk_defter.ipynb` defterini `.venv` çekirdeğiyle açıp kendi verimle grafik çizdim
 - [ ] VS Code kurulu ve `gita3111` klasörünü açabiliyorum
 - [ ] Cloudflare hesabım var, Account ID ve anahtarım `gita3111/anahtar.txt` dosyasında
 
@@ -229,7 +240,7 @@ Altı maddeyi de işaretlediysen hazırsın.
 **"uv tanınmıyor / command not found"**
 Terminali kapatıp yeniden açmadın. Aç-kapat, tekrar dene.
 
-**`uv run` / `uv sync` ya da `git clone` hata veriyor, internet hatası gibi görünüyor**
+**`uv sync` / `uv run` ya da `git clone` hata veriyor, internet hatası gibi görünüyor**
 Üniversite ağındaysan bazı adresler kapalı olabilir. Telefon internetini paylaşıp tekrar dene.
 
 **Komutlar çalışıyor ama dosyayı bulamıyor diyor**
@@ -239,3 +250,8 @@ Muhtemelen yanlış klasördesin. Komutları konunun klasörünün **içinden** 
 
 **`git clone` "Repository not found" ya da kullanıcı adı/şifre soruyor**
 Depo adresini yanlış yazmış olabilirsin; yukarıdan kopyala-yapıştır yap. Yine olmuyorsa bana yaz.
+
+**Defterde "Select Kernel" listesinde `.venv` görünmüyor**
+O konunun klasöründe `uv sync` çalıştırılmamış. Terminalde konunun klasörüne gir, `uv sync`
+yaz, sonra VS Code'da listeyi yenile. Yine görünmüyorsa **Python** ve **Jupyter** eklentilerinin
+kurulu olduğundan emin ol.

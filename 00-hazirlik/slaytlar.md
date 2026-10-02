@@ -189,19 +189,22 @@ gita3111/
 ├── 00-hazirlik/                ← bu konu
 │   ├── pyproject.toml
 │   ├── kurulum-yonergesi.md
-│   └── ornekler/
+│   ├── ilk_defter.ipynb
+│   └── ornekler/kurulum_testi.py
 ├── 01-veri-ve-kelime-bulutu/
 │   ├── pyproject.toml
-│   ├── ders_notu.md
+│   ├── ders.ipynb              ← derste birlikte çalıştıracağımız defter
+│   ├── alistirma.ipynb         ← kendi başına çözeceğin alıştırmalar
+│   ├── ders_notu.md            ← evde okuyacağın konu notu
 │   ├── slaytlar.md
-│   ├── ornekler/   veri/   alistirma/   odevler/
+│   └── veri/   odevler/
 ├── 02-api-ile-konusmak/
 └── ...
 ```
 
 - Her konu **kendi klasöründe**, başında sıra numarası var
 - Konuların başında hafta değil **sıra** numarası var: bir konu bir dersten kısa da sürebilir, uzun da
-- Her konu klasöründe aynı düzen: not, slayt, örnekler, veri, alıştırma, ödev
+- Her konu klasöründe aynı düzen: ders defteri, alıştırma defteri, not, slayt, veri, ödev
 
 -----
 
@@ -221,7 +224,9 @@ dependencies = [
 ```
 
 - Bu dosya o konunun **hangi Python'u** ve **hangi kütüphaneleri** kullandığını yazar
-- `uv run` bu dosyayı okur, eksik ne varsa **kendisi kurar**
+- Konunun klasöründe `uv sync` dersen uv bu dosyayı okur, eksik ne varsa **kendisi kurar**
+  ve klasörde `.venv` adlı bir ortam oluşturur
+- Defteri açınca VS Code'a "bu ortamı kullan" diyeceğiz (Adım 5)
 - Sen hiçbir zaman "şu kütüphaneyi kur" diye uğraşmazsın
 
 Tek şart: komutu **konunun klasörünün içinden** çalıştırmak. uv bu dosyayı komutu
@@ -244,6 +249,7 @@ sürebilir. Ekranda şunu görmelisin:
 [OK  ] Python sürümü — bulunan: 3.13
 [OK  ] matplotlib kurulu
 [OK  ] wordcloud kurulu
+[OK  ] ipykernel kurulu
 [OK  ] Grafik üretimi — kurulum_testi_ciktisi.png oluştu
 [ATLA] Cloudflare bağlantısı — anahtar.txt yok (Konu 02'ye, API dersine kadar sorun değil)
 ----------------------------------------
@@ -274,34 +280,12 @@ Hatanın sebebi çoğu zaman kodda değil, **nerede durduğunda.**
 
 -----
 
-## Kurulumdan sonra: ilk grafiğin
-
-`00-hazirlik/ornekler/` klasöründe hazır bir grafik betiği var. Kod yazmanı
-beklemiyorum; yalnızca **veriyi değiştireceksin**. Önce dosyayı kopyala
-(`grafik.py` → `benim_grafigim.py`), sonra kopyada şu kısmı değiştir:
-
-```python
-#---- DEĞİŞTİRECEĞİN YER ----
-etiketler = ["Pzt", "Sal", "Çar", "Per", "Cum"]
-degerler = [3, 7, 2, 8, 5]
-baslik = "Haftalık bir şey"
-#----------------------------
-```
-
-- Kendinden bir veri koy: bir haftada kaç saat çizim yaptığın, en sevdiğin beş rengi kaç kez kullandığın…
-- Çalıştır: `uv run ornekler/benim_grafigim.py`
-- `00-hazirlik` klasöründe `grafik.png` oluşur
-
-Grafik kodunun **nasıl yazıldığını** Konu 01'de öğreneceğiz.
-
------
-
 ## Önemli kural: depo dosyasını değiştirmeden önce kopyala
 
-Grafik betiğini neden önce kopyaladık? Dönem boyunca kuralımız bu:
+Dönem boyunca kuralımız bu:
 
 - Depodaki bir dosyayı değiştireceksen önce **aynı klasörde yeni bir adla kopyala**
-- Örnek: `grafik.py` → `benim_grafigim.py`, `sinif_alistirmasi.py` → `benim_alistirmam.py`
+- Örnek: `ilk_defter.ipynb` → `benim_defterim.ipynb`, `alistirma.ipynb` → `benim_alistirmam.ipynb`
 - Sonra kopyada çalış
 
 **Neden?** `git pull` senin adını verdiğin dosyalara hiç dokunmaz. Ama depodaki bir
@@ -337,16 +321,46 @@ etkilenmez.
 
 -----
 
-## Adım 5 — VS Code
+## Adım 5 — VS Code ve defterler
 
-- Geçen dönemden kuruluysa **dokunma**
-- Değilse: code.visualstudio.com → indir → kur
+Bu dönem kodu **defterlerde** (notebook, `.ipynb`) çalıştıracağız: kod küçük kutulara
+(**hücre**) bölünmüş; her hücreyi ayrı çalıştırıp sonucunu hemen altında görürsün.
+
+- VS Code yoksa: code.visualstudio.com → indir → kur
+- VS Code'da sol menüden **Extensions** → **Python** ve **Jupyter** eklentilerini kur (ikisi de Microsoft'un)
 - **File → Open Folder** ile `gita3111` klasörünü aç
 
-VS Code'un içinde de terminal var: **Terminal → New Terminal**. Açılan terminal
-`gita3111` klasöründe başlar; konuya geçmek için `cd 00-hazirlik` yaz.
+VS Code'un içinde terminal de var: **Terminal → New Terminal**.
 
-Dönem boyunca kodu VS Code'da yazacak, VS Code'un terminalinde çalıştıracağız.
+-----
+
+## İlk defterin
+
+Önce terminalde ortamı hazırla:
+
+```text
+cd 00-hazirlik
+uv sync
+```
+
+Sonra VS Code'da `00-hazirlik/ilk_defter.ipynb` dosyasını aç:
+
+- Sağ üstte **Select Kernel** → **Python Environments** → `00-hazirlik/.venv` seç
+- Bir hücreye tıkla, **Shift + Enter**: hücre çalışır, sonucu altında görünür
+- Grafik hücresindeki iki listeyi kendi verinle değiştir ve yeniden çalıştır:
+
+```python
+import matplotlib.pyplot as plt
+
+gunler = ["Pzt", "Sal", "Çar", "Per", "Cum"]
+saatler = [3, 7, 2, 8, 5]
+
+plt.bar(gunler, saatler)
+plt.title("Bu hafta kaç saat çizim yaptım?")
+plt.show()
+```
+
+Değiştirmeden önce defteri kopyala: `benim_defterim.ipynb`.
 
 -----
 
@@ -395,9 +409,10 @@ Anahtarı kaydettikten sonra kurulum testini bir kez daha çalıştır: Cloudfla
 | Belirti | Sebep | Çözüm |
 |---|---|---|
 | `uv` / `git` tanınmıyor | Kurulumdan sonra terminal yenilenmedi | Terminali kapat, yeniden aç |
-| İnternet hatası (`uv run`, `git clone`) | Üniversite ağı bazı adresleri kapatıyor | Telefon internetini paylaşıp tekrar dene |
+| İnternet hatası (`uv sync`, `git clone`) | Üniversite ağı bazı adresleri kapatıyor | Telefon internetini paylaşıp tekrar dene |
 | "No such file or directory" | Yanlış klasördesin | `pwd` ile bak, `cd gita3111/00-hazirlik` |
 | "Repository not found" | Depo adresi yanlış yazıldı | Adresi kopyala-yapıştır yap |
+| Defterde **Select Kernel** listesinde `.venv` yok | O konunun klasöründe `uv sync` çalıştırılmadı | Terminalde konunun klasörüne gir, `uv sync`, VS Code'da listeyi yenile |
 | Cloudflare satırı HTTP 401 | Token yanlış kopyalandı | Yeni token üret, `anahtar.txt`'ye yapıştır |
 | Cloudflare satırı HTTP 403 | Token'ın izinleri eksik | Token'ı hazır bilgileri değiştirmeden yeniden üret |
 
@@ -410,8 +425,7 @@ Listede olmayan bir şey görürsen: ekran görüntüsü, bana mesaj.
 - [ ] `uv --version` ve `git --version` birer sürüm numarası yazıyor
 - [ ] `git clone` ile indirdiğim `gita3111` klasörüm var
 - [ ] `00-hazirlik` içinde `uv run ornekler/kurulum_testi.py` → **KURULUM TAMAM**
-- [ ] Kendi verimle `grafik.png` ürettim
-- [ ] VS Code'da `gita3111` klasörünü açabiliyorum
+- [ ] VS Code'da `ilk_defter.ipynb` defterini açıp `.venv` çekirdeğiyle çalıştırdım, kendi verimle grafik çizdim
 - [ ] Cloudflare hesabım var; Account ID ve anahtarım `gita3111/anahtar.txt` dosyasında
 
 Altısı da tamamsa hazırsın. Gelecek dersin başında kurulum testini birlikte bir kez
@@ -420,16 +434,17 @@ geçmeyeceğiz.
 
 -----
 
-## Her dersten önce: üç satır
+## Her dersten önce: dört adım
 
 ```text
 cd gita3111
 git pull
 cd 01-veri-ve-kelime-bulutu
+uv sync
 ```
 
 - `git pull` → yeni konuyu getirir
-- Konunun klasörüne gir → `uv run` o konunun kütüphanelerini kendisi kurar
-- Ders öncesi indirme yapmak istersen konunun klasöründe bir kez `uv sync` çalıştır; derste beklemezsin
+- Konunun klasörüne gir, `uv sync` → o konunun kütüphanelerini kurar
+- VS Code'da konunun `ders.ipynb` defterini aç, çekirdek olarak o klasörün `.venv`'ini seç
 
-Bu dönemin ritmi bu: **çek, gir, çalıştır.**
+Bu dönemin ritmi bu: **çek, gir, kur, aç.**

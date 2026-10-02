@@ -6,3 +6,8 @@ dependencies = [
     "matplotlib>=3.10",
     "wordcloud>=1.9",
 ]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.4.0",
+]

@@ -27,10 +27,10 @@ Bu konuda öğreneceğin şey, dönemin geri kalanında "model" dediğimiz şeyi
 **4.** Modeli eğitelim ve ölçelim
 **5.** Yanıldığı yerlere bakalım
 **6.** Veri arttıkça ne değişiyor?
-**7.** Model ne öğrendi? Yeni renklerle yoklayalım
-**8.** Hiç görmediği renklerde dürüst sınav
+**7.** Model ne öğrendi? Kafe paletini soralım
+**8.** Hiç görmediği bir renk
 
-Her adım bir dosya: bir öncekini kopyala, birkaç satır ekle.
+Hepsi tek defterde: `ders.ipynb`. Hücreleri sırayla çalıştır (**Shift + Enter**).
 
 -----
 
@@ -38,9 +38,9 @@ Her adım bir dosya: bir öncekini kopyala, birkaç satır ekle.
 
 Bir rengin "enerjik" mi "sakin" mi olduğunu kodla söylemek isteseydin:
 
-```python
+```py
 if kirmizi > 200 and yesil < 100:
-    return "enerjik"
+    print("enerjik")
 ```
 
 Bu bir **kural**. Sen yazdın, sen düşündün.
@@ -50,6 +50,28 @@ kuralı modelin bulmasını istiyorsun.
 
 - Kural yazmak: "şu şartlarda şunu yap"
 - Öğretmek: "işte 240 örnek, sen çıkar"
+
+-----
+
+## Isınma — sayaç neyi sayıyor?
+
+`{'enerjik': 2, 'sakin': 1}` yazmalı. Ne yazıyor?
+
+```python
+sayac = {}
+for kayit in kayitlar:
+    etiket = kayit["ad"]
+    if etiket in sayac:
+        sayac[etiket] = sayac[etiket] + 1
+    else:
+        sayac[etiket] = 1
+
+print(sayac)
+```
+
+> {'kırmızı': 1, 'orta mavi': 1, 'şeftali': 1}
+
+Hata mesajı yok, sonuç yanlış. Saydığımız alan `"ad"` değil, `"etiket"` olmalı.
 
 -----
 
@@ -65,32 +87,45 @@ print(len(kayitlar))
 print(kayitlar[0])
 ```
 
-- `csv.DictReader` her satırı bir **sözlüğe** çeviriyor
-- Yani tanıdık bir yapı: `kayit["hex"]`, `kayit["etiket"]`
+- `csv.DictReader` her satırı bir **sözlüğe** çeviriyor: `kayit["ad"]`, `kayit["etiket"]`
 - 12 öğrenci × 20 renk = 240 satır. Her renk 12 kez geçiyor
 
-Dosya: `01_veriyi_oku.py`
+-----
+
+## Sınıf "krem"e ne demiş?
+
+Konu 1'deki sayacın aynısı, yalnızca krem satırlarında:
+
+```python
+sayac = {}
+for kayit in kayitlar:
+    if kayit["ad"] == "krem":
+        etiket = kayit["etiket"]
+        if etiket in sayac:
+            sayac[etiket] = sayac[etiket] + 1
+        else:
+            sayac[etiket] = 1
+
+print(sayac)
+```
+
+> {'enerjik': 5, 'ciddi': 2, 'sakin': 5}
+
+`"krem"` yerine `"kırık beyaz"` yaz:
+
+> {'enerjik': 1, 'sakin': 11}
 
 -----
 
 ## Sınıf anlaşabilmiş mi?
 
-Her renk için ayrı bir sayaç — Konu 1'in sayacı, sözlüğün içinde:
-
-```python
-renkler = {}  # her renk için ayrı bir sayaç
-for kayit in kayitlar:
-    ad = kayit["ad"]
-    if ad not in renkler:
-        renkler[ad] = {}
-    renkler[ad][kayit["etiket"]] = renkler[ad].get(kayit["etiket"], 0) + 1
-
-for ad in renkler:
-    print(ad, renkler[ad])
-```
-
-> kırık beyaz {'enerjik': 1, 'sakin': 11}
-> krem {'enerjik': 5, 'ciddi': 2, 'sakin': 5}
+| Renk | Dağılım |
+|---|---|
+| krem | 5 enerjik, 5 sakin, 2 ciddi |
+| koyu yeşil | 6 ciddi, 4 sakin, 2 enerjik |
+| hardal | 7 enerjik, 3 sakin, 2 ciddi |
+| kırık beyaz | 11 sakin, 1 enerjik |
+| bordo | 11 enerjik, 1 ciddi |
 
 **20 rengin 20'sinde de sınıf anlaşamamış.** Ama her renkte aynı ölçüde değil.
 
@@ -104,15 +139,12 @@ sarılık — ve sınıfın yarısı için bu kayma rengi "enerjik" yapmış.
 Model bir renk için **tek** cevap verebilir. En iyi ihtimalle çoğunluğu söyler,
 azınlıktakilerin hepsinde yanılır.
 
-```python
-tutan = 0  # model her renkte en iyi ihtimalle çoğunluğu bilir
-for ad in renkler:
-    tutan = tutan + max(renkler[ad].values())
-print("Tavan:", round(tutan / len(kayitlar), 2))
-```
+- Kırık beyazda en iyi ihtimalle 12'de 11
+- Kremde en iyi ihtimalle 12'de 5
 
-**0.74.** Mükemmel bir model bile her dört cevaptan birini "yanlış" bilecek.
+20 rengin hepsi için toplayınca: **0.74.**
 
+Mükemmel bir model bile her dört cevaptan birini "yanlış" bilecek.
 Bu yanlışlar modelin kusuru değil; sınıfın kendi içindeki görüş ayrılığı.
 
 -----
@@ -121,30 +153,27 @@ Bu yanlışlar modelin kusuru değil; sınıfın kendi içindeki görüş ayrıl
 
 Model "kırmızı" kelimesini anlamaz. Sayı ister.
 
+Renk seçicide `#E63946` yazınca yanında **R 230, G 57, B 70** görürsün.
+Dosyada bu üç sayı hazır: `r`, `g`, `b` sütunları.
+
 ```python
-import csv
-
-with open("veri/renkler-etiketli.csv", encoding="utf-8") as dosya:
-    kayitlar = list(csv.DictReader(dosya))
-
 X = []
 y = []
 for kayit in kayitlar:
-    kod = kayit["hex"]
-    X.append((int(kod[1:3], 16), int(kod[3:5], 16), int(kod[5:7], 16)))
+    r = int(kayit["r"])
+    g = int(kayit["g"])
+    b = int(kayit["b"])
+    X.append([r, g, b])
     y.append(kayit["etiket"])
 
 print(len(X), len(y))
-print(kayitlar[0]["hex"], X[0], y[0])
+print(X[0], y[0])
 ```
 
-- `kod[1:3]` → `"E6"` (0. karakter `#`, onu atlıyoruz)
-- `int("E6", 16)` → 230: renk kodları 16 tabanında yazılır
-- `16`'yı unutursan: `ValueError: invalid literal for int() with base 10: 'E6'`
+> 240 240
+> [230, 57, 70] enerjik
 
-> #E63946 (230, 57, 70) enerjik
-
-Dosya: `02_ozellik_etiket.py`
+`int(...)`: dosyadan okunan her şey metindir (`'230'`); sayıya çeviriyoruz.
 
 -----
 
@@ -189,27 +218,16 @@ Sınavda çıkmış soruyla sınav yapmak gibi. Öğrenci soruyu ezberlemiş ola
 
 ## Bölmeyi kodla yapmak
 
-`02`'yi kopyala, en alta bölmeyi ekle:
-
 ```python
-import csv
 from sklearn.model_selection import train_test_split
-
-with open("veri/renkler-etiketli.csv", encoding="utf-8") as dosya:
-    kayitlar = list(csv.DictReader(dosya))
-
-X = []
-y = []
-for kayit in kayitlar:
-    kod = kayit["hex"]
-    X.append((int(kod[1:3], 16), int(kod[3:5], 16), int(kod[5:7], 16)))
-    y.append(kayit["etiket"])
 
 X_egitim, X_test, y_egitim, y_test = train_test_split(
     X, y, test_size=0.25, random_state=42
 )
 print(len(X_egitim), len(X_test))
 ```
+
+> 180 60
 
 - Soldaki **dört değişken tek satırda** doluyor; sıra önemli, karıştırma
 - `test_size=0.25` → dörtte biri (60 satır) teste ayrılıyor
@@ -234,33 +252,16 @@ beş arkadaşına** soruyor.
 
 ## Modeli eğitmek
 
-`03`'ü kopyala: bir `import` ekle, en alttaki `print` yerine modeli yaz:
-
 ```python
-import csv
-from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-
-with open("veri/renkler-etiketli.csv", encoding="utf-8") as dosya:
-    kayitlar = list(csv.DictReader(dosya))
-
-X = []
-y = []
-for kayit in kayitlar:
-    kod = kayit["hex"]
-    X.append((int(kod[1:3], 16), int(kod[3:5], 16), int(kod[5:7], 16)))
-    y.append(kayit["etiket"])
-
-X_egitim, X_test, y_egitim, y_test = train_test_split(
-    X, y, test_size=0.25, random_state=42
-)
 
 model = KNeighborsClassifier(n_neighbors=5)
 model.fit(X_egitim, y_egitim)
-print("Model:", round(model.score(X_test, y_test), 2))
-
-print("Hep enerjik:", round(y_test.count("enerjik") / len(y_test), 2))
+dogruluk = model.score(X_test, y_test)
+print(round(dogruluk, 2))
 ```
+
+> 0.77
 
 - **kur** — kaç komşuya bakacağını söyle
 - **`fit`** — "bu örneklere bak ve öğren"
@@ -270,13 +271,20 @@ print("Hep enerjik:", round(y_test.count("enerjik") / len(y_test), 2))
 
 ## Sonuç bir şey ifade ediyor mu?
 
-> Model: 0.77
-> Hep enerjik: 0.45
-
 Tek başına 0.77 bir şey söylemez. Kıyas gerekir.
+**Kör tahmin:** hiç düşünmeden hep en sık etiketi ("enerjik") söylemek.
 
-**Alttan kıyas — kör tahmin:** hiç düşünmeden hep en sık etiketi söylemek.
-Sınıfın verisinde en sık etiket "enerjik" (100 enerjik, 78 sakin, 62 ciddi).
+```python
+enerjik = 0
+for etiket in y_test:
+    if etiket == "enerjik":
+        enerjik = enerjik + 1
+
+kor_tahmin = enerjik / len(y_test)
+print(round(kor_tahmin, 2))
+```
+
+> 0.45
 
 Model kör tahmini açık farkla geçiyor: gerçekten bir şey öğrenmiş.
 
@@ -299,7 +307,7 @@ modelin değil, sınıfın görüş ayrılığının payı.
 
 ## Kaç arkadaşa sormalı? Tek sayıya güvenmeli mi?
 
-`04`'te `n_neighbors=5` yerine başka sayılar:
+Adım 4'te `n_neighbors=5` yerine başka sayılar:
 
 k=1 → 0.70 · k=5 → 0.77 · k=15 → 0.73 · k=45 → 0.72
 
@@ -313,58 +321,38 @@ k=1 → 0.70 · k=5 → 0.77 · k=15 → 0.73 · k=45 → 0.72
 
 ## Adım 5 — Yanıldığı yere bakmak
 
-`04`'ü kopyala. Bu kez `kayitlar`ı da bölüyoruz: yanlış satırın adını ve kodunu bilelim.
+Yanlış satırın adını bilmek için `kayitlar`'ı da bölüyoruz. **Aynı** `random_state` →
+aynı 60 satır teste düşer.
 
 ```python
-import csv
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
-
-with open("veri/renkler-etiketli.csv", encoding="utf-8") as dosya:
-    kayitlar = list(csv.DictReader(dosya))
-
-X = []
-y = []
-for kayit in kayitlar:
-    kod = kayit["hex"]
-    X.append((int(kod[1:3], 16), int(kod[3:5], 16), int(kod[5:7], 16)))
-    y.append(kayit["etiket"])
-
-X_egitim, X_test, y_egitim, y_test, k_egitim, k_test = train_test_split(
-    X, y, kayitlar, test_size=0.25, random_state=42
+egitim_kayitlari, test_kayitlari = train_test_split(
+    kayitlar, test_size=0.25, random_state=42
 )
-
-model = KNeighborsClassifier(n_neighbors=5)
-model.fit(X_egitim, y_egitim)
-tahminler = model.predict(X_test)
+print(len(test_kayitlari))
 ```
 
-`predict`: "şu örnekler sence hangisi?" — her test satırı için bir tahmin.
+`predict`: "bu renk sence hangisi?" Her zaman bir **liste** ister: `[renk]`.
 
 -----
 
-## Yanılgıları görselleştirmek
-
-Dosyanın devamı: yanlışları topla, her birini kendi renginde bir çubuk olarak çiz.
+## Her test satırını sor
 
 ```python
-yazilar = []
-kodlar = []
-for i in range(len(y_test)):
-    if tahminler[i] != y_test[i]:
-        yazi = k_test[i]["ad"] + ": öğrenci " + y_test[i] + ", model " + tahminler[i]
-        print(yazi)
-        yazilar.append(yazi)
-        kodlar.append(k_test[i]["hex"])
-
-plt.barh(range(len(yazilar)), 1, color=kodlar, tick_label=yazilar)
-plt.xticks([])
-plt.savefig("yanilgilar.png", bbox_inches="tight")
+for kayit in test_kayitlari:
+    r = int(kayit["r"])
+    g = int(kayit["g"])
+    b = int(kayit["b"])
+    renk = [r, g, b]
+    tahminler = model.predict([renk])
+    tahmin = tahminler[0]
+    if tahmin != kayit["etiket"]:
+        print(kayit["ad"], "öğrenci:", kayit["etiket"], "model:", tahmin)
 ```
 
-Doğruluk tek bir sayı. Asıl öğretici olan **nerede** yanıldığı.
-Görsel: `yanilgilar.png`
+> lacivert öğrenci: enerjik model: ciddi
+> orta mavi öğrenci: sakin model: ciddi
+> şeftali öğrenci: ciddi model: enerjik
+> ... (14 satır)
 
 -----
 
@@ -385,53 +373,33 @@ gül kurusu) "ciddi" demiş.
 
 ## Adım 6 — Veri arttıkça ne oluyor?
 
-`04`'ün ilk yarısı aynı; üstte bir `import` daha:
+Aynı model, beş farklı veri miktarı. `X_egitim[:adet]` → baştan `adet` tane örnek.
 
 ```python
-import csv
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
-
-with open("veri/renkler-etiketli.csv", encoding="utf-8") as dosya:
-    kayitlar = list(csv.DictReader(dosya))
-
-X = []
-y = []
-for kayit in kayitlar:
-    kod = kayit["hex"]
-    X.append((int(kod[1:3], 16), int(kod[3:5], 16), int(kod[5:7], 16)))
-    y.append(kayit["etiket"])
-
-X_egitim, X_test, y_egitim, y_test = train_test_split(
-    X, y, test_size=0.25, random_state=42
-)
+adetler = [18, 45, 90, 135, 180]
+dogruluklar = []
+for adet in adetler:
+    model = KNeighborsClassifier(n_neighbors=5)
+    model.fit(X_egitim[:adet], y_egitim[:adet])
+    dogruluk = model.score(X_test, y_test)
+    print(adet, round(dogruluk, 2))
+    dogruluklar.append(dogruluk)
 ```
+
+> 18 0.48 · 45 0.72 · 90 0.62 · 135 0.75 · 180 0.77
 
 -----
 
-## Aynı model, beş farklı veri miktarı
+## Öğrenme eğrisi
 
 ```python
-adetler = []
-dogruluklar = []
-for oran in [0.1, 0.25, 0.5, 0.75, 1.0]:
-    adet = int(len(X_egitim) * oran)
-    model = KNeighborsClassifier(n_neighbors=5)
-    model.fit(X_egitim[:adet], y_egitim[:adet])
-    adetler.append(adet)
-    dogruluklar.append(round(model.score(X_test, y_test), 2))
+import matplotlib.pyplot as plt
 
-print(adetler)
-print(dogruluklar)
 plt.plot(adetler, dogruluklar, marker="o")
 plt.xlabel("Eğitim örneği sayısı")
 plt.ylabel("Test doğruluğu")
-plt.savefig("veri-miktari.png")
+plt.show()
 ```
-
-> [18, 45, 90, 135, 180]
-> [0.48, 0.72, 0.62, 0.75, 0.77]
 
 Eğri önce hızlı yükseliyor, sonra düzleşiyor. **Düzleştiği yer önemli:** oradan
 sonra aynı türden veri eklemek pek işe yaramıyor.
@@ -442,41 +410,37 @@ Ortadaki düşüş hata değil — ödevde konuşacağız.
 
 ## Adım 7 — Model ne öğrendi?
 
-Modelin içini açamayız. Ama kullanıcı testi gibi, hiç görmediği renkleri sorabiliriz:
+Modelin içini açamayız. Ama kullanıcı testi gibi, hiç görmediği renkleri sorabiliriz.
+Bu kez **tüm veriyle** eğitiyoruz:
 
 ```python
-import csv
-from sklearn.neighbors import KNeighborsClassifier
-
-with open("veri/renkler-etiketli.csv", encoding="utf-8") as dosya:
-    kayitlar = list(csv.DictReader(dosya))
-
-X = []
-y = []
-for kayit in kayitlar:
-    kod = kayit["hex"]
-    X.append((int(kod[1:3], 16), int(kod[3:5], 16), int(kod[5:7], 16)))
-    y.append(kayit["etiket"])
-
 model = KNeighborsClassifier(n_neighbors=5)
 model.fit(X, y)
 
-for kod in ["#E8DCC4", "#D4A373", "#A3B18A", "#344E41", "#F5F5F5"]:
-    rgb = (int(kod[1:3], 16), int(kod[3:5], 16), int(kod[5:7], 16))
-    # kneighbors: cevabı hangi komşulara bakarak verdin?
-    mesafeler, siralar = model.kneighbors([rgb])
-    print(kod, model.predict([rgb])[0], "en yakın:", kayitlar[siralar[0][0]]["ad"])
+bej = [232, 220, 196]
+sutlu_kahve = [212, 163, 115]
+adacayi = [163, 177, 138]
+orman_yesili = [52, 78, 65]
+kirli_beyaz = [245, 245, 245]
+
+palet = [bej, sutlu_kahve, adacayi, orman_yesili, kirli_beyaz]
+tahminler = model.predict(palet)
+print(tahminler)
 ```
+
+> ['enerjik' 'enerjik' 'sakin' 'ciddi' 'sakin']
 
 -----
 
 ## Kafe paleti için ikinci görüş
 
-> #E8DCC4 enerjik en yakın: krem
-> #D4A373 enerjik en yakın: bal
-> #A3B18A sakin en yakın: gri mavi
-> #344E41 ciddi en yakın: petrol
-> #F5F5F5 sakin en yakın: kırık beyaz
+| Renk | Model | En yakın bildiği renk |
+|---|---|---|
+| bej `#E8DCC4` | enerjik | krem |
+| sütlü kahve `#D4A373` | enerjik | bal |
+| adaçayı `#A3B18A` | sakin | gri mavi |
+| orman yeşili `#344E41` | ciddi | petrol |
+| kirli beyaz `#F5F5F5` | sakin | kırık beyaz |
 
 Sıcak nötrler (bej, sütlü kahve) "sakin" değil, "enerjik" tarafta.
 
@@ -485,54 +449,49 @@ tartışmalı rengi. Bu bir kesinlik değil, "kullanıcıyla sına" işareti.
 
 -----
 
-## Adım 8 — Hiç görmediği renkler
+## Adım 8 — Hiç görmediği bir renk
 
-Rastgele bölmede her renk hem eğitimde hem testte var: model testteki lacivertin
-kardeşlerini eğitimde görmüş.
-
-Dürüst soru: **yeni bir renk gelince ne der?**
-
-Bir rengi tamamen dışarıda bırak, kalan 19 renkle eğit, o rengi sor. 20 renk için tekrarla.
+Rastgele bölmede her renk hem eğitimde hem testte var: model testteki kırık beyazın
+kardeşlerini eğitimde görmüş. Dürüst soru: **yeni bir renk gelince ne der?**
 
 ```python
-import csv
-from sklearn.neighbors import KNeighborsClassifier
-
-with open("veri/renkler-etiketli.csv", encoding="utf-8") as dosya:
-    kayitlar = list(csv.DictReader(dosya))
-
-renkler = {}
+X_haric = []
+y_haric = []
 for kayit in kayitlar:
-    renkler[kayit["ad"]] = kayit["hex"]
+    if kayit["ad"] != "kırık beyaz":
+        r = int(kayit["r"])
+        g = int(kayit["g"])
+        b = int(kayit["b"])
+        X_haric.append([r, g, b])
+        y_haric.append(kayit["etiket"])
+
+print(len(X_haric))
 ```
+
+> 228
+
+-----
+
+## Kırık beyazı hiç görmeyen model
+
+```python
+model_haric = KNeighborsClassifier(n_neighbors=5)
+model_haric.fit(X_haric, y_haric)
+
+kirik_beyaz = [241, 250, 238]
+tahminler = model_haric.predict([kirik_beyaz])
+print(tahminler[0])
+```
+
+> enerjik
+
+Kırık beyazı görmüş model (Adım 7) "sakin" diyor. Sınıfın 11/12'si de "sakin" demişti.
 
 -----
 
 ## Her renk sırayla dışarıda
 
-```python
-tutan = 0
-for disarida in renkler:
-    # Bu rengin hiçbir satırını görmeyen bir model
-    X = []
-    y = []
-    for kayit in kayitlar:
-        if kayit["ad"] != disarida:
-            kod = kayit["hex"]
-            X.append((int(kod[1:3], 16), int(kod[3:5], 16), int(kod[5:7], 16)))
-            y.append(kayit["etiket"])
-    model = KNeighborsClassifier(n_neighbors=5)
-    model.fit(X, y)
-
-    kod = renkler[disarida]
-    tahmin = model.predict([(int(kod[1:3], 16), int(kod[3:5], 16), int(kod[5:7], 16))])[0]
-    print(disarida, tahmin)
-    for kayit in kayitlar:
-        if kayit["ad"] == disarida and kayit["etiket"] == tahmin:
-            tutan = tutan + 1
-
-print("Hiç görmediği renklerde doğruluk:", round(tutan / len(kayitlar), 2))
-```
+Aynı şeyi 20 rengin her biri için yapınca:
 
 | Test türü | Doğruluk |
 |---|---|
@@ -555,18 +514,18 @@ Model "benzerlik" kavramını ona verdiğimiz **temsilden** alıyor.
 
 -----
 
-## Sekiz adım, sekiz dosya
+## Sekiz adım, tek defter
 
-| Adım | Ne yaptık | Dosya |
+| Adım | Ne yaptık | Elimizde |
 |---|---|---|
-| 1 | Veriyi okuduk, anlaşmazlığa ve tavana baktık | `01_veriyi_oku.py` |
-| 2 | Rengi sayıya çevirdik: X ve y | `02_ozellik_etiket.py` |
-| 3 | İkiye böldük | `03_egitim_test.py` |
-| 4 | Eğittik, ölçtük, kör tahminle kıyasladık | `04_model_egit.py` |
-| 5 | Yanılgılara baktık | `05_yanilgilari_gor.py` |
-| 6 | Veri miktarını değiştirdik | `06_veri_miktari.py` |
-| 7 | Kafe paletini sorduk | `09_modeli_yokla.py` |
-| 8 | Hiç görmediği renklerde sınadık | `10_gorulmemis_renkler.py` |
+| 1 | Veriyi okuduk, anlaşmazlığa baktık | `kayitlar` |
+| 2 | Rengi sayıya çevirdik | `X`, `y` |
+| 3 | İkiye böldük | `X_egitim`, `X_test`, `y_egitim`, `y_test` |
+| 4 | Eğittik, ölçtük, kör tahminle kıyasladık | `model` |
+| 5 | Yanılgılara baktık | modelin yanıldığı 14 rengin listesi |
+| 6 | Veri miktarını değiştirdik | öğrenme eğrisi |
+| 7 | Kafe paletini sorduk | ikinci görüş |
+| 8 | Hiç görmediği renkte sınadık | `model_haric` |
 
 -----
 
@@ -588,12 +547,12 @@ Sonucu söylerken soruyu da söyle.
 
 ## Bu konunun ödevi
 
-Veriyi ikiye böl: **önce yarısıyla** eğit, sonra **tamamıyla**.
+Adım 6'nın çıktısına bak: **yarısıyla** (90 örnek) ve **tamamıyla** (180 örnek) eğitilen model.
 
 1. İki doğruluk oranını yaz
 2. Tek cümle: fark ne, neden böyle olmuş olabilir?
 
-İstersen `08_kendi_rengin.py` ile kendi seçtiğin renkleri de tahmin ettir —
+İstersen defterin sonundaki **Bonus** hücresiyle kendi seçtiğin renkleri de sor —
 modelle aynı fikirde misin?
 
 Puan yok; Konu 4'ün başında sıradaki arkadaşlar gösterecek.
@@ -604,7 +563,7 @@ Puan yok; Konu 4'ün başında sıradaki arkadaşlar gösterecek.
 
 **Temsil ve gömme vektörleri.**
 
-Bu konuda rengi üç sayıya çevirdik: `(230, 57, 70)`.
+Bu konuda rengi üç sayıya çevirdik: `[230, 57, 70]`.
 Konu 4'te **kelimeleri** sayıya çevireceğiz — bu kez üç değil, 1024 sayıya.
 
 Bu konunun "en yakın komşu" fikri orada da karşımıza çıkacak: iki kelime
