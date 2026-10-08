@@ -59,7 +59,7 @@ Bu konunun bütün fikri bu hücrede.
 
 ## Adım 1 — Önce tarayıcıda
 
-`tiktokenizer.vercel.app` sitesini aç, kutuya bir cümle yaz.
+`tiktokenizer.vercel.app` sitesini aç, kutuya *"Sessiz bir çalışma kafesi"* yaz.
 
 - Her renkli kutu bir **belirteç** (token): modelin okuduğu en küçük parça
 - Kısa, sık kelimeler tek parça
@@ -369,13 +369,23 @@ Model o parçayı seçince yazmayı bırakır.
 | Sıcaklık | Ne yapar | Defterde |
 |---|---|---|
 | Düşük (0.1) | Hep en olası parçayı seçer | Adım 4: hep aynı cümle |
-| Orta (0.7) | Çoğunlukla olası olanı, ara sıra başkasını | — |
-| Yüksek (1.5) | Olasılığı düşük parçalara da şans verir | Adım 5: zar |
+| Orta (0.7–1) | Olasılığa göre zar atar | Adım 5: zar |
+| Yüksek (1.5) | Zar hileli: olasılığı düşük parçalara daha çok şans verir | — |
 
 Sıcaklık yükseldikçe grafikteki çubuklar **birbirine yaklaşır**:
 "güzel" ile "tatlı" arasındaki fark küçülür.
 
 Yüksek sıcaklık "daha yaratıcı" değil, **daha dağınık** demek.
+
+-----
+
+## Kendi modelimizden gerçek modele
+
+- Adım 2–5: 30 yorumdan **sayan** küçük bir model kurduk
+- Gerçek model de her adımda sıradaki parçayı seçer; ama milyarlarca metinden öğrenmiş
+- En olasıyı mı seçsin, zar mı atsın? Bunu **sıcaklık** ayarlar; şimdi onu biz değiştireceğiz
+
+Adım 6–7 `anahtar.txt` ister, önceki hücrelere bağlı değil.
 
 -----
 

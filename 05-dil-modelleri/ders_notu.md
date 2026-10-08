@@ -594,8 +594,10 @@ yaratıcılık düğmesi değil, bir **seçim kuralı** ayarı.
 
 ## Adım 6 — Gerçek model ve sıcaklık
 
-Bu adımdan sonrası gerçek modele soru soruyor; `anahtar.txt` ister. Konu 2'deki Adım 1
-hücresinin aynısı:
+Adım 2–5'te 30 yorumdan sayan kendi küçük modelimizi kurduk. Gerçek model de her adımda
+sıradaki parçayı seçer; farkı milyarlarca metinden öğrenmiş olması ve sıcaklığı bizim
+ayarlayabilmemiz. Bu adımdan sonrası gerçek modele soru soruyor; `anahtar.txt` ister.
+Konu 2'deki Adım 1 hücresinin aynısı:
 
 ```python
 anahtarlar = {}

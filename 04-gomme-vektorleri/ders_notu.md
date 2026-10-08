@@ -423,7 +423,9 @@ print(len(vektorler_sozlugu))
 - Sözlükte her kelimenin karşısına onun vektörü yazılıyor:
   `vektorler_sozlugu["kafe"]` kafenin vektörü.
 - Döngü her kelime için bir istek gönderiyor: **24 istek**. Hücre birkaç saniye ile
-  birkaç dakika arası sürebilir; internete bağlı.
+  birkaç dakika arası sürebilir; internete bağlı. Çalışırken hücrenin solunda `[*]`
+  durur; bitince `24` yazar. Beklerken tahmin et: "kafe" hangi üç kelimeye en yakın
+  çıkacak? Adım 6'da bakacağız.
 - Bir kelimenin vektörünü bir kez alıp sözlükte saklıyoruz. Sonraki adımlar sözlüğü
   kullanır, yeniden istek atmaz; kotanı da boşa harcamazsın.
 
@@ -435,8 +437,8 @@ print(len(vektorler_sozlugu))
 
 ## Adım 6 — "kafe"ye en yakın 3 kelime
 
-**(anahtar gerekir)** Bu adımı **sen yazıyorsun**. Derste önce beş dakika kendin dene;
-sonra birlikte bakacağız. Plan:
+**(anahtar gerekir)** Bu adımı **sen yazıyorsun**. Derste önce beş dakika kendin dene
+(defterde planın altındaki boş hücreye); sonra birlikte bakacağız. Plan:
 
 1. `skorlar` adında boş bir sözlük kur.
 2. Sözlükteki her kelime için "kafe" ile o kelimenin benzerliğini hesapla,
@@ -689,7 +691,7 @@ iki noktadan sonra da **açıklaması** gelir.
 | `ModuleNotFoundError: No module named 'sklearn'` | Defter `.venv` dışındaki bir çekirdekle çalışıyor | Sağ üstten çekirdek olarak `.venv`'i seç; yoksa `gita3111` klasöründe `uv sync` |
 | `requests.exceptions.ConnectionError` | İnternet yok | Bağlantını kontrol et; Isınma ve alıştırma internetsiz çalışır |
 | `401` durum kodu, sonra `TypeError: 'NoneType' object is not subscriptable` | Anahtar yanlış; yanıtta `result` boş geliyor | `anahtar.txt`'yi kontrol et (Konu 2, Adım 5) |
-| `429` durum kodu, aynı `TypeError` | Günlük kota doldu | Kota gece sıfırlanır; o gün yanındakiyle devam et |
+| `429` durum kodu, aynı `TypeError` | Günlük kota doldu | Kota gece sıfırlanır; derste o gün hocanın ekranından izle |
 | `ValueError: Expected 2D array, got 1D array instead` | `cosine_similarity` ya da `pca.transform`'a köşeli parantezsiz tek vektör verildi | `[a]`, `[vektor]`: liste içine koy |
 | `NotFittedError: This PCA instance is not fitted yet.` | `transform`'dan önce `fit` çağrılmadı | Önce `pca.fit(liste)` |
 | `KeyError: 'kafe'` | Aranan kelime sözlükte yok (yazım farkı, büyük harf, Adım 5 atlandı) | Kelimeyi listedeki gibi yaz; Adım 5'i çalıştır |

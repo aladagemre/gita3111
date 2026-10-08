@@ -43,7 +43,7 @@ kopyala**, kopyada çalış; böylece `git pull` hiç çakışmaz.
 
 Isınma ve `alistirma.ipynb` anahtarsız, internetsiz çalışır. Adım 1'den sonrası
 `anahtar.txt` ister; dosya yoksa Adım 1 `FileNotFoundError: ... '../anahtar.txt'`
-hatasıyla durur. Anahtarın henüz yoksa derste **yanındakiyle birlikte** çalış ve kurulum
+hatasıyla durur. Anahtarın henüz yoksa derste bu adımları **hocanın paylaştığı ekrandan** izle ve kurulum
 yönergesinin 6. adımını (`../00-hazirlik/kurulum-yonergesi.md`) bugün bitir; ödev için
 kendi anahtarın gerekiyor.
 

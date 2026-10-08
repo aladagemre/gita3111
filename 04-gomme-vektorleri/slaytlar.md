@@ -314,7 +314,9 @@ for kelime in kelimeler:
 print(len(vektorler_sozlugu))
 ```
 
-24 istek: hücre biraz sürer.
+24 istek: hücre biraz sürer; solunda `[*]` durur, bitince `24` yazar.
+
+**Beklerken tahmin et:** "kafe" bu 24 kelimeden hangi üçüne en yakın çıkar? Not al.
 
 -----
 
