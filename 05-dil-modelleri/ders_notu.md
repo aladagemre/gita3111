@@ -98,9 +98,9 @@ ve İngilizce cümle dene: hangisi daha çok renge bölünüyor?
 import tiktoken
 
 kodlayici = tiktoken.get_encoding("o200k_base")
-parcalar = kodlayici.encode("Sessiz bir çalışma kafesi")
-print(len(parcalar))
-print(parcalar)
+belirtecler = kodlayici.encode("Sessiz bir çalışma kafesi")
+print(len(belirtecler))
+print(belirtecler)
 ```
 
 Çıktı:
@@ -124,8 +124,8 @@ sonra uzun bir sayı listesine (vektöre) çevirir ve onunla çalışır.
 Sayılar bize bir şey söylemiyor; parçaları geri çevirelim:
 
 ```python
-for parca in parcalar:
-    print(kodlayici.decode([parca]))
+for belirtec in belirtecler:
+    print(kodlayici.decode([belirtec]))
 ```
 
 Çıktı (her satır bir parça; bazılarının başında boşluk var):
@@ -141,7 +141,7 @@ esi
 
 - `decode` `encode`'un tersi: sayıyı metne çevirir.
 - `decode` bir **liste** ister. Tek bir parçayı çevirmek için onu köşeli parantez içine
-  koyuyoruz: `[parca]`. Unutursan:
+  koyuyoruz: `[belirtec]`. Unutursan:
 
   ```text
   TypeError: 'int' object is not an instance of 'Sequence'
@@ -171,8 +171,8 @@ Uzun bir Türkçe kelime:
 ```python
 uzun = kodlayici.encode("Kütüphanedekilerden misiniz?")
 print(len(uzun))
-for parca in uzun:
-    print(kodlayici.decode([parca]))
+for belirtec in uzun:
+    print(kodlayici.decode([belirtec]))
 ```
 
 Çıktı: `11`, sonra parçalar: `K`, `üt`, `ü`, `phan`, `ed`, `ek`, `iler`, `den`, ` mis`,
@@ -505,7 +505,7 @@ Adım 3'teki olasılığın aynısı. Biz ayrıca bir olasılık vermedik: liste
 listede çok yer kapladığı için zarda da sık çıkıyor. (Bilgisayarda bu hücreyi 10 000 kez
 çalıştırdık: "güzel" yaklaşık 4 000 kez, öbür üçü yaklaşık 2 000'er kez çıktı.)
 
-Adım 4'teki fonksiyonun aynısı, yalnızca son iki satır farklı:
+Adım 4'teki fonksiyonun aynısı, yalnızca sondaki satırlar farklı:
 
 ```python
 def sonraki_kelime_zarla(hedef):
@@ -515,12 +515,19 @@ def sonraki_kelime_zarla(hedef):
         if onceki == hedef:
             sonra_gelenler.append(kelime)
         onceki = kelime
+    if len(sonra_gelenler) == 0:
+        return kelimeler[0]
     secilen = random.choice(sonra_gelenler)
     return secilen
 ```
 
-`Counter` ve `most_common` yerine `random.choice`: en sık kelimeyi değil, olasılığına göre
-zarla bir kelime seçiyor.
+- `Counter` ve `most_common` yerine `random.choice`: en sık kelimeyi değil, olasılığına göre
+  zarla bir kelime seçiyor.
+- `if len(sonra_gelenler) == 0:` **metin bittiyse baştan başla.** Dosyanın son kelimesi
+  "kahveli" ("Kütüphane gibi ama kahveli."); ondan sonra hiçbir kelime gelmiyor. Zar oraya
+  gelirse `sonra_gelenler` boş kalır ve `random.choice` boş listeden seçemez
+  (`IndexError: Cannot choose from an empty sequence`). Bu satır o durumda metnin ilk
+  kelimesini (`kelimeler[0]`, yani "ders") verir; üretim dosyanın başından devam eder.
 
 Aynı üretim hücresi, zarla:
 
@@ -548,15 +555,9 @@ görebilirsin ("kahve ortalama tatlılar güzel"): "ortalama"dan sonra yorumlard
 "tatlılar" geçiyor, zar ne atarsa atsın seçenek tek. Seçeneğin çok olduğu yerde ise
 cümleler ayrılıyor.
 
-**Ara sıra hata.** Bazen şunu görürsün:
-
-```text
-IndexError: Cannot choose from an empty sequence
-```
-
-Okuması: "boş bir diziden seçim yapılamaz." Zar "kahveli"ye geldi (örneğin "kahve biraz
-pahalı ama kahveli"). "kahveli" dosyanın son kelimesi; ondan sonra hiçbir kelime gelmiyor,
-`sonra_gelenler` boş kalıyor. Hücreyi yeniden çalıştır. Bu kabaca 20 çalıştırmada bir olur.
+**"kahveli ders".** Ara sıra cümlenin ortasında "kahveli ders" görürsün (örneğin "kahve
+biraz pahalı ama kahveli ders çalışmak için en"). Zar metnin sonuna geldi, üretim baştan
+devam etti. Bilgisayarda 20 000 kez denedik: yaklaşık 17 çalıştırmada bir oluyor.
 
 Gerçek modellerde bu durum için özel bir parça vardır: **"metin bitti"**. Model sözlüğündeki
 öbür parçalar gibi onun için de bir olasılık hesaplar; o parçayı seçince yazmayı bırakır.
@@ -609,11 +610,6 @@ hesap = anahtarlar["ACCOUNT_ID"]
 anahtar = anahtarlar["API_TOKEN"]
 print("Anahtar okundu")
 ```
-
-Dikkat: bu hücre `parcalar` değişkenini anahtar dosyasının satır parçalarıyla değiştirir.
-Adım 1'deki belirteç listesi artık kayboldu. Bonus'taki hücre `parcalar`'ı kendisi yeniden
-kurduğu için sorun yok; ama Adım 1'in ikinci hücresini Adım 6'dan sonra yeniden
-çalıştırırsan saçma bir çıktı alırsın. Çare: Adım 1'in ilk hücresini de yeniden çalıştır.
 
 Adres ve başlık Konu 2'deki gibi:
 
@@ -691,31 +687,33 @@ tam 0 değil ve sunucu tarafında küçük rastlantılar olabiliyor. Fark ne kad
 
 ## Adım 7 — Slogan panosu
 
-Bir tasarımcı tek bir fikre değil, bir **panoya** bakarak karar verir. Her sıcaklıkta 3
-slogan üretip hepsini başlıklarıyla tek bir dosyaya yazıyoruz:
+Bir tasarımcı tek bir fikre değil, bir **panoya** bakarak karar verir. Bu kez modelden tek
+seferde **üç** slogan istiyoruz ve her sıcaklığın sloganlarını başlığıyla tek bir dosyaya
+yazıyoruz:
 
 ```python
+pano_sorusu = "Sessiz bir çalışma kafesi için üç kısa slogan yaz. Her slogan ayrı satırda olsun. Yalnızca sloganları yaz."
+
 with open("pano.txt", "w", encoding="utf-8") as dosya:
     for sicaklik in [0.1, 0.7, 1.5]:
+        metin = modele_sor(pano_sorusu, sicaklik)
         dosya.write("Sıcaklık " + str(sicaklik) + "\n")
-        for tur in range(3):
-            metin = modele_sor(soru, sicaklik)
-            dosya.write(metin + "\n")
+        dosya.write(metin + "\n")
         dosya.write("\n")
 
 print("pano.txt yazıldı")
 ```
 
+- `pano_sorusu`: Adım 6'daki sorunun üç sloganlık hâli. Üç sloganı ayrı satırlara
+  yazmasını da soruda istiyoruz; model çoğu zaman uyar, ama biçimi garanti değil.
 - `open("pano.txt", "w", ...)`: Konu 2'deki `cevaplar.txt` gibi. `"w"` "yazmak için aç"
   demek; dosya varsa **baştan** yazılır.
-- Dış döngü her sıcaklık için bir kez döner: önce başlığı yazar.
+- Döngü her sıcaklık için bir kez döner: modele sorar, önce başlığı, sonra cevabı yazar.
 - `str(sicaklik)`: sayıyı (0.1) metne (`"0.1"`) çevirir. Metinle sayı `+` ile
   birleştirilemez; `"Sıcaklık " + 0.1` yazarsan
   `TypeError: can only concatenate str (not "float") to str` alırsın.
-- İç döngü (`for tur in range(3):`) aynı sıcaklıkta 3 kez sorar, her cevabı ayrı bir satıra
-  yazar.
 - `dosya.write("\n")`: bölümler arasına boş bir satır.
-- 3 sıcaklık × 3 slogan = 9 istek. Hücre biraz sürer.
+- 3 sıcaklık = 3 istek.
 
 Dosyanın biçimi şöyle olur (sloganların yerine senin modelinin yazdıkları gelir):
 
@@ -739,7 +737,7 @@ Klasörde `pano.txt`'yi aç, üç bölümü yan yana oku ve tasarımcı gözüyl
   birbirine benzeyen üç fikir, tek fikirden farksız.
 - 1.5'teki sloganlardan **kullanılabilecek** olan var mı? Kaç tanesi? Kullanılamayanların
   sorunu ne: anlamsız mı, dilbilgisi bozuk mu, konudan mı kopmuş?
-- 0.1'deki üç slogan neden birbirine bu kadar benziyor? (İpucu: Adım 4.)
+- Hangi sıcaklığın üç sloganı birbirinden daha farklı? Hangisininki aynı kalıbın tekrarı gibi?
 
 Sıcaklık, işin türüne göre seçilen bir **araç ayarı**; "en iyi sıcaklık" diye bir şey yok.
 Konu 2'de "soruyu yazmak bir tasarım kararı" demiştik; sıcaklığı seçmek de öyle.
@@ -751,10 +749,10 @@ Konu 2'de "soruyu yazmak bir tasarım kararı" demiştik; sıcaklığı seçmek 
 **1. Kendi adın kaç parça?**
 
 ```python
-parcalar = kodlayici.encode("Ahmet Emre Aladağ")
-print(len(parcalar))
-for parca in parcalar:
-    print(kodlayici.decode([parca]))
+belirtecler = kodlayici.encode("Ahmet Emre Aladağ")
+print(len(belirtecler))
+for belirtec in belirtecler:
+    print(kodlayici.decode([belirtec]))
 ```
 
 Çıktı: `7`, sonra `Ah`, `met`, ` Em`, `re`, ` Al`, `ada`, `ğ`. Üç kelime, yedi parça; `ğ`
@@ -797,7 +795,7 @@ bir programın kullanacağı veri olarak işleyeceğiz ve bu fikir oraya daha iy
 | Adım | Ne yaptık | Elimizde ne oluştu |
 |---|---|---|
 | Isınma | Cümle tamamlama cevaplarını saydık | en sık cevap: "kafesi" |
-| 1 | Metni belirteçlere ayırdık; Türkçe ile İngilizceyi kıyasladık | `kodlayici`, `parcalar` |
+| 1 | Metni belirteçlere ayırdık; Türkçe ile İngilizceyi kıyasladık | `kodlayici`, `belirtecler` |
 | 2 | Bir kelimeden sonra gelenleri topladık, saydık | `kelimeler`, `sonra_gelenler`, `sayac` |
 | 3 | Sayıları olasılığa çevirip çizdik | `etiketler`, `olasiliklar`, grafik |
 | 4 | Hep en olasıyı seçerek metin ürettik | `sonraki_kelime()` |
@@ -832,14 +830,14 @@ Python bir hata verdiğinde en alttaki satır en önemlisidir: önce hatanın **
 |---|---|---|
 | `ModuleNotFoundError: No module named 'tiktoken'` | Defter `.venv` dışındaki bir çekirdekle çalışıyor ya da `uv sync` yapılmadı | Sağ üstten çekirdek olarak `.venv`'i seç; `gita3111` klasöründe `uv sync` |
 | Adım 1 ilk çalıştırmada uzun bekliyor ya da bağlantı hatası veriyor | `tiktoken` sözlük dosyasını internetten indiriyor | İnternete bağlan, hücreyi yeniden çalıştır; bir kez indikten sonra internet gerekmez |
-| `TypeError: 'int' object is not an instance of 'Sequence'` | `decode`'a tek sayı verildi | `kodlayici.decode([parca])`: köşeli parantez |
+| `TypeError: 'int' object is not an instance of 'Sequence'` | `decode`'a tek sayı verildi | `kodlayici.decode([belirtec])`: köşeli parantez |
 | `NameError: name 'kelimeler' is not defined` | Bir hücreyi atladın ya da defteri yeni açtın | Hücreleri baştan, sırayla çalıştır |
 | `FileNotFoundError: ... 'veri/kafe-yorumlari.txt'` | Defterin kopyası konu klasörünün dışında | Kopya `05-dil-modelleri` klasöründe durmalı |
 | `sonra_gelenler` boş: `[]` | `onceki = kelime` satırı `if`'in içine kaymış ya da hedef kelime yazım hatalı (`"Biraz"`) | Satırı `for`'un hizasına al; hedefi küçük harfle yaz |
 | Olasılıkların toplamı 1'i geçiyor | `len(sayac)` ile bölündü (farklı kelime sayısı) | `toplam = len(sonra_gelenler)` |
 | `TypeError: can only concatenate str (not "tuple") to str` | Fonksiyon `('güzel', 2)` ikilisini döndürüyor | `secilen, adet = en_sik[0]`, `return secilen` |
 | `IndexError: list index out of range` | `sonraki_kelime` ardından hiç kelime gelmeyen bir kelimeyle çağrıldı ("kahveli" ya da metinde olmayan bir kelime) | Başka bir başlangıç kelimesi seç |
-| `IndexError: Cannot choose from an empty sequence` | Zar, ardından hiç kelime gelmeyen "kahveli"ye geldi | Hücreyi yeniden çalıştır |
+| `IndexError: Cannot choose from an empty sequence` | `sonraki_kelime_zarla` içindeki `if len(sonra_gelenler) == 0:` satırları yazılmamış; zar "kahveli"ye geldi | İki satırı ekle (Adım 5) |
 | Üretilen cümle aynı kelimeyi tekrarlıyor | Döngüde `kelime` güncellenmiyor | `kelime = sonraki_kelime(kelime)` |
 | `FileNotFoundError: ... '../anahtar.txt'` | Anahtar dosyası yok ya da yanlış yerde | Dosya `gita3111` klasöründe durmalı (Konu 2) |
 | `TypeError: 'NoneType' object is not subscriptable` | İstek başarısız oldu (yanlış anahtar, kota) | Konu 2 Adım 5: önce durum koduna bak |
@@ -912,7 +910,8 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 
 `odevler/odev5.md` (puansız), iki parça:
 
-1. Kendi seçtiğin bir yaratıcı iş için soruyu yaz, Adım 7'yi kendi sorunla çalıştır,
+1. Kendi seçtiğin bir yaratıcı iş için soruyu yaz (Adım 6'daki `soru` ve Adım 7'deki
+   `pano_sorusu`), Adım 7'yi kendi sorunla çalıştır,
    `pano.txt`'yi getir. Tek soru: hangi sıcaklık işe yaradı, neden?
 2. Bir Türkçe cümle ve aynı anlamda bir İngilizce cümle seç; ikisini de belirteçlere ayır,
    parça sayılarını karşılaştır.
@@ -938,7 +937,7 @@ geçmeden önceki son kavramsal adım.
    çevirdi; `kelimeler` listesinde "Biraz" diye bir kelime yok. Python itiraz etmez, sonucu
    kontrol etmek senin işin.
 4. Adım 4'te hep **bir** cümle: hep en olası seçildiği için. Adım 5'te büyük ihtimalle her
-   seferinde farklı (bazen aynı cümle denk gelebilir, bazen de "kahveli" yüzünden hata alırsın).
+   seferinde farklı (bazen aynı cümle denk gelebilir; arada "kahveli ders" ile baştan başlar).
 5. Dördü de 1 / 4 = 0.25. Eşitlikte `most_common` listede **ilk görüleni** öne koyar; Adım 4'ün
    kuralıyla "pahalı" seçilir. Yani açgözlü seçimde eşitlik bile her seferinde aynı sonucu verir.
 6. "Kaç tanesini gerçekten kullanabilirsin?" Yüksek sıcaklık çeşitliliği artırır ama

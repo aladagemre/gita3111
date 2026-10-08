@@ -17,7 +17,7 @@ modelin nasıl çalıştığı ve modelin yanılgılarının **sınıfın renk a
 ne söylediği.
 
 **Konunun sonunda elinde:** sınıfın verisiyle eğitilmiş bir model, modelin yanıldığı
-renkleri kendi renkleriyle gösteren bir grafik ve kafe paleti için modelden alınmış bir
+renklerin listesi, bir öğrenme eğrisi grafiği ve kafe paleti için modelden alınmış bir
 "ikinci görüş".
 
 **Kurulum (dersten önce):** `gita3111` klasöründe bir kez `uv sync` çalıştır; indirme
@@ -565,7 +565,7 @@ mesaj alırsın:
 
 ```text
 ValueError: Expected 2D array, got 1D array instead:
-array=[230  57  70].
+array=[29 53 87].
 ```
 
 Okuması: "iki boyutlu bir dizi (renklerden oluşan bir liste) bekliyordum, tek boyutlu
@@ -587,7 +587,7 @@ model bu sesi hiç duyamıyor.
 
 **İkinci grup (2 yanılgı): model sınıfın çoğunluğundan da ayrılmış.** Orta mavi için
 model "ciddi" diyor, oysa sınıfın 8 kişisi "sakin" demiş. Sebep Adım 4'teki gözlem:
-model orta mavinin 12 etiketinden yalnızca 5'ine bakabiliyor ve rastlantıyla o beşin
+model eğitimdeki 11 orta mavi etiketinden (7 sakin, 3 ciddi, 1 enerjik) yalnızca 5'ine bakabiliyor ve rastlantıyla o beşin
 içinde "ciddi" diyenler ağır basmış. Koyu yeşilde de benzer bir durum var (6 ciddi,
 4 sakin; model "sakin" diyor).
 
@@ -605,7 +605,7 @@ içinde "ciddi" diyenler ağır basmış. Koyu yeşilde de benzer bir durum var 
   modelde, bazen etikette, bazen de sorunun kendisinde: "Bu renk sakin mi?" sorusunun
   tek bir doğru cevabı olmayabilir.
 
-Grafiğe bakarken kendine şunu sor: "Ben olsam bu renge ne derdim, model mi haklı,
+Listeye bakarken kendine şunu sor: "Ben olsam bu renge ne derdim, model mi haklı,
 öğrenci mi?"
 
 ## Adım 6 — Veri arttıkça ne oluyor?
@@ -791,7 +791,7 @@ print(tahminler[0])
 
 Çıktı: `sakin`. Sınıfın 11/12'si de "sakin" demişti. Aynı renk, iki model, iki cevap.
 Kırık beyazı hiç görmeyen modelin en yakın bildiği renk krem; kremi etiketleyenlerin
-yarısı da "enerjik" demişti.
+neredeyse yarısı da "enerjik" demişti.
 
 **Kendin dene:** `"kırık beyaz"` yerine `"gri mavi"` yaz, `kirik_beyaz` listesinin
 sayılarını `[141, 153, 174]` yap ve Adım 8'in üç hücresini sırayla yeniden çalıştır. Yedek veride gri
@@ -864,8 +864,8 @@ varsa not al; Konu 4'ün başında sınıfça bakacağız.
 
 Hepsi tek defterde: `ders.ipynb`. Hücreleri her zaman yukarıdan aşağı çalıştır; defteri
 yeni açtıysan (ya da çekirdeği yeniden başlattıysan) Adım 1'den başla. Isınmadaki
-küçük `kayitlar` listesi Adım 1'de gerçek veriyle değişiyor; Adım 1'i atlarsan sonraki
-adımlar üç satırlık veriyle çalışmaya kalkar.
+küçük `kayitlar` listesi Adım 1'de gerçek veriyle değişiyor; Adım 1'i atlarsan Adım 2
+üç satırlık ısınma listesiyle çalışmaya kalkar ve `KeyError: 'r'` verir (o listede `r` yok).
 
 Derste kendi başına çalışacağın defter: `alistirma.ipynb`. Önce aynı klasörde yeni bir
 adla kopyala, kopyada çalış; böylece `git pull` çakışmaz. İki bölümü var:
@@ -892,13 +892,13 @@ Python bir hata verdiğinde en alttaki satır en önemlisidir: önce hatanın **
 | `NameError: name 'kayitlar' is not defined` | Bir hücreyi atladın ya da defteri yeni açtın | Hücreleri baştan, sırayla çalıştır |
 | `ModuleNotFoundError: No module named 'sklearn'` | Defter `.venv` dışındaki bir çekirdekle çalışıyor | Sağ üstten çekirdek olarak `.venv`'i seç; yoksa `gita3111` klasöründe `uv sync` |
 | `FileNotFoundError: [Errno 2] No such file or directory: 'veri/renkler-etiketli.csv'` | Defterin kopyası konu klasörünün dışında | Defter `03-makine-ogrenmesi` klasöründe durmalı; kopyayı oraya al |
-| `KeyError: 'r'` | Veri dosyası eski (sütunlar `hex,ad,ogrenci,etiket`) | `gita3111` klasöründe `git pull` |
+| `KeyError: 'r'` | Adım 1 atlandı (ısınmadaki küçük liste duruyor) ya da veri dosyası eski (sütunlar `hex,ad,ogrenci,etiket`) | Adım 1'i çalıştır; yine olursa `gita3111` klasöründe `git pull` |
 | `ValueError: dtype='numeric' is not compatible with arrays of bytes/strings.` | X'in içine metin girmiş: `int(...)` unutuldu ya da etiket X'e karıştı | `r = int(kayit["r"])`; X'te yalnızca sayılar olmalı |
 | `ValueError: Found input variables with inconsistent numbers of samples: [200, 240]` | X ve y farklı uzunlukta | İkisini aynı döngüde doldur |
 | `NotFittedError: This KNeighborsClassifier instance is not fitted yet.` | `fit` çağrılmadan `predict` ya da `score` | Önce `model.fit(X_egitim, y_egitim)` |
 | `ValueError: Expected 2D array, got 1D array instead` | `predict`'e tek renk köşeli parantez olmadan verildi | `model.predict([renk])` |
 | `ValueError: Expected n_neighbors <= n_samples_fit, but n_neighbors = 5, n_samples_fit = 2` | Komşu sayısı eğitim örneği sayısından büyük | Daha çok örnek ver ya da `n_neighbors`'ı küçült |
-| Grafik görünmüyor | Hücrenin son satırı `plt.show()` değil ya da `matplotlib` hücresi atlandı | Adım 5'in `import matplotlib.pyplot as plt` hücresini çalıştır, `plt.show()` ekle |
+| Grafik görünmüyor | Hücrenin son satırı `plt.show()` değil ya da `matplotlib` hücresi atlandı | Adım 6'nın `import matplotlib.pyplot as plt` hücresini çalıştır, `plt.show()` ekle |
 | `'230' + '57'` → `'23057'` | Metinler toplanmaz, yan yana yapıştırılır | Önce `int(...)` ile sayıya çevir |
 | Doğruluk %100 değil | Normal: sınıfın kendisi de anlaşamadı | Tavanla kıyasla; %100 çıksaydı asıl o şüpheli olurdu |
 | Doğruluk %100 ya da ona çok yakın | Test verisi bir yoldan sızmış | Eğitimde mi ölçtün? Etiket X'e mi karıştı? |
@@ -990,7 +990,7 @@ al, öğrenme eğrisi grafiğini getir, farkı tek cümleyle yorumla.
 ## Sonraki konu
 
 **Konu 4 — Temsil ve gömme vektörleri.** Bu konuda rengi üç sayıya çevirdik:
-`[230, 57, 70]`. Konu 4'te **kelimeleri** sayıya çevireceğiz; bu kez üç değil, 1024
+`[230, 57, 70]`. Konu 4'te **kelimeleri** sayıya çevireceğiz; bu kez üç değil, yüzlerce
 sayıya. Bu konudaki "en yakın komşu" fikri orada da devam ediyor: iki kelime
 birbirine benziyor mu, sayılarına bakarak söyleyeceğiz. Ve Adım 8'deki soru orada
 daha da önemli hâle geliyor: sayılar, bizim "benzer" dediğimiz şeyi yakalıyor mu?

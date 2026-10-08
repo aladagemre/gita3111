@@ -11,8 +11,9 @@ dosyaya dokunmazsan `git pull` çakışmaz.
 
 1. Kendine **yaratıcı bir iş** seç: bir afiş başlığı, bir ürün adı, bir etkinlik sloganı,
    bir kitap kapağı için alt başlık... Konu sen seç.
-2. Kopyada Adım 6'daki `soru = "..."` satırına (üç sıcaklığı deneyen hücrenin ilk satırı) kendi sorunu yaz. Sonunda
-   "Yalnızca ... yaz." gibi bir cümle olsun ki model açıklama eklemesin.
+2. Kopyada iki satıra kendi sorunu yaz: Adım 6'daki `soru = "..."` satırı (tek bir öneri iste)
+   ve Adım 7'deki `pano_sorusu = "..."` satırı (aynı işi **üç** öneri olarak, her biri ayrı
+   satırda iste). Sonunda "Yalnızca ... yaz." gibi bir cümle olsun ki model açıklama eklemesin.
 3. Hücreleri **Adım 6'nın başından** (anahtar hücresi) Adım 7'nin sonuna kadar sırayla
    çalıştır. Klasörde `pano.txt` oluşur.
 

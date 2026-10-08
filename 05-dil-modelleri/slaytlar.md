@@ -76,9 +76,9 @@ Bu konunun bütün fikri bu hücrede.
 import tiktoken
 
 kodlayici = tiktoken.get_encoding("o200k_base")
-parcalar = kodlayici.encode("Sessiz bir çalışma kafesi")
-print(len(parcalar))
-print(parcalar)
+belirtecler = kodlayici.encode("Sessiz bir çalışma kafesi")
+print(len(belirtecler))
+print(belirtecler)
 ```
 
 Çıktı: `6` ve `[174397, 482, 3742, 162348, 61617, 14988]`
@@ -92,8 +92,8 @@ print(parcalar)
 ## Adım 1 — Parçaları geri çevir
 
 ```python
-for parca in parcalar:
-    print(kodlayici.decode([parca]))
+for belirtec in belirtecler:
+    print(kodlayici.decode([belirtec]))
 ```
 
 | Kelime | Parçalar |
@@ -103,7 +103,7 @@ for parca in parcalar:
 | çalışma | ` çalışma` |
 | kafesi | ` kaf` + `esi` |
 
-Dört kelime, altı parça. `decode` **liste** ister: `[parca]`.
+Dört kelime, altı parça. `decode` **liste** ister: `[belirtec]`.
 
 -----
 
@@ -117,8 +117,8 @@ print(len(ingilizce))
 ```python
 uzun = kodlayici.encode("Kütüphanedekilerden misiniz?")
 print(len(uzun))
-for parca in uzun:
-    print(kodlayici.decode([parca]))
+for belirtec in uzun:
+    print(kodlayici.decode([belirtec]))
 ```
 
 | Cümle | Kelime | Parça |
@@ -328,6 +328,8 @@ def sonraki_kelime_zarla(hedef):
         if onceki == hedef:
             sonra_gelenler.append(kelime)
         onceki = kelime
+    if len(sonra_gelenler) == 0:
+        return kelimeler[0]
     secilen = random.choice(sonra_gelenler)
     return secilen
 ```
@@ -346,13 +348,12 @@ Her çalıştırmada **başka** bir cümle.
 
 -----
 
-## Adım 5 — Ara sıra hata
+## Adım 5 — Metin bittiyse baştan başla
 
-`IndexError: Cannot choose from an empty sequence`
-
-- Zar "kahveli"ye geldi: dosyanın **son** kelimesi
-- Ondan sonra hiçbir kelime gelmiyor → seçilecek liste boş
-- Hücreyi yeniden çalıştır
+- "kahveli" dosyanın **son** kelimesi; ondan sonra hiçbir kelime gelmiyor
+- Zar oraya gelirse `sonra_gelenler` boş kalır, `random.choice` seçemez
+- `if len(sonra_gelenler) == 0:` → metnin ilk kelimesini (`"ders"`) ver, üretim baştan devam etsin
+- Cümlede "kahveli ders" görürsen olan budur
 
 Gerçek modellerde bunun için özel bir parça var: **"metin bitti"**.
 Model o parçayı seçince yazmayı bırakır.
@@ -458,20 +459,22 @@ print(ikinci)
 ## Adım 7 — Slogan panosu
 
 ```python
+pano_sorusu = "Sessiz bir çalışma kafesi için üç kısa slogan yaz. Her slogan ayrı satırda olsun. Yalnızca sloganları yaz."
+
 with open("pano.txt", "w", encoding="utf-8") as dosya:
     for sicaklik in [0.1, 0.7, 1.5]:
+        metin = modele_sor(pano_sorusu, sicaklik)
         dosya.write("Sıcaklık " + str(sicaklik) + "\n")
-        for tur in range(3):
-            metin = modele_sor(soru, sicaklik)
-            dosya.write(metin + "\n")
+        dosya.write(metin + "\n")
         dosya.write("\n")
 
 print("pano.txt yazıldı")
 ```
 
-- Her sıcaklık için bir başlık, altına 3 slogan
+- Modelden tek seferde **üç** slogan istiyoruz
+- Her sıcaklık için bir başlık, altına modelin üç sloganı
 - `str(sicaklik)`: sayıyı yazıya çevirir, başlığa eklenebilsin diye
-- 9 istek gidiyor; hücre biraz sürer
+- 3 istek gidiyor
 
 -----
 
@@ -482,7 +485,7 @@ print("pano.txt yazıldı")
 - **Kurumsal tabela, menü, yönlendirme metni** için hangi sıcaklık?
 - **Fikir fırtınası, ilk eskiz** için hangisi?
 - 1.5'teki sloganlardan **kullanılabilecek** olan var mı? Kaç tanesi?
-- 0.1'deki üç slogan neden birbirine benziyor?
+- Hangi sıcaklığın üç sloganı birbirinden daha farklı?
 
 Sıcaklık bir **araç ayarı**: işin türüne göre seçilir, "en iyisi" yok.
 
@@ -493,10 +496,10 @@ Sıcaklık bir **araç ayarı**: işin türüne göre seçilir, "en iyisi" yok.
 **1.** Kendi adını belirteçlere ayır:
 
 ```python
-parcalar = kodlayici.encode("Ahmet Emre Aladağ")
-print(len(parcalar))
-for parca in parcalar:
-    print(kodlayici.decode([parca]))
+belirtecler = kodlayici.encode("Ahmet Emre Aladağ")
+print(len(belirtecler))
+for belirtec in belirtecler:
+    print(kodlayici.decode([belirtec]))
 ```
 
 `Ah` `met` ` Em` `re` ` Al` `ada` `ğ` — 3 kelime, 7 parça. Seninki kaç?
@@ -510,9 +513,8 @@ for parca in parcalar:
 | Mesaj | Anlamı |
 |---|---|
 | `ModuleNotFoundError: No module named 'tiktoken'` | Çekirdek `.venv` değil ya da `uv sync` yapılmadı |
-| `TypeError: 'int' object is not an instance of 'Sequence'` | `decode`'a liste değil tek sayı verildi: `[parca]` |
+| `TypeError: 'int' object is not an instance of 'Sequence'` | `decode`'a liste değil tek sayı verildi: `[belirtec]` |
 | `IndexError: list index out of range` | Ardından hiç kelime gelmeyen bir kelimeyle `sonraki_kelime` çağrıldı |
-| `IndexError: Cannot choose from an empty sequence` | Zar, ardı boş bir kelimeye geldi; yeniden çalıştır |
 | `FileNotFoundError: ... '../anahtar.txt'` | Adım 6'dan sonrası anahtar ister |
 | `TypeError: 'NoneType' object is not subscriptable` | İstek başarısız; durum koduna bak (Konu 2) |
 
@@ -521,7 +523,7 @@ for parca in parcalar:
 ## Bu konunun ödevi
 
 **1. Üç sıcaklık.** Kendi seçtiğin bir iş için (bir afiş başlığı, bir ürün adı, bir slogan)
-soruyu yaz; Adım 7'yi kendi sorunla çalıştır, `pano.txt` getir.
+soruyu yaz (`soru` ve `pano_sorusu`); Adım 7'yi kendi sorunla çalıştır, `pano.txt` getir.
 Tek soru: hangi sıcaklık işe yaradı, neden?
 
 **2. Belirteç sayısı.** Bir Türkçe cümle ve aynı anlamda bir İngilizce cümle seç.

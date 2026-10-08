@@ -44,7 +44,7 @@ kopyala**, kopyada çalış; böylece `git pull` hiç çakışmaz.
 | Adım 2 | Rengi sayıya çevirmek (X ve y) |
 | Adım 3 | Veriyi ikiye bölmek: eğitim ve test |
 | Adım 4 | Modeli eğitmek, kör tahminle kıyaslamak |
-| Adım 5 | Modelin yanıldığı renkler ve grafiği |
+| Adım 5 | Modelin yanıldığı renkler |
 | Adım 6 | Veri arttıkça doğruluk: öğrenme eğrisi |
 | Adım 7 | Model ne öğrendi? Kafe paletini sormak |
 | Adım 8 | Hiç görmediği bir renkte sınamak |

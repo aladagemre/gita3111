@@ -184,7 +184,8 @@ Buz karşı tarafta: −0.77, neredeyse zıt.
 ### Uzaklık değil, yön
 
 Hücrede `buz` yerine `ates` yazıp çalıştırınca `0.9805806756909202` çıkar: neredeyse 1.
-Oysa haritada ateş kahveden epey uzakta duruyor. Nasıl olur?
+Oysa ateş haritada kahveyle aynı yerde değil: çok daha sıcak, çok daha canlı. Kahveye
+haritada daha yakın duran çay ise yalnızca 0.3 aldı. Nasıl olur?
 
 Her kelimeyi, haritanın ortasından (0, 0) kelimeye uzanan bir **ok** olarak düşün.
 Kahvenin oku sağ üste bakıyor; ateşin oku da sağ üste bakıyor, sadece daha uzun.
@@ -299,9 +300,8 @@ print(len(vektor))
 print(vektor[:5])
 ```
 
-`len(vektor)`: vektörde kaç sayı var. Isınmada 2'ydi. Bu modelin belgelerine göre 768
-sayı bekleniyor; kendi çıktına bak. (Konu 3'ün sonunda "1024 sayı" demiştik; o başka
-bir modelin sayısıydı. Bu konuda Türkçeyi de bilen bu modeli kullanıyoruz.)
+`len(vektor)`: vektörde kaç sayı var. Isınmada 2'ydi. Google'ın bu model için yazdığı
+belgelere göre 768 sayı bekleniyor; kendi çıktına bak.
 
 `vektor[:5]`: Konu 1'in dilimlemesi, ilk beş sayı. Sıfıra yakın, artılı eksili sayılar
 göreceksin.
@@ -686,7 +686,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 
 1. Isınmanın haritasına `"çikolata"` kelimesini eklemek istiyorsun. İki sayısını ne
    seçerdin, neden? Kahveye benzerliği yüksek mi çıkar?
-2. `benzerlik(kahve, ates)` 0.98 çıktı; oysa haritada ateş kahveden uzakta. Bunu
+2. `benzerlik(kahve, ates)` 0.98 çıktı; oysa haritada ateş kahveyle aynı yerde değil. Bunu
    arkadaşına bir cümleyle nasıl anlatırsın?
 3. `vektor_al` fonksiyonunda `return vektorler[0]` yerine `return vektorler` yazsaydın
    `len(vektor_al("çay"))` kaç yazardı?

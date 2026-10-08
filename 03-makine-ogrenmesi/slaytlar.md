@@ -130,7 +130,7 @@ print(sayac)
 **20 rengin 20'sinde de sınıf anlaşamamış.** Ama her renkte aynı ölçüde değil.
 
 Kırık beyaz ile krem ekranda neredeyse aynı renk. Aradaki fark kremdeki hafif
-sarılık — ve sınıfın yarısı için bu kayma rengi "enerjik" yapmış.
+sarılık — ve sınıfın neredeyse yarısı için bu kayma rengi "enerjik" yapmış.
 
 -----
 
@@ -564,7 +564,7 @@ Puan yok; Konu 4'ün başında sıradaki arkadaşlar gösterecek.
 **Temsil ve gömme vektörleri.**
 
 Bu konuda rengi üç sayıya çevirdik: `[230, 57, 70]`.
-Konu 4'te **kelimeleri** sayıya çevireceğiz — bu kez üç değil, 1024 sayıya.
+Konu 4'te **kelimeleri** sayıya çevireceğiz — bu kez üç değil, yüzlerce sayıya.
 
 Bu konunun "en yakın komşu" fikri orada da karşımıza çıkacak: iki kelime
 birbirine benziyor mu, sayılarına bakarak söyleyeceğiz.

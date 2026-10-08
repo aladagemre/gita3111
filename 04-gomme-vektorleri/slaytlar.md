@@ -110,7 +110,7 @@ plt.show()
 Her kelime, haritanın ortasından (0, 0) çıkan bir **ok** gibi düşünülebilir.
 
 - Kahve sağ üste bakıyor: sıcak ve biraz canlı
-- Ateş de sağ üste bakıyor, sadece daha uzakta
+- Ateş de sağ üste bakıyor, sadece oku daha uzun
 - Deniz sol alta bakıyor: ateşin tam tersi
 
 **Aynı yöne bakan iki ok benzerdir.** Uzunluk önemli değil, yön önemli.
@@ -149,7 +149,7 @@ print(benzerlik(kahve, buz))
 
 | İkili | Benzerlik | Neden |
 |---|---|---|
-| kahve – ateş | 0.98 | aynı yön, ateş daha uzakta |
+| kahve – ateş | 0.98 | aynı yön, ateşin oku daha uzun |
 | kahve – çay | 0.30 | ikisi de sıcak; biri canlı, biri sakin |
 | kahve – buz | −0.77 | karşı taraflarda |
 | ateş – deniz | −1.0 | tam zıt yön |
@@ -168,8 +168,7 @@ Bir dil modeli milyonlarca metin okur ve kelimeleri bir haritaya yerleştirir:
 
 Bu sayı listesine **vektör**, bu çeviriye **gömme** (embedding) diyoruz.
 
-Konu 3'ün sonunda "1024 sayı" demiştik; bu konuda başka bir model kullanıyoruz. Kaç sayı
-olduğunu kendi çıktında göreceksin.
+Modelin kaç sayı verdiğini kendi çıktında göreceksin.
 
 -----
 
