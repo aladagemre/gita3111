@@ -110,8 +110,9 @@ print(belirtecler)
 [174397, 482, 3742, 162348, 61617, 14988]
 ```
 
-- `tiktoken.get_encoding("o200k_base")`: bir **parça sözlüğü** yükler. `o200k_base` bu
-  sözlüğün adı; yaklaşık 200 bin parçalık bir sözlük. `kodlayici` artık metni parçalara
+- `tiktoken.get_encoding("o200k_base")`: bir **parça sözlüğü** yükler: modelin tanıdığı
+  bütün parçaların numaralı listesi. Konu 1–4'teki Python sözlüğüyle (`{}`) karıştırma; bu
+  dilbilgisindeki anlamıyla bir sözlük. `o200k_base` bu sözlüğün adı; yaklaşık 200 bin parçalık. `kodlayici` artık metni parçalara
   ayırmayı bilen bir araç.
 - `kodlayici.encode(...)`: metni parçalara ayırır ve her parçanın **sözlükteki sıra
   numarasını** verir. Sonuç bir sayı listesi.
@@ -195,7 +196,7 @@ sözlük de onları parçalara bölmek zorunda kalır.
 
 Bir model bir seferde **sınırlı sayıda parça** okuyabilir. Bu sınıra **bağlam penceresi**
 denir. Sohbet uygulamalarında sorduğun soru, modelin önceki cevapları ve yapıştırdığın
-metin hep bu pencereye girer. Pencere dolunca en eski kısım dışarıda kalır; model onu artık
+metin hep bu pencereye girer (Konu 2 Adım 8'de soruya koyduğumuz bağlam da). Pencere dolunca en eski kısım dışarıda kalır; model onu artık
 görmez. Uzun bir sohbetin başında söylediğin bir şeyi modelin "unutması" bundandır: aslında
 unutmuyor, **hiç görmüyor**.
 
@@ -213,7 +214,8 @@ okur ve Türkçe genelde daha çok parçaya bölünür.
 
 ## Adım 2 — Hangi kelimeden sonra ne geliyor?
 
-Şimdi kendi küçük "dil modelimizi" kuruyoruz. Veri: Konu 1'deki 30 kafe yorumu. Dosyanın
+Isınmadaki soruya dönüyoruz: bir kelimeden sonra ne gelir? Gerçek model bunu parçalarla
+yapar; biz kolay okunsun diye **kelimelerle** yapacağız. Şimdi kendi küçük "dil modelimizi" kuruyoruz. Veri: Konu 1'deki 30 kafe yorumu. Dosyanın
 aynısı bu konunun `veri` klasöründe (`veri/kafe-yorumlari.txt`). Önce okuyup Konu 1'deki
 gibi temizliyoruz:
 
@@ -585,7 +587,9 @@ Bir modelin cevabının nerede biteceğini de böylece kendisi "tahmin eder".
 
 ## Sıcaklık: en olası mı, zar mı?
 
-Adım 4 ve 5, gerçek modellerdeki **sıcaklık** (İngilizcesi *temperature*) ayarının iki ucu:
+Adım 4 ve 5, gerçek modellerdeki **sıcaklık** (İngilizcesi *temperature*) ayarının iki ucu.
+Konu 4'teki haritanın "sıcaklık" ekseniyle (soğuk–sıcak renk) ilgisi yok; buradaki sıcaklık
+zarın ayarı:
 
 | Sıcaklık | Ne yapar | Defterdeki karşılığı |
 |---|---|---|
@@ -927,14 +931,14 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 |---|---|
 | **Dil modeli** | Bir metnin devamında hangi parçanın geleceğini tahmin eden model |
 | **Belirteç (token)** | Modelin okuduğu en küçük metin parçası: bir kelime, bir kelime parçası ya da bir işaret |
-| **Parça sözlüğü** | Bir modelin tanıdığı bütün belirteçlerin listesi; her belirtecin bir sıra numarası var. Bizimki `o200k_base` |
+| **Parça sözlüğü** | Bir modelin tanıdığı bütün belirteçlerin listesi; her belirtecin bir sıra numarası var. Bizimki `o200k_base`. Python sözlüğü (`{}`) değil |
 | **`encode` / `decode`** | Metni parça numaralarına çevirmek / numaraları metne geri çevirmek |
 | **Bağlam penceresi** | Modelin bir seferde okuyabildiği en fazla parça sayısı; dışında kalanı görmez |
 | **Olasılık** | Bir seçeneğin seçilme şansı; 0 ile 1 arası. Burada adet / toplam |
 | **Olasılık dağılımı** | Bütün seçeneklerin olasılıkları birlikte; toplamları 1 |
 | **Açgözlü seçim** | Her adımda en olası parçayı seçmek; her seferinde aynı metin |
 | **Örnekleme (zar)** | Parçayı olasılığına göre rastgele seçmek; her seferinde başka metin |
-| **Sıcaklık (temperature)** | Seçimin ne kadar "zar" olacağını ayarlayan sayı; düşükse en olasıya, yüksekse rastlantıya yakın |
+| **Sıcaklık (temperature)** | Seçimin ne kadar "zar" olacağını ayarlayan sayı; düşükse en olasıya, yüksekse rastlantıya yakın. Konu 4'teki "sıcaklık" ekseniyle ilgisi yok |
 | **Uydurma (hallucination)** | Modelin doğru olmayan bir bilgiyi akıcı ve kendinden emin biçimde yazması; model doğruyu değil olası metni üretir |
 | **`random.choice`** | Bir listeden rastgele bir eleman seçen komut |
 | **`return`** | Fonksiyonun bulduğunu çağıran yere geri vermesi; `return` çalışınca fonksiyon orada biter |

@@ -85,7 +85,7 @@ print(belirtecler)
 
 - `encode`: metni parçalara, parçaları **sayılara** çevirir
 - Model kelimeyi değil, bu sayıları görür
-- İlk çalıştırmada `tiktoken` internetten bir sözlük indirir
+- İlk çalıştırmada `tiktoken` internetten bir **parça sözlüğü** indirir (Python `{}` sözlüğü değil: parçaların numaralı listesi)
 
 -----
 

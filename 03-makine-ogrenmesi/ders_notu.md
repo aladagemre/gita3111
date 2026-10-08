@@ -103,7 +103,8 @@ if kirmizi > 200 and yesil < 100:
 ```
 
 Bu bir **kural**: sen düşündün, sen yazdın. Makine öğrenmesi bunun tersi. Kuralı sen
-yazmıyorsun, **örnek veriyorsun** ve kuralı modelin bulmasını istiyorsun.
+yazmıyorsun, **örnek veriyorsun** ve kuralı **modelin** (örneklerden öğrenen programın)
+bulmasını istiyorsun.
 
 - Kural yazmak: "şu şartlarda şunu yap."
 - Öğretmek: "işte 240 örnek, kuralı sen çıkar."
@@ -203,7 +204,8 @@ verebilir. En iyi ihtimalle çoğunluğun cevabını verir ve azınlıktakilerin
 yanılır. Kırık beyazda en iyi ihtimalle 12'de 11'ini bilir, kremde 12'de 5'ini.
 
 Bunu 20 rengin hepsi için yapıp topladık: her rengin en çok verilen etiketinin sayısı,
-toplam 240 satıra bölündü. Sonuç, sadece renge bakan en iyi modelin doğruluğu. Bu
+toplam 240 satıra bölündü. Sonuç, sadece renge bakan en iyi modelin **doğruluğu** (doğru
+bildiği cevapların oranı; Adım 4'te `score` ile ölçeceğiz). Bu
 hesabı defterde yapmıyoruz (her renk için ayrı sayaç gerekiyor); sonucunu veriyoruz.
 
 Yedek veride bu sayı **0.74**. Yani mükemmel bir model bile her dört cevaptan birini
@@ -592,7 +594,7 @@ somon, gül kurusu) "ciddi" demiş. Sınıfın bir kısmı bu tonları ağırba�
 model bu sesi hiç duyamıyor.
 
 **İkinci grup (2 yanılgı): model sınıfın çoğunluğundan da ayrılmış.** Orta mavi için
-model "ciddi" diyor, oysa sınıfın 8 kişisi "sakin" demiş. Sebep Adım 4'teki gözlem:
+model "ciddi" diyor, oysa sınıfın 8 kişisi "sakin" demiş. Sebep Adım 4'te gördüğümüz şey (modelin 5 komşusu çoğu zaman aynı rengin 5 etiketi):
 model eğitimdeki 11 orta mavi etiketinden (7 sakin, 3 ciddi, 1 enerjik) yalnızca 5'ine bakabiliyor ve rastlantıyla o beşin
 içinde "ciddi" diyenler ağır basmış. Koyu yeşilde de benzer bir durum var (6 ciddi,
 4 sakin; model "sakin" diyor).

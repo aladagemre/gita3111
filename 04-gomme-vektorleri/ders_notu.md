@@ -15,7 +15,7 @@ deneyeceğiz; sonra bir modelden her kelime için yüzlerce sayı alacağız.
 
 **Konunun sonunda elinde:**
 
-- bir kelimeyi modelden vektör olarak alan bir fonksiyon (`vektor_al`),
+- bir kelimeyi modelden sayı listesi (vektör) olarak alan bir fonksiyon (`vektor_al`),
 - "kafe"ye en çok benzeyen kelimeleri bulan, **senin yazdığın** birkaç satır,
 - ve 24 kelimenin haritası: renkler, duygular, tasarım terimleri, mekânlar.
 
@@ -85,6 +85,7 @@ print(cay)
 ```
 
 Çıktı: `[0.5, -0.4]`. Her kelime iki sayılık küçük bir liste. Çay: biraz sıcak (0.5), biraz sakin (−0.4).
+Böyle bir sayı listesine **vektör** diyoruz: ısınmada her kelimenin vektörü 2 sayılı.
 
 Çizerken her noktanın yanına kelimenin adını yazacağız. Bunun için adı sayılarla eşleştiren bir sözlük kuruyoruz:
 
@@ -175,6 +176,9 @@ Sayının anlamı:
 | **0** | ilgisiz |
 | **−1** | zıt yön |
 
+**Yön** ne demek? Kelimeyi, haritanın ortasından (0, 0) ona uzanan bir ok olarak düşün;
+okun baktığı taraf onun yönü. Aşağıda "Uzaklık değil, yön" bölümünde açıyoruz.
+
 ```python
 print(benzerlik(kahve, cay))
 print(benzerlik(kahve, buz))
@@ -217,7 +221,8 @@ Ateş ile deniz neden tam −1? Denizin iki sayısı ateşinkilerin tam tersi i�
 
 Yön neden önemli? Bir dil modelinde "çok sıcak" ile "biraz sıcak" aynı yöne bakar;
 farkları okun uzunluğundadır. Biz "ne hakkında" sorusuyla ilgileniyoruz, "ne kadar"
-sorusuyla değil. Bu yüzden yönü ölçüyoruz.
+sorusuyla değil. Bu yüzden yönü ölçüyoruz. Bundan sonra iki kelime için "yakın" dediğimizde
+bu sayıyı kastediyoruz: benzerlik büyükse yakın.
 
 **Kendin dene:** `kar` ile `deniz` ne kadar benzer? Önce haritaya bakıp tahmin et, sonra
 `print(benzerlik(kar, deniz))` yazıp çalıştır.
@@ -325,8 +330,9 @@ Isınmada ilk sayı "sıcaklık", ikinci sayı "enerji" demekti. Modelin vektör
 sayıları, milyonlarca cümlede hangi kelimenin hangi kelimelerle birlikte geçtiğine
 bakarak ayarlamış; benzer cümlelerde geçen kelimeler benzer sayılar almış.
 
-Bu sayı listesine **vektör**, bir metni böyle bir listeye çevirmeye **gömme**
-(embedding) diyoruz: kelime, yüzlerce boyutlu bir haritanın içine "gömülüyor".
+Bu da ısınmadaki gibi bir **vektör**, sadece çok daha uzun. Bir metni böyle bir listeye
+çevirmeye **gömme** (embedding), çıkan vektöre **gömme vektörü** diyoruz: kelime, yüzlerce
+boyutlu bir haritanın içine "gömülüyor".
 Anlam tek tek sayılarda değil, **kelimelerin birbirine göre nerede durduğunda**.
 
 ## Adım 3 — Fonksiyona koy
@@ -468,7 +474,11 @@ print(len(vektorler_sozlugu))
 1. `skorlar` adında boş bir sözlük kur.
 2. Sözlükteki her kelime için "kafe" ile o kelimenin benzerliğini hesapla,
    sonucu `skorlar[kelime]` olarak sakla.
-3. Konu 1'deki `Counter` ile en büyükleri sırala.
+3. Konu 1'deki `Counter` ile en büyükleri sırala. İpucu: `Counter`'a listeyi değil, `skorlar`
+   sözlüğünü ver.
+
+Bir kelimeye en yakın kelimelere **komşu** denir (Konu 3'teki model de bir rengin en yakın
+5 komşusuna bakıyordu).
 
 Konu 1'de ne yapmıştık? `sayac` sözlüğü her kelimenin **kaç kez** geçtiğini tutuyordu;
 `most_common` en büyüklerini sıralıyordu. Burada `skorlar` her kelimenin kafeye **ne
@@ -789,6 +799,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 | **Temsil** | Bir şeyin (renk, kelime) sayılara nasıl çevrildiği; "benzerlik" bu seçime bağlıdır |
 | **Vektör** | Bir sayı listesi; bu derste bir kelimenin sayılarla temsili. Isınmada 2 sayı, modelde yüzlerce |
 | **Gömme (embedding)** | Bir metni, anlamını taşıyan bir vektöre çevirme işi; bunu yapan modele **gömme modeli** denir |
+| **Gömme vektörü** | Gömme modelinin bir metin için verdiği vektör; `vektor_al` bunu geri verir |
 | **Boyut** | Vektördeki sayıların her biri; haritanın bir ekseni. Isınmada 2 boyut (sıcaklık, enerji) |
 | **Kosinüs benzerliği** | İki vektörün aynı yöne bakıp bakmadığını ölçen sayı: 1 aynı yön, 0 ilgisiz, −1 zıt |
 | **`cosine_similarity`** | scikit-learn'deki kosinüs benzerliği aracı; bizde `benzerlik` fonksiyonunun içinde |
