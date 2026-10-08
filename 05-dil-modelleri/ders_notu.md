@@ -397,14 +397,17 @@ Yeni bir fonksiyon yazıyoruz. Bir kelime alır, ondan sonra **en sık** gelen k
 def sonraki_kelime(hedef):
     sonra_gelenler = sonra_gelenleri_bul(hedef)
     sayac = Counter(sonra_gelenler)
-    for kelime, adet in sayac.most_common(1):
-        return kelime
+    en_sik = sayac.most_common(1)
+    kelime, adet = en_sik[0]
+    return kelime
 ```
 
 - İlk satır listeyi Adım 2'deki fonksiyondan alır; ikinci satır Isınmadaki gibi sayar.
-- `for kelime, adet in sayac.most_common(1):` Konu 1'deki döngünün aynısı, ama yalnızca
-  en sık **bir** kelime istiyoruz; döngü tek tur döner (`'güzel'`, `2`).
-- `return kelime` o turda kelimeyi geri verir. Adedi istemiyoruz. `return adet` yazsaydık
+- `en_sik = sayac.most_common(1)`: yalnızca en sık **bir** kelimeyi ister. Sonuç yine bir
+  liste, içinde tek bir ikili: `[('güzel', 2)]`.
+- `kelime, adet = en_sik[0]`: `en_sik[0]` bir ikili: kelime ve adedi; ikisini iki
+  değişkene alıyoruz (Konu 1'deki `for kelime, adet in ...` gibi, ama döngüsüz).
+- `return kelime`: kelimeyi geri verir. Adedi istemiyoruz. `return adet` yazsaydık
   fonksiyon `2` sayısını verirdi; Adım 4'ün ikinci hücresinde bu sayıyı bir metne eklemeye
   çalışınca hata çıkardı. Alıştırma defterinin 4. bozuk kodu bu.
 
@@ -461,16 +464,14 @@ Ama yaptığı iş temelde aynıdır: **sıradaki parçayı seç, ekle, tekrarla
 **Ardından hiçbir şey gelmeyen kelime.** Başlangıç kelimesini değiştirirsen bir hata
 görebilirsin. Dosyanın son kelimesi "kahveli" ("Kütüphane gibi ama kahveli."); ondan sonra
 hiçbir kelime yok. `sonraki_kelime("kahveli")` boş bir listeyle `Counter` kurar,
-`most_common(1)` boş liste verir, döngü hiç dönmez ve fonksiyon `return`'e hiç varmaz.
-Böyle bir fonksiyon `None` ("hiçbir şey") verir. Üretim hücresi `None`'ı cümleye eklemeye
-çalışınca şu hata çıkar:
+`most_common(1)` boş liste (`[]`) verir ve `en_sik[0]` diye bir eleman olmaz:
 
 ```text
-TypeError: can only concatenate str (not "NoneType") to str
+IndexError: list index out of range
 ```
 
-Okuması: "metne yalnızca metin eklenebilir, `None` eklenemez." "kahve" ile başladığımızda bu
-olmuyor; açgözlü seçim "kahveli"ye hiç varmıyor.
+Okuması: "listede o sırada bir eleman yok." (Konu 2'de `anahtar.txt`'deki boş satır da bu
+hatayı veriyordu.) "kahve" ile başladığımızda bu olmuyor; açgözlü seçim "kahveli"ye hiç varmıyor.
 
 ### Model neden uydurur?
 
@@ -489,8 +490,8 @@ ama **uydurma** bir metin yazar. Buna uydurma (İngilizcesi *hallucination*) den
 
 ## Adım 5 — Zar at
 
-Şimdi en sıkını seçmek yerine **zar atalım**. `random.choice` bir listeden rastgele bir
-eleman seçer:
+Şimdi en sıkını seçmek yerine **zar atalım**. `random` Python'la birlikte gelen bir modül
+(kurulum istemez); `random.choice` bir listeden rastgele bir eleman seçer:
 
 ```python
 import random
@@ -525,6 +526,8 @@ def sonraki_kelime_zarla(hedef):
   gelirse `sonra_gelenler` boş kalır ve `random.choice` boş listeden seçemez
   (`IndexError: Cannot choose from an empty sequence`). Bu satır o durumda metnin ilk
   kelimesini (`kelimeler[0]`, yani "ders") verir; üretim dosyanın başından devam eder.
+  `len(...) == 0` "listenin uzunluğu 0 mı, yani boş mu?" demek. `return` fonksiyonu orada
+  bitirir; liste boş değilse son satıra geçilir ve zar atılır.
 
 Aynı üretim hücresi, zarla:
 
@@ -760,7 +763,7 @@ bölünüyor?
 **2. Başka bir kelimeden başla.** Adım 4'teki üretim hücresinde `"kahve"` yerine `"sessiz"`
 ya da `"priz"` yaz, yeniden çalıştır. Örneğin "sessiz" ile açgözlü seçim şunu verir:
 `sessiz ve sakin saatlerce oturabiliyorsunuz sınav haftası her masada`. Dikkat: dosyanın son
-kelimesi olan "kahveli" ile başlarsan `TypeError` alırsın; ondan sonra hiç kelime yok (Adım 4'ün sonu).
+kelimesi olan "kahveli" ile başlarsan `IndexError` alırsın; ondan sonra hiç kelime yok (Adım 4'ün sonu).
 
 ---
 
@@ -833,7 +836,7 @@ Python bir hata verdiğinde en alttaki satır en önemlisidir: önce hatanın **
 | `sonra_gelenler` boş: `[]` | `onceki = kelime` satırı `if`'in içine kaymış ya da hedef kelime yazım hatalı (`"Biraz"`) | Satırı `for`'un hizasına al; hedefi küçük harfle yaz |
 | Olasılıkların toplamı 1'i geçiyor | `len(sayac)` ile bölündü (farklı kelime sayısı) | `toplam = len(sonra_gelenler)` |
 | `TypeError: can only concatenate str (not "int") to str` | `sonraki_kelime` kelimeyi değil adedi döndürüyor (`return adet`) | `return kelime` |
-| `TypeError: can only concatenate str (not "NoneType") to str` | `sonraki_kelime` ardından hiç kelime gelmeyen bir kelimeyle çağrıldı ("kahveli" ya da metinde olmayan bir kelime) | Başka bir başlangıç kelimesi seç |
+| `IndexError: list index out of range` | `sonraki_kelime` ardından hiç kelime gelmeyen bir kelimeyle çağrıldı ("kahveli" ya da metinde olmayan bir kelime) | Başka bir başlangıç kelimesi seç |
 | `IndexError: Cannot choose from an empty sequence` | `sonraki_kelime_zarla` içindeki `if len(sonra_gelenler) == 0:` satırları yazılmamış; zar "kahveli"ye geldi | İki satırı ekle (Adım 5) |
 | Üretilen cümle aynı kelimeyi tekrarlıyor | Döngüde `kelime` güncellenmiyor | `kelime = sonraki_kelime(kelime)` |
 | `FileNotFoundError: ... '../anahtar.txt'` | Anahtar dosyası yok ya da yanlış yerde | Dosya `gita3111` klasöründe durmalı (Konu 2) |
@@ -901,7 +904,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 | **Sıcaklık (temperature)** | Seçimin ne kadar "zar" olacağını ayarlayan sayı; düşükse en olasıya, yüksekse rastlantıya yakın |
 | **Uydurma (hallucination)** | Modelin doğru olmayan bir bilgiyi akıcı ve kendinden emin biçimde yazması; model doğruyu değil olası metni üretir |
 | **`random.choice`** | Bir listeden rastgele bir eleman seçen komut |
-| **`return`** | Fonksiyonun bulduğunu çağıran yere geri vermesi; `return`'e varmayan fonksiyon `None` ("hiçbir şey") verir |
+| **`return`** | Fonksiyonun bulduğunu çağıran yere geri vermesi; `return` çalışınca fonksiyon orada biter |
 
 ## Ödev
 

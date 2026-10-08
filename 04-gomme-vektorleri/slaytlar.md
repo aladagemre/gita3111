@@ -111,9 +111,10 @@ plt.ylabel("sakin — canlı")
 plt.show()
 ```
 
+- `for kelime in harita`: sözlüğün anahtarlarını (kelimeleri) gezer
 - `plt.scatter`: bir nokta koy
 - `plt.text`: noktanın yanına kelimeyi yaz
-- Gri çizgiler: sıfır çizgileri
+- `axhline` / `axvline`: gri sıfır çizgileri
 
 -----
 
@@ -357,6 +358,8 @@ sirali = Counter(skorlar)
 for kelime, skor in sirali.most_common(4):
     print(kelime, round(skor, 2))
 ```
+
+`Counter`'a hazır sözlük verince saymaz; sayıları büyükten küçüğe dizer.
 
 -----
 

@@ -278,8 +278,9 @@ Farkı: 30 yorumdan değil, milyarlarca metinden öğrenmiş olması.
 def sonraki_kelime(hedef):
     sonra_gelenler = sonra_gelenleri_bul(hedef)
     sayac = Counter(sonra_gelenler)
-    for kelime, adet in sayac.most_common(1):
-        return kelime
+    en_sik = sayac.most_common(1)
+    kelime, adet = en_sik[0]
+    return kelime
 ```
 
 ```python
@@ -287,7 +288,8 @@ print(sonraki_kelime("çok"))
 ```
 
 - Listeyi Adım 2'deki fonksiyondan al, `Counter` ile say
-- `most_common(1)`: yalnızca en sık bir kelime → döngü tek tur döner, `'güzel'`i geri verir
+- `most_common(1)`: yalnızca en sık bir kelime, liste içinde: `[('güzel', 2)]`
+- `en_sik[0]` bir ikili: kelime ve adedi; ikisini iki değişkene alıyoruz, kelimeyi geri veriyoruz
 
 -----
 
@@ -516,7 +518,7 @@ for belirtec in belirtecler:
 |---|---|
 | `ModuleNotFoundError: No module named 'tiktoken'` | Çekirdek `.venv` değil ya da `uv sync` yapılmadı |
 | `TypeError: 'int' object is not an instance of 'Sequence'` | `decode`'a liste değil tek sayı verildi: `[belirtec]` |
-| `TypeError: can only concatenate str (not "NoneType") to str` | Ardından hiç kelime gelmeyen bir kelimeyle `sonraki_kelime` çağrıldı |
+| `IndexError: list index out of range` | Ardından hiç kelime gelmeyen bir kelimeyle `sonraki_kelime` çağrıldı (`en_sik` boş) |
 | `FileNotFoundError: ... '../anahtar.txt'` | Adım 6'dan sonrası anahtar ister |
 | `TypeError: 'NoneType' object is not subscriptable` | İstek başarısız; durum koduna bak (Konu 2) |
 

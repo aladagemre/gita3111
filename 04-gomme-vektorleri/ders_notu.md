@@ -552,7 +552,8 @@ print(model_haritasi["kafe"])
 - `model_haritasi` ısınmadaki `harita`nın aynısı: anahtar kelimenin adı, değer iki sayısı.
   Adım 6'daki `skorlar` döngüsüyle de aynı biçim.
 
-Çıktı, "kafe"nin iki sayısı: ısınmadaki gibi bir nokta. Sayıların kendisi senin koşuna bağlı; önemli olan artık iki tane olmaları.
+Çıktı, "kafe"nin iki sayısı: ısınmadaki gibi bir nokta. Konu 3'teki gibi virgülsüz yazılır
+(scikit-learn'ün kendi liste türü), okuması aynı. Sayıların kendisi senin koşuna bağlı; önemli olan artık iki tane olmaları.
 
 ```python
 for kelime in model_haritasi:
