@@ -59,4 +59,4 @@ kopyala**, kopyada çalış; böylece `git pull` hiç çakışmaz.
 | Adım 5 | Zar atarak metin üretmek | gerekmez |
 | Adım 6 | Gerçek model, üç sıcaklıkta aynı soru | gerekir |
 | Adım 7 | Slogan panosu: `pano.txt` | gerekir |
-| Bonus | Kendi adını belirteçlere ayırmak; başka bir kelimeden üretmek | gerekmez |
+| Bonus | Kendi adını belirteçlere ayırmak; başka bir kelimeden üretmek; bir bulguyu soruya koymak | 1–2 gerekmez, 3 gerekir |

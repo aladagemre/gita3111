@@ -654,7 +654,7 @@ print(len(vektorler_sozlugu))
 
 Çıktı: `29` (24 + 5). Listeye kendi beş kelimeni yaz ve çalıştır. Sonra Adım 7'nin dört
 hücresini sırayla yeniden çalıştır: liste yeniden kurulur, PCA yeniden `fit` edilir,
-her kelime yeniden 2 sayıya çevrilir, harita 29 kelimeyle çizilir. Yeni kelimelerin hangi gruba yakın düştü?
+her kelime yeniden 2 sayıya çevrilir, harita 29 kelimeyle çizilir. Yeni kelimeler hangi gruba yakın düştü?
 Örnek listeyi değiştirmeden çalıştırdıysan: "sessizlik" kafeye mi düştü, kütüphaneye mi?
 Konu 1'in bulgusu (sessiz çalışma yeri) model için hangi mekâna daha yakın?
 
@@ -683,7 +683,7 @@ yeni açtıysan (ya da çekirdeği yeniden başlattıysan) en baştan başla.
 
 Derste kendi başına çalışacağın defter: `alistirma.ipynb`. Önce aynı klasörde yeni bir
 adla kopyala, kopyada çalış; böylece `git pull` çakışmaz. Bu defter internete çıkmaz,
-anahtar istemez: ısınmadaki iki sayılık vektörlerle çalışır. İlk üç hücresi vektörleri,
+anahtar istemez: ısınmadaki iki sayılık vektörlerle çalışır. İlk üç kod hücresi vektörleri,
 `benzerlik` fonksiyonunu ve kahvenin `skorlar` sözlüğünü kurar. İki bölümü var:
 
 - **Bozuk kodlar:** beş kısa hücre. İkisi hata mesajı veriyor, üçü sessizce yanlış sonuç

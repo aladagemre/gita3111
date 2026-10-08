@@ -35,25 +35,6 @@ Hepsi tek defterde: `ders.ipynb`. Hücreleri sırayla çalıştır (**Shift + En
 
 -----
 
-## Kural yazmak ile öğretmek
-
-Bir rengin "enerjik" mi "sakin" mi olduğunu kodla söylemek isteseydin:
-
-```py
-if kirmizi > 200 and yesil < 100:
-    print("enerjik")
-```
-
-Bu bir **kural**. Sen yazdın, sen düşündün.
-
-Makine öğrenmesi bunun tersi: kuralı sen yazmıyorsun, **örnek veriyorsun** ve
-kuralı modelin bulmasını istiyorsun.
-
-- Kural yazmak: "şu şartlarda şunu yap"
-- Öğretmek: "işte 240 örnek, sen çıkar"
-
------
-
 ## Isınma — sayaç neyi sayıyor?
 
 `{'enerjik': 2, 'sakin': 1}` yazmalı. Ne yazıyor?
@@ -73,6 +54,25 @@ print(sayac)
 > {'kırmızı': 1, 'orta mavi': 1, 'şeftali': 1}
 
 Hata mesajı yok, sonuç yanlış. Saydığımız alan `"ad"` değil, `"etiket"` olmalı.
+
+-----
+
+## Kural yazmak ile öğretmek
+
+Bir rengin "enerjik" mi "sakin" mi olduğunu kodla söylemek isteseydin:
+
+```py
+if kirmizi > 200 and yesil < 100:
+    print("enerjik")
+```
+
+Bu bir **kural**. Sen yazdın, sen düşündün.
+
+Makine öğrenmesi bunun tersi: kuralı sen yazmıyorsun, **örnek veriyorsun** ve
+kuralı modelin bulmasını istiyorsun.
+
+- Kural yazmak: "şu şartlarda şunu yap"
+- Öğretmek: "işte 240 örnek, sen çıkar"
 
 -----
 
@@ -528,7 +528,7 @@ Model "benzerlik" kavramını ona verdiğimiz **temsilden** alıyor.
 | 2 | Rengi sayıya çevirdik | `X`, `y` |
 | 3 | İkiye böldük | `X_egitim`, `X_test`, `y_egitim`, `y_test` |
 | 4 | Eğittik, ölçtük, kör tahminle kıyasladık | `model` |
-| 5 | Yanılgılara baktık | modelin yanıldığı 14 rengin listesi |
+| 5 | Yanılgılara baktık | modelin 14 yanılgısının listesi |
 | 6 | Veri miktarını değiştirdik | öğrenme eğrisi |
 | 7 | Kafe paletini sorduk | ikinci görüş |
 | 8 | Hiç görmediği renkte sınadık | `model_haric` |
@@ -556,7 +556,8 @@ Sonucu söylerken soruyu da söyle.
 Adım 6'nın çıktısına bak: **yarısıyla** (90 örnek) ve **tamamıyla** (180 örnek) eğitilen model.
 
 1. İki doğruluk oranını yaz
-2. Tek cümle: fark ne, neden böyle olmuş olabilir?
+2. Öğrenme eğrisini `veri-miktari.png` olarak kaydet
+3. Tek cümle: fark ne, neden böyle olmuş olabilir?
 
 İstersen defterin sonundaki **Bonus** hücresiyle kendi seçtiğin renkleri de sor —
 modelle aynı fikirde misin?

@@ -31,8 +31,8 @@ Bu parça kendi `anahtar.txt` dosyanı ister (Konu 2).
 ## Parça 2 — Kaç parça?
 
 Bir **Türkçe cümle** seç (en az 5 kelime) ve aynı anlamdaki **İngilizce** hâlini yaz.
-Kopyadaki Bonus hücresinde tırnak içine önce Türkçe cümleni, sonra İngilizce cümleni yazıp
-çalıştır.
+Kopyada önce Adım 1'in ilk hücresini çalıştır (`kodlayici` orada kuruluyor). Sonra Bonus
+hücresinde tırnak içine önce Türkçe cümleni, sonra İngilizce cümleni yazıp çalıştır.
 
 **Teslim edeceğin:** iki cümle, ikisinin kelime sayısı ve parça (belirteç) sayısı. Örnek:
 
@@ -47,5 +47,6 @@ Tek cümleyle: Türkçe cümlende en çok bölünen kelime hangisi, sence neden?
 
 ## İstersen (zorunlu değil)
 
-Adım 4'teki üretim hücresini kendi seçtiğin bir başlangıç kelimesiyle çalıştır. En
+Adım 4'teki üretim hücresini kendi seçtiğin bir başlangıç kelimesiyle çalıştır (önce Isınma
+ve Adım 2–4'ün hücrelerini sırayla çalıştır). En
 "anlamlıymış gibi" görünen cümleyi getir.

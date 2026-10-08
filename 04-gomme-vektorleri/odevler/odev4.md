@@ -19,8 +19,9 @@ ister.
 2. **Adım 5'teki listeyi değiştir.** `kelimeler = [...]` listesindeki 24 kelimeyi sil,
    yerine kendi 20 kelimeni yaz: her kelime tırnak içinde, aralarında virgül.
 3. **Sırayla çalıştır.** Hücreleri baştan Adım 7'nin sonuna kadar sırayla çalıştır.
-   Adım 6'da `hedef = "kafe"` satırındaki kelimeyi kendi listenden bir kelimeyle değiştir
-   (yoksa `KeyError: 'kafe'` alırsın).
+   "kafe" artık listende yok; iki yerde onu kendi listenden bir kelimeyle değiştir,
+   yoksa `KeyError: 'kafe'` alırsın: Adım 6'daki `hedef = "kafe"` ve Adım 7'deki
+   `print(model_haritasi["kafe"])`.
 4. **Haritayı kaydet.** Adım 7'nin son hücresinde `plt.show()` satırının **üstüne** şu
    satırı ekle ve hücreyi yeniden çalıştır:
 

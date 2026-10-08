@@ -507,7 +507,7 @@ Kendi kelimelerini yaz. Sonra Adım 7'nin dört hücresini sırayla yeniden çal
 | 4 | İki kelimeyi kıyasladık | — |
 | 5 | 24 kelimenin vektörü | `vektorler_sozlugu` |
 | 6 | En yakın komşular | `skorlar` |
-| 7 | 2 boyuta indirip çizdik | harita |
+| 7 | 2 boyuta indirip çizdik | `pca`, `model_haritasi` |
 | 8 | Haritayı okuduk | — |
 
 -----
@@ -530,7 +530,7 @@ Modelin "benzer"i, "benzer yerlerde geçen" demek.
 Kendi seçtiğin **20 kelimeyle** bir harita çıkar.
 
 1. Defteri kopyala, Adım 5'teki listeye kendi 20 kelimeni yaz
-2. Adım 7'ye kadar çalıştır, haritayı kaydet
+2. Adım 7'nin sonuna kadar çalıştır, haritayı kaydet
 3. **Tek cümle:** beklemediğin hangi iki kelime yan yana düştü?
 4. **Tek cümle daha:** bu haritayla bir mood-board'a başlasan neyi ekler, neyi çıkarırdın?
 

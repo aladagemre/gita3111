@@ -420,8 +420,8 @@ def sonraki_kelime(hedef):
 - `kelime, adet = en_sik[0]`: `en_sik[0]` bir ikili: kelime ve adedi; ikisini iki
   değişkene alıyoruz (Konu 1'deki `for kelime, adet in ...` gibi, ama döngüsüz).
 - `return kelime`: kelimeyi geri verir. Adedi istemiyoruz. `return adet` yazsaydık
-  fonksiyon `2` sayısını verirdi; Adım 4'ün ikinci hücresinde bu sayıyı bir metne eklemeye
-  çalışınca hata çıkardı. Alıştırma defterinin 4. bozuk kodu bu.
+  fonksiyon `2` sayısını verirdi; aşağıdaki üretim hücresi bu sayıyı bir metne eklemeye
+  çalışınca hata verirdi (`TypeError`). Alıştırma defterinin 4. bozuk kodu bu.
 
 Deneyelim:
 

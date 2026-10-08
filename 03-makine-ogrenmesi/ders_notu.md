@@ -319,7 +319,9 @@ atlamadın. İki durum var:
 - **Uzunluklar aynı ama sıra kaymışsa** hiçbir hata mesajı almazsın. Model lacivertin
   cevabı olarak şeftalinin etiketini öğrenir ve sessizce saçma sonuçlar üretir. Bunu
   önlemenin yolu basit: X ve y'yi **aynı döngüde, aynı kayıttan** doldur.
-  Alıştırma defterindeki 2. bozuk kod tam bu hata.
+
+Alıştırma defterindeki 2. bozuk kod bu hatanın küçük bir örneği: iki liste aynı
+döngüde ama aynı koşulla dolmuyor, biri 3 öğeli kalırken öbürü 6 öğeli oluyor.
 
 ## Adım 3 — Veriyi ikiye böl: eğitim ve test
 
@@ -472,7 +474,7 @@ sonucu doğru okumak, doğruluğu yükseltmeye çalışmaktan daha değerli.
 
 ### k'yı değiştirmek: kaç arkadaşa sormalı?
 
-Adım 4'ün hücresinde `n_neighbors=5` yerine başka sayılar yazıp yeniden çalıştır.
+Adım 4'ün ilk hücresinde `n_neighbors=5` yerine başka sayılar yazıp yeniden çalıştır.
 Yedek veride: k=1 → 0.70, k=5 → 0.77, k=15 → 0.73, k=45 → 0.72.
 
 - **k=1** "tek bir arkadaşa sor" demek. O arkadaş azınlıktaysa model de azınlığın
@@ -863,7 +865,7 @@ bakacağız.
 | 2 | Sayıya çevirdik | `X`, `y` |
 | 3 | İkiye böldük | `X_egitim`, `X_test`, `y_egitim`, `y_test` |
 | 4 | Eğittik, ölçtük, kör tahminle kıyasladık | `model`, doğruluk |
-| 5 | Yanılgılara baktık | modelin yanıldığı 14 rengin listesi |
+| 5 | Yanılgılara baktık | modelin 14 yanılgısının listesi |
 | 6 | Veri miktarını değiştirdik | öğrenme eğrisi |
 | 7 | Modeli kafe paletiyle yokladık | kafe paleti için ikinci görüş |
 | 8 | Hiç görmediği bir renkte sınadık | `model_haric` |
