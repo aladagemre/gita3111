@@ -32,7 +32,9 @@ Sonra:
    öncekinin değişkenini kullanır; atlarsan `NameError` alırsın.
 
 `tiktoken` ilk çalıştırmada (Adım 1) internetten bir sözlük dosyası indirir; birkaç saniye
-sürer, bir kez indikten sonra internet gerekmez.
+sürer. Dosya bilgisayarın geçici dosyalar klasöründe durur; o klasör temizlenmedikçe yeniden
+inmez. İnternet yoksa Adım 1 `ConnectionError` verir; Adım 2–5 sözlüğü kullanmadığı için
+oradan devam edebilirsin.
 
 ## Anahtar gerekiyor mu?
 

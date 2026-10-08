@@ -116,7 +116,9 @@ print(belirtecler)
 - `kodlayici.encode(...)`: metni parçalara ayırır ve her parçanın **sözlükteki sıra
   numarasını** verir. Sonuç bir sayı listesi.
 - İlk çalıştırmada `tiktoken` bu sözlüğü internetten indirir (birkaç saniye). Sonra
-  bilgisayarında saklar, bir daha indirmez.
+  bilgisayarının geçici dosyalar klasöründe saklar; o klasör temizlenmedikçe bir daha indirmez.
+- İnternet yoksa hücre `requests.exceptions.ConnectionError` verir. Adım 2–5 bu sözlüğü
+  kullanmaz: Adım 2'den devam et, internet gelince Adım 1'e dön.
 
 Model kelimeleri değil, **bu sayıları** görür. Konu 4'ü hatırla: model her sayıyı daha
 sonra uzun bir sayı listesine (vektöre) çevirir ve onunla çalışır.
@@ -839,7 +841,8 @@ değişkenlerini kullanmıyor.
 Derste kendi başına çalışacağın defter: `alistirma.ipynb`. Önce aynı klasörde yeni bir
 adla kopyala, kopyada çalış; böylece `git pull` çakışmaz. Anahtar istemez; dosya da okumaz:
 ilk hücresi on kelimelik küçük bir metin kurar. `tiktoken` sözlüğü Adım 1'de inmediyse bu ilk
-hücre onu indirir; o an bir kez internet gerekir. İki bölümü var:
+hücre onu indirir; o an bir kez internet gerekir. İnternet yoksa ilk hücre `10` yazdıktan
+sonra `ConnectionError` verir; sözlüğü kullanmayan bozuk kod 2–5 ve Soru 2–3 yine çalışır. İki bölümü var:
 
 - **Bozuk kodlar:** beş kısa hücre. Biri hata mesajı veriyor, öbürleri sessizce yanlış
   sonuç yazıyor; üstlerinde ne yazmaları gerektiği yazıyor.
@@ -857,9 +860,10 @@ Python bir hata verdiğinde en alttaki satır en önemlisidir: önce hatanın **
 | Ne görüyorsun | Sebebi | Ne yapmalı |
 |---|---|---|
 | `ModuleNotFoundError: No module named 'tiktoken'` | Defter `.venv` dışındaki bir çekirdekle çalışıyor ya da `uv sync` yapılmadı | Sağ üstten çekirdek olarak `.venv`'i seç; `gita3111` klasöründe `uv sync` |
-| Adım 1 ilk çalıştırmada uzun bekliyor ya da bağlantı hatası veriyor | `tiktoken` sözlük dosyasını internetten indiriyor | İnternete bağlan, hücreyi yeniden çalıştır; bir kez indikten sonra internet gerekmez |
+| Adım 1'de (ya da alıştırmanın ilk hücresinde) `requests.exceptions.ConnectionError: HTTPSConnectionPool(host='openaipublic.blob.core.windows.net', ...)`, ya da hücre uzun süre bekliyor | `tiktoken` sözlük dosyasını internetten indirmek istiyor; internet yok ya da ağ bu adresi engelliyor | İnternete bağlan, hücreyi yeniden çalıştır. Beklerken Adım 2'den devam edebilirsin: Adım 2–5 sözlüğü kullanmaz |
 | `TypeError: 'int' object is not an instance of 'Sequence'` | `decode`'a tek sayı verildi | `kodlayici.decode([belirtec])`: köşeli parantez |
-| `NameError: name 'kelimeler' is not defined` | Bir hücreyi atladın ya da defteri yeni açtın | Hücreleri baştan, sırayla çalıştır |
+| `NameError: name 'kelimeler' is not defined` (ya da `Counter`, `kodlayici`, `random`, `hesap`...) | Bir hücreyi atladın, bir hücre hata verdi ya da defteri yeni açtın. Hata veren hücre değişkenini kuramaz; ondan sonraki hücreler bu hatayı verir | Önce yukarıdaki ilk hatayı düzelt, sonra hücreleri sırayla çalıştır |
+| Adım 3'te çubuklar `kafesi`, `yeri`, `odası`; olasılıkların toplamı 1'i geçiyor | Adım 2'nin son hücresi (`sayac = Counter(sonra_gelenler)`) atlandı; `sayac` hâlâ Isınmadaki sayaç | O hücreyi çalıştır, sonra Adım 3'ü yeniden çalıştır |
 | `FileNotFoundError: ... 'veri/kafe-yorumlari.txt'` | Defterin kopyası konu klasörünün dışında | Kopya `05-dil-modelleri` klasöründe durmalı |
 | `sonra_gelenler` boş: `[]` | `onceki = kelime` satırı `if`'in içine kaymış ya da hedef kelime yazım hatalı (`"Biraz"`) | Satırı `for`'un hizasına al; hedefi küçük harfle yaz |
 | Olasılıkların toplamı 1'i geçiyor | `len(sayac)` ile bölündü (farklı kelime sayısı) | `toplam = len(sonra_gelenler)` |
@@ -868,7 +872,8 @@ Python bir hata verdiğinde en alttaki satır en önemlisidir: önce hatanın **
 | `IndexError: Cannot choose from an empty sequence` | `sonraki_kelime_zarla` içindeki `if len(sonra_gelenler) == 0:` satırları yazılmamış; zar "kahveli"ye geldi | İki satırı ekle (Adım 5) |
 | Üretilen cümle aynı kelimeyi tekrarlıyor | Döngüde `kelime` güncellenmiyor | `kelime = sonraki_kelime(kelime)` |
 | `FileNotFoundError: ... '../anahtar.txt'` | Anahtar dosyası yok ya da yanlış yerde | Dosya `gita3111` klasöründe durmalı (Konu 2) |
-| `TypeError: 'NoneType' object is not subscriptable` | İstek başarısız oldu (yanlış anahtar, kota) | Konu 2 Adım 5: önce durum koduna bak |
+| `TypeError: 'NoneType' object is not subscriptable` (Adım 6–7) | İstek başarısız oldu; cevapta `result` boş (yanlış anahtar, kota) | `cevap` fonksiyonun içinde kalıyor. Durum kodunu görmek için `modele_sor`'da `requests.post` satırının altına geçici olarak `print(cevap.status_code)` ekle: 401 anahtar, 429 kota (Konu 2 Adım 5) |
+| `requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.cloudflare.com', ...)` (Adım 6–7) | İnternet yok | İnternete bağlan; Adım 6–7 internetsiz çalışmaz |
 | `TypeError: can only concatenate str (not "float") to str` | Adım 7'de sıcaklık metne çevrilmeden eklendi | `str(sicaklik)` |
 
 ---

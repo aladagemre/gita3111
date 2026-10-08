@@ -224,7 +224,7 @@ cevap = requests.post(adres, headers=basliklar, json=govde)
 print(cevap.status_code)
 ```
 
-> 200
+> 200 (değilse: 401 anahtar, 404 hesap kimliği, 429 kota; Konu 2, Adım 5)
 
 Model Google'ın; 100'den çok dil biliyor. Türkçe kelimeler için bu önemli.
 
@@ -260,6 +260,8 @@ Konu 2'deki `modele_sor`'un kardeşi:
 def vektor_al(kelime):
     govde = {"text": [kelime]}
     cevap = requests.post(adres, headers=basliklar, json=govde)
+    if cevap.status_code != 200:
+        print("Bir sorun var:", kelime, cevap.status_code)
     yanit = cevap.json()
     sonuc = yanit["result"]
     vektorler = sonuc["data"]
@@ -270,6 +272,8 @@ def vektor_al(kelime):
 vektor = vektor_al("çay")
 print(len(vektor))
 ```
+
+İstek başarısızsa hangi kelimede, hangi kodla takıldığını yazar (Konu 2, Adım 5).
 
 -----
 
@@ -317,6 +321,7 @@ print(len(vektorler_sozlugu))
 **bej**: Konu 3'te kafe paleti için modele sorduğumuz renk.
 
 24 istek: hücre biraz sürer; solunda `[*]` durur, bitince `24` yazar.
+`Bir sorun var: ... 429` görürsen sözlük yarım: sorunu çöz, hücreyi yeniden çalıştır.
 
 **Beklerken tahmin et:** "kafe" bu 24 kelimeden hangi üçüne en yakın çıkar? Not al.
 

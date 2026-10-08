@@ -560,7 +560,11 @@ orta mavi öğrenci: sakin model: ciddi
 şeftali öğrenci: ciddi model: enerjik
 ```
 
-Toplam 14 satır çıkıyor.
+Toplam 14 satır çıkıyor. Başka bir sayı görürsen `model` değişmiştir: ya Adım 4'teki
+denemeden sonra `n_neighbors` 5'e dönmedi ya da Adım 7'yi (modeli tüm veriyle yeniden
+eğiten hücre) çalıştırıp buraya geri geldin. Adım 7'nin modeli bu 60 rengi eğitimde
+gördüğü için daha az yanılır (yedek veride 13 satır) ve liste değişir. Adım 4'ün ilk
+hücresini `n_neighbors=5` ile yeniden çalıştır, sonra bu hücreyi.
 
 `predict`'e rengi köşeli parantez olmadan verirsen (`model.predict(renk)`) uzun bir
 mesaj alırsın:
@@ -714,6 +718,9 @@ print(tahminler)
 
 Cevaplar paletle aynı sırada. (Aralarında virgül yok, çünkü `predict` sıradan bir
 Python listesi değil, scikit-learn'ün kendi dizisini döndürüyor; okuması aynı.)
+
+Bu hücre `model`'i tüm veriyle yeniden eğittiği için Adım 4'teki model artık yok. Sonradan
+Adım 5'e dönersen önce Adım 4'ün ilk hücresini yeniden çalıştır.
 
 Yedek veride sonuç, her rengin "en yakın bildiği renk"iyle birlikte (bu sütunu ayrı
 bir komutla bulduk; defterde göstermiyoruz):
@@ -897,24 +904,35 @@ Python bir hata verdiğinde en alttaki satır en önemlisidir: önce hatanın **
 (`ValueError`, `FileNotFoundError`), iki noktadan sonra da **açıklaması** gelir.
 Üstteki satırlar hatanın kodun neresinde çıktığını gösterir.
 
+Bir hücre hata verirse onu düzeltmeden sonrakine geçme. Sonraki hücreler ya yeni hatalar
+verir (çoğu `NameError`) ya da yarım veriyle **sessizce** çalışır: Adım 2 yarıda kesilirse
+Adım 3 `180 60` yerine daha küçük sayılar yazar ve hata vermez. Birkaç hata üst üste
+geldiyse her zaman **en üstteki** hatayı düzelt.
+
 | Ne görüyorsun | Sebebi | Ne yapmalı |
 |---|---|---|
 | `NameError: name 'kayitlar' is not defined` | Bir hücreyi atladın ya da defteri yeni açtın | Hücreleri baştan, sırayla çalıştır |
-| `ModuleNotFoundError: No module named 'sklearn'` | Defter `.venv` dışındaki bir çekirdekle çalışıyor | Sağ üstten çekirdek olarak `.venv`'i seç; yoksa `gita3111` klasöründe `uv sync` |
+| `ModuleNotFoundError: No module named 'sklearn'` (Adım 3'te; Isınma ve Adım 1–2 sorunsuz çalışmıştı) | Defter `.venv` dışındaki bir çekirdekle çalışıyor; ilk iki adım yalnızca Python'un kendi `csv`'sini kullandığı için hata Adım 3'te çıkar | Sağ üstten çekirdek olarak `.venv`'i seç (listede yoksa `gita3111` klasöründe `uv sync`). Çekirdek değişince bütün değişkenler silinir: hücreleri baştan çalıştır |
 | `FileNotFoundError: [Errno 2] No such file or directory: 'veri/renkler-etiketli.csv'` | Defterin kopyası konu klasörünün dışında | Defter `03-makine-ogrenmesi` klasöründe durmalı; kopyayı oraya al |
-| `KeyError: 'r'` | Adım 1 atlandı (ısınmadaki küçük liste duruyor) ya da veri dosyası eski (sütunlar `hex,ad,ogrenci,etiket`) | Adım 1'i çalıştır; yine olursa `gita3111` klasöründe `git pull` |
+| `KeyError: 'r'` | Adım 1 atlandı ya da sonradan Isınma hücresi yeniden çalıştırıldı (`kayitlar` yine üç satırlık ısınma listesi) ya da veri dosyası eski (sütunlar `hex,ad,ogrenci,etiket`) | Adım 1'i çalıştır; yine olursa `gita3111` klasöründe `git pull` |
+| `UnicodeDecodeError: 'utf-8' codec can't decode byte ...` (Adım 1) ya da `KeyError: 'ad'` | `renkler-etiketli.csv` Excel'de açılıp kaydedilmiş: Excel dosyayı başka bir kodlamayla ya da virgül yerine `;` ile yazar | `gita3111` klasöründe `git restore 03-makine-ogrenmesi/veri/renkler-etiketli.csv`. CSV'ye bakmak istersen VS Code'da aç |
+| `ValueError: invalid literal for int() with base 10: ''` | Veri dosyasında bir satırın `r`, `g` ya da `b`'si boş: dosya elle değiştirilmiş | Yukarıdaki gibi `git restore`, sonra Adım 1'den başla |
+| `ValueError: With n_samples=0, test_size=0.25 ...` (Adım 3) | `X` boş: Adım 2 ilk satırda hata verdi | Adım 2'nin (ya da Adım 1'in) hatasını düzelt, sonra Adım 3 |
 | `ValueError: dtype='numeric' is not compatible with arrays of bytes/strings.` | X'in içine metin girmiş: `int(...)` unutuldu ya da etiket X'e karıştı | `r = int(kayit["r"])`; X'te yalnızca sayılar olmalı |
 | `ValueError: Found input variables with inconsistent numbers of samples: [200, 240]` | X ve y farklı uzunlukta | İkisini aynı döngüde doldur |
 | `NotFittedError: This KNeighborsClassifier instance is not fitted yet.` | `fit` çağrılmadan `predict` ya da `score` | Önce `model.fit(X_egitim, y_egitim)` |
 | `ValueError: Expected 2D array, got 1D array instead` | `predict`'e tek renk köşeli parantez olmadan verildi | `model.predict([renk])` |
 | `ValueError: Expected n_neighbors <= n_samples_fit, but n_neighbors = 5, n_samples_fit = 2` | Komşu sayısı eğitim örneği sayısından büyük | Daha çok örnek ver ya da `n_neighbors`'ı küçült |
+| `ValueError: x and y must have same first dimension, but have shapes (5,) and (0,)` (Adım 6 grafiği) | `dogruluklar` boş: Adım 6'nın ilk hücresi hata verdi (çoğu zaman Adım 4 atlandığı için `KNeighborsClassifier` tanımsız) | O hücrenin hatasını düzelt, beş satır yazdığını gör, sonra grafiği çiz |
 | Grafik görünmüyor | Hücrenin son satırı `plt.show()` değil ya da `matplotlib` hücresi atlandı | Adım 6'nın `import matplotlib.pyplot as plt` hücresini çalıştır, `plt.show()` ekle |
 | `'230' + '57'` → `'23057'` | Metinler toplanmaz, yan yana yapıştırılır | Önce `int(...)` ile sayıya çevir |
 | Doğruluk %100 değil | Normal: sınıfın kendisi de anlaşamadı | Tavanla kıyasla; %100 çıksaydı asıl o şüpheli olurdu |
 | Doğruluk %100 ya da ona çok yakın | Test verisi bir yoldan sızmış | Eğitimde mi ölçtün? Etiket X'e mi karıştı? |
 | Model hep aynı etiketi diyor | Bir etiket ezici çoğunlukta (veri dengesiz) | Bu bir sonuçtur: model çoğunluğu tekrarlıyor |
+| Sayaç `{}` yazıyor; Adım 8 `228` yerine `240` yazıyor | Renk adı CSV'dekinden farklı yazılmış (`kirik beyaz`, `Krem`, sonda boşluk) ya da `kayitlar` hâlâ ısınma listesi | Adı CSV'deki gibi yaz: küçük harf, Türkçe harfler (`"kırık beyaz"`); gerekirse Adım 1'i çalıştır |
+| Adım 5'te 14 değil başka sayıda yanılgı | `model` değişti: `n_neighbors` 5'e dönmedi ya da Adım 7 çalıştırılıp geri gelindi | Adım 4'ün ilk hücresini `n_neighbors=5` ile yeniden çalıştır |
 
-Son dört satır hata mesajı vermeyen durumlar. Bunlarda Python sana yardım etmez; sonucu
+Son altı satır hata mesajı vermeyen durumlar. Bunlarda Python sana yardım etmez; sonucu
 kıyas noktalarıyla (kör tahmin, tavan) karşılaştırmak senin işin.
 
 ---

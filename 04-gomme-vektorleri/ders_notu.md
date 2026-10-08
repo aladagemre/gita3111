@@ -275,8 +275,11 @@ cevap = requests.post(adres, headers=basliklar, json=govde)
 print(cevap.status_code)
 ```
 
-Çıktı `200` olmalı ("tamam"). 401 görüyorsan anahtar yanlış; Konu 2'nin Adım 5'ini
-hatırla.
+Çıktı `200` olmalı ("tamam"). Başka bir sayı görüyorsan dur; Konu 2'nin Adım 5'ini
+hatırla: **401** anahtar (`API_TOKEN`) yanlış, **404** hesap kimliği (`ACCOUNT_ID`)
+yanlış, **429** günlük kota doldu. Bu durumda yanıtta `result` boş (`None`) gelir ve
+aşağıdaki hücre `sonuc["data"]` satırında `TypeError: 'NoneType' object is not
+subscriptable` verir: boş bir şeyin içine girmeye çalışıyorsun.
 
 ### Yanıta katman katman in
 
@@ -335,6 +338,8 @@ bir fonksiyona koyuyoruz. Konu 2'deki `modele_sor`'un kardeşi:
 def vektor_al(kelime):
     govde = {"text": [kelime]}
     cevap = requests.post(adres, headers=basliklar, json=govde)
+    if cevap.status_code != 200:
+        print("Bir sorun var:", kelime, cevap.status_code)
     yanit = cevap.json()
     sonuc = yanit["result"]
     vektorler = sonuc["data"]
@@ -347,8 +352,15 @@ Satırları Adım 2 ile eşleştir:
 |---|---|
 | `govde = {"text": [kelime]}` | `govde = {"text": ["kahve"]}`; sabit kelime yerine parametre |
 | `cevap = requests.post(...)` | aynısı |
+| `if cevap.status_code != 200:` ve altındaki `print` | Adım 2'de durum kodunu gözle okuyorduk; burada fonksiyon kendisi bakar (Konu 2, Adım 5) |
 | `yanit`, `sonuc`, `vektorler` | aynısı |
 | `return vektorler[0]` | `vektor = vektorler[0]`; değişkene koymak yerine geri ver |
+
+**Neden durum kodu kontrolü?** Adım 5'te fonksiyon döngünün içinde 24 kez çalışacak.
+Bir istek başarısız olursa (ör. kota yarıda dolarsa) Python yalnızca `TypeError`
+gösterir; durum kodunu ve hangi kelimede durduğunu göstermez. Bu iki satır onu ekrana
+yazar: `Bir sorun var: öfke 429` gibi. Kontrol hatayı **engellemez**, yalnızca ne
+olduğunu söyler; hemen altından yine `TypeError` gelir.
 
 `adres` ve `basliklar` fonksiyonun içinde tanımlı değil; fonksiyon onları Adım 2'de
 tanımlanan değişkenlerden kullanır. Adım 2'yi atlarsan `NameError: name 'adres' is not
@@ -435,6 +447,12 @@ print(len(vektorler_sozlugu))
   çıkacak? Adım 6'da bakacağız.
 - Bir kelimenin vektörünü bir kez alıp sözlükte saklıyoruz. Sonraki adımlar sözlüğü
   kullanır, yeniden istek atmaz; kotanı da boşa harcamazsın.
+- **Döngü yarıda durursa:** `24` yerine `Bir sorun var: öfke 429` gibi bir satır ve
+  altında `TypeError` görürsün. Sözlük yarım kaldı: yalnızca hatadan önceki kelimeler
+  içinde. Bu hâlde Adım 6'ya geçersen `KeyError: 'kafe'` alırsın; Adım 7 de eksik
+  kelimelerle sessizce çizer. Önce sorunu çöz (401 anahtar, 429 kota, internet), sonra
+  bu hücreyi yeniden çalıştır. Hücre `vektorler_sozlugu = {}` ile başladığı için sözlük
+  sıfırdan, 24 kelimeyle yeniden kurulur.
 
 > **Yan not:** Adım 2'de `data`'nın bir liste olduğunu, çünkü tek istekte birden çok
 > metin gönderilebildiğini söylemiştik. 24 kelimeyi tek istekte de gönderebilirdik
@@ -702,14 +720,15 @@ iki noktadan sonra da **açıklaması** gelir.
 | Ne görüyorsun | Sebebi | Ne yapmalı |
 |---|---|---|
 | `NameError: name 'vektor_al' is not defined` | Bir hücreyi atladın ya da defteri yeni açtın | Hücreleri baştan, sırayla çalıştır |
-| `FileNotFoundError: ... '../anahtar.txt'` | Anahtar dosyası yok ya da defterin kopyası başka klasörde | `anahtar.txt` `gita3111` içinde, defter `04-gomme-vektorleri` içinde durmalı |
+| `FileNotFoundError: [Errno 2] No such file or directory: '../anahtar.txt'` (Adım 1); sonraki hücrelerde `NameError: name 'hesap'` ya da `'adres' is not defined` | Anahtar dosyası yok ya da defterin kopyası başka klasörde | `anahtar.txt` `gita3111` içinde, defter `04-gomme-vektorleri` içinde durmalı. Anahtarın yoksa Isınma ve alıştırma yine çalışır |
 | `ModuleNotFoundError: No module named 'sklearn'` | Defter `.venv` dışındaki bir çekirdekle çalışıyor | Sağ üstten çekirdek olarak `.venv`'i seç; yoksa `gita3111` klasöründe `uv sync` |
-| `requests.exceptions.ConnectionError` | İnternet yok | Bağlantını kontrol et; Isınma ve alıştırma internetsiz çalışır |
-| `401` durum kodu, sonra `TypeError: 'NoneType' object is not subscriptable` | Anahtar yanlış; yanıtta `result` boş geliyor | `anahtar.txt`'yi kontrol et (Konu 2, Adım 5) |
-| `429` durum kodu, aynı `TypeError` | Günlük kota doldu | Kota gece sıfırlanır; derste o gün hocanın ekranından izle |
+| `requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.cloudflare.com', ...): Max retries exceeded ...` | İnternet yok: istek sunucuya hiç ulaşmadı, durum kodu da yok | Bağlantını kontrol et; Isınma ve alıştırma internetsiz çalışır |
+| `401` (Adım 2) ya da `Bir sorun var: çay 401`, sonra `TypeError: 'NoneType' object is not subscriptable` | Anahtar yanlış; yanıtta `result` boş geliyor | `anahtar.txt`'deki `API_TOKEN`'ı kontrol et (Konu 2, Adım 5) |
+| `404`, aynı `TypeError` | `ACCOUNT_ID` yanlış: adres hiçbir hesaba gitmiyor | `anahtar.txt`'deki `ACCOUNT_ID`'yi kontrol et |
+| `Bir sorun var: öfke 429`, aynı `TypeError`; çoğunlukla Adım 5'in döngüsünde | Günlük kota doldu; sözlük yarım kaldı | Kota her gün 00:00 UTC'de (Türkiye saatiyle 03:00) sıfırlanır; o gün hocanın ekranından izle |
 | `ValueError: Expected 2D array, got 1D array instead` | `cosine_similarity` ya da `pca.transform`'a köşeli parantezsiz tek vektör verildi | `[a]`, `[vektor]`: liste içine koy |
 | `NotFittedError: This PCA instance is not fitted yet.` | `transform`'dan önce `fit` çağrılmadı | Önce `pca.fit(liste)` |
-| `KeyError: 'kafe'` | Aranan kelime sözlükte yok (yazım farkı, büyük harf, Adım 5 atlandı) | Kelimeyi listedeki gibi yaz; Adım 5'i çalıştır |
+| `KeyError: 'kafe'` | Aranan kelime sözlükte yok (yazım farkı, büyük harf, Adım 5 atlandı ya da yarıda kesildi) | Kelimeyi listedeki gibi yaz; Adım 5'i `24` yazana kadar çalıştır |
 | En yakın "3" kelimede yalnızca 2 komşu görünüyor | İlk satır hedefin kendisi (1.0) | `most_common(4)` |
 | Haritada bütün etiketler aynı kelime | `plt.text`'e değişken yerine sabit metin yazıldı | `plt.text(nokta[0], nokta[1], kelime)` |
 | "En benzer" diye en küçük sayılar seçildi | Benzerlik uzaklık değil: büyük sayı = çok benzer | Büyükten küçüğe oku |
