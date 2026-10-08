@@ -455,8 +455,8 @@ kahve ortalama tatlılar güzel yazın bahçede oturmak için en
 - `for tur in [1, 2, 3, 4, 5, 6, 7, 8]:` listede 8 sayı var, döngü 8 tur döner. `tur`
   değişkenini kullanmıyoruz; liste yalnızca kaç kez döneceğini söylüyor.
 - `kelime = sonraki_kelime(kelime)`: döngünün kalbi. Bulunan kelime, bir sonraki turda
-  **yeni hedef** oluyor. Bu satırı `yeni = sonraki_kelime(kelime)` diye yazıp `kelime`'yi
-  güncellemeyi unutursan model hep aynı kelimeye bakar ve aynı kelimeyi tekrarlar
+  **yeni hedef** oluyor. Bu satırı `yeni = sonraki_kelime(kelime)` diye yazıp cümleye `yeni`'yi
+  eklersen ama `kelime`'yi güncellemeyi unutursan model hep aynı kelimeye bakar ve aynı kelimeyi tekrarlar
   ("kahve ortalama ortalama ortalama..."). Alıştırma defterinin 5. bozuk kodu bu.
 - `cumle = cumle + " " + kelime`: cümlenin sonuna bir boşluk ve yeni kelimeyi ekler.
 
@@ -838,7 +838,8 @@ değişkenlerini kullanmıyor.
 
 Derste kendi başına çalışacağın defter: `alistirma.ipynb`. Önce aynı klasörde yeni bir
 adla kopyala, kopyada çalış; böylece `git pull` çakışmaz. Anahtar istemez; dosya da okumaz:
-ilk hücresi on kelimelik küçük bir metin kurar. İki bölümü var:
+ilk hücresi on kelimelik küçük bir metin kurar. `tiktoken` sözlüğü Adım 1'de inmediyse bu ilk
+hücre onu indirir; o an bir kez internet gerekir. İki bölümü var:
 
 - **Bozuk kodlar:** beş kısa hücre. Biri hata mesajı veriyor, öbürleri sessizce yanlış
   sonuç yazıyor; üstlerinde ne yazmaları gerektiği yazıyor.

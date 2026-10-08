@@ -882,11 +882,12 @@ adla kopyala, kopyada çalış; böylece `git pull` çakışmaz. İki bölümü 
 - **Bozuk kodlar:** beş kısa hücre. Hepsi hata mesajı vermeden **yanlış sonuç** yazıyor
   (asıl tehlikeli hatalar da bunlar); üstlerinde ne yazmaları gerektiği yazıyor.
 - **Kendi başına:** `BOSLUK` yazan yerleri doldurduğun sorular. Doldurmadığın boşluk
-  `NameError: name 'BOSLUK' is not defined` verir; o yüzden soruları sırayla çöz. Her
-  sorunun üstünde doğru çıktı yazılı.
+  `NameError: name 'BOSLUK' is not defined` verir; bu hatayı görürsen bir boşluğu
+  unutmuşsundur. Her sorunun üstünde doğru çıktı yazılı.
 
 Alıştırma defteri dosya okumaz; ilk iki hücresi altı renklik küçük bir veriyi ve onun
-`X`, `y` listelerini kendisi kurar. Önce o iki hücreyi çalıştır.
+`X`, `y` listelerini kendisi kurar. Önce o iki hücreyi çalıştır. Sonraki her hücre
+yalnızca bu ikisine dayanır; takıldığın soruyu atlayıp sonrakine geçebilirsin.
 
 ---
 
