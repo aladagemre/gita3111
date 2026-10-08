@@ -80,6 +80,14 @@ deniz = [-0.5, -0.5]
 ates = [0.9, 0.9]
 kar = [-0.7, -0.2]
 
+print(cay)
+```
+
+Çıktı: `[0.5, -0.4]`. Her kelime iki sayılık küçük bir liste. Çay: biraz sıcak (0.5), biraz sakin (−0.4).
+
+Çizerken her noktanın yanına kelimenin adını yazacağız. Bunun için adı sayılarla eşleştiren bir sözlük kuruyoruz:
+
+```python
 harita = {
     "kahve": kahve,
     "çay": cay,
@@ -88,12 +96,11 @@ harita = {
     "ateş": ates,
     "kar": kar,
 }
-print(harita["çay"])
+print(harita["ateş"])
 ```
 
-Çıktı: `[0.5, -0.4]`.
+Çıktı: `[0.9, 0.9]`.
 
-- Her kelime iki sayılık küçük bir liste. Çay: biraz sıcak (0.5), biraz sakin (−0.4).
 - `harita` bir sözlük: kelimenin **adı** anahtar, iki sayısı değer. Değişken adlarında
   Türkçe harf kullanmıyoruz (`cay`, `ates`), sözlükteki adlarda kullanıyoruz (`"çay"`,
   `"ateş"`): adlar ekranda görünecek.
@@ -145,7 +152,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 def benzerlik(a, b):
     sonuc = cosine_similarity([a], [b])
-    return sonuc[0][0]
+    satir = sonuc[0]
+    return satir[0]
 ```
 
 Bu fonksiyonun içini bilmen gerekmiyor; dersin geri kalanında yalnızca **verdiği
@@ -155,8 +163,8 @@ sayıyı** okuyacağız. Yine de satırları okuyalım:
   yüzden liste ister: `[a]`, "tek kelimelik bir liste". Konu 3'teki `predict([renk])`
   ile aynı durum.
 - Cevabı da bir tablo olarak verir (satırlar ve sütunlar). Bizim tablomuzda tek satır,
-  tek sütun var; `sonuc[0][0]` "ilk satırın ilk sayısı". Bu, derste iki köşeli parantezi
-  yan yana gördüğün tek yer; hazır aracın kalıbı olarak al.
+  tek sütun var. `satir = sonuc[0]` ilk satırı alır, `satir[0]` o satırın ilk (ve tek) sayısını.
+  Konu 2'deki `yanit["result"]` gibi: katman katman, her biri ayrı satırda.
 
 Sayının anlamı:
 
@@ -529,21 +537,34 @@ pca.fit(liste)
   defter, hücrenin son satırının sonucunu gösteriyor: "PCA hazır".
 
 ```python
+model_haritasi = {}
 for kelime in vektorler_sozlugu:
     vektor = vektorler_sozlugu[kelime]
     noktalar = pca.transform([vektor])
-    nokta = noktalar[0]
+    model_haritasi[kelime] = noktalar[0]
+
+print(model_haritasi["kafe"])
+```
+
+- `pca.transform([vektor])`: "bu vektörü 2 sayıya çevir". Konu 3'teki `predict` gibi bir
+  **liste** ister, tek vektör olsa bile: `[vektor]`. Cevabı da liste olarak verir:
+  `noktalar[0]` bizim kelimenin iki sayısı.
+- `model_haritasi` ısınmadaki `harita`nın aynısı: anahtar kelimenin adı, değer iki sayısı.
+  Adım 6'daki `skorlar` döngüsüyle de aynı biçim.
+
+Çıktı, "kafe"nin iki sayısı: ısınmadaki gibi bir nokta. Sayıların kendisi senin koşuna bağlı; önemli olan artık iki tane olmaları.
+
+```python
+for kelime in model_haritasi:
+    nokta = model_haritasi[kelime]
     plt.scatter(nokta[0], nokta[1], color="#4a6fa5")
     plt.text(nokta[0], nokta[1], kelime)
 
 plt.show()
 ```
 
-- Isınmadaki çizim döngüsünün aynısı, tek farkla: kelimenin iki sayısını sözlükten değil,
-  PCA'dan alıyoruz.
-- `pca.transform([vektor])`: "bu vektörü 2 sayıya çevir". Konu 3'teki `predict` gibi bir
-  **liste** ister, tek vektör olsa bile: `[vektor]`. Cevabı da liste olarak verir:
-  `noktalar[0]` bizim kelimenin iki sayısı.
+- Isınmadaki çizim döngüsünün aynısı; yalnızca sözlüğün adı değişti (`harita` yerine
+  `model_haritasi`).
 - `nokta[0]` yatay, `nokta[1]` dikey konum. Isınmadaki gibi.
 
 Bu haritanın eksenlerinin adı yok. Isınmada "sıcaklık" ve "enerji" diye biz koymuştuk;
@@ -615,9 +636,9 @@ for kelime in yeni_kelimeler:
 print(len(vektorler_sozlugu))
 ```
 
-Çıktı: `29` (24 + 5). Listeye kendi beş kelimeni yaz ve çalıştır. Sonra Adım 7'nin üç
+Çıktı: `29` (24 + 5). Listeye kendi beş kelimeni yaz ve çalıştır. Sonra Adım 7'nin dört
 hücresini sırayla yeniden çalıştır: liste yeniden kurulur, PCA yeniden `fit` edilir,
-harita 29 kelimeyle çizilir. Yeni kelimelerin hangi gruba yakın düştü?
+her kelime yeniden 2 sayıya çevrilir, harita 29 kelimeyle çizilir. Yeni kelimelerin hangi gruba yakın düştü?
 
 Dikkat: yeni kelimeler eklenince PCA başka bir "en iyi açı" bulur; eski 24 kelimenin
 yerleri de değişebilir. Harita, içindeki kelimelere göre kurulan bir özet.
@@ -635,7 +656,7 @@ yerleri de değişebilir. Harita, içindeki kelimelere göre kurulan bir özet.
 | 4 | İki kelimeyi kıyasladık | — |
 | 5 | 24 kelimenin vektörünü aldık | `vektorler_sozlugu` |
 | 6 | En yakın komşuları bulduk | `skorlar` |
-| 7 | 2 boyuta indirip çizdik | `pca`, harita |
+| 7 | 2 boyuta indirip çizdik | `pca`, `model_haritasi` |
 | 8 | Haritayı okuduk | — |
 | Bonus | Kendi kelimelerimizi ekledik | — |
 

@@ -277,19 +277,32 @@ da bir kelimenin **komşusu** bize nereye bakacağımızı söyledi. Bir marka i
 yorumlarında "biraz", "keşke", "ama" gibi kelimelerin ardına bakmak, şikâyetleri hızla
 bulmanın bir yolu.
 
-### "çok" kelimesinden sonra
+### Fonksiyona koy
 
-Aynı hücre, tek fark ilk satır:
+Şimdi aynısını "çok" için istiyoruz. Bütün hücreyi kopyalayıp yalnızca ilk satırı
+değiştirmek yerine satırları bir **fonksiyona** koyuyoruz (Konu 2'deki `modele_sor`'u
+hatırla). Fonksiyon bir kelime alır, ondan hemen sonra gelen kelimelerin listesini geri verir:
 
 ```python
-hedef = "çok"
-sonra_gelenler = []
-onceki = ""
-for kelime in kelimeler:
-    if onceki == hedef:
-        sonra_gelenler.append(kelime)
-    onceki = kelime
+def sonra_gelenleri_bul(hedef):
+    sonra_gelenler = []
+    onceki = ""
+    for kelime in kelimeler:
+        if onceki == hedef:
+            sonra_gelenler.append(kelime)
+        onceki = kelime
+    return sonra_gelenler
+```
 
+- İçerisi yukarıdaki hücrenin aynısı; yalnızca `hedef` artık fonksiyona dışarıdan veriliyor.
+- `return sonra_gelenler`: biriken listeyi fonksiyonu çağıran yere geri verir.
+
+Hücreyi çalıştırınca bir şey yazmaz; yalnızca fonksiyonu tanımlar.
+
+### "çok" kelimesinden sonra
+
+```python
+sonra_gelenler = sonra_gelenleri_bul("çok")
 print(sonra_gelenler)
 ```
 
@@ -315,9 +328,8 @@ print(sayac.most_common(5))
 Beş istedik, dört geldi: listede yalnızca dört farklı kelime var. `most_common` olmayanı
 uyduramaz.
 
-İki hücre neredeyse aynı; yalnızca `hedef` değişti. Aynı satırları her kelime için
-yeniden yazmak yerine Adım 4'te bunları bir fonksiyona koyacağız (Konu 2'deki
-`modele_sor`'u hatırla).
+`sonra_gelenleri_bul("biraz")` yazarsan ilk hücrenin listesini yeniden görürsün. Adım 4 ve 5'teki
+fonksiyonlar da bu fonksiyonu kullanacak.
 
 ---
 
@@ -379,33 +391,22 @@ birkaçı öne çıkar. Bizim grafiğimiz 30 yorumdan sayıldı; modelinki milya
 
 ## Adım 4 — Metin üret: hep en olasıyı seç
 
-Adım 2'nin satırlarını bir fonksiyona koyuyoruz. Fonksiyon bir kelime alır, ondan sonra
-en sık gelen kelimeyi geri verir:
+Yeni bir fonksiyon yazıyoruz. Bir kelime alır, ondan sonra **en sık** gelen kelimeyi geri verir:
 
 ```python
 def sonraki_kelime(hedef):
-    sonra_gelenler = []
-    onceki = ""
-    for kelime in kelimeler:
-        if onceki == hedef:
-            sonra_gelenler.append(kelime)
-        onceki = kelime
+    sonra_gelenler = sonra_gelenleri_bul(hedef)
     sayac = Counter(sonra_gelenler)
-    en_sik = sayac.most_common(1)
-    secilen, adet = en_sik[0]
-    return secilen
+    for kelime, adet in sayac.most_common(1):
+        return kelime
 ```
 
-- İlk altı satır Adım 2'deki hücrenin aynısı; yalnızca `hedef` artık fonksiyona dışarıdan
-  veriliyor.
-- `sayac.most_common(1)` en sık **bir** kelimeyi verir, ama yine bir **liste** olarak:
-  `[('güzel', 2)]`.
-- `en_sik[0]` o listenin ilk (ve tek) elemanı: `('güzel', 2)` ikilisi.
-- `secilen, adet = en_sik[0]` ikiliyi iki değişkene açar: `secilen` = `'güzel'`,
-  `adet` = `2`. Konu 1'deki `for kelime, adet in ...` satırının aynı fikri.
-- `return secilen` yalnızca kelimeyi geri verir. `return en_sik[0]` yazsaydık fonksiyon
-  `('güzel', 2)` ikilisini verirdi; Adım 4'ün ikinci hücresinde bu ikiliyi bir metne
-  eklemeye çalışınca hata çıkardı. Alıştırma defterinin 4. bozuk kodu bu.
+- İlk satır listeyi Adım 2'deki fonksiyondan alır; ikinci satır Isınmadaki gibi sayar.
+- `for kelime, adet in sayac.most_common(1):` Konu 1'deki döngünün aynısı, ama yalnızca
+  en sık **bir** kelime istiyoruz; döngü tek tur döner (`'güzel'`, `2`).
+- `return kelime` o turda kelimeyi geri verir. Adedi istemiyoruz. `return adet` yazsaydık
+  fonksiyon `2` sayısını verirdi; Adım 4'ün ikinci hücresinde bu sayıyı bir metne eklemeye
+  çalışınca hata çıkardı. Alıştırma defterinin 4. bozuk kodu bu.
 
 Deneyelim:
 
@@ -423,7 +424,7 @@ kelimenin ardından en olası kelimeyi bulup cümleye ekliyoruz:
 ```python
 kelime = "kahve"
 cumle = kelime
-for tur in range(8):
+for tur in [1, 2, 3, 4, 5, 6, 7, 8]:
     kelime = sonraki_kelime(kelime)
     cumle = cumle + " " + kelime
 
@@ -436,8 +437,8 @@ print(cumle)
 kahve ortalama tatlılar güzel yazın bahçede oturmak için en
 ```
 
-- `range(8)`: "8 kez tekrarla". `tur` değişkenini kullanmıyoruz; yalnızca kaç kez
-  döneceğini söylüyor.
+- `for tur in [1, 2, 3, 4, 5, 6, 7, 8]:` listede 8 sayı var, döngü 8 tur döner. `tur`
+  değişkenini kullanmıyoruz; liste yalnızca kaç kez döneceğini söylüyor.
 - `kelime = sonraki_kelime(kelime)`: döngünün kalbi. Bulunan kelime, bir sonraki turda
   **yeni hedef** oluyor. Bu satırı `yeni = sonraki_kelime(kelime)` diye yazıp `kelime`'yi
   güncellemeyi unutursan model hep aynı kelimeye bakar ve aynı kelimeyi tekrarlar
@@ -460,14 +461,16 @@ Ama yaptığı iş temelde aynıdır: **sıradaki parçayı seç, ekle, tekrarla
 **Ardından hiçbir şey gelmeyen kelime.** Başlangıç kelimesini değiştirirsen bir hata
 görebilirsin. Dosyanın son kelimesi "kahveli" ("Kütüphane gibi ama kahveli."); ondan sonra
 hiçbir kelime yok. `sonraki_kelime("kahveli")` boş bir listeyle `Counter` kurar,
-`most_common(1)` boş liste verir ve `en_sik[0]` şu hatayı verir:
+`most_common(1)` boş liste verir, döngü hiç dönmez ve fonksiyon `return`'e hiç varmaz.
+Böyle bir fonksiyon `None` ("hiçbir şey") verir. Üretim hücresi `None`'ı cümleye eklemeye
+çalışınca şu hata çıkar:
 
 ```text
-IndexError: list index out of range
+TypeError: can only concatenate str (not "NoneType") to str
 ```
 
-Okuması: "listenin bu sırasında eleman yok." "kahve" ile başladığımızda bu olmuyor; açgözlü
-seçim "kahveli"ye hiç varmıyor.
+Okuması: "metne yalnızca metin eklenebilir, `None` eklenemez." "kahve" ile başladığımızda bu
+olmuyor; açgözlü seçim "kahveli"ye hiç varmıyor.
 
 ### Model neden uydurur?
 
@@ -505,20 +508,14 @@ Adım 3'teki olasılığın aynısı. Biz ayrıca bir olasılık vermedik: liste
 listede çok yer kapladığı için zarda da sık çıkıyor. (Bilgisayarda bu hücreyi 10 000 kez
 çalıştırdık: "güzel" yaklaşık 4 000 kez, öbür üçü yaklaşık 2 000'er kez çıktı.)
 
-Adım 4'teki fonksiyonun aynısı, yalnızca sondaki satırlar farklı:
+Adım 4'teki fonksiyon gibi listeyi Adım 2'deki fonksiyondan alır:
 
 ```python
 def sonraki_kelime_zarla(hedef):
-    sonra_gelenler = []
-    onceki = ""
-    for kelime in kelimeler:
-        if onceki == hedef:
-            sonra_gelenler.append(kelime)
-        onceki = kelime
+    sonra_gelenler = sonra_gelenleri_bul(hedef)
     if len(sonra_gelenler) == 0:
         return kelimeler[0]
-    secilen = random.choice(sonra_gelenler)
-    return secilen
+    return random.choice(sonra_gelenler)
 ```
 
 - `Counter` ve `most_common` yerine `random.choice`: en sık kelimeyi değil, olasılığına göre
@@ -534,7 +531,7 @@ Aynı üretim hücresi, zarla:
 ```python
 kelime = "kahve"
 cumle = kelime
-for tur in range(8):
+for tur in [1, 2, 3, 4, 5, 6, 7, 8]:
     kelime = sonraki_kelime_zarla(kelime)
     cumle = cumle + " " + kelime
 
@@ -763,7 +760,7 @@ bölünüyor?
 **2. Başka bir kelimeden başla.** Adım 4'teki üretim hücresinde `"kahve"` yerine `"sessiz"`
 ya da `"priz"` yaz, yeniden çalıştır. Örneğin "sessiz" ile açgözlü seçim şunu verir:
 `sessiz ve sakin saatlerce oturabiliyorsunuz sınav haftası her masada`. Dikkat: dosyanın son
-kelimesi olan "kahveli" ile başlarsan `IndexError` alırsın; ondan sonra hiç kelime yok.
+kelimesi olan "kahveli" ile başlarsan `TypeError` alırsın; ondan sonra hiç kelime yok (Adım 4'ün sonu).
 
 ---
 
@@ -796,7 +793,7 @@ bir programın kullanacağı veri olarak işleyeceğiz ve bu fikir oraya daha iy
 |---|---|---|
 | Isınma | Cümle tamamlama cevaplarını saydık | en sık cevap: "kafesi" |
 | 1 | Metni belirteçlere ayırdık; Türkçe ile İngilizceyi kıyasladık | `kodlayici`, `belirtecler` |
-| 2 | Bir kelimeden sonra gelenleri topladık, saydık | `kelimeler`, `sonra_gelenler`, `sayac` |
+| 2 | Bir kelimeden sonra gelenleri topladık, saydık | `kelimeler`, `sonra_gelenleri_bul()`, `sonra_gelenler`, `sayac` |
 | 3 | Sayıları olasılığa çevirip çizdik | `etiketler`, `olasiliklar`, grafik |
 | 4 | Hep en olasıyı seçerek metin ürettik | `sonraki_kelime()` |
 | 5 | Zarla seçerek metin ürettik | `sonraki_kelime_zarla()` |
@@ -835,8 +832,8 @@ Python bir hata verdiğinde en alttaki satır en önemlisidir: önce hatanın **
 | `FileNotFoundError: ... 'veri/kafe-yorumlari.txt'` | Defterin kopyası konu klasörünün dışında | Kopya `05-dil-modelleri` klasöründe durmalı |
 | `sonra_gelenler` boş: `[]` | `onceki = kelime` satırı `if`'in içine kaymış ya da hedef kelime yazım hatalı (`"Biraz"`) | Satırı `for`'un hizasına al; hedefi küçük harfle yaz |
 | Olasılıkların toplamı 1'i geçiyor | `len(sayac)` ile bölündü (farklı kelime sayısı) | `toplam = len(sonra_gelenler)` |
-| `TypeError: can only concatenate str (not "tuple") to str` | Fonksiyon `('güzel', 2)` ikilisini döndürüyor | `secilen, adet = en_sik[0]`, `return secilen` |
-| `IndexError: list index out of range` | `sonraki_kelime` ardından hiç kelime gelmeyen bir kelimeyle çağrıldı ("kahveli" ya da metinde olmayan bir kelime) | Başka bir başlangıç kelimesi seç |
+| `TypeError: can only concatenate str (not "int") to str` | `sonraki_kelime` kelimeyi değil adedi döndürüyor (`return adet`) | `return kelime` |
+| `TypeError: can only concatenate str (not "NoneType") to str` | `sonraki_kelime` ardından hiç kelime gelmeyen bir kelimeyle çağrıldı ("kahveli" ya da metinde olmayan bir kelime) | Başka bir başlangıç kelimesi seç |
 | `IndexError: Cannot choose from an empty sequence` | `sonraki_kelime_zarla` içindeki `if len(sonra_gelenler) == 0:` satırları yazılmamış; zar "kahveli"ye geldi | İki satırı ekle (Adım 5) |
 | Üretilen cümle aynı kelimeyi tekrarlıyor | Döngüde `kelime` güncellenmiyor | `kelime = sonraki_kelime(kelime)` |
 | `FileNotFoundError: ... '../anahtar.txt'` | Anahtar dosyası yok ya da yanlış yerde | Dosya `gita3111` klasöründe durmalı (Konu 2) |
@@ -904,7 +901,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 | **Sıcaklık (temperature)** | Seçimin ne kadar "zar" olacağını ayarlayan sayı; düşükse en olasıya, yüksekse rastlantıya yakın |
 | **Uydurma (hallucination)** | Modelin doğru olmayan bir bilgiyi akıcı ve kendinden emin biçimde yazması; model doğruyu değil olası metni üretir |
 | **`random.choice`** | Bir listeden rastgele bir eleman seçen komut |
-| **`range(n)`** | "n kez tekrarla"; `for tur in range(8):` döngüyü 8 kez döndürür |
+| **`return`** | Fonksiyonun bulduğunu çağıran yere geri vermesi; `return`'e varmayan fonksiyon `None` ("hiçbir şey") verir |
 
 ## Ödev
 

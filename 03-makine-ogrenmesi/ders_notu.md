@@ -618,15 +618,17 @@ Modeli eğitim verisinin önce ilk 18 örneğiyle, sonra 45, 90, 135 ve 180 örn
 adetler = [18, 45, 90, 135, 180]
 dogruluklar = []
 for adet in adetler:
+    X_ilk = X_egitim[:adet]
+    y_ilk = y_egitim[:adet]
     yeni_model = KNeighborsClassifier(n_neighbors=5)
-    yeni_model.fit(X_egitim[:adet], y_egitim[:adet])
+    yeni_model.fit(X_ilk, y_ilk)
     dogruluk = yeni_model.score(X_test, y_test)
     print(adet, round(dogruluk, 2))
     dogruluklar.append(dogruluk)
 ```
 
-- `X_egitim[:adet]` Konu 1'in dilimlemesi: baştan `adet` tane örnek. `adet` 18 iken
-  ilk 18 renk, 90 iken ilk 90 renk.
+- `X_ilk = X_egitim[:adet]` Konu 1'in dilimlemesi: baştan `adet` tane örnek. `adet` 18 iken
+  ilk 18 renk, 90 iken ilk 90 renk. `y_ilk` aynı satırların etiketleri.
 - Döngü her tur yeni bir model kurup eğitiyor, ölçüyor, sonucu yazdırıp
   `dogruluklar` listesine ekliyor. Bu modellere `yeni_model` adını verdik ki Adım 4'teki
   `model` değişmesin. Son turda (180 örnek) `yeni_model` Adım 4'teki modelin aynısı.

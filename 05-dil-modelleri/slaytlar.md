@@ -194,17 +194,30 @@ Bir kelimenin ne anlattığını, ardından gelenler söyler.
 
 -----
 
+## Adım 2 — Fonksiyona koy
+
+Aynı satırları "çok" için yeniden yazmak yerine:
+
+```python
+def sonra_gelenleri_bul(hedef):
+    sonra_gelenler = []
+    onceki = ""
+    for kelime in kelimeler:
+        if onceki == hedef:
+            sonra_gelenler.append(kelime)
+        onceki = kelime
+    return sonra_gelenler
+```
+
+- İçerisi yukarıdaki hücrenin aynısı
+- `return`: listeyi geri ver (Konu 2'deki `modele_sor` gibi)
+
+-----
+
 ## Adım 2 — "çok"tan sonra
 
 ```python
-hedef = "çok"
-sonra_gelenler = []
-onceki = ""
-for kelime in kelimeler:
-    if onceki == hedef:
-        sonra_gelenler.append(kelime)
-    onceki = kelime
-
+sonra_gelenler = sonra_gelenleri_bul("çok")
 print(sonra_gelenler)
 ```
 
@@ -259,27 +272,22 @@ Farkı: 30 yorumdan değil, milyarlarca metinden öğrenmiş olması.
 
 -----
 
-## Adım 4 — Fonksiyona koy
+## Adım 4 — En olası kelime
 
 ```python
 def sonraki_kelime(hedef):
-    sonra_gelenler = []
-    onceki = ""
-    for kelime in kelimeler:
-        if onceki == hedef:
-            sonra_gelenler.append(kelime)
-        onceki = kelime
+    sonra_gelenler = sonra_gelenleri_bul(hedef)
     sayac = Counter(sonra_gelenler)
-    en_sik = sayac.most_common(1)
-    secilen, adet = en_sik[0]
-    return secilen
+    for kelime, adet in sayac.most_common(1):
+        return kelime
 ```
 
 ```python
 print(sonraki_kelime("çok"))
 ```
 
-İlk altı satır Adım 2'nin aynısı. `en_sik[0]` → `('güzel', 2)` → `secilen` = `'güzel'`
+- Listeyi Adım 2'deki fonksiyondan al, `Counter` ile say
+- `most_common(1)`: yalnızca en sık bir kelime → döngü tek tur döner, `'güzel'`i geri verir
 
 -----
 
@@ -288,7 +296,7 @@ print(sonraki_kelime("çok"))
 ```python
 kelime = "kahve"
 cumle = kelime
-for tur in range(8):
+for tur in [1, 2, 3, 4, 5, 6, 7, 8]:
     kelime = sonraki_kelime(kelime)
     cumle = cumle + " " + kelime
 
@@ -322,22 +330,16 @@ print(random.choice(sonra_gelenler))
 
 ```python
 def sonraki_kelime_zarla(hedef):
-    sonra_gelenler = []
-    onceki = ""
-    for kelime in kelimeler:
-        if onceki == hedef:
-            sonra_gelenler.append(kelime)
-        onceki = kelime
+    sonra_gelenler = sonra_gelenleri_bul(hedef)
     if len(sonra_gelenler) == 0:
         return kelimeler[0]
-    secilen = random.choice(sonra_gelenler)
-    return secilen
+    return random.choice(sonra_gelenler)
 ```
 
 ```python
 kelime = "kahve"
 cumle = kelime
-for tur in range(8):
+for tur in [1, 2, 3, 4, 5, 6, 7, 8]:
     kelime = sonraki_kelime_zarla(kelime)
     cumle = cumle + " " + kelime
 
@@ -514,7 +516,7 @@ for belirtec in belirtecler:
 |---|---|
 | `ModuleNotFoundError: No module named 'tiktoken'` | Çekirdek `.venv` değil ya da `uv sync` yapılmadı |
 | `TypeError: 'int' object is not an instance of 'Sequence'` | `decode`'a liste değil tek sayı verildi: `[belirtec]` |
-| `IndexError: list index out of range` | Ardından hiç kelime gelmeyen bir kelimeyle `sonraki_kelime` çağrıldı |
+| `TypeError: can only concatenate str (not "NoneType") to str` | Ardından hiç kelime gelmeyen bir kelimeyle `sonraki_kelime` çağrıldı |
 | `FileNotFoundError: ... '../anahtar.txt'` | Adım 6'dan sonrası anahtar ister |
 | `TypeError: 'NoneType' object is not subscriptable` | İstek başarısız; durum koduna bak (Konu 2) |
 

@@ -67,6 +67,18 @@ deniz = [-0.5, -0.5]
 ates = [0.9, 0.9]
 kar = [-0.7, -0.2]
 
+print(cay)
+```
+
+> [0.5, -0.4]
+
+-----
+
+## Adları olan bir sözlük
+
+Anahtar: kelimenin adı · değer: iki sayısı
+
+```python
 harita = {
     "kahve": kahve,
     "çay": cay,
@@ -75,10 +87,10 @@ harita = {
     "ateş": ates,
     "kar": kar,
 }
-print(harita["çay"])
+print(harita["ateş"])
 ```
 
-> [0.5, -0.4]
+> [0.9, 0.9]
 
 -----
 
@@ -124,7 +136,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 def benzerlik(a, b):
     sonuc = cosine_similarity([a], [b])
-    return sonuc[0][0]
+    satir = sonuc[0]
+    return satir[0]
 ```
 
 İçini bilmen gerekmiyor. Verdiği sayıyı okuman yeter:
@@ -384,13 +397,25 @@ pca.fit(liste)
 
 -----
 
-## Haritayı çiz
+## Her kelime 2 sayı
 
 ```python
+model_haritasi = {}
 for kelime in vektorler_sozlugu:
     vektor = vektorler_sozlugu[kelime]
     noktalar = pca.transform([vektor])
-    nokta = noktalar[0]
+    model_haritasi[kelime] = noktalar[0]
+
+print(model_haritasi["kafe"])
+```
+
+-----
+
+## Haritayı çiz
+
+```python
+for kelime in model_haritasi:
+    nokta = model_haritasi[kelime]
     plt.scatter(nokta[0], nokta[1], color="#4a6fa5")
     plt.text(nokta[0], nokta[1], kelime)
 
@@ -455,7 +480,7 @@ for kelime in yeni_kelimeler:
 print(len(vektorler_sozlugu))
 ```
 
-Kendi kelimelerini yaz. Sonra Adım 7'nin üç hücresini sırayla yeniden çalıştır.
+Kendi kelimelerini yaz. Sonra Adım 7'nin dört hücresini sırayla yeniden çalıştır.
 
 -----
 
