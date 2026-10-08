@@ -57,7 +57,7 @@ Bir kelimeyi hangi sayılarla temsil edersen, "benzer" kelimesinin anlamını da
 İki eksen:
 
 - **sıcaklık:** soğuk −1 … sıcak +1
-- **enerji:** sakin −1 … canlı +1
+- **enerji:** sakin −1 … canlı +1 (Konu 3'teki sakin / enerjik gibi)
 
 ```python
 kahve = [0.6, 0.4]
@@ -298,7 +298,7 @@ print(benzerlik(kahve, tipografi))
 
 ```python
 kelimeler = [
-    "kırmızı", "mavi", "yeşil", "sarı", "siyah", "beyaz",
+    "kırmızı", "mavi", "yeşil", "bej", "siyah", "beyaz",
     "huzur", "öfke", "neşe", "hüzün", "heyecan", "sakinlik",
     "tipografi", "logo", "afiş", "palet", "kontrast", "serif",
     "kafe", "kütüphane", "park", "ofis", "atölye", "sahne",
@@ -313,6 +313,8 @@ for kelime in kelimeler:
 
 print(len(vektorler_sozlugu))
 ```
+
+**bej**: Konu 3'te kafe paleti için modele sorduğumuz renk.
 
 24 istek: hücre biraz sürer; solunda `[*]` durur, bitince `24` yazar.
 
@@ -374,8 +376,9 @@ Konu 1'de müşteriler bu kafeyi **sessiz bir çalışma yeri** diye anlatmışt
 
 - Model "kafe"yi neye yakın buluyor: kütüphaneye mi, parka mı, sahneye mi?
 - Müşterilerin gözündeki kafe ile modelin gözündeki kafe aynı mı?
+- Aynı değilse: slogan "kafe" kelimesine yaslanamaz
 
-`hedef = "kafe"` yerine `"huzur"` ya da `"afiş"` yaz, iki hücreyi yeniden çalıştır.
+`hedef = "kafe"` yerine `"huzur"` yaz: kafenin vermek istediği his hangi renge yakın?
 
 -----
 
@@ -449,6 +452,7 @@ Bir şehir haritası gibi: yolu bulmana yeter, ama binaların yüksekliğini gö
 
 - Dört grup ayrı kümeler oluşturdu mu?
 - Kendi grubundan kaçan bir kelime var mı? Nereye gitmiş?
+- Hangi renk duyguların kümesine en yakın? Bej nereye düştü?
 - **huzur** ile **öfke** zıt anlamlı. Haritada uzak mı düştüler?
 
 ```python
@@ -473,6 +477,8 @@ Bu yüzden zıt anlamlı iki kelime de yakın düşebilir.
 
 Modelin "benzer"i = **benzer yerlerde geçen**.
 
+Mood-board için "huzur"a yakın kelimeler istersen, araya öfke de girebilir.
+
 -----
 
 ## Bonus — Kendi 5 kelimen
@@ -486,6 +492,8 @@ print(len(vektorler_sozlugu))
 ```
 
 Kendi kelimelerini yaz. Sonra Adım 7'nin dört hücresini sırayla yeniden çalıştır.
+
+Örnek listede: "sessizlik" kafeye mi düştü, kütüphaneye mi?
 
 -----
 
@@ -524,6 +532,7 @@ Kendi seçtiğin **20 kelimeyle** bir harita çıkar.
 1. Defteri kopyala, Adım 5'teki listeye kendi 20 kelimeni yaz
 2. Adım 7'ye kadar çalıştır, haritayı kaydet
 3. **Tek cümle:** beklemediğin hangi iki kelime yan yana düştü?
+4. **Tek cümle daha:** bu haritayla bir mood-board'a başlasan neyi ekler, neyi çıkarırdın?
 
 Ayrıntılar: `odevler/odev4.md`. Puan yok; Konu 5'in başında sıradaki arkadaşlar gösterecek.
 

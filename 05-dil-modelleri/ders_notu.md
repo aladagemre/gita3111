@@ -269,13 +269,19 @@ Son satırın **girintisi** önemli. `if`'in içine kayarsa yalnızca eşleşme 
 çalışır; `onceki` hiç "biraz" olamaz ve liste boş kalır. Hata mesajı çıkmaz, sadece
 `[]` görürsün. Alıştırma defterinin 2. bozuk kodu bu.
 
-**Tasarım açısından okuması:** dört kelimenin dördü de şikâyet: biraz pahalı, biraz
-karanlık, biraz kısa (çalışma saatleri), biraz fazla (kalabalık). Müşteriler kafeyi
-överken "biraz" demiyor; eleştirirken **yumuşatıyor**. Yani "biraz" kelimesi bu yorumlarda
-bir şikâyet işareti. Konu 1'de ışık sorununu, yorumları bağlamda okuyarak bulmuştuk; burada
-da bir kelimenin **komşusu** bize nereye bakacağımızı söyledi. Bir marka için müşteri
-yorumlarında "biraz", "keşke", "ama" gibi kelimelerin ardına bakmak, şikâyetleri hızla
-bulmanın bir yolu.
+**Tasarım açısından okuması:** dört kelimenin dördü de şikâyet. Dosyada hangi yorumlardan
+geldiklerine bak: kahve **biraz pahalı**, içerisi **biraz karanlık**, menü **biraz kısa**,
+arkadaşlarla sohbet için **biraz fazla** sessiz. Müşteriler kafeyi överken "biraz" demiyor;
+eleştirirken **yumuşatıyor**. Yani "biraz" kelimesi bu yorumlarda bir şikâyet işareti.
+
+Kafeyi yeniden tasarlayacak biri için bu dört satır bir iş listesi. Hangisi tasarımcının işi?
+Karanlık iç mekân bir aydınlatma sorunu (Konu 1'de "ışık" yorumlarında da bulmuştuk); kısa
+menü belki bir menü tasarımı sorunu; fiyat ise tasarımcının değil işletmenin kararı.
+"biraz fazla sessiz" en ilginci: çalışmaya gelen için kafenin en büyük artısı, sohbete
+gelen için eksisi. Aynı özellik, iki farklı kullanıcı.
+
+Bir marka için müşteri yorumlarında "biraz", "keşke", "ama" gibi kelimelerin ardına bakmak,
+şikâyetleri hızla bulmanın bir yolu.
 
 ### Fonksiyona koy
 
@@ -327,6 +333,12 @@ print(sayac.most_common(5))
 
 Beş istedik, dört geldi: listede yalnızca dört farklı kelime var. `most_common` olmayanı
 uyduramaz.
+
+**Tasarım açısından okuması:** "biraz" şikâyetleri getirmişti; "çok" çoğunlukla övgü getiriyor
+(tek istisna: hafta sonu "çok kalabalık"). Dosyada "çok" geçen beş yoruma bak: üçü **bahçeyle**
+ilgili (bahçesi çok güzel, bahçe akşamları çok keyifli, bahçedeki kedi çok tatlı). İki kelime
+birlikte bir tasarım özeti veriyor: "biraz" neyi **düzelteceğini**, "çok" neyi **koruyacağını**
+söylüyor. Yeniden tasarımda iç mekânın ışığı düzelir, bahçe korunur.
 
 `sonra_gelenleri_bul("biraz")` yazarsan ilk hücrenin listesini yeniden görürsün. Adım 4 ve 5'teki
 fonksiyonlar da bu fonksiyonu kullanacak.
@@ -455,6 +467,10 @@ kelimeler birbirine "uyuyor", çünkü her ikili gerçekten bir yorumda yan yana
 
 Hücreyi bir kez daha çalıştır: **aynı cümle** çıkar. Hep en olasıyı seçen bir model her
 seferinde aynı şeyi yazar. Bu kurala "açgözlü seçim" denir.
+
+Bu cümle bir müşteri yorumuna benziyor; ama hiçbir müşteri bunu yazmadı. Bir kafenin
+sitesinde "müşteri yorumu" diye dursa fark eder miydin? Model ürettiği metnin gerçek
+olup olmadığını bilmez; bu metni kimin adına yayımladığın senin sorumluluğun.
 
 **Gerçek model bundan ne kadar farklı?** Gerçek model bir önceki kelimeye değil, **önceki
 bütün metne** (bağlam penceresinin izin verdiği kadarına) bakar ve olasılıkları 30 yorumdan
@@ -661,6 +677,8 @@ Bu adımın çıktılarını notta vermiyoruz: model her seferinde başka bir c�
 - 0.1'deki slogan "bir kafe sloganı denince akla ilk gelen" türden mi?
 - 1.5'teki slogan dilbilgisi olarak düzgün mü? Türkçe mi kaldı?
 - Hangisini bir tabelaya yazardın?
+- 0.1'deki slogan başka bir kafenin tabelasında da durabilir mi? Adım 4'ü hatırla: hep en
+  olasıyı seçmek, hep en sık söyleneni yazmak demek.
 
 Şimdi aynı sıcaklıkta iki kez soralım. Önce düşük:
 
@@ -740,6 +758,8 @@ Klasörde `pano.txt`'yi aç, üç bölümü yan yana oku ve tasarımcı gözüyl
 - 1.5'teki sloganlardan **kullanılabilecek** olan var mı? Kaç tanesi? Kullanılamayanların
   sorunu ne: anlamsız mı, dilbilgisi bozuk mu, konudan mı kopmuş?
 - Hangi sıcaklığın üç sloganı birbirinden daha farklı? Hangisininki aynı kalıbın tekrarı gibi?
+- Önce fikir toplayıp sonra son metni yazdıracak olsan hangi sırayla hangi sıcaklıkları
+  kullanırdın?
 
 Sıcaklık, işin türüne göre seçilen bir **araç ayarı**; "en iyi sıcaklık" diye bir şey yok.
 Konu 2'de "soruyu yazmak bir tasarım kararı" demiştik; sıcaklığı seçmek de öyle.
@@ -759,13 +779,18 @@ for belirtec in belirtecler:
 
 Çıktı: `7`, sonra `Ah`, `met`, ` Em`, `re`, ` Al`, `ada`, `ğ`. Üç kelime, yedi parça; `ğ`
 kendi başına bir parça. Tırnak içine kendi adını ve soyadını yaz, yeniden çalıştır.
-Yanındakinin adı kaç parça? Türkçe harfler (ç, ğ, ı, ö, ş, ü) içeren adlar daha mı çok
+Yanındakinin adı kaç parça? Kafe için aklına gelen bir ad kaç parça? Türkçe harfler (ç, ğ, ı, ö, ş, ü) içeren adlar daha mı çok
 bölünüyor?
 
 **2. Başka bir kelimeden başla.** Adım 4'teki üretim hücresinde `"kahve"` yerine `"sessiz"`
 ya da `"priz"` yaz, yeniden çalıştır. Örneğin "sessiz" ile açgözlü seçim şunu verir:
 `sessiz ve sakin saatlerce oturabiliyorsunuz sınav haftası her masada`. Dikkat: dosyanın son
 kelimesi olan "kahveli" ile başlarsan `IndexError` alırsın; ondan sonra hiç kelime yok (Adım 4'ün sonu).
+
+**3. Bulguyu soruya koy** (anahtar ister). Adım 6'daki `soru` satırına Adım 2'nin bir
+bulgusunu ekle, örneğin *"bahçesi olan sessiz bir çalışma kafesi"*, ve Adım 6'nın hücrelerini
+yeniden çalıştır. Slogan bahçeden söz ediyor mu? Konu 2'nin Adım 8'ini hatırla: model senin
+bulgunu bilmez; sen soruya yazmazsan slogana girmez.
 
 ---
 
@@ -804,7 +829,7 @@ bir programın kullanacağı veri olarak işleyeceğiz ve bu fikir oraya daha iy
 | 5 | Zarla seçerek metin ürettik | `sonraki_kelime_zarla()` |
 | 6 | Gerçek modeli üç sıcaklıkta denedik | `modele_sor(soru, sicaklik)` |
 | 7 | Slogan panosu | `pano.txt` |
-| Bonus | Kendi adını belirteçlere ayırdık; başka kelimeden başladık | — |
+| Bonus | Kendi adını belirteçlere ayırdık; başka kelimeden başladık; bulguyu soruya koyduk | — |
 
 Hepsi tek defterde: `ders.ipynb`. Hücreleri her zaman yukarıdan aşağı çalıştır; defteri
 yeni açtıysan (ya da çekirdeği yeniden başlattıysan) en baştan başla. Adım 6'ya doğrudan

@@ -188,7 +188,9 @@ print(sonra_gelenler)
 
 - Müşteriler kafeyi överken "biraz" demiyor
 - Şikâyet edecekleri zaman yumuşatıyorlar: **biraz** pahalı, **biraz** karanlık
-- Konu 1'de ışık sorununu bağlamda okuyarak bulmuştuk; burada da bir kelimenin **komşusu** bize yol gösterdi
+- Yorumlara bak: kahve biraz pahalı, içerisi biraz karanlık, menü biraz kısa, sohbet için biraz fazla sessiz
+- Yeniden tasarım için iş listesi: hangisi tasarımcının işi (ışık, menü), hangisi değil (fiyat)?
+- "biraz fazla sessiz": çalışana artı, sohbete gelene eksi. Aynı özellik, iki kullanıcı
 
 Bir kelimenin ne anlattığını, ardından gelenler söyler.
 
@@ -227,6 +229,9 @@ print(sayac.most_common(5))
 ```
 
 Çıktı: `[('güzel', 2), ('kalabalık', 1), ('keyifli', 1), ('tatlı', 1)]`
+
+"çok" çoğunlukla övgü; beş yorumdan üçü **bahçe**.
+"biraz" neyi **düzelteceğini**, "çok" neyi **koruyacağını** söylüyor.
 
 -----
 
@@ -310,6 +315,7 @@ print(cumle)
 - Her turda: son kelimeye bak, ardından en olası kelimeyi ekle
 - Hücreyi tekrar çalıştır: **aynı cümle**
 - Dilbilgisi yerinde gibi, anlam yok. Model **anlamaz, sayar**
+- Bir yorum gibi duruyor ama hiçbir müşteri yazmadı: kafe sitesinde "yorum" diye dursa fark eder miydin?
 
 -----
 
@@ -466,6 +472,7 @@ print(ikinci)
 
 - 0.1'deki iki cevap aynı mı, neredeyse aynı mı?
 - 1.5'teki iki cevap ne kadar farklı?
+- 0.1'deki slogan başka bir kafenin tabelasında da durabilir mi?
 - Hangisi Adım 4'e, hangisi Adım 5'e benziyor?
 
 -----
@@ -500,6 +507,7 @@ print("pano.txt yazıldı")
 - **Fikir fırtınası, ilk eskiz** için hangisi?
 - 1.5'teki sloganlardan **kullanılabilecek** olan var mı? Kaç tanesi?
 - Hangi sıcaklığın üç sloganı birbirinden daha farklı?
+- Önce fikir toplayıp sonra son metni yazdıracaksan: hangi sırayla hangi sıcaklık?
 
 Sıcaklık bir **araç ayarı**: işin türüne göre seçilir, "en iyisi" yok.
 
@@ -519,6 +527,8 @@ for belirtec in belirtecler:
 `Ah` `met` ` Em` `re` ` Al` `ada` `ğ` — 3 kelime, 7 parça. Seninki kaç?
 
 **2.** Adım 4'te `"kahve"` yerine `"sessiz"` ya da `"priz"` yaz.
+
+**3.** Adım 6'daki `soru`ya bir bulgu ekle: *"bahçesi olan sessiz bir çalışma kafesi"*. Slogan bahçeden söz ediyor mu?
 
 -----
 

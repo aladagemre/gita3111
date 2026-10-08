@@ -838,14 +838,19 @@ Konu 4'ün sorusu tam burada başlıyor: **bir şeyi hangi sayılarla temsil ede
 Defterin son hücresi:
 
 ```python
-benim_rengim = [255, 0, 0]
+benim_rengim = [106, 13, 173]
 tahminler = model.predict([benim_rengim])
 print(tahminler[0])
 ```
 
-Renk seçiciden bir renk seç, RGB sayılarını `benim_rengim`'e yaz ve çalıştır. `model`,
-Adım 7'de tüm veriyle eğitilen model. Modelle aynı fikirde misin? Ayrıldığınız bir renk
-varsa not al; Konu 4'ün başında sınıfça bakacağız.
+`model`, Adım 7'de tüm veriyle eğitilen model. Hücrede canlı bir mor var (`#6A0DAD`).
+Yedek veride model ona "sakin" diyor: en yakın bildiği renk puslu mor. Bir tasarımcı bu
+doygun mora "sakin" demekte zorlanır; ama model canlılığı ayrı bir şey olarak görmüyor,
+yalnızca 20 renkten hangisine yakın olduğunu biliyor (Adım 7'deki bej gibi).
+
+Sonra renk seçiciden kendi rengini seç, RGB sayılarını `benim_rengim`'e yaz ve çalıştır.
+Modelle aynı fikirde misin? Ayrıldığınız bir renk varsa not al; Konu 4'ün başında sınıfça
+bakacağız.
 
 ---
 

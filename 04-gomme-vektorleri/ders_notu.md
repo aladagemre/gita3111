@@ -67,7 +67,8 @@ Kelimeler için ne yapmalı? Harf harf sayıya çevirsek ("k" = 11, "a" = 1 ...)
 Bir mood-board hazırlarken kartları bir duvara dizdiğini düşün. Duvarın iki ekseni var:
 
 - **sıcaklık:** soldan sağa, soğuk (−1) … sıcak (+1)
-- **enerji:** aşağıdan yukarıya, sakin (−1) … canlı (+1)
+- **enerji:** aşağıdan yukarıya, sakin (−1) … canlı (+1); Konu 3'te renklere verdiğimiz
+  "sakin" / "enerjik" etiketlerinin sayıya dönmüş hâli
 
 Altı kelimeyi bu duvara yerleştirip her birine iki sayı verdik. İlk sayı sıcaklık,
 ikincisi enerji:
@@ -398,7 +399,7 @@ altışar kelime:
 
 ```python
 kelimeler = [
-    "kırmızı", "mavi", "yeşil", "sarı", "siyah", "beyaz",
+    "kırmızı", "mavi", "yeşil", "bej", "siyah", "beyaz",
     "huzur", "öfke", "neşe", "hüzün", "heyecan", "sakinlik",
     "tipografi", "logo", "afiş", "palet", "kontrast", "serif",
     "kafe", "kütüphane", "park", "ofis", "atölye", "sahne",
@@ -409,6 +410,12 @@ print(len(kelimeler))
 Çıktı: `24`. Her satıra bir grubu yazdık ki listeyi okumak kolay olsun: renkler,
 duygular, tasarım terimleri, mekânlar. Python için satırların bir anlamı yok; köşeli
 parantez kapanana kadar hepsi tek liste.
+
+Renklerde **bej** bilerek var. Konu 3'te kafe paleti için beji sormuştuk; sınıfın
+verisiyle eğitilen model onu "enerjik" demişti, ama zayıf bir işaretle (en yakın bildiği
+renk olan krem, sınıfın en çok tartıştığı renkti). Şimdi aynı rengin **adına** dil
+modelinin gözünden bakacağız: Adım 6'da ve Adım 8'de bejin hangi duygulara yakın
+düştüğünü kendi çıktında gör.
 
 ```python
 vektorler_sozlugu = {}
@@ -499,8 +506,12 @@ değil, bir bulgu: markanın anlatmak istediği kafe, kelimenin herkes için ça
 kafeden farklı. Konu 2'de soruya bağlam yazmanın cevabı değiştirdiğini görmüştük;
 burada aynı şeyi tersinden görüyoruz: bağlamsız bir kelime, ortalama anlamını taşır.
 
-**Kendin dene:** `hedef = "kafe"` yerine `"huzur"` ya da `"afiş"` yaz, iki hücreyi
-yeniden çalıştır. Huzura en yakın kelimeler hep duygular mı?
+**Kendin dene:** `hedef = "kafe"` yerine `"huzur"` yaz, iki hücreyi yeniden çalıştır.
+Huzur, kafenin müşterilerine vermek istediği his. Huzura en yakın kelimeler hep duygular
+mı? Altı renkten hangisi en üstte: bej mi, mavi mi, beyaz mı? Bu bir palet kararı değil
+(model renk görmedi, yalnızca renk **adlarının** hangi metinlerde geçtiğini biliyor), ama
+mood-board'a başlarken bir ipucu. Sonra `"afiş"` dene: tasarım terimleri kendi aralarında
+mı toplanıyor?
 
 ## Adım 7 — Harita
 
@@ -592,6 +603,8 @@ göstermez. Haritada bir şey dikkatini çekerse, emin olmak için asıl sayıya
 - Dört grup (renkler, duygular, tasarım, mekânlar) ayrı kümeler oluşturdu mu?
 - Kendi grubundan kaçan bir kelime var mı? Nereye gitmiş? Neden olabilir?
   (Örneğin "palet" renklerin yanına mı düştü, tasarım terimlerinin yanına mı?)
+- Hangi renk duyguların kümesine en yakın? Bej nereye düştü? Konu 3'teki model onu
+  "enerjik" demişti; dil modeli onu hangi duygunun yanına koyuyor?
 - **huzur** ile **öfke** zıt anlamlı. Haritada uzak mı düştüler?
 
 Haritaya güvenmeden önce asıl sayılara bakalım:
@@ -642,6 +655,8 @@ print(len(vektorler_sozlugu))
 Çıktı: `29` (24 + 5). Listeye kendi beş kelimeni yaz ve çalıştır. Sonra Adım 7'nin dört
 hücresini sırayla yeniden çalıştır: liste yeniden kurulur, PCA yeniden `fit` edilir,
 her kelime yeniden 2 sayıya çevrilir, harita 29 kelimeyle çizilir. Yeni kelimelerin hangi gruba yakın düştü?
+Örnek listeyi değiştirmeden çalıştırdıysan: "sessizlik" kafeye mi düştü, kütüphaneye mi?
+Konu 1'in bulgusu (sessiz çalışma yeri) model için hangi mekâna daha yakın?
 
 Dikkat: yeni kelimeler eklenince PCA başka bir "en iyi açı" bulur; eski 24 kelimenin
 yerleri de değişebilir. Harita, içindeki kelimelere göre kurulan bir özet.
@@ -766,8 +781,9 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 
 ## Ödev
 
-`odevler/odev4.md` (puansız): kendi seçtiğin 20 kelimeyle harita çıkar; beklemediğin
-hangi iki kelime yan yana düştü, bir cümleyle yaz.
+`odevler/odev4.md` (puansız): kendi seçtiğin 20 kelimeyle harita çıkar (fikir: bir
+markanın mood-board kelimeleri); beklemediğin hangi iki kelime yan yana düştü, bu
+haritayla bir mood-board'a başlasan neyi ekler, neyi çıkarırdın? İkisini birer cümleyle yaz.
 
 ## Sonraki konu
 

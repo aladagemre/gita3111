@@ -12,6 +12,7 @@ Ahmet Emre Aladağ
 **Bu konuda:** kutuyu açıyoruz. Kendi modelimizi eğiteceğiz.
 
 - Sınıfın Konu 2 ödevinde etiketlediği renklerle
+- Konu 1'deki "sessiz çalışma kafesi"nin paleti gerçekten **sakin** mi? Sonunda modele soracağız
 - Matematik yok, formül yok
 - Sonunda model yanılacak — ve asıl konumuz o olacak
 
@@ -406,6 +407,9 @@ plt.show()
 Eğri önce hızlı yükseliyor, sonra düzleşiyor. **Düzleştiği yer önemli:** oradan
 sonra aynı türden veri eklemek pek işe yaramıyor.
 
+Aynı 20 renge daha çok kişi sormak tavanı yükseltmez. Gereken **başka türlü** veri:
+daha çok renk, rengin kullanıldığı yer.
+
 Ortadaki düşüş hata değil — ödevde konuşacağız.
 
 -----
@@ -557,7 +561,7 @@ Adım 6'nın çıktısına bak: **yarısıyla** (90 örnek) ve **tamamıyla** (1
 İstersen defterin sonundaki **Bonus** hücresiyle kendi seçtiğin renkleri de sor —
 modelle aynı fikirde misin?
 
-Puan yok; Konu 4'ün başında sıradaki arkadaşlar gösterecek.
+Puan yok; Konu 4'ün başında birkaç kişi ekranını paylaşıp gösterecek.
 
 -----
 

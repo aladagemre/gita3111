@@ -1,6 +1,6 @@
 # Konu 3 Ödevi — Veri miktarı doğruluğu nasıl değiştiriyor?
 
-**Puan yok.** Konu 4'ün başında sıradaki arkadaşlar gösterecek.
+**Puan yok.** Konu 4'ün başında birkaç kişi ekranını paylaşıp gösterecek.
 
 ## Yapılacak
 
@@ -40,5 +40,5 @@ gördüğün şeyi yaz, düzeltmeye çalışma. Neden düştüğünü derste kon
 Kopyandaki **Bonus** hücresine kendi seçtiğin 5 rengi sırayla yaz (RGB sayılarını renk
 seçiciden al) ve modele tahmin ettir.
 
-Modelle aynı fikirde misin? Ayrıldığınız bir renk varsa onu getir — sınıfça
-bakalım, kim haklı?
+Modelle aynı fikirde misin? Ayrıldığınız bir renk varsa hex kodunu derste sohbete
+yaz — sınıfça bakalım, kim haklı?

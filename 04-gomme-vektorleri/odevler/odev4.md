@@ -12,6 +12,10 @@ ister.
    oyun, sinema — fark etmez. İpucu: iki ya da üç gruptan seç (ör. 10 müzik türü,
    10 duygu); harita okumak kolaylaşır. Birkaç tane de "nereye düşecek, merak ediyorum"
    dediğin kelime koy.
+
+   Fikir arıyorsan: üzerinde çalıştığın (ya da hayal ettiğin) bir marka için bir
+   mood-board'un kelimeleri. Ör. 7 marka sıfatı (sakin, cesur, samimi…), 7 renk ya da
+   malzeme adı (bej, beton, ahşap…), 6 rakip duygu ya da mekân.
 2. **Adım 5'teki listeyi değiştir.** `kelimeler = [...]` listesindeki 24 kelimeyi sil,
    yerine kendi 20 kelimeni yaz: her kelime tırnak içinde, aralarında virgül.
 3. **Sırayla çalıştır.** Hücreleri baştan Adım 7'nin sonuna kadar sırayla çalıştır.
@@ -31,6 +35,8 @@ ister.
 - `harita.png`
 - 20 kelimelik listen
 - **Tek cümle:** beklemediğin hangi iki kelime yan yana düştü? Neden olabilir?
+- **Tek cümle daha:** bu haritayı bir mood-board'a başlarken kullansan, hangi kelimeyi
+  eklerdin ya da çıkarırdın? Neden?
 
 ## Dikkat
 
