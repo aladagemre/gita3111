@@ -9,13 +9,13 @@ benzediğini ölçecek ve kelimelerin haritasını çizeceğiz.
 | `ders.ipynb` | Derste birlikte çalıştıracağımız defter: Isınma, Adım 1–8 ve Bonus |
 | `alistirma.ipynb` | Derste kendi başına çözeceğin defter: bozuk kodlar ve boşluklu sorular (anahtar istemez) |
 | `odevler/odev4.md` | Bu konunun ödevi |
-| `ders_notu.md` | Konu notu — adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
+| `ders_notu.md` | Konu notu: adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
 
 ## Çalıştırma
 
-Dersten önce bir kez, **`gita3111` klasöründe** kütüphaneleri indir (liste
-`gita3111` klasöründeki `pyproject.toml` dosyasında; bu konu yeni bir kütüphane istemiyor,
-Konu 2'nin `requests`'i ve Konu 3'ün `scikit-learn`'ü yeterli):
+Dersten önce bir kez, **`gita3111` klasöründe** kütüphaneleri indir. Liste
+`gita3111` klasöründeki `pyproject.toml` dosyasında. Bu konu yeni bir kütüphane istemiyor;
+Konu 2'nin `requests`'i ve Konu 3'ün `scikit-learn`'ü yeterli:
 
 ```
 cd gita3111

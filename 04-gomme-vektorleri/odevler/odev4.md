@@ -10,18 +10,18 @@ ister.
 
 1. **Kelimelerini seç.** Kendi ilgi alanından **20 kelime**: tasarım, müzik, yemek,
    oyun, sinema — fark etmez. İpucu: iki ya da üç gruptan seç (ör. 10 müzik türü,
-   10 duygu); harita okumak kolaylaşır. Birkaç tane de "nereye düşecek, merak ediyorum"
+   10 duygu); haritayı okumak kolaylaşır. Birkaç tane de "nereye düşecek, merak ediyorum"
    dediğin kelime koy.
 
    Fikir arıyorsan: üzerinde çalıştığın (ya da hayal ettiğin) bir marka için bir
    mood-board'un kelimeleri. Ör. 7 marka sıfatı (sakin, cesur, samimi…), 7 renk ya da
-   malzeme adı (bej, beton, ahşap…), 6 rakip duygu ya da mekân.
+   malzeme adı (bej, beton, ahşap…), 6 duygu ya da mekân (birkaçı markaya zıt olsun).
 2. **Adım 5'teki listeyi değiştir.** `kelimeler = [...]` listesindeki 24 kelimeyi sil,
    yerine kendi 20 kelimeni yaz: her kelime tırnak içinde, aralarında virgül.
 3. **Sırayla çalıştır.** Hücreleri baştan Adım 7'nin sonuna kadar sırayla çalıştır.
-   "kafe" artık listende yok; iki yerde onu kendi listenden bir kelimeyle değiştir,
-   yoksa `KeyError: 'kafe'` alırsın: Adım 6'daki `hedef = "kafe"` ve Adım 7'deki
-   `print(model_haritasi["kafe"])`.
+   "kafe" artık listende yok. Şu iki yerde onu kendi listenden bir kelimeyle değiştir:
+   Adım 6'daki `hedef = "kafe"` ve Adım 7'deki `print(model_haritasi["kafe"])`.
+   Değiştirmezsen `KeyError: 'kafe'` alırsın.
 4. **Haritayı kaydet.** Adım 7'nin son hücresinde `plt.show()` satırının **üstüne** şu
    satırı ekle ve hücreyi yeniden çalıştır:
 
@@ -43,7 +43,7 @@ ister.
 
 Harita bir özet; yüzlerce sayıyı 2'ye indiriyor. Yan yana düşen iki kelimeyi gördüğünde
 Adım 8'deki gibi `benzerlik` ile asıl sayıya da bak. Haritada yakın ama sayıda uzaksa
-bunu da yaz — bu da bir bulgu.
+bunu da yaz; bu da bir bulgu.
 
 `anahtar.txt`'yi gönderme.
 

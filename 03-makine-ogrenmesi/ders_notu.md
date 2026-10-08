@@ -145,7 +145,7 @@ artık gerçek veri geçti. Dosyada yedi sütun var: `hex` (renk kodu), `ad`, `r
 renge verdiği etiket**. 12 öğrenci × 20 renk = 240 satır. Aynı renk dosyada 12 kez
 geçiyor, her seferinde başka bir öğrencinin gözünden.
 
-Bu yapıyı aklında tut; bu konunun en ilginç bulguları bu "12 kez" gerçeğinden çıkıyor.
+Bu yapıyı aklında tut; bu konunun en ilginç bulguları, her rengin 12 kez geçmesinden çıkıyor.
 
 ### Sınıf "krem"e ne demiş?
 
@@ -178,14 +178,14 @@ Aynı sayımı 20 rengin hepsi için yapınca (renk adını değiştirip hücrey
 | kırık beyaz | 11 sakin, 1 enerjik |
 | bordo | 11 enerjik, 1 ciddi |
 
-Yedek veride 20 rengin 20'sinde de aynı renge farklı etiketler verilmiş. Bu bir hata
+Yedek veride 20 rengin hiçbirinde oy birliği yok: her renge en az iki farklı etiket verilmiş. Bu bir hata
 değil; gerçek veri böyledir, insanlar aynı şeye farklı etiket verir. Ama "anlaşamamak"
 her renkte aynı ölçüde değil.
 
 **Tasarım açısından okuması:** kırık beyaz ile krem ekranda neredeyse aynı renk.
-Ama sınıf kırık beyaza neredeyse oybirliğiyle "sakin" derken, krem tam ortadan
-ikiye bölünmüş. Aradaki tek fark kremdeki hafif sarılık. Demek ki küçük bir sıcaklık
-kayması, rengin hissettirdiği şeyi değiştirebiliyor; kafe paleti için bir "sakin
+Ama sınıf kırık beyaza neredeyse oy birliğiyle "sakin" derken, krem tam ortadan
+ikiye bölünmüş. Aradaki tek fark kremdeki hafif sarılık. Demek ki rengin biraz sıcağa
+kayması bile hissettirdiği şeyi değiştirebiliyor; kafe paleti için bir "sakin
 beyaz" seçerken bu fark önemli. Bu iki rengi Adım 8'de tekrar göreceğiz.
 
 **Kendin dene:** `if kayit["ad"] == "krem":` satırını silip altındaki satırların
@@ -282,8 +282,8 @@ Kural 20 renkten sadece birini (kırmızıyı) tanıyor. Bordo, şeftali, somon,
 bal da sınıfın çoğunluğuna göre enerjik; ama hiçbiri "kırmızı 200'den büyük, yeşil
 100'den küçük" şartına uymuyor. Sınıfın "enerjik" kavramı, kuralı yazan kişininkinden
 çok daha geniş: canlı renklerle birlikte **sıcak** tonların neredeyse hepsini içeriyor.
-İşte örnekten öğrenmenin gücü burada: kimsenin aklına gelmeyen bu genişliği veri
-kendisi taşıyor.
+Örnekten öğrenmenin gücü de burada: kuralı yazanın aklına gelmeyen bu genişlik,
+verinin içinde zaten var.
 
 ## Öznitelik ve etiket: X ve y
 
@@ -314,7 +314,7 @@ atlamadın. İki durum var:
   ValueError: Found input variables with inconsistent numbers of samples: [200, 240]
   ```
 
-  Okuması: "girdilerinin örnek sayıları tutarsız: biri 200, öbürü 240." Bu iyi bir
+  Okuması: "girdilerin örnek sayıları tutmuyor: biri 200, öbürü 240." Bu iyi bir
   hata; sana sorunun yerini gösteriyor.
 - **Uzunluklar aynı ama sıra kaymışsa** hiçbir hata mesajı almazsın. Model lacivertin
   cevabı olarak şeftalinin etiketini öğrenir ve sessizce saçma sonuçlar üretir. Bunu
@@ -326,8 +326,8 @@ döngüde ama aynı koşulla dolmuyor, biri 3 öğeli kalırken öbürü 6 öğe
 ## Adım 3 — Veriyi ikiye böl: eğitim ve test
 
 Modeli 240 örnekle eğitip yine aynı 240 örnekle sınarsak ne ölçmüş oluruz? **Ezberi.**
-Sınavda çıkmış soruyla sınav yapmak gibi: öğrenip öğrenmediğini anlamak için
-**görmediği** soruyu sormak gerekir.
+Derste çözülen soruların aynısıyla sınav yapmak gibi: öğrenip öğrenmediğini anlamak
+için **görmediği** bir soru sormak gerekir.
 
 - **Eğitim verisi:** model bunlara bakarak öğrenir.
 - **Test verisi:** model bunları hiç görmez; ölçüm burada yapılır.
@@ -345,7 +345,7 @@ print(len(X_egitim), len(X_test))
 
 - `from sklearn.model_selection import train_test_split`: kütüphaneden yalnızca
   bölme işini yapan parçayı alıyoruz.
-- Soldaki **dört değişken tek satırda** dolar: fonksiyon dört liste verir, Python
+- Soldaki **dört değişken tek komutla** dolar: fonksiyon dört liste verir, Python
   onları soldaki adlara sırayla dağıtır. Sıra önemli; karıştırma. Sıra her zaman:
   eğitim X, test X, eğitim y, test y.
 - Satır uzun olduğu için parantezin içini alt satıra aldık. Parantez kapanana kadar
@@ -361,7 +361,7 @@ print(len(X_egitim), len(X_test))
 
 ### Test verisine "bakmak" neden hile?
 
-Kimse bilerek kopya çekmez; test verisi genellikle kazara sızar. Üç tanıdık yol:
+Kimse bilerek kopya çekmez; test verisi genellikle kazara sızar. Üç yaygın yol:
 
 1. **Aynı veride eğitip ölçmek.** En açık olanı. Alıştırma defterindeki 5. bozuk kod.
 2. **Cevabı özniteliğin içine koymak.** Örneğin X'e üç sayının yanına etiketi de
@@ -370,7 +370,7 @@ Kimse bilerek kopya çekmez; test verisi genellikle kazara sızar. Üç tanıdı
    etiket sessizce geçer.)
 3. **Test sonucuna bakıp ayar yapmak, sonra yine aynı testte ölçmek.** Diyelim komşu
    sayısını 5'ten 9'a çıkardın, testte doğruluk arttı, 9'da karar kıldın. Bunu elli
-   kez yaparsan test verisine göre ayar çekmiş olursun; test artık "görülmemiş" değildir.
+   kez yaparsan modeli test verisine göre ayarlamış olursun; test artık "görülmemiş" değildir.
 
 Üçünün ortak sonucu: **sayı gerçekte olduğundan iyi görünür**. Bu, kötü bir sayıdan
 daha tehlikelidir, çünkü sana yanlış bir güven verir. Bir tasarım müşterisine "bu
@@ -416,9 +416,9 @@ arkasına nokta koyup verilen komutlar; yeni olan tek şey bu kez o şeyin bir m
 - `fit`: "bu örneklere bak ve öğren."
 - `score`: "hiç görmediklerinin kaçını bildin?" 0 ile 1 arası bir sayı döndürür.
 - `round(dogruluk, 2)`: sayıyı virgülden sonra iki basamağa yuvarlar (0.7666... → 0.77).
-- Bir komut daha var, `predict`: "şu renk sence hangisi?" Onu Adım 5'te kullanıyoruz.
+- Bir komut daha var, `predict`: "bu renge sence hangi etiket uyar?" Onu Adım 5'te kullanıyoruz.
 
-`fit` ile k-NN aslında hiçbir hesap yapmaz; eğitim örneklerini bir kenara kaydeder.
+k-NN, `fit` sırasında aslında hiçbir hesap yapmaz; eğitim örneklerini bir kenara kaydeder.
 Asıl iş, soru geldiğinde (`score` ya da `predict` sırasında) yapılır: en yakın beş
 örnek o anda aranır. Başka modeller `fit` sırasında çok daha fazla iş yapar; ama
 "önce örnekleri ver, sonra soru sor" düzeni hepsinde aynıdır.
@@ -497,7 +497,7 @@ bu modeli kullanıyor.
 Adım 3'te `random_state=42` yerine başka sayılar verirsen bölme değişir, doğruluk da
 değişir. Yedek veride `random_state` 0, 1, 2, 3, 4 için sonuçlar: 0.65, 0.67, 0.72,
 0.68, 0.78. Aynı model, aynı veri; sadece hangi 60 satırın teste düştüğü değişiyor.
-Test verisi küçük olunca tek bir satır bile sonucu yaklaşık iki puan oynatıyor
+Test verisi küçük olunca tek bir satır bile sonucu yaklaşık 0.02 oynatıyor
 (1/60 ≈ 0.017). O yüzden "0.77" demek yerine "0.65 ile 0.78 arasında bir yerde" demek
 daha dürüst. Adım 6'daki grafiğin neden dalgalandığını anlamak için bu bilgiye
 ihtiyacın olacak.
@@ -514,7 +514,7 @@ eğitimde gördüğü azınlık etiketlerinde de yanılıyor. Ezber, anlaşmazl�
 Bu, "tavan" fikrinin başka bir görünüşü. Kural yine değişmez: **doğruluk test
 verisinde ölçülür.**
 
-## Adım 5 — Yanıldığı yere bak
+## Adım 5 — Yanıldığı yerlere bak
 
 Doğruluk tek bir sayı; asıl öğretici olan modelin **nerede** yanıldığı. Bunun için
 test satırlarının adlarını bilmemiz gerek. `X_test`'te yalnızca sayılar var; adlar
@@ -529,7 +529,7 @@ print(len(test_kayitlari))
 
 Çıktı: `60`. Liste uzunluğu (240) ve `random_state` (42) aynı olduğu için karıştırma
 da aynı çıkar: `test_kayitlari`, `X_test`'teki 60 rengin kayıtları, aynı sırada. Bu
-sefer tek liste verdik, o yüzden fonksiyon iki şey döndürüyor: eğitim ve test.
+sefer tek liste verdik, o yüzden fonksiyon iki liste döndürüyor: eğitim ve test.
 
 Şimdi her test kaydını tek tek modele soruyoruz:
 
@@ -546,7 +546,7 @@ for kayit in test_kayitlari:
 ```
 
 - Döngünün ilk dört satırı Adım 2'deki gibi: kayıttan üç sayıyı al, `renk` listesini kur.
-- `model.predict([renk])`: "bu renk sence hangisi?" `predict` her zaman bir **renk
+- `model.predict([renk])`: "bu renge sence hangi etiket uyar?" `predict` her zaman bir **renk
   listesi** ister, tek renk sorsan bile; o yüzden `renk`'i köşeli parantez içine
   koyuyoruz. Cevabı da liste olarak verir; `tahminler[0]` o listenin ilk (ve tek) elemanı.
 - `if tahmin != kayit["etiket"]:` model öğrencinin etiketinden farklı bir şey dediyse
@@ -631,7 +631,7 @@ for adet in adetler:
 
 - `X_ilk = X_egitim[:adet]` Konu 1'in dilimlemesi: baştan `adet` tane örnek. `adet` 18 iken
   ilk 18 renk, 90 iken ilk 90 renk. `y_ilk` aynı satırların etiketleri.
-- Döngü her tur yeni bir model kurup eğitiyor, ölçüyor, sonucu yazdırıp
+- Döngü her turda yeni bir model kurup eğitiyor, ölçüyor, sonucu yazdırıp
   `dogruluklar` listesine ekliyor. Bu modellere `yeni_model` adını verdik ki Adım 4'teki
   `model` değişmesin. Son turda (180 örnek) `yeni_model` Adım 4'teki modelin aynısı.
 
@@ -667,13 +667,13 @@ için **başka türlü** veri gerekir: daha çok renk ya da rengin kullanıldı�
 yeni bilgiler.
 
 **18 örnekle neden bu kadar kötü?** 18 örnekte 20 rengin ancak 14'ü var; 6 renk hiç
-yok. Model görmediği bir rengi sorulduğunda ona en çok benzeyen başka bir rengin
+yok. Model, görmediği bir renk sorulunca ona en çok benzeyen başka bir rengin
 etiketlerini kullanmak zorunda kalıyor. Az veri, "tanıdık renk" sayısını azaltıyor.
 
 **Eğri ortada düşebilir.** Yedek veride 45 örnekten 90 örneğe çıkınca doğruluk
 0.72'den 0.62'ye iniyor. Bu bir hata değil; düzeltmeye çalışma. İpucu: 90 örneklik
 parçada gri mavi yalnızca bir kez geçiyor ve onu etiketleyen öğrenci azınlıktan
-("ciddi" demiş). Model de gri maviyi sorduğunda bu tek etiketin yanına en yakın başka
+("ciddi" demiş). Gri mavi sorulunca model bu tek etiketin yanına en yakın başka
 rengin, gül kurusunun etiketlerini ekliyor. Test verisi de küçük (Adım 4'teki "tek
 sayıya güvenme" bölümünü hatırla). Neden olduğunu ödevde kendi verinle düşüneceksin,
 Konu 4'ün başında birlikte konuşacağız.
@@ -735,7 +735,7 @@ Adım 1'de gördüğümüz gibi sınıfın en çok tartıştığı renk (5 enerj
 bejin "enerjik" çıkması güçlü bir bulgu değil, zayıf bir işaret: "bu bölge tartışmalı,
 kullanıcıyla sınanmalı." Modelin bildiği dünya 20 renkten ibaret. 20 rengin hiçbirine
 benzemeyen bir renk sorarsan, model yine de bir cevap verir; ama o cevap bir tahminden
-çok, en yakın tanıdığın görüşüdür.
+çok, en yakın bildiği rengi etiketleyenlerin görüşüdür.
 
 Bu, veriyi kimin ve hangi renklerle topladığının da bir tasarım kararı olduğunu
 gösteriyor. Kafe paleti hakkında güvenilir bir model istiyorsan, etiketleme ödevine
@@ -745,8 +745,8 @@ bej ve kahve tonları da koymak gerekirdi.
 sayılarını aynı rengin koyudan açığa sürümleriyle değiştir. Maviler (`[10, 31, 68]`,
 `[74, 127, 176]`, `[207, 227, 242]`) yedek veride ciddi, sakin, sakin çıkıyor.
 Kırmızılar (`[92, 0, 16]`, `[214, 40, 40]`, `[250, 212, 212]`) ise üçü de enerjik.
-Sınıfın gözünde koyuluk tek başına ciddiyet getirmiyor; renk tonu koyuluktan güçlü
-basıyor. Bordoya 12 kişiden 11'inin "enerjik" demesi bunun kaynağı.
+Sınıfın gözünde koyuluk tek başına ciddiyet getirmiyor; renk tonu koyuluktan daha
+belirleyici. Bordoya 12 kişiden 11'inin "enerjik" demesi bunun kaynağı.
 
 ## Adım 8 — Hiç görmediği bir renk: dürüst sınav
 
@@ -823,7 +823,7 @@ model sınıfın çoğunluğundan ayrılıyor. İkisi özellikle öğretici:
   238) ile (254, 250, 224). Ama sınıf ikisini çok farklı hissetmiş. Model bu farkı
   göremez; onun için iki renk arasındaki mesafe küçük.
 - **Gri mavi → model "enerjik" diyor, sınıf "sakin" (10/12).** Gri mavinin RGB'de en
-  yakın komşusu gül kurusu çıkıyor. Birisi soğuk grimsi bir mavi, öbürü tozlu bir
+  yakın komşusu gül kurusu çıkıyor. Biri soğuk grimsi bir mavi, öbürü tozlu bir
   pembe; bir tasarımcı bu ikisine asla "benzer" demez. Ama üç sayının farkına
   bakınca yakınlar.
 
@@ -934,7 +934,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
    `X_egitim, y_egitim, X_test, y_test` yazdın. Adım 4'ün hücresi hata verir mi? Ne olur?
 5. k=1 ile k=5 arasındaki farkı "arkadaşa sormak" benzetmesiyle bir cümlede anlat.
 6. Adım 7'de bej için model "enerjik" dedi. Bu cevaba neden fazla güvenmemelisin?
-7. Adım 8'deki "hiç görmediği renkler" doğruluğu (0.6), Adım 4'teki doğruluktan (0.77)
+7. Adım 8'deki "hiç görmediği renkler" doğruluğu (0.60), Adım 4'teki doğruluktan (0.77)
    düşük. Hangisi yanlış?
 8. Etiketleme ödevini yeniden tasarlasan, kafe paleti hakkında daha güvenilir bir model
    elde etmek için neyi değiştirirdin?
@@ -958,7 +958,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 - **Yanılgılar veriden haber verir.** Modelin yanılgılarının çoğu sınıfın azınlık
   görüşleriydi; model bir "çoğunluk sesi" üretir.
 - **"Test" hangi soruyu soruyor?** Bilinen renklerde 0.77, hiç görülmemiş renklerde
-  0.6. İkisi de doğru, ama farklı soruların cevabı.
+  0.60. İkisi de doğru, ama farklı soruların cevabı.
 - **Benzerlik, temsile bağlıdır.** RGB'de yakın olan iki renk (gri mavi ile gül kurusu)
   gözümüze hiç benzemeyebilir. Bu, Konu 4'ün başlangıç noktası.
 
@@ -1024,14 +1024,14 @@ daha da önemli hâle geliyor: sayılar, bizim "benzer" dediğimiz şeyi yakalı
    Alıştırma defterindeki 3. bozuk kodda ise veri ikiye eşit bölündüğü için uzunluklar
    tutuyor ve hiçbir hata çıkmıyor; yanlışlığı ancak `y_egitim`'in içine bakınca
    görürsün. Sıra her zaman: eğitim X, test X, eğitim y, test y.
-5. k=1 tek bir arkadaşa sormak, o azınlıktaysa yanılırsın; k=5 beş arkadaşa sorup
-   çoğunluğa uymak, tek kişinin farklı görüşü seni yanıltmaz.
+5. k=1 tek bir arkadaşa sormaktır; o azınlıktaysa sen de yanılırsın. k=5 beş arkadaşa
+   sorup çoğunluğa uymaktır; tek kişinin farklı görüşü seni yanıltmaz.
 6. Çünkü cevabı bej hakkında bir şey bilen biri değil, en yakın bildiği renk olan
    kremi etiketleyenler veriyor ve krem sınıfın en çok tartıştığı renk (5'e 5).
    Model 20 rengin dışını bilmiyor.
 7. İkisi de yanlış değil; farklı soruların cevabı. 0.77 "bilinen bir renk için başka
-   birinin etiketini tahmin etme" başarısı, 0.6 "hiç görülmemiş bir renge etiket
-   verme" başarısı. Yeni renkler hakkında karar vereceksen 0.6'ya bakmalısın.
+   birinin etiketini tahmin etme" başarısı, 0.60 "hiç görülmemiş bir renge etiket
+   verme" başarısı. Yeni renkler hakkında karar vereceksen 0.60'a bakmalısın.
 8. Birkaç iyi cevap: etiketleme listesine kafede kullanılabilecek tonları (bejler,
    kahveler, yeşillerin açık tonları) eklemek; rengi tek başına değil bir mekân
    görselinin içinde göstermek; etiketleyenlere kafenin kullanıcılarına benzeyen

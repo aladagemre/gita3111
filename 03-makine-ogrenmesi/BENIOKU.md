@@ -10,7 +10,7 @@ kaldığın adımdan devam et.
 | `alistirma.ipynb` | Derste kendi başına çözeceğin defter: bozuk kodlar ve boşluklu sorular |
 | `veri/renkler-etiketli.csv` | Sınıfın etiketleri, tek dosyada (`hex,ad,r,g,b,ogrenci,etiket`) |
 | `odevler/odev3.md` | Bu konunun ödevi |
-| `ders_notu.md` | Konu notu — adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
+| `ders_notu.md` | Konu notu: adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
 
 ## Çalıştırma
 

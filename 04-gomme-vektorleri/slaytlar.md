@@ -48,7 +48,7 @@ Bilgisayar "kahve" kelimesini anlamaz. Sayı ister.
 | Ses | saniyede binlerce sayı |
 | Kelime | **?** |
 
-Bir kelimeyi hangi sayılarla temsil edersen, "benzer" kelimesinin anlamını da o belirler.
+Bir kelimeyi hangi sayılarla temsil edersen, "benzer" sözcüğünün anlamını da o sayılar belirler.
 
 -----
 
@@ -112,15 +112,15 @@ plt.show()
 ```
 
 - `for kelime in harita`: sözlüğün anahtarlarını (kelimeleri) gezer
-- `plt.scatter`: bir nokta koy
-- `plt.text`: noktanın yanına kelimeyi yaz
-- `axhline` / `axvline`: gri sıfır çizgileri
+- `plt.scatter`: bir nokta koyar
+- `plt.text`: noktanın yanına kelimeyi yazar
+- `axhline` / `axvline`: gri sıfır çizgilerini çizer
 
 -----
 
 ## Kelime = bir ok
 
-Her kelime, haritanın ortasından (0, 0) çıkan bir **ok** gibi düşünülebilir.
+Her kelimeyi, haritanın ortasından (0, 0) çıkan bir **ok** gibi düşün.
 
 - Kahve sağ üste bakıyor: sıcak ve biraz canlı
 - Ateş de sağ üste bakıyor, sadece oku daha uzun
@@ -326,8 +326,8 @@ print(len(vektorler_sozlugu))
 
 Plan:
 
-1. `skorlar` adında boş bir sözlük
-2. Her kelime için: "kafe" ile benzerliğini hesapla, `skorlar[kelime]`'ye koy
+1. `skorlar` adında boş bir sözlük kur
+2. Her kelime için "kafe" ile benzerliğini hesapla, sonucu `skorlar[kelime]` olarak sakla
 3. Konu 1'in `Counter`'ı ile en büyükleri sırala
 
 İpucu, Konu 1'den:
@@ -473,7 +473,7 @@ Model kelimelerin anlamını sözlükten değil, **hangi cümlelerde geçtikleri
 > "Bugün içimde büyük bir ___ var."
 
 Boşluğa hem "huzur" hem "öfke" gelebilir. İkisi de aynı tür cümlelerde geçer.
-Bu yüzden zıt anlamlı iki kelime de yakın düşebilir.
+Bu yüzden zıt anlamlı iki kelime bile yakın düşebilir.
 
 Modelin "benzer"i = **benzer yerlerde geçen**.
 
@@ -547,4 +547,4 @@ Konu 5'te modelin **metni nasıl yazdığına** bakacağız:
 
 - Metin önce parçalara bölünür
 - Model her seferinde bir sonraki parçayı tahmin eder
-- "Sıcaklık" ayarı, en olası parçayı mı seçeceğini, zar mı atacağını belirler
+- "Sıcaklık" ayarı, modelin en olası parçayı mı seçeceğini yoksa zar mı atacağını belirler

@@ -7,7 +7,7 @@ Ahmet Emre Aladağ
 
 ## Konu 4'ten Konu 5'e
 
-**Konu 2'de:** modele soru sorduk, cevap aldık. Model bir kutuydu.
+**Konu 2'de:** modele soru sorduk, cevap aldık. Model kapalı bir kutuydu.
 **Konu 4'te:** model kelimeyi sayı listesine çeviriyordu.
 
 **Bu konuda:** model **nasıl yazıyor**, ona bakacağız.
@@ -158,7 +158,7 @@ kelimeler = temiz.split()
 print(len(kelimeler))
 ```
 
-Çıktı: `298`. Konu 1'deki 30 yorum, Konu 1'deki temizlik satırları.
+Çıktı: `298`. Konu 1'deki 30 yorum ve aynı temizlik satırları.
 
 -----
 
@@ -230,7 +230,7 @@ print(sayac.most_common(5))
 
 Çıktı: `[('güzel', 2), ('kalabalık', 1), ('keyifli', 1), ('tatlı', 1)]`
 
-"çok" çoğunlukla övgü; beş yorumdan üçü **bahçe**.
+"çok" çoğunlukla övgü; beş yorumdan üçü **bahçeyle** ilgili.
 "biraz" neyi **düzelteceğini**, "çok" neyi **koruyacağını** söylüyor.
 
 -----
@@ -270,7 +270,7 @@ plt.ylabel("Olasılık")
 plt.show()
 ```
 
-Bir dil modeli de **her adımda** böyle bir grafik hesaplar:
+Bir dil modeli de **her adımda** böyle bir dağılım hesaplar:
 "bundan sonra hangi parça, hangi olasılıkla?"
 
 Farkı: 30 yorumdan değil, milyarlarca metinden öğrenmiş olması.
@@ -391,7 +391,7 @@ Yüksek sıcaklık "daha yaratıcı" değil, **daha dağınık** demek.
 - Gerçek model de her adımda sıradaki parçayı seçer; ama milyarlarca metinden öğrenmiş
 - En olasıyı mı seçsin, zar mı atsın? Bunu **sıcaklık** ayarlar; şimdi onu biz değiştireceğiz
 
-Adım 6–7 `anahtar.txt` ister, önceki hücrelere bağlı değil.
+Adım 6–7 `anahtar.txt` ister; önceki hücrelere bağlı değil.
 
 -----
 
@@ -434,7 +434,7 @@ def modele_sor(soru, sicaklik):
     return sonuc["response"]
 ```
 
-- Konu 2'deki `modele_sor`, tek farkla: ikinci bilgi `sicaklik`
+- Konu 2'deki `modele_sor`, tek farkla: ikinci bir bilgi daha alıyor, `sicaklik`
 - Gövdede yeni alan: `"temperature"` (sıcaklık)
 - Bu model 0 ile 5 arası kabul ediyor; varsayılanı 0.6
 
@@ -494,8 +494,8 @@ print("pano.txt yazıldı")
 
 - Modelden tek seferde **üç** slogan istiyoruz
 - Her sıcaklık için bir başlık, altına modelin üç sloganı
-- `str(sicaklik)`: sayıyı yazıya çevirir, başlığa eklenebilsin diye
-- 3 istek gidiyor
+- `str(sicaklik)`: sayıyı metne çevirir, başlığa eklenebilsin diye
+- Modele 3 istek gider
 
 -----
 
@@ -506,7 +506,7 @@ print("pano.txt yazıldı")
 - **Kurumsal tabela, menü, yönlendirme metni** için hangi sıcaklık?
 - **Fikir fırtınası, ilk eskiz** için hangisi?
 - 1.5'teki sloganlardan **kullanılabilecek** olan var mı? Kaç tanesi?
-- Hangi sıcaklığın üç sloganı birbirinden daha farklı?
+- Hangi sıcaklıkta üç slogan birbirinden en çok ayrılıyor?
 - Önce fikir toplayıp sonra son metni yazdıracaksan: hangi sırayla hangi sıcaklık?
 
 Sıcaklık bir **araç ayarı**: işin türüne göre seçilir, "en iyisi" yok.
@@ -539,7 +539,7 @@ for belirtec in belirtecler:
 | `ModuleNotFoundError: No module named 'tiktoken'` | Çekirdek `.venv` değil ya da `uv sync` yapılmadı |
 | `TypeError: 'int' object is not an instance of 'Sequence'` | `decode`'a liste değil tek sayı verildi: `[belirtec]` |
 | `IndexError: list index out of range` | Ardından hiç kelime gelmeyen bir kelimeyle `sonraki_kelime` çağrıldı (`en_sik` boş) |
-| `FileNotFoundError: ... '../anahtar.txt'` | Adım 6'dan sonrası anahtar ister |
+| `FileNotFoundError: ... '../anahtar.txt'` | `anahtar.txt` `gita3111` klasöründe yok; Adım 6–7 bu dosyayı ister |
 | `TypeError: 'NoneType' object is not subscriptable` | İstek başarısız; durum koduna bak (Konu 2) |
 
 -----

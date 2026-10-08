@@ -14,7 +14,7 @@ Ahmet Emre Aladağ
 - Sınıfın Konu 2 ödevinde etiketlediği renklerle
 - Konu 1'deki "sessiz çalışma kafesi"nin paleti gerçekten **sakin** mi? Sonunda modele soracağız
 - Matematik yok, formül yok
-- Sonunda model yanılacak — ve asıl konumuz o olacak
+- Sonunda model yanılacak; asıl konumuz da bu olacak
 
 Bu konuda öğreneceğin şey, dönemin geri kalanında "model" dediğimiz şeyin ne olduğu.
 
@@ -72,7 +72,7 @@ Makine öğrenmesi bunun tersi: kuralı sen yazmıyorsun, **örnek veriyorsun** 
 kuralı modelin bulmasını istiyorsun.
 
 - Kural yazmak: "şu şartlarda şunu yap"
-- Öğretmek: "işte 240 örnek, sen çıkar"
+- Öğretmek: "işte 240 örnek, kuralı sen çıkar"
 
 -----
 
@@ -128,10 +128,10 @@ print(sayac)
 | kırık beyaz | 11 sakin, 1 enerjik |
 | bordo | 11 enerjik, 1 ciddi |
 
-**20 rengin 20'sinde de sınıf anlaşamamış.** Ama her renkte aynı ölçüde değil.
+**Sınıf 20 rengin hiçbirinde oy birliğine varamamış.** Ama her renkte aynı ölçüde bölünmemiş.
 
 Kırık beyaz ile krem ekranda neredeyse aynı renk. Aradaki fark kremdeki hafif
-sarılık — ve sınıfın neredeyse yarısı için bu kayma rengi "enerjik" yapmış.
+sarılık; sınıfın neredeyse yarısı için bu küçük fark rengi "enerjik" yapmış.
 
 -----
 
@@ -183,7 +183,7 @@ print(X[0], y[0])
 - **X** = modelin **baktığı** şey (öznitelikler): üç sayı
 - **y** = modelin **tahmin etmesi gereken** şey (etiket)
 
-`X[5]`'in cevabı `y[5]`'tir. İkisi aynı döngüde, aynı sırada doluyor — karışırsa
+`X[5]`'in cevabı `y[5]`'tir. İkisi aynı döngüde, aynı sırada doluyor. Sıra karışırsa
 model yanlış şeyi öğrenir ve **kimse fark etmez.**
 
 Model neye **bakmıyor**? Rengin adına, nerede kullanıldığına, yanındaki renklere.
@@ -199,7 +199,7 @@ Model neye **bakmıyor**? Rengin adına, nerede kullanıldığına, yanındaki r
 Sınıfın "enerjik" kavramı çok daha geniş: bordo, şeftali, somon, tarçın, bal...
 Canlı renklerle birlikte **sıcak** tonların neredeyse hepsi.
 
-Kimsenin aklına gelmeyen bu genişliği veri kendisi taşıyor.
+Bu genişlik kimsenin kuralında yoktu; verinin içinde zaten var.
 
 -----
 
@@ -209,8 +209,8 @@ Modeli 240 örnekle eğitip yine aynı 240 örnekle sınarsak ne ölçmüş olur
 
 **Ezberi.**
 
-Sınavda çıkmış soruyla sınav yapmak gibi. Öğrenci soruyu ezberlemiş olabilir;
-öğrendiğini anlamak için **görmediği** soru sormak gerekir.
+Derste çözülen soruların aynısıyla sınav yapmak gibi. Öğrenci soruları ezberlemiş olabilir;
+öğrenip öğrenmediğini anlamak için **görmediği** bir soru sormak gerekir.
 
 - **Eğitim verisi:** model bunlara bakarak öğrenir
 - **Test verisi:** model bunları hiç görmez, ölçüm burada yapılır
@@ -230,9 +230,9 @@ print(len(X_egitim), len(X_test))
 
 > 180 60
 
-- Soldaki **dört değişken tek satırda** doluyor; sıra önemli, karıştırma
+- Soldaki **dört değişken tek komutla** doluyor; sıra önemli, karıştırma
 - `test_size=0.25` → dörtte biri (60 satır) teste ayrılıyor
-- `random_state=42` → her çalıştırmada aynı bölme; karşılaştırma yapabilelim
+- `random_state=42` → her çalıştırmada aynı bölme; herkes aynı sonucu görür
 
 -----
 
@@ -264,9 +264,9 @@ print(round(dogruluk, 2))
 
 > 0.77
 
-- **kur** — kaç komşuya bakacağını söyle
-- **`fit`** — "bu örneklere bak ve öğren"
-- **`score`** — "hiç görmediklerinde kaç tanesini bildin?"
+- **`KNeighborsClassifier(...)`**: modeli kur, kaç komşuya bakacağını söyle
+- **`fit`**: "bu örneklere bak ve öğren"
+- **`score`**: "hiç görmediklerinin kaçını bildin?"
 
 -----
 
@@ -316,13 +316,13 @@ k=1 → 0.70 · k=5 → 0.77 · k=15 → 0.73 · k=45 → 0.72
 - **k çok büyük:** başka renklerin oyları karışıyor
 
 `random_state=42` yerine 0, 1, 2, 3, 4: doğruluk **0.65 ile 0.78** arasında oynuyor.
-60 test satırında tek bir satır ≈ 2 puan. "0.77" değil, "0.65–0.78 arası" demek daha dürüst.
+60 test satırında tek bir satır doğruluğu ≈ 0.02 oynatıyor. "0.77" değil, "0.65–0.78 arası" demek daha dürüst.
 
 -----
 
-## Adım 5 — Yanıldığı yere bakmak
+## Adım 5 — Yanıldığı yerlere bakmak
 
-Yanlış satırın adını bilmek için `kayitlar`'ı da bölüyoruz. **Aynı** `random_state` →
+Yanıldığı renklerin adını görmek için `kayitlar`'ı da bölüyoruz. **Aynı** `random_state` →
 aynı 60 satır teste düşer.
 
 ```python
@@ -332,7 +332,7 @@ egitim_kayitlari, test_kayitlari = train_test_split(
 print(len(test_kayitlari))
 ```
 
-`predict`: "bu renk sence hangisi?" Her zaman bir **liste** ister: `[renk]`.
+`predict`: "bu renge sence hangi etiket uyar?" Her zaman bir **liste** ister: `[renk]`.
 
 -----
 
@@ -362,7 +362,7 @@ for kayit in test_kayitlari:
 60 test satırından 14'ünde yanıldı. 14 yanılgının **12'sinde** model sınıfın
 çoğunluğunu söylüyor; yanlış sayılan öğrenci azınlıkta.
 
-> şeftali: öğrenci ciddi, model enerjik — sınıfın 10'u "enerjik"
+> şeftali: öğrenci "ciddi", model "enerjik" (sınıfın 10 kişisi de "enerjik" demiş)
 
 Bu 12'nin yarısında azınlık, sıcak toprak tonlarına (şeftali, tarçın, bal, somon,
 gül kurusu) "ciddi" demiş.
@@ -410,7 +410,7 @@ sonra aynı türden veri eklemek pek işe yaramıyor.
 Aynı 20 renge daha çok kişi sormak tavanı yükseltmez. Gereken **başka türlü** veri:
 daha çok renk, rengin kullanıldığı yer.
 
-Ortadaki düşüş hata değil — ödevde konuşacağız.
+Ortadaki düşüş hata değil; ödevde konuşacağız.
 
 -----
 
@@ -450,7 +450,7 @@ print(tahminler)
 
 Sıcak nötrler (bej, sütlü kahve) "sakin" değil, "enerjik" tarafta.
 
-**Ama:** bej hakkındaki kararı kremi etiketleyenler veriyor — ve krem sınıfın en
+**Ama:** bej hakkındaki kararı kremi etiketleyenler veriyor ve krem, sınıfın en
 tartışmalı rengi. Bu bir kesinlik değil, "kullanıcıyla sına" işareti.
 
 -----
@@ -458,7 +458,7 @@ tartışmalı rengi. Bu bir kesinlik değil, "kullanıcıyla sına" işareti.
 ## Adım 8 — Hiç görmediği bir renk
 
 Rastgele bölmede her renk hem eğitimde hem testte var: model testteki kırık beyazın
-kardeşlerini eğitimde görmüş. Dürüst soru: **yeni bir renk gelince ne der?**
+kardeşlerini eğitimde görmüş. Asıl soru: **yeni bir renk gelince ne der?**
 
 ```python
 X_haric = []
@@ -504,7 +504,7 @@ Aynı şeyi 20 rengin her biri için yapınca:
 | Rastgele bölme (bilinen renkler) | 0.77 |
 | Hiç görülmemiş renkler | **0.60** |
 
-İkisi de doğru — farklı soruların cevabı.
+İkisi de doğru; yalnızca farklı soruları cevaplıyorlar.
 
 -----
 
@@ -513,10 +513,10 @@ Aynı şeyi 20 rengin her biri için yapınca:
 - **Kırık beyaz** → model "enerjik" (sınıf 11/12 "sakin"). En yakın bildiği renk: krem
 - **Gri mavi** → model "enerjik" (sınıf 10/12 "sakin"). En yakın bildiği renk: gül kurusu
 
-Soğuk grimsi bir mavi ile tozlu bir pembe — bir tasarımcı bunlara asla "benzer" demez.
+Soğuk grimsi bir mavi ile tozlu bir pembe: bir tasarımcı bunlara asla "benzer" demez.
 Ama üç sayının farkına bakınca yakınlar.
 
-Model "benzerlik" kavramını ona verdiğimiz **temsilden** alıyor.
+Model "benzerlik" kavramını, rengi hangi sayılarla verdiğimizden (**temsilden**) alıyor.
 
 -----
 
@@ -544,7 +544,7 @@ Aynı sırada olmak zorundalar.
 öğrenme değil ezber olur.
 
 **Yanılma normaldir, ölçülür.** Doğruluğu kör tahmin ve tavanla kıyasla. %100
-çıkıyorsa sevinme, önce bir yerde hata aramaya başla.
+çıkıyorsa sevinme, önce hata ara.
 
 **Test hangi soruyu soruyor?** Bilinen renklerde 0.77, hiç görülmemiş renklerde 0.60.
 Sonucu söylerken soruyu da söyle.
@@ -559,7 +559,7 @@ Adım 6'nın çıktısına bak: **yarısıyla** (90 örnek) ve **tamamıyla** (1
 2. Öğrenme eğrisini `veri-miktari.png` olarak kaydet
 3. Tek cümle: fark ne, neden böyle olmuş olabilir?
 
-İstersen defterin sonundaki **Bonus** hücresiyle kendi seçtiğin renkleri de sor —
+İstersen defterin sonundaki **Bonus** hücresiyle kendi seçtiğin renkleri de sor:
 modelle aynı fikirde misin?
 
 Puan yok; Konu 4'ün başında birkaç kişi ekranını paylaşıp gösterecek.
@@ -571,7 +571,7 @@ Puan yok; Konu 4'ün başında birkaç kişi ekranını paylaşıp gösterecek.
 **Temsil ve gömme vektörleri.**
 
 Bu konuda rengi üç sayıya çevirdik: `[230, 57, 70]`.
-Konu 4'te **kelimeleri** sayıya çevireceğiz — bu kez üç değil, yüzlerce sayıya.
+Konu 4'te **kelimeleri** sayıya çevireceğiz; bu kez üç değil, yüzlerce sayıya.
 
 Bu konunun "en yakın komşu" fikri orada da karşımıza çıkacak: iki kelime
 birbirine benziyor mu, sayılarına bakarak söyleyeceğiz.

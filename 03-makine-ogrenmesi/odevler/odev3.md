@@ -31,7 +31,7 @@ plt.savefig("veri-miktari.png")
 
 ## Dikkat
 
-Eğri her zaman düzgün yükselmeyebilir; ortada düşebilir. Bu bir hata değil —
+Eğri her zaman düzgün yükselmeyebilir; ortada düşebilir. Bu bir hata değil;
 gördüğün şeyi yaz, düzeltmeye çalışma. Neden düştüğünü derste konuşacağız. İpucu için
 `ders_notu.md`'nin Adım 6 bölümüne bak.
 
@@ -41,4 +41,4 @@ Kopyandaki **Bonus** hücresine kendi seçtiğin 5 rengi sırayla yaz (RGB sayı
 seçiciden al) ve modele tahmin ettir.
 
 Modelle aynı fikirde misin? Ayrıldığınız bir renk varsa hex kodunu derste sohbete
-yaz — sınıfça bakalım, kim haklı?
+yaz; sınıfça bakalım, kim haklı?

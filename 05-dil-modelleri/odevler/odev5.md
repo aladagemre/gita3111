@@ -10,7 +10,7 @@
 dosyaya dokunmazsan `git pull` çakışmaz.
 
 1. Kendine **yaratıcı bir iş** seç: bir afiş başlığı, bir ürün adı, bir etkinlik sloganı,
-   bir kitap kapağı için alt başlık... Konu sen seç.
+   bir kitap kapağı için alt başlık... Konuyu sen seç.
 2. Kopyada iki satıra kendi sorunu yaz: Adım 6'daki `soru = "..."` satırı (tek bir öneri iste)
    ve Adım 7'deki `pano_sorusu = "..."` satırı (aynı işi **üç** öneri olarak, her biri ayrı
    satırda iste). Sonunda "Yalnızca ... yaz." gibi bir cümle olsun ki model açıklama eklemesin.

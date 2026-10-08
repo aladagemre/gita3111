@@ -135,10 +135,10 @@ plt.show()
   "soğuk ve sakin".
 
 Grafikte kahve, çay ve ateş sağda; buz, deniz ve kar solda. Yan yana duranlar
-birbirine benziyor. **Kelimeyi sayıya çevirdik ve sayılar anlamı taşıyor** — çünkü
+birbirine benziyor. **Kelimeyi sayıya çevirdik ve sayılar anlamı taşıyor**, çünkü
 eksenleri biz anlamlı seçtik.
 
-Bir dil modeli de kelimeleri böyle bir haritaya yerleştirir. Farkı iki tane: eksenleri
+Bir dil modeli de kelimeleri böyle bir haritaya yerleştirir. İki farkı var: eksenleri
 kimse seçmez, model kendisi bulur; ve eksen sayısı 2 değil, yüzlerce.
 
 ### Benzerlik: hazır bir araç
@@ -187,7 +187,7 @@ print(benzerlik(kahve, buz))
 -0.765704864789611
 ```
 
-Kahve ile çay ikisi de sıcak tarafta ama biri canlı, biri sakin: 0.3, hafif benzer.
+Kahve de çay da sıcak tarafta, ama biri canlı, biri sakin: 0.3, hafif benzer.
 Buz karşı tarafta: −0.77, neredeyse zıt.
 
 ### Uzaklık değil, yön
@@ -213,7 +213,7 @@ Isınmanın bütün ikilileri:
 | ateş – deniz | −1.0 | tam zıt yön: deniz `[-0.5, -0.5]`, ateş `[0.9, 0.9]` |
 
 Ateş ile deniz neden tam −1? Denizin iki sayısı ateşinkilerin tam tersi işaretli
-(ve biraz kısa); ok tam ters yöne bakıyor.
+(ve biraz kısa); denizin oku tam ters yöne bakıyor.
 
 Yön neden önemli? Bir dil modelinde "çok sıcak" ile "biraz sıcak" aynı yöne bakar;
 farkları okun uzunluğundadır. Biz "ne hakkında" sorusuyla ilgileniyoruz, "ne kadar"
@@ -373,8 +373,8 @@ tipografi = vektor_al("tipografi")
 ```
 
 Isınmadaki `kahve` değişkeni iki sayıydı; bu hücre aynı adın içine modelin vektörünü
-koyuyor. Isınmanın küçük haritası artık bu değişkenleri kullanmıyor (o, `harita`
-sözlüğünde duruyor).
+koyuyor. Isınmanın küçük haritası bundan etkilenmez: onun sayıları `harita`
+sözlüğünde duruyor.
 
 ```python
 print(benzerlik(kahve, cay))
@@ -412,7 +412,7 @@ duygular, tasarım terimleri, mekânlar. Python için satırların bir anlamı y
 parantez kapanana kadar hepsi tek liste.
 
 Renklerde **bej** bilerek var. Konu 3'te kafe paleti için beji sormuştuk; sınıfın
-verisiyle eğitilen model onu "enerjik" demişti, ama zayıf bir işaretle (en yakın bildiği
+verisiyle eğitilen model ona "enerjik" demişti, ama zayıf bir işaretle (en yakın bildiği
 renk olan krem, sınıfın en çok tartıştığı renkti). Şimdi aynı rengin **adına** dil
 modelinin gözünden bakacağız: Adım 6'da ve Adım 8'de bejin hangi duygulara yakın
 düştüğünü kendi çıktında gör.
@@ -449,7 +449,7 @@ print(len(vektorler_sozlugu))
 
 1. `skorlar` adında boş bir sözlük kur.
 2. Sözlükteki her kelime için "kafe" ile o kelimenin benzerliğini hesapla,
-   `skorlar[kelime]`'ye koy.
+   sonucu `skorlar[kelime]` olarak sakla.
 3. Konu 1'deki `Counter` ile en büyükleri sırala.
 
 Konu 1'de ne yapmıştık? `sayac` sözlüğü her kelimenin **kaç kez** geçtiğini tutuyordu;
@@ -492,7 +492,7 @@ for kelime, skor in sirali.most_common(4):
 - `round(skor, 2)`: virgülden sonra iki basamak.
 
 **3 komşu istiyorduk, neden 4 yazdık?** Çıktının ilk satırına bak: `kafe 1.0`. Sözlükte
-kafe de var, ve her kelime kendisine tam benzer. İlk satır her zaman hedefin kendisi;
+kafe de var ve her kelime kendisine tam benzer. İlk satır her zaman hedefin kendisi;
 3 komşu için 4 satır istiyoruz. (Alıştırma defterindeki 2. bozuk kod bu.)
 
 **Tasarım açısından okuması.** Konu 1'de müşteri yorumlarını saymış ve müşterilerin bu
@@ -518,8 +518,8 @@ mı toplanıyor?
 **(anahtar gerekir)** Isınmadaki gibi bir harita istiyoruz. Ama her kelimede yüzlerce sayı
 var, kâğıt ise iki boyutlu. Bir yöntemle yüzlerce sayıyı 2 sayıya indirmemiz gerek.
 
-**PCA** (Temel Bileşen Analizi) bunu yapan, scikit-learn'deki hazır bir araç. Sezgisi:
-bir heykeli duvara tuttuğun ışıkla düşündüğün **gölge**. Gölge iki boyutlu, heykel üç
+**PCA** (Temel Bileşen Analizi) bunu yapan, scikit-learn'deki hazır bir araç. Sezgisi bir
+**gölge**: bir heykele ışık tutunca duvara gölgesi düşer. Gölge iki boyutlu, heykel üç
 boyutlu. Işığı iyi bir açıdan tutarsan gölgeden heykeli tanırsın; kötü bir açıdan
 tutarsan yalnızca bir leke görürsün. PCA, gölgenin **en çok şey anlattığı** açıyı
 arar. Bizim heykelimiz üç değil yüzlerce boyutlu, ama fikir aynı.
@@ -589,7 +589,7 @@ sen yorumlayabilirsin: "sağa doğru duygular, sola doğru nesneler mi gidiyor?"
 
 Yüzlerce sayıyı 2'ye indirdik. **Bilgi kaybettik.** Gölge benzetmesine dön: iki farklı
 heykel, belli bir açıdan aynı gölgeyi verebilir. Haritada yan yana duran iki kelime,
-gerçek yüzlerce boyutlu uzayda o kadar yakın olmayabilir. Haritada uzak duran iki
+yüzlerce sayılık asıl vektörlerde o kadar yakın olmayabilir. Haritada uzak duran iki
 kelime de gerçekte yakın olabilir.
 
 Bir şehir haritası gibi düşün: yolu bulmana yeter, ama binaların yüksekliğini
@@ -630,7 +630,7 @@ Model kelimelerin anlamını sözlükten öğrenmez. **Hangi cümlelerde geçtik
 
 Boşluğa hem "huzur" hem "öfke" gelebilir. İki kelime anlamca zıt, ama ikisi de aynı tür
 cümlelerde geçiyor: duygulardan söz eden cümlelerde. Model için bu iki kelime
-"aynı mahallenin sakinleri". Bu yüzden zıt anlamlı iki kelime de birbirine yakın
+"aynı mahallenin sakinleri". Bu yüzden zıt anlamlı iki kelime bile birbirine yakın
 düşebilir; "sıcak" ile "soğuk", "siyah" ile "beyaz" da öyle.
 
 Modelin "benzer" dediği şey **eşanlamlı** değil, **benzer yerlerde geçen**. Bu, gömme
@@ -638,7 +638,7 @@ vektörlerinin en çok yanlış anlaşılan yanı.
 
 **Tasarım açısından okuması:** bir marka için kelime seçerken (slogan, ürün adı,
 etiket) modelin benzerliğini "anlamca aynı" diye okursan yanılırsın. "Huzur" diye bir
-kafe adına en yakın kelimeleri modelden alırsan, listede rakip duyguları da
+kafe adına en yakın kelimeleri modelden alırsan, listede zıt duyguları da
 görebilirsin. Model sana "bu kelimeler aynı konuşmanın parçası" diyor; "aynı şeyi
 söylüyor" demiyor.
 
@@ -687,7 +687,7 @@ anahtar istemez: ısınmadaki iki sayılık vektörlerle çalışır. İlk üç 
 `benzerlik` fonksiyonunu ve kahvenin `skorlar` sözlüğünü kurar. İki bölümü var:
 
 - **Bozuk kodlar:** beş kısa hücre. İkisi hata mesajı veriyor, üçü sessizce yanlış sonuç
-  yazıyor; üstlerinde ne yazmaları gerektiği yazıyor.
+  yazıyor. Her hücrenin üstünde doğru çıktı yazılı.
 - **Kendi başına:** `BOSLUK` yazan yerleri doldurduğun sorular ve kendi iki eksenli
   haritan. Doldurmadığın boşluk `NameError: name 'BOSLUK' is not defined` verir; o yüzden
   soruları sırayla çöz.
@@ -761,7 +761,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 ## Bu konunun tek cümlesi
 
 > Model kelimeleri sayı listesine çevirir; benzer yerlerde geçen kelimelerin listeleri
-> de birbirine benzer — ama "benzer yerlerde geçmek", "aynı anlama gelmek" değildir.
+> de birbirine benzer; ama "benzer yerlerde geçmek", "aynı anlama gelmek" değildir.
 
 ## Sözlükçe
 
@@ -781,16 +781,16 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 
 ## Ödev
 
-`odevler/odev4.md` (puansız): kendi seçtiğin 20 kelimeyle harita çıkar (fikir: bir
-markanın mood-board kelimeleri); beklemediğin hangi iki kelime yan yana düştü, bu
-haritayla bir mood-board'a başlasan neyi ekler, neyi çıkarırdın? İkisini birer cümleyle yaz.
+`odevler/odev4.md` (puansız): kendi seçtiğin 20 kelimeyle bir harita çıkar (fikir: bir
+markanın mood-board kelimeleri). Sonra iki soruyu birer cümleyle cevapla: beklemediğin
+hangi iki kelime yan yana düştü? Bu haritayla bir mood-board'a başlasan neyi ekler, neyi çıkarırdın?
 
 ## Sonraki konu
 
 **Konu 5 — Dil modelleri nasıl çalışır.** Bu konuda model bir kelimeyi sayıya çevirdi.
 Konu 5'te modelin **metni nasıl yazdığına** bakacağız: metin önce parçalara bölünür,
-model her seferinde bir sonraki parçayı tahmin eder. Kafe yorumlarından, saymaktan
-başka hiçbir şey yapmayan küçük bir "sonraki kelime" modeli kuracağız ve gerçek
+model her seferinde bir sonraki parçayı tahmin eder. Kafe yorumlarını yalnızca
+sayarak çalışan küçük bir "sonraki kelime" modeli kuracağız ve gerçek
 modelin "sıcaklık" ayarını deneyeceğiz.
 
 ---

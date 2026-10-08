@@ -69,7 +69,7 @@ print(sayac.most_common(2))
 
 Hücre küçük ama konunun bütün fikri burada. Bir cümlenin devamını tahmin etmenin en basit
 yolu: **daha önce en sık söyleneni seçmek.** Altı kişiden üçü "kafesi" demiş; birisi
-"Sessiz bir çalışma" yazdığında sıradaki kelime için en iyi tahminin "kafesi".
+"Sessiz bir çalışma" yazdığında sıradaki kelime için en iyi tahmin "kafesi" olur.
 
 Bir dil modeli de bunu yapar. Farkları:
 
@@ -150,8 +150,8 @@ esi
   Okuması: "tam sayı (int) bir dizi (liste) değil." Alıştırma defterinin ilk bozuk kodu bu.
 - Parçanın başındaki boşluk da parçaya dahil: ` bir` ile `bir` sözlükte iki ayrı parça.
 
-**Dört kelime, altı parça.** `bir` ve `çalışma` sözlükte tek parça olarak var; çok sık
-geçtikleri için. `Sessiz` ve `kafesi` ise ikiye bölünmüş. Bölünme yerleri dilbilgisine
+**Dört kelime, altı parça.** `bir` ve `çalışma` sözlükte tek parça olarak var, çünkü çok
+sık geçiyorlar. `Sessiz` ve `kafesi` ise ikiye bölünmüş. Bölünme yerleri dilbilgisine
 uymuyor (`kaf` + `esi`, `kafe` + `si` değil). Sözlük dilbilgisinden değil, metinlerde
 **hangi harf dizilerinin sık geçtiğinden** kurulmuş.
 
@@ -199,7 +199,7 @@ unutmuyor, **hiç görmüyor**.
 
 Türkçe için bunun iki sonucu var:
 
-- Aynı sözü söylemek için daha çok parça harcadığımız için pencere **daha çabuk dolar**.
+- Aynı sözü daha çok parçayla söylediğimiz için pencere **daha çabuk dolar**.
 - Ücretli modellerde fiyat parça başınadır; aynı iş Türkçe yapılınca **daha pahalıya** gelir.
 
 Bir not: her modelin kendi parça sözlüğü var. `o200k_base` bir örnek (bazı OpenAI
@@ -379,7 +379,7 @@ tatlı 0.2
 Olasılıkları topla: 0.4 + 0.2 + 0.2 + 0.2 = **1**. Her zaman 1 etmeli; çünkü "çok"tan sonra
 **bir şey** mutlaka geliyor ve bunlar bütün seçenekler.
 
-Konu 1 Adım 8'deki çubuk grafiğin aynısı:
+Şimdi bunları Konu 1 Adım 8'deki gibi bir çubuk grafikle çizelim:
 
 ```python
 import matplotlib.pyplot as plt
@@ -456,7 +456,7 @@ kahve ortalama tatlılar güzel yazın bahçede oturmak için en
   değişkenini kullanmıyoruz; liste yalnızca kaç kez döneceğini söylüyor.
 - `kelime = sonraki_kelime(kelime)`: döngünün kalbi. Bulunan kelime, bir sonraki turda
   **yeni hedef** oluyor. Bu satırı `yeni = sonraki_kelime(kelime)` diye yazıp cümleye `yeni`'yi
-  eklersen ama `kelime`'yi güncellemeyi unutursan model hep aynı kelimeye bakar ve aynı kelimeyi tekrarlar
+  eklersen ve `kelime`'yi güncellemeyi unutursan, döngü hep aynı kelimeye bakar ve aynı kelimeyi tekrarlar
   ("kahve ortalama ortalama ortalama..."). Alıştırma defterinin 5. bozuk kodu bu.
 - `cumle = cumle + " " + kelime`: cümlenin sonuna bir boşluk ve yeni kelimeyi ekler.
 
@@ -525,7 +525,7 @@ Adım 3'teki olasılığın aynısı. Biz ayrıca bir olasılık vermedik: liste
 listede çok yer kapladığı için zarda da sık çıkıyor. (Bilgisayarda bu hücreyi 10 000 kez
 çalıştırdık: "güzel" yaklaşık 4 000 kez, öbür üçü yaklaşık 2 000'er kez çıktı.)
 
-Adım 4'teki fonksiyon gibi listeyi Adım 2'deki fonksiyondan alır:
+Yeni fonksiyon da, Adım 4'teki gibi, listeyi Adım 2'deki fonksiyondan alır:
 
 ```python
 def sonraki_kelime_zarla(hedef):
@@ -757,7 +757,7 @@ Klasörde `pano.txt`'yi aç, üç bölümü yan yana oku ve tasarımcı gözüyl
   birbirine benzeyen üç fikir, tek fikirden farksız.
 - 1.5'teki sloganlardan **kullanılabilecek** olan var mı? Kaç tanesi? Kullanılamayanların
   sorunu ne: anlamsız mı, dilbilgisi bozuk mu, konudan mı kopmuş?
-- Hangi sıcaklığın üç sloganı birbirinden daha farklı? Hangisininki aynı kalıbın tekrarı gibi?
+- Hangi sıcaklıkta üç slogan birbirinden en çok ayrılıyor? Hangisinde aynı kalıp tekrarlanıyor gibi?
 - Önce fikir toplayıp sonra son metni yazdıracak olsan hangi sırayla hangi sıcaklıkları
   kullanırdın?
 
@@ -877,8 +877,8 @@ Python bir hata verdiğinde en alttaki satır en önemlisidir: önce hatanın **
 
 Cevaplar notun en sonunda. Önce kendin düşün.
 
-1. "Sessiz bir çalışma kafesi" 6 parça, "A quiet cafe for working" 5 parça. Aynı uzunlukta
-   bir Türkçe ve bir İngilizce metin, aynı bağlam penceresine sığar mı?
+1. "Sessiz bir çalışma kafesi" 6 parça, "A quiet cafe for working" 5 parça. Aynı sözü
+   söyleyen bir Türkçe ve bir İngilizce metinden hangisi bağlam penceresini daha çabuk doldurur?
 2. Adım 3'te `toplam = len(sonra_gelenler)` yerine `toplam = len(sayac)` yazsaydık
    "güzel"in olasılığı kaç çıkardı? Neden yanlış?
 3. Adım 2'de hedefi `"Biraz"` (büyük harfle) yazarsan ne olur? Hata mesajı alır mısın?
@@ -897,12 +897,12 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 ## Bu konuda öğrendiklerin
 
 - **Belirteç.** Model metni kelime kelime değil, parça parça okur ve her parçayı bir sayı
-  olarak görür. Türkçe ekler yüzünden daha çok parçaya bölünür: bağlam penceresi daha çabuk
+  olarak görür. Türkçe, ekleri yüzünden daha çok parçaya bölünür: bağlam penceresi daha çabuk
   dolar, ücretli modellerde daha pahalıdır.
 - **Sonraki parçanın tahmini.** Bir kelimeden sonra hangi kelimelerin geldiğini sayarak
   küçük bir dil modeli kurduk. "biraz"dan sonra hep şikâyet geliyordu; "çok"tan sonra en sık
   "güzel".
-- **Olasılık dağılımı.** Adet / toplam. Bütün seçeneklerin olasılığı toplamı 1. Gerçek model
+- **Olasılık dağılımı.** Adet / toplam. Bütün seçeneklerin olasılıklarının toplamı 1. Gerçek model
   her adımda sözlüğündeki her parça için böyle bir dağılım hesaplar.
 - **Metin = tahminin tekrarı.** Seçilen kelime bir sonraki turun hedefi olur. Anlam yok,
   yalnızca sayma var; büyük modellerde de temel iş bu. Uydurma buradan çıkar.
@@ -955,9 +955,8 @@ geçmeden önceki son kavramsal adım.
 
 ## Kendini dene — cevaplar
 
-1. Aynı **parça** sayısına kadar sığar; ama aynı uzunlukta (aynı sözü söyleyen) Türkçe metin
-   daha çok parça tuttuğu için pencereye daha az Türkçe **söz** sığar. Pencere kelimeyle
-   değil, parçayla ölçülür.
+1. Türkçe olan. Pencere kelimeyle değil, **parçayla** ölçülür. Aynı sözü söyleyen Türkçe metin
+   daha çok parça tuttuğu için pencereye daha az Türkçe **söz** sığar.
 2. `len(sayac)` farklı kelime sayısı, yani 4. "güzel" 2 / 4 = 0.5 çıkardı; öbürleri 0.25.
    Toplam 0.5 + 0.25 + 0.25 + 0.25 = 1.25: 1'i geçiyor. Olasılık "kaç kez geçti / toplam kaç
    kelime geldi" olmalı; toplam 5.
@@ -972,7 +971,7 @@ geçmeden önceki son kavramsal adım.
    olasılığı düşük, çoğu zaman anlamsız parçaları da seçtirir. Birkaç ilginç slogan çıkmış
    olabilir; ama yanlarında kaç tane bozuk slogan var? Karşılaştırmak için aynı soruyu 0.7'de
    de sormalı.
-7. Düşük. Her ay aynı ton ve biçim isteniyor; tutarlılık, şaşırtıcılıktan önemli. Düşük
+7. Düşük. Her ay aynı ton ve biçim isteniyor; tutarlılık şaşırtıcılıktan daha önemli. Düşük
    sıcaklıkta aynı soru benzer cevaplar verir.
 8. Model doğru cevabı değil, sorudan sonra **en olası** görünen metni üretir. Bir kişinin
    özgeçmişi eğitim verisinde az geçer ya da hiç geçmez; model yine akıcı bir metin yazar,
