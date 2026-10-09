@@ -7,17 +7,23 @@ Ahmet Emre Aladağ
 
 ## Dönemin haritası
 
-Bu ders GİTA2112'nin devamı. Orada kodun temelini attık; burada yapay zekayı
-**kendi kodumuzdan** kullanacağız.
+![Birinci yarıda 01–06 kavram konuları, ortada vize, ikinci yarıda 07–12 üretim konuları, sonda final projesi](https://raw.githubusercontent.com/aladagemre/gita3111/main/00-hazirlik/gorseller/donem_haritasi.png)
 
-- **Önce:** bu şeyler nasıl çalışıyor — veri, web servisleri, temsil, dil modelleri, üretken modeller
-- **Ortada:** vize
-- **Sonra:** onlarla ne üretiyoruz — görsel, video, üretim hatları
-- **Sonda:** kendi üretim aracını kurduğun final projesi
+- Bu ders GİTA2112'nin devamı: orada kodun temelini attık, burada yapay zekayı **kendi kodumuzdan** kullanacağız
+- **Birinci yarı:** bu şeyler nasıl çalışıyor? **İkinci yarı:** onlarla ne üretiyoruz?
+- Her konunun sonunda elinde çalışan bir çıktı olacak; hiçbir derste sadece dinlemeyeceğiz
 
-Dersi haftalara değil **konulara** böldük. Bir konu bir dersten kısa da sürebilir,
-uzun da. Her konunun sonunda elinde çalışan bir çıktı olacak; hiçbir derste sadece
-dinlemeyeceğiz.
+-----
+
+## Her ders aynı sırayla akıyor
+
+![Bir dersin altı bölümü: nabız yoklaması, ödev gösterimi, kavram, birlikte kodlama, kendi başına yazma, toparlama](https://raw.githubusercontent.com/aladagemre/gita3111/main/00-hazirlik/gorseller/bir_ders.png)
+
+- Ders çevrimiçi: önce slaytlarla kavram, sonra defterde **birlikte** kod
+- Ben ekranımda yazarım, sen aynısını **kendi bilgisayarında** yazarsın
+- Takıldığında beklemeden **sohbete yaz**; başta küçük bir anket "çalıştırabildim mi?" diye sorar
+
+Bugün farklı: bugün kod yok, kurulumu birlikte göreceğiz.
 
 -----
 
@@ -27,7 +33,7 @@ dinlemeyeceğiz.
 - **Final projesi %60** — kendi kurduğun üretim aracı + üretim günlüğü + sunum
 - **Konu ödevleri: puansız**
 
-Ödevler puansız ama sıra listesi var: herkes dönem boyunca 2-3 kez sınıfta
+Ödevler puansız ama sıra listesi var: herkes dönem boyunca 2-3 kez ekranını paylaşıp
 çıktısını gösterecek.
 
 Çalışmayan kodla gelmek sorun değil. Hiç denememiş gelmek sorun.
@@ -36,56 +42,31 @@ dinlemeyeceğiz.
 
 ## Yapay zeka ile kod yazmak (vibecoding)
 
-Geçen dönem Antigravity ile araç ürettiniz. Bu derste de kullanacağız — ama nerede
-serbest, nerede yasak, baştan net olsun:
+![Aynı dönem haritası: kavram konularında serbest ama anlamadan geçme, vizede yasak, üretim konularında ve finalde serbest ve bekleniyor](https://raw.githubusercontent.com/aladagemre/gita3111/main/00-hazirlik/gorseller/yapay_zeka_kurali.png)
 
-- **Vizede yasak.** Ölçtüğümüz şey senin kendi programlama becerin.
-- **Üretim konularında (dönemin ikinci yarısı) serbest ve bekleniyor.** Orada
-  ölçtüğümüz şey aracı yönetme becerisi.
-- **Kavram konularında serbest** — ama unutma: vizede tek başına yazacaksın.
-  Aracın yazdığını anlamadan geçmek kendi ayağına sıkmaktır.
+- **Vizede yasak:** ölçtüğümüz şey senin kendi programlama becerin
+- **Kavram konularında serbest:** ama vizede tek başına yazacaksın; aracın yazdığını anlamadan geçmek kendi ayağına sıkmak
+- **Üretim konularında ve finalde serbest ve bekleniyor:** kullandığın her yeri üretim günlüğüne yaz
 
-Kullandığın her yerde üretim günlüğüne yazacaksın.
-
-**Güvenlik kuralı:** yapay zeka aracının terminal komutlarını **onaysız çalıştırmasını
-kapat.** Her komutu okuyup sen onayla. Araç `anahtar.txt` dosyanı okuyup bir yere
-gönderebilir; bunu durduran şey senin onayın.
+Sohbete yaz: geçen dönem Antigravity'yle ne ürettin? Tek cümle.
 
 -----
 
-## Bu dersten sonra: kurulum
+## Bu dersten sonra evde: kurulum
 
-Gelecek dersten itibaren (Konu 01) her derste kod çalıştıracağız. Bunun için
-bilgisayarında birkaç araç kurulu olmalı.
+![git, uv, VS Code ve Cloudflare'in gita3111 klasöründe buluşması](https://raw.githubusercontent.com/aladagemre/gita3111/main/00-hazirlik/gorseller/kurulum_haritasi.png)
 
-- Şimdi adımları **birlikte göreceğiz**; kurulumu **bu dersten sonra evde** yapacaksın
-- Evde bu slaytlara değil, **yazılı yönergeye** bakarak ilerle: `00-hazirlik/kurulum-yonergesi.md`
-- Toplam süre yaklaşık **30–45 dakika**
-- Gelecek dersin başında herkesin kurulumunun çalıştığını **birlikte kontrol edeceğiz**
+- Gelecek dersten (Konu 01) itibaren her derste kod çalıştıracağız; önce bu dört şey kurulu olmalı
+- Adımları şimdi **birlikte göreceğiz**; kurulumu **evde**, slaytlara değil **yazılı yönergeye** bakarak yapacaksın: `00-hazirlik/kurulum-yonergesi.md` (yaklaşık 30 dakika)
+- Gelecek dersin başında herkesin kurulumunu **birlikte kontrol edeceğiz**
 
-Takıldığın yerde dur, ekran görüntüsü al ve bana yaz. Yarım kalmış kurulumla derse
-gelmek sorun değil; **hiç denememiş olarak gelmek sorun.**
-
------
-
-## Ne kuracağız?
-
-| Ne | Ne işe yarıyor |
-|---|---|
-| **uv** | Python'ı ve kütüphaneleri senin yerine kuran araç |
-| **git** | Ders deposunu indiren ve her yeni konuda güncelleyen araç |
-| **gita3111 klasörü** | Ders deposunun bilgisayarındaki kopyası |
-| **VS Code** | Kod yazacağın editör (geçen dönemden duruyorsa dokunma) |
-| **Cloudflare hesabı** | Konu 02'den itibaren kodla yapay zekaya bağlanmak için. **Ücretsiz.** |
-
-Python'ı ayrıca kurmana gerek yok; uv onu da hallediyor.
+Sohbete yaz: Windows mu kullanıyorsun, macOS mu?
 
 -----
 
 ## Önce terminal: üç komut yeter
 
-Bütün kurulum terminalde yapılıyor. Korkutucu görünür ama bu dönem neredeyse hep aynı
-üç şeyi yapacağız:
+![Klasör basamakları: gita3111'de duran terminal, cd ile aşağı, cd .. ile yukarı, pwd ile konumu yazdırma](https://raw.githubusercontent.com/aladagemre/gita3111/main/00-hazirlik/gorseller/terminal_klasor.png)
 
 ```text
 cd klasor_adi      bir klasörün içine gir
@@ -94,10 +75,7 @@ pwd                neredeyim? (PowerShell'de de aynı)
 ```
 
 - **Terminali açmak:** Windows'ta Başlat → `PowerShell`; macOS'ta Cmd+Boşluk → `Terminal`
-- Komutu yaz ya da yapıştır, **Enter**'a bas
-- Terminal her zaman **bir klasörün içinde** durur. Komutlar o klasöre göre çalışır.
-
-Bu dönemin en sık hatası "yanlış klasördeyim" olacak. `pwd` senin pusulan.
+- Bu dönemin en sık hatası "yanlış klasördeyim" olacak; `pwd` senin pusulan
 
 -----
 
@@ -148,18 +126,13 @@ bir pencere açılır. **Yükle** de.
 
 ## git ne işe yarıyor?
 
+![1. derste git clone ile depo bir kez iner; sonraki derslerde git pull yalnızca yeni konuyu getirir](https://raw.githubusercontent.com/aladagemre/gita3111/main/00-hazirlik/gorseller/clone_pull.png)
+
 Ders materyali bir **depoda** duruyor: github.com/aladagemre/gita3111
 
-- Dönem başında depoda yalnızca ilk konular var
-- Yeni konular geldikçe depoya ekliyorum
-- Sen her seferinde klasörü baştan indirmiyorsun; **git yalnızca yeni ve değişen dosyaları** getiriyor
-
-İki komut bilmen yeterli:
-
-| Komut | Ne zaman | Ne yapar |
-|---|---|---|
-| `git clone ...` | Dönemde **bir kez** | Depoyu bilgisayarına indirir |
-| `git pull` | **Her dersten önce** | Yeni konuları indirir |
+- `git clone` → dönemde **bir kez**: depoyu bilgisayarına indirir
+- `git pull` → **her dersten önce**: yalnızca yeni ve değişen dosyaları getirir
+- Yeni konular geldikçe depoya ekliyorum; klasörü baştan indirmen gerekmiyor
 
 -----
 
@@ -183,55 +156,23 @@ Masaüstünde artık `gita3111` adında bir klasör var.
 
 ## Deponun içi
 
-```text
-gita3111/
-├── pyproject.toml              ← dersin kütüphane listesi
-├── anahtar.txt                 ← sen oluşturacaksın (Adım 6)
-├── 00-hazirlik/                ← bu konu
-│   ├── kurulum-yonergesi.md
-│   ├── ilk_defter.ipynb
-│   └── ornekler/kurulum_testi.py
-├── 01-veri-ve-kelime-bulutu/
-│   ├── ders.ipynb              ← derste birlikte çalıştıracağımız defter
-│   ├── alistirma.ipynb         ← kendi başına çözeceğin alıştırmalar
-│   ├── ders_notu.md            ← evde okuyacağın konu notu
-│   ├── slaytlar.md
-│   └── veri/   odevler/
-├── 02-api-ile-konusmak/
-└── ...
-```
+![gita3111 klasör ağacı: pyproject.toml, .venv, anahtar.txt ve konu klasörleri; 01 klasörünün içinde ders.ipynb, alistirma.ipynb, ders_notu.md, veri ve odevler](https://raw.githubusercontent.com/aladagemre/gita3111/main/00-hazirlik/gorseller/depo_agaci.png)
 
-- Her konu **kendi klasöründe**, başında sıra numarası var
-- Konuların başında hafta değil **sıra** numarası var: bir konu bir dersten kısa da sürebilir, uzun da
-- Her konu klasöründe aynı düzen: ders defteri, alıştırma defteri, not, slayt, veri, ödev
+- Her konu **kendi klasöründe**; baştaki numara hafta değil **sıra**
+- Her konu klasöründe aynı düzen: ders defteri, alıştırma defteri, konu notu, veri, ödev
+- Turuncular depoda yok, **sende oluşur**: `git pull` onlara dokunmaz
 
 -----
 
 ## Depo tek bir uv projesi
 
-`gita3111` klasöründe bir `pyproject.toml` dosyası var:
+![pyproject.toml'daki Python sürümü ve kütüphane listesi, uv sync ile .venv ortamına dönüşür](https://raw.githubusercontent.com/aladagemre/gita3111/main/00-hazirlik/gorseller/uv_proje.png)
 
-```toml
-[project]
-name = "gita3111"
-version = "0.1.0"
-requires-python = ">=3.13,<3.15"
-dependencies = [
-    "matplotlib>=3.10",
-    "requests>=2.32",
-    "scikit-learn>=1.6",
-    "wordcloud>=1.9",
-]
-```
-
-- Bu dosya dersin **hangi Python'u** ve **hangi kütüphaneleri** kullandığını yazar
-- `gita3111` klasöründe `uv sync` dersen uv bu dosyayı okur, eksik ne varsa **kendisi kurar**
-  ve `gita3111` klasöründe `.venv` adlı tek bir ortam oluşturur
-- Defteri açınca VS Code'a "bu ortamı kullan" diyeceğiz (Adım 5)
+- `pyproject.toml` dersin **hangi Python'u** ve **hangi kütüphaneleri** kullandığını yazar
+- `uv sync` bu listeyi okur, eksikleri kurar ve `gita3111` içinde **tek bir** `.venv` ortamı oluşturur
 - Sen hiçbir zaman "şu kütüphaneyi kur" diye uğraşmazsın
 
-Tek şart: komutu **`gita3111` klasörünün ya da bir konu klasörünün içinden** çalıştırmak.
-uv bu dosyayı bulunduğun klasörde ve onun üstündeki klasörlerde arar.
+Tek şart: komutu `gita3111` klasörünün ya da bir konu klasörünün **içinden** ver.
 
 -----
 
@@ -260,21 +201,23 @@ KURULUM TAMAM
 **KURULUM TAMAM** görmüyorsan betik neyin eksik olduğunu zaten yazıyor. Çıktının ekran
 görüntüsünü al, derse onunla gel.
 
+Sohbete yaz: aynı komutu bir üstteki `gita3111` klasöründe yazsan ne olur?
+
 -----
 
 ## Yanlış klasörden çalıştırırsan
 
-`gita3111` klasöründe durup testi çalıştırmayı denersen:
+`gita3111` klasöründe durup aynı komutu yazarsan:
 
 ```text
-[EKSİK] Doğru klasördesin — şu an: .../Desktop/gita3111
-      -> Önce `cd gita3111/00-hazirlik` yaz, sonra `uv run ornekler/kurulum_testi.py`.
+error: Failed to spawn: `ornekler/kurulum_testi.py`
+  Caused by: No such file or directory (os error 2)
 ```
 
-Bu dönem göreceğin hataların çoğu bu türden olacak:
+`ornekler` klasörü `00-hazirlik`'in içinde; `gita3111`'de öyle bir klasör yok.
 
 - **"No such file or directory"** → büyük ihtimalle yanlış klasördesin
-- **"No module named ..."** → büyük ihtimalle yine yanlış klasördesin; uv `pyproject.toml` dosyasını bulamadı
+- **"No module named ..."** → `gita3111`'in dışındasın ya da defterde `.venv` seçili değil
 - Önce `pwd` yaz, nerede olduğuna bak
 
 Hatanın sebebi çoğu zaman kodda değil, **nerede durduğunda.**
@@ -331,37 +274,18 @@ Bu dönem kodu **defterlerde** (notebook, `.ipynb`) çalıştıracağız: kod k�
 - VS Code'da sol menüden **Extensions** → **Python** ve **Jupyter** eklentilerini kur (ikisi de Microsoft'un)
 - **File → Open Folder** ile `gita3111` klasörünü aç
 
-VS Code'un içinde terminal de var: **Terminal → New Terminal**.
+VS Code'un içinde terminal de var: **Terminal → New Terminal**. Bu terminal
+**zaten `gita3111` klasöründe** açılır; dönem boyunca komutları buradan yazmak en kolayı.
 
 -----
 
 ## İlk defterin
 
-Önce terminalde ortamı hazırla:
+![ilk_defter.ipynb'deki grafik hücresi ve çalıştırınca altında çıkan çubuk grafik](https://raw.githubusercontent.com/aladagemre/gita3111/main/00-hazirlik/gorseller/ilk_defter.png)
 
-```text
-cd gita3111
-uv sync
-```
-
-Sonra VS Code'da **File → Open Folder** ile `gita3111` klasörünü aç, `00-hazirlik/ilk_defter.ipynb` dosyasını aç:
-
-- Sağ üstte **Select Kernel** → **Python Environments** → `.venv` seç
-- Bir hücreye tıkla, **Shift + Enter**: hücre çalışır, sonucu altında görünür
-- Grafik hücresindeki iki listeyi kendi verinle değiştir ve yeniden çalıştır:
-
-```python
-import matplotlib.pyplot as plt
-
-gunler = ["Pzt", "Sal", "Çar", "Per", "Cum"]
-saatler = [3, 7, 2, 8, 5]
-
-plt.bar(gunler, saatler)
-plt.title("Bu hafta kaç saat çizim yaptım?")
-plt.show()
-```
-
-Değiştirmeden önce defteri kopyala: `benim_defterim.ipynb`.
+- VS Code'un terminalinde `uv sync` yaz (ortam hazır olsun)
+- `00-hazirlik/ilk_defter.ipynb`'i aç; sağ üstte **Select Kernel** → **Python Environments** → `.venv`
+- Önce defteri `benim_defterim.ipynb` adıyla kopyala; kopyada turuncu satırları kendi verinle değiştir, **Shift + Enter**
 
 -----
 
@@ -405,13 +329,23 @@ Anahtarı kaydettikten sonra kurulum testini bir kez daha çalıştır: Cloudfla
 
 -----
 
+## Güvenlik: komutu sen onayla
+
+Yapay zeka destekli kod aracı (Antigravity gibi) terminalde kendi başına komut çalıştırabilir.
+
+- Aracın komutları **onaysız çalıştırmasını kapat**
+- Her komutu **okuyup sen onayla**
+- Araç `anahtar.txt` dosyanı okuyup bir yere gönderebilir; bunu durduran şey senin onayın
+
+-----
+
 ## Sık karşılaşılan sorunlar
 
 | Belirti | Sebep | Çözüm |
 |---|---|---|
 | `uv` / `git` tanınmıyor | Kurulumdan sonra terminal yenilenmedi | Terminali kapat, yeniden aç |
 | İnternet hatası (`uv sync`, `git clone`) | Üniversite ağı bazı adresleri kapatıyor | Telefon internetini paylaşıp tekrar dene |
-| "No such file or directory" | Yanlış klasördesin | `pwd` ile bak, `cd gita3111/00-hazirlik` |
+| "No such file or directory" | Yanlış klasördesin | `pwd` ile bak, doğru klasöre `cd` ile gir |
 | "Repository not found" | Depo adresi yanlış yazıldı | Adresi kopyala-yapıştır yap |
 | Defterde **Select Kernel** listesinde `.venv` yok | `uv sync` çalıştırılmadı ya da VS Code'da alt klasör açıldı | `gita3111` klasöründe `uv sync`; VS Code'da `gita3111` klasörünü aç, listeyi yenile |
 | Cloudflare satırı HTTP 401 | Token yanlış kopyalandı | Yeni token üret, `anahtar.txt`'ye yapıştır |
@@ -429,22 +363,21 @@ Listede olmayan bir şey görürsen: ekran görüntüsü, bana mesaj.
 - [ ] VS Code'da `ilk_defter.ipynb` defterini açıp `.venv` çekirdeğiyle çalıştırdım, kendi verimle grafik çizdim
 - [ ] Cloudflare hesabım var; Account ID ve anahtarım `gita3111/anahtar.txt` dosyasında
 
-Altısı da tamamsa hazırsın. Gelecek dersin başında kurulum testini birlikte bir kez
+Beşi de tamamsa hazırsın. Gelecek dersin başında kurulum testini birlikte bir kez
 daha çalıştıracağız; herkesin ekranında **KURULUM TAMAM** görmeden kelime bulutuna
 geçmeyeceğiz.
 
 -----
 
-## Her dersten önce: üç adım
+## Her dersten önce: gir, çek, kur, aç
+
+![Dört adım: VS Code'da gita3111'i açıp terminali aç, git pull, uv sync, ders.ipynb'i .venv çekirdeğiyle aç](https://raw.githubusercontent.com/aladagemre/gita3111/main/00-hazirlik/gorseller/ders_ritmi.png)
+
+VS Code'un terminalinde:
 
 ```text
-cd gita3111
 git pull
 uv sync
 ```
 
-- `git pull` → yeni konuyu getirir
-- `uv sync` → yeni konunun kütüphaneleri varsa onları kurar
-- VS Code'da konunun `ders.ipynb` defterini aç, çekirdek olarak `.venv`'i seç
-
-Bu dönemin ritmi bu: **çek, kur, aç.**
+Bu dönemin ritmi bu. Gelecek ders kelime bulutuyla başlıyoruz.

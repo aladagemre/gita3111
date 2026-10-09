@@ -5,22 +5,21 @@ Ahmet Emre Aladağ
 
 -----
 
-## Geçen dönemden bugüne
+## Geçen hafta Python'u tazeledin, bugün gerçek bir metne uyguluyoruz
 
-- GİTA2112'de liste, sözlük, döngü ve `if` yazdınız; hepsi küçük, uydurma verilerle
-- Bugün aynı araçları **gerçek bir metne** uyguluyoruz: bir kafeye yazılmış 30 müşteri yorumu
-- Yeni olan tek şey ölçek: elle okunabilecek şeyi kodla saymak
-- Önce kavramları görsellerle konuşacağız, sonra deftere geçeceğiz
+- Geçen hafta: liste, sözlük, döngü ve `if` tekrarı; bir de kurulum
+- İlk defterde verisini değiştirip bir grafik çizdin; o grafiğin kodunu **bu konuda** öğreneceğiz
+- Bugün aynı araçlar, gerçek bir metin: bir kafeye yazılmış **30 müşteri yorumu**
+- Yeni olan tek şey ölçek: gözle okunabilecek şeyi kodla saymak
 
 -----
 
 ## Bugünün sorusu: müşteriler bu kafeyi nasıl anlatıyor?
 
-![30 müşteri yorumundan üretilmiş kelime bulutu](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/bulut.png)
-
 - Kafenin görsel kimliğini yenileyeceksin; tasarıma başlamadan önce müşteriyi dinlemek istiyorsun
 - 30 yorumu gözle okursun; 3000 yorum olsaydı?
-- Hedef bu görsel: kelimenin boyutu, kaç kez geçtiği
+- **Tahmin et, sohbete yaz:** yorumlarda en çok geçen üç kelime sence hangileri?
+- Cevabı sayarak bulacağız; tahminlerine dersin ortasında döneceğiz
 
 -----
 
@@ -40,6 +39,7 @@ Ahmet Emre Aladağ
 - `yer.` ile `yer`, `Sessiz,` ile `sessiz` bilgisayar için ayrı kelimeler
 - "sessiz" 8 kez geçiyor; tam bu yazılışıyla yalnızca **1** kez görünüyor
 - Temizlemeden sayarsak asıl bulguyu kaçırırız
+- **Sence?** Büyük harfleri küçültmek çözer mi? "İnternet" küçülünce ne olur?
 
 -----
 
@@ -63,14 +63,13 @@ Ahmet Emre Aladağ
 
 -----
 
-## Sözlük anahtarla açılır, sıra numarasıyla değil
+## Sayaç bir sözlük: kelime anahtar, sayı değer
 
-![Liste ile sözlüğün karşılaştırması: anahtar ve değer kutuları](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/sozluk.png)
+![Sayaç sözlüğü: dört kelime ve kaç kez geçtikleri, bir de tahmin sorusu](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/sozluk.png)
 
-- Liste sırayla numaralanır: 0, 1, 2…
 - Sözlükte her **anahtarın** bir **değeri** var: "sessiz" → 8
-- `sayac[0]` diye sorarsan: `KeyError: 0` — "0 diye bir anahtar bulamadım"
-- Bu konunun tek kritik cümlesi: **sözlükten veri anahtarla alınır**
+- Değeri almak için anahtarı söylersin: "sessiz" diye sorarsan 8 gelir
+- **Tahmin et:** "ilk kelime" diye 0 ile sorarsan ne olur? Cevap defterde, ilk hücreden başlayarak
 
 -----
 
@@ -81,7 +80,7 @@ Ahmet Emre Aladağ
 - Her kelime için tek soru: "bu anahtar sayaçta var mı?"
 - Yoksa 1 yazılır, varsa üstüne 1 eklenir
 - Bütün yorumlar bitince elimizde 196 anahtarlı bir sözlük olur
-- Defterde önce bunu **elle** yazacağız, sonra Python'un hazır aracı `Counter` aynı sonucu verecek
+- Defterde önce bunu **elle** yazacağız; sonra Python'un hazır sayacıyla (`Counter`) karşılaştıracağız
 
 -----
 
@@ -92,7 +91,16 @@ Ahmet Emre Aladağ
 - **için, var, bir, ama, çok, her** her Türkçe metinde üste çıkar; kafe hakkında bir şey söylemez
 - Bunlara **durak kelime** denir; hazır bir listeyle eleriz
 - Eledikten sonra: **sessiz · çalışmak · yer · priz · internet · öğrenci**
-- Müşteriler kafeyi kahvesiyle değil, **sessiz bir çalışma yeri** olarak anlatıyor
+
+-----
+
+## Müşteriler kafeyi kahvesiyle değil, sessizliğiyle anlatıyor
+
+![Durak kelimeler elendikten sonra 30 yorumun kelime bulutu](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/bulut.png)
+
+- Sohbete yazdığın tahminlere dön: kaç kişi "kahve" demişti?
+- Bulutta "kahve" küçük; büyük olanlar **sessiz, çalışmak, yer, priz**
+- Tasarım için anlamı: yeni kimlik "kahve" değil, **sessiz bir çalışma yeri** vaadi üzerine kurulabilir
 
 -----
 
@@ -103,37 +111,6 @@ Ahmet Emre Aladağ
 - Konum, renk ve yön rastgele; her çizimde değişir
 - "sessiz ortada, demek ki önemli" ya da "priz mavi, demek ki olumlu": ikisi de yanlış okuma
 - İzleyici her görsel farkın bir anlamı olduğunu varsayar; bu yanlış okumayı önlemek **tasarımcının işi**
-
------
-
-## Ekleri toplayınca kahve prizi geçiyor
-
-![Kahve geçen beş farklı kelimenin toplamının 6 etmesi, priz 5](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/kahve_toplam.png)
-
-- `kahve`, `kahvesi`, `kahvenin` bulutta ayrı kelimeler; tek başına "kahve" yalnızca 2
-- İçinde "kahve" geçenleri toplayınca **6**: priz 5'i geçiyor
-- Bulgumuz çöktü mü? Sayı bunu söyleyemez; yorumları okumak gerek
-
------
-
-## Kahve çok anılıyor ama az övülüyor
-
-![Kahve geçen altı yorumun alıntı kartları ve tonları](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/kahve_yorumlar.png)
-
-- Sayı **kaç kez** geçtiğini söyler, **nasıl** geçtiğini söylemez
-- Üç yorum ılık: "fena değil", "ortalama", "biraz pahalı"
-- Kahveyi doğrudan öven **tek** yorum var. Bulgu çökmedi, güçlendi
-
------
-
-## Bulutta görünmeyen bulgu: iç mekân karanlık
-
-![Işık geçen üç gerçek yorumun alıntı kartları](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/isik_kartlar.png)
-
-- "ışık" bulutta neredeyse görünmüyor
-- Okuyunca somut bir tasarım sorunu çıkıyor: çalışmaya gelinen bir yerde içerisi okumak için karanlık
-
-> Sayma **nereye bakacağını** söyler. Bulguyu **bağlamda okuyarak** bulursun.
 
 -----
 
@@ -148,11 +125,23 @@ Ahmet Emre Aladağ
 
 -----
 
+## Ekleri toplayınca kahve prizi geçiyor. Bulgumuz çöktü mü?
+
+![Kahve geçen beş farklı kelimenin toplamının 6 etmesi, priz 5](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/kahve_toplam.png)
+
+- `kahve`, `kahvesi`, `kahvenin` bilgisayar için ayrı kelimeler; tek başına "kahve" yalnızca 2
+- İçinde "kahve" geçenleri toplayınca **6**: priz 5'i geçiyor
+- **Tahmin et, sohbete yaz:** bulgu çöktü mü, çökmedi mi? Sayı bunu söyleyebilir mi?
+- Cevabı defterde yorumların kendisini okuyarak bulacağız
+
+-----
+
 ## Şimdi deftere geçiyoruz
 
 `ders.ipynb`, aynı yolu kodla yürüyoruz:
 
-- **Isınma:** geçen dönemin iki hatası (sözlüğü anahtarla açmak, `return`'ün yeri)
+- **Önce (yalnız ilk oturum):** kurulum testi; herkesin ekranında **KURULUM TAMAM**
+- **Isınma:** geçen dönemden iki bozuk kod; hatayı önce sen bul
 - **Adım 1–2:** dosyayı aç → `metin`; böl, Türkçe küçült, noktalamayı at → `kelimeler`
 - **Adım 3–5:** elle say → `sayac`; `Counter` ve `most_common`; durak kelimeleri ele → `anlamli`
 - **Adım 6–8:** kelime bulutu; kahve ve ışık yorumlarını oku; çubuk grafik
@@ -165,6 +154,27 @@ Ahmet Emre Aladağ
 - Sıra önemli: atlanan hücrenin değişkeni yoktur → `NameError`
 - Defter kendi klasöründe çalışır; `veri/...` bu klasörün içindeki `veri` demek
 - Hata mesajında üç soru: **türü ne**, **hangi satır** (ok işareti), **tırnak içinde ne var**
+
+-----
+
+## Kahve çok anılıyor ama az övülüyor
+
+![Kahve geçen altı yorumun alıntı kartları ve tonları](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/kahve_yorumlar.png)
+
+- Defterde Adım 7'de okuduk: sayı **kaç kez** geçtiğini söyler, **nasıl** geçtiğini söylemez
+- Üç yorum ılık: "fena değil", "ortalama", "biraz pahalı"; kahveyi doğrudan öven **tek** yorum var
+- Bulgu çökmedi, güçlendi: kimlikte kahveyi öne çıkarmak, müşterinin söylemediğini vaat etmek olur
+
+-----
+
+## Bulutta görünmeyen bulgu: iç mekân karanlık
+
+![Işık geçen üç gerçek yorumun alıntı kartları](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/isik_kartlar.png)
+
+- "ışık" bulutta neredeyse görünmüyor: yalnızca 2 kez
+- Okuyunca somut bir tasarım sorunu çıkıyor: çalışmaya gelinen bir yerde içerisi okumak için karanlık
+
+> Sayma **nereye bakacağını** söyler. Bulguyu **bağlamda okuyarak** bulursun.
 
 -----
 
@@ -189,4 +199,4 @@ Sonra tek cümle yaz: eleme öncesi en büyük kelimeler neydi, sonra ne oldu?
 3. **Temizlik olmadan sonuç yanıltır.** Elenmemiş bulut metnin değil dilin fotoğrafıdır
 4. **Sayı nereye bakacağını söyler.** Bulguyu kelimeyi bağlamında okuyarak bulursun
 
-Sıradaki konu (Konu 2): kod ile internete bağlanıyoruz. Cloudflare hesabınız ve anahtarınız hazır olsun.
+Sıradaki konu (Konu 2): kod ile internete bağlanıyoruz. Cloudflare hesabın ve anahtarın hazır olsun.

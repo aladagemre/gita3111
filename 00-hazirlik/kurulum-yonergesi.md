@@ -23,6 +23,21 @@ Python'ı ayrıca kurmana gerek yok — `uv` onu da hallediyor.
 
 ---
 
+## Başlamadan: terminalde üç komut
+
+Bütün kurulum terminalde yapılıyor. Terminal her zaman **bir klasörün içinde** durur ve
+komutlar o klasöre göre çalışır. Bu dönem neredeyse hep şu üçünü kullanacağız:
+
+```
+cd klasor_adi      bir klasörün içine gir
+cd ..              bir üst klasöre çık
+pwd                neredeyim? (PowerShell'de de aynı)
+```
+
+Bir komut "bulunamadı" derse önce `pwd` yaz: çoğu zaman sebep yanlış klasörde olmandır.
+
+---
+
 ## Adım 1 — `uv` kurulumu
 
 ### Windows
@@ -153,11 +168,11 @@ kutulara (**hücre**) bölünmüş; her hücreyi ayrı çalıştırıp sonucunu 
 2. VS Code'da sol menüden **Extensions**'ı aç; **Python** ve **Jupyter** eklentilerini kur
    (ikisinin de yayıncısı Microsoft).
 3. **File → Open Folder** ile `gita3111` klasörünü aç.
-4. Terminalde ortamı hazırla (Adım 4'te kurulum testini çalıştırdıysan bu zaten hazırdır,
-   yine de bir kez çalıştırmanın zararı yok):
+4. VS Code'un içindeki terminali aç: **Terminal → New Terminal**. Bu terminal zaten
+   `gita3111` klasöründe açılır (`pwd` yazıp bakabilirsin). Ortamı hazırla (Adım 4'te
+   kurulum testini çalıştırdıysan bu zaten hazırdır, yine de bir kez çalıştırmanın zararı yok):
 
 ```
-cd gita3111
 uv sync
 ```
 
@@ -231,6 +246,19 @@ Altı maddeyi de işaretlediysen hazırsın.
 
 ---
 
+## Dönem boyunca: her dersten önce
+
+VS Code'da `gita3111` klasörünü aç, **Terminal → New Terminal** ile terminali aç ve:
+
+```
+git pull
+uv sync
+```
+
+Sonra konunun `ders.ipynb` defterini aç, çekirdek olarak `.venv`'i seç. Kısaca: **gir, çek, kur, aç.**
+
+---
+
 ## Sık karşılaşılan sorunlar
 
 **"uv tanınmıyor / command not found"**
@@ -240,9 +268,10 @@ Terminali kapatıp yeniden açmadın. Aç-kapat, tekrar dene.
 Üniversite ağındaysan bazı adresler kapalı olabilir. Telefon internetini paylaşıp tekrar dene.
 
 **Komutlar çalışıyor ama dosyayı bulamıyor diyor**
-Muhtemelen yanlış klasördesin. Komutları konunun klasörünün **içinden** çalıştırıyoruz:
-`cd gita3111/00-hazirlik` yazdığından emin ol. Nerede olduğunu görmek için `pwd` yaz
-(PowerShell'de de çalışır).
+Muhtemelen yanlış klasördesin. Kurulum testini `00-hazirlik` klasörünün **içinden**
+çalıştırıyoruz; `gita3111` klasöründe `uv run ornekler/kurulum_testi.py` yazarsan
+"No such file or directory" hatası alırsın. Nerede olduğunu görmek için `pwd` yaz
+(PowerShell'de de çalışır), sonra `cd 00-hazirlik` ile içeri gir.
 
 **`git clone` "Repository not found" ya da kullanıcı adı/şifre soruyor**
 Depo adresini yanlış yazmış olabilirsin; yukarıdan kopyala-yapıştır yap. Yine olmuyorsa bana yaz.

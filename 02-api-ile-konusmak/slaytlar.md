@@ -9,9 +9,9 @@ Ahmet Emre Aladağ
 
 ![Konu 1'de kod ve veri aynı bilgisayardaydı; Konu 2'de model uzakta](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/yerel_uzak.png)
 
-- **Konu 1'de** bulgu: müşteriler kafeyi **sessiz bir çalışma yeri** olarak anlatıyor
-- **Bu konuda** o kafenin yeni kimliği için uzaktaki bir modele soru soracağız
-- Dersin **kritik konusu**: Konu 4, 5, 8, 9, 10 ve 11 bunun üstüne kuruluyor
+- **Konu 1'in bulgusu:** müşteriler kafeyi **sessiz bir çalışma yeri** olarak anlatıyor
+- **Bugün** o kafe için uzaktaki bir modele soru soracağız
+- Dersin **kritik konusu**: sonraki konuların çoğu bunun üstüne kuruluyor
 
 -----
 
@@ -20,29 +20,21 @@ Ahmet Emre Aladağ
 **Kodumuz uzaktaki bir modele nasıl soru sorar, gelen cevabı nasıl okur?**
 
 - Soruyu paketleyip göndermek
-- Cevabın içinden metni çıkarmak
-- Bir şey bozulunca nerede bozulduğunu anlamak
-- Soruya bağlam yazmanın cevabı değiştirip değiştirmediğine bakmak
+- Gelen cevabın içinden metni çıkarmak
+- Bir şey bozulunca bunu anlamak
+- Soruya bağlam yazınca cevabın değişip değişmediğine bakmak
+
+**Sohbete yaz:** bir sohbet sitesinde soruyu yazıp Enter'a bastığında sorun nereye gidiyor?
 
 -----
 
-## API bir garson gibidir
+## API, mutfağa giremeyen müşteri için bir garson
 
 ![Müşteri, garson ve mutfak; altta kodun, API ve model](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/api_garson.png)
 
 - Mutfağa (modele) giremezsin, siparişi garsona (API'ye) verirsin
-- Sohbet sitesinde Enter'a bastığında da olan bu; bugün arayüzü kaldırıp siparişi kendimiz veriyoruz
-- Mutfak başkasının: bu yüzden internet, kota ve kimlik gerekir
-
------
-
-## Bir soru beş durakta gidip geliyor
-
-![Hazırlık, yol, kimlik, iş, dönüş](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/istek_yolculugu.png)
-
-- Giden pakette üç şey var: adres, başlık, gövde
-- Dönen pakette iki şey: bir durum kodu ve yanıtın kendisi
-- Bugün konuştuğumuz model Cloudflare'de çalışıyor
+- Sohbet sitesinde Enter'a basınca olan da bu; bugün siparişi arayüzsüz, koddan veriyoruz
+- Mutfak başkasının (Cloudflare): bu yüzden internet, kota ve kimlik gerekir
 
 -----
 
@@ -54,16 +46,14 @@ Ahmet Emre Aladağ
 - **Başlık**: ben kimim (anahtar burada gider)
 - **Gövde**: ne istiyorum (soru)
 
-Defterde üçü de sıradan Python değişkeni: bir metin, iki sözlük.
-
 -----
 
-## Anahtar senin imzan
+## Anahtar senin imzan: koda yazılmaz
 
 ![Anahtar ayrı dosyada; üç kural](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/anahtar_imza.png)
 
 - Başkasının eline geçerse **senin adına** istek atar, kotanı bitirir
-- Kod anahtarı `anahtar.txt`'den okur; defteri paylaşınca anahtar evde kalır
+- Cloudflare buna **token** diyor; derste "anahtar" diyoruz, ikisi aynı şey
 - Yanlışlıkla paylaştıysan panik yok: panelden silip yenisini üretmek bir dakika
 
 -----
@@ -72,10 +62,10 @@ Defterde üçü de sıradan Python değişkeni: bir metin, iki sözlük.
 
 ![yanit kutusunun içinde result, onun içinde response](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/yanit_katmanlari.png)
 
-- Isınmadaki sözlüğün aynısı; gerçek yanıt yalnızca daha kalabalık
-- Her satır **bir kat** iner: önce `result`, sonra `response`
-- Kat atlarsan: `KeyError: 'response'`
-- Sunucu bunu **JSON** olarak yollar: `true` → `True`, `null` → `None`
+- Konu 1'deki sözlüğün aynısı; tek fark, kutunun içinde kutu olması
+- Metin en içte: önce `result` katına, sonra `response` katına inersin
+
+**Tahmin et, sohbete yaz:** en dış kutudan doğrudan `response`'u istersen ne olur? Isınmada deneyeceğiz.
 
 -----
 
@@ -83,49 +73,19 @@ Defterde üçü de sıradan Python değişkeni: bir metin, iki sözlük.
 
 ![200, 401, 404, 429 kartları](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/durum_kodlari.png)
 
+- Gelen pakette iki şey var: **durum kodu** ve **yanıt**
 - İlk hane kime bakacağını söyler: **4xx senin tarafın**, **5xx sunucunun**
-- Bugün 401'i kendimiz, bilerek üreteceğiz
+- Kural: **200 değilse içine girme**; başarısız yanıtın içinde metin yok
 
 -----
 
-## Hatanın türü, yolculuğun nerede koptuğunu gösterir
-
-![Beş durak ve her birinin hata işareti](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/hata_nerede.png)
-
-- Durum kodu bile gelmediyse sorun internette
-- 401 geldiyse anahtarında
-- `KeyError` geldiyse sunucu işini yapmış, sen içine yanlış yoldan giriyorsun
-
-Hata mesajını **sondan** oku: en alt satır hatanın türü.
-
------
-
-## Önce durum koduna bak, sonra içine gir
-
-![Durum kodu 200 ise içine gir, değilse açıklamayı oku](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/okuma_sirasi.png)
-
-- Yanlış anahtarda `result` boş gelir (`None`)
-- `TypeError: 'NoneType' ...` görürsen yazım hatası arama: **istek başarısız olmuş**
-
------
-
-## Fonksiyon bir makine: soru girer, cevap metni çıkar
+## Fonksiyon bir makine: bir kez yaz, istediğin kadar sor
 
 ![modele_sor makinesi ve içindeki dört adım](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/fonksiyon_makine.png)
 
-- Her soru için aynı satırları yeniden yazmıyoruz
+- Bir soru için yaptığımız dört iş tek bir ada toplanıyor: `modele_sor`
 - Makineye yalnızca değişen şeyi veriyoruz: soruyu
-- Adı `modele_sor`; bundan sonraki konularda hep bunu kullanacağız
-
------
-
-## Bir kez yaz, istediğin kadar sor
-
-![Üç soru modele_sor'dan geçip cevaplar.txt dosyasına yazılıyor](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/dongu_dosya.png)
-
-- Sorular bir listede, döngü her birini sırayla sorar
-- Cevaplar tek dosyada toplanır: `cevaplar.txt`
-- Kodun asıl gücü: aynı işi elli kez yapmak, arayüzde yapamayacağın şey
+- Sonra elli soruyu döngüyle sorup cevapları tek dosyaya yazıyoruz: arayüzde yapamayacağın iş
 
 -----
 
@@ -133,20 +93,9 @@ Hata mesajını **sondan** oku: en alt satır hatanın türü.
 
 ![Bağlamsız ve bağlamlı iki soru yan yana; cevaplar boş](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/baglam_karsilastirma.png)
 
-**Çalıştırmadan önce tahmin et:** hangi cevapta "kahve" geçecek, hangisinde "sessizlik", "odak"?
+**Çalıştırmadan önce tahmin et, sohbete yaz:** hangi cevapta "kahve" geçecek, hangisinde "sessizlik", "odak"?
 
-İki cevabı derste yan yana okuyacağız.
-
------
-
-## Soru yazmak da tasarım
-
-- Model senin kafeni tanımıyor; ona ne söylersen onu biliyor
-- Konu 1'de veriden bulduğumuz şey ancak soruya yazınca cevaba girebilir
-- Model her seferinde başka cümle kurar: hücreyi birkaç kez çalıştır, örüntü aynı yönde mi?
-- Kelimeye değil, cümlenin ne anlattığına bak
-
-Soruyu yazmak bir **brief** yazmak gibi.
+İki cevabı defterin son adımında yan yana okuyacağız.
 
 -----
 
@@ -154,26 +103,12 @@ Soruyu yazmak bir **brief** yazmak gibi.
 
 `ders.ipynb`, yukarıdan aşağı:
 
-**Isınma** — iç içe sözlük
-**1.** Anahtarı dosyadan oku
-**2.** İsteği hazırla: adres, başlık, gövde
-**3.** Gönder
-**4.** Gelen yanıta bak
-**5.** Yanlış anahtarla dene
-**6.** Fonksiyona koy
-**7.** Birden çok soru, cevaplar dosyaya
-**8.** Soruya bağlam koymak cevabı değiştirir mi?
+- **Isınma:** iç içe sözlük
+- **Adım 1–3:** anahtarı oku, isteği hazırla (adres, başlık, gövde), gönder
+- **Adım 4–5:** yanıtın içine in; yanlış anahtarla dene
+- **Adım 6–8:** fonksiyon, çok soru ve dosya, bağlam
 
------
-
-## Defteri çalıştırmak
-
-- VS Code'da `02-api-ile-konusmak` klasöründeki `ders.ipynb`'yi aç
-- Sağ üstten çekirdek olarak **`.venv`**'i seç
-- Hücreye tıkla, **Shift + Enter**: hücre çalışır, alttakine geçer
-- Hücreler **yukarıdan aşağı, sırayla**: her hücre bir öncekinin değişkenini kullanır
-
-Bir hücreyi atlarsan `NameError` alırsın. Çare: atladığın hücreye dön, oradan sırayla devam et.
+Konu 1'deki gibi: çekirdek **`.venv`**, **Shift + Enter**, hücreler **sırayla**; atlarsan `NameError`.
 
 -----
 
@@ -186,6 +121,18 @@ Adım 1 `anahtar.txt` ister; dosya yoksa `FileNotFoundError` ile durur.
 - Konu 00'daki kurulum yönergesinin **6. adımını** (Cloudflare hesabı) bugün bitir
 
 Ödev için kendi anahtarın gerekiyor; Konu 4'ten itibaren her derste de gerekecek.
+
+-----
+
+## Soru yazmak da tasarım
+
+- Model senin kafeni tanımıyor; ona ne söylersen onu biliyor
+- Konu 1'de veriden bulduğumuz şey ancak soruya yazınca cevaba girebilir
+- Model her seferinde başka cümle kurar: tek cevaba değil, birkaç denemedeki yöne bak
+
+Soruyu yazmak bir **brief** yazmak gibi.
+
+**Sohbete yaz:** bağlamlı sloganlardan hangisini kafenin afişine koyardın, neden?
 
 -----
 

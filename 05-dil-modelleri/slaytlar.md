@@ -17,9 +17,9 @@ Sihir yok. Sayma ve seçme var.
 
 ## Dil modeli tek bir iş yapar: sıradaki parçayı tahmin eder
 
-![Sessiz bir çalışma cümlesinin devamı için üç aday ve sayıları](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/sonraki_parca.png)
+![Sessiz bir çalışma cümlesinin sonu boş bir kutu: sen nasıl bitirirdin?](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/sonraki_parca.png)
 
-- "Sessiz bir çalışma ..." cümlesini sen nasıl bitirirdin?
+- **Sohbete yaz:** "Sessiz bir çalışma ..." cümlesini sen nasıl bitirirdin?
 - En sık söyleneni seçmek: tahminin en basit yolu
 - Az önce bir dil modeli gibi davrandın
 
@@ -27,7 +27,7 @@ Sihir yok. Sayma ve seçme var.
 
 ## Model metni kelime kelime değil, parça parça okur
 
-![Sessiz bir çalışma kafesi: 4 kelime, 6 renkli parça](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/belirtec_seridi.png)
+![Renkli bir afiş tasarımı: 4 kelime, 9 renkli parça](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/belirtec_seridi.png)
 
 - Her renkli kutu bir **belirteç** (token)
 - Sık kelimeler tek parça, seyrek kelimeler bölünür
@@ -35,18 +35,18 @@ Sihir yok. Sayma ve seçme var.
 
 -----
 
-## Türkçe aynı sözü daha çok parçayla söylüyor
+## Aynı söz: Türkçede 9 parça, İngilizcede 4
 
-![Üç cümlenin kelime ve parça sayısı](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/turkce_ingilizce.png)
+![Türkçe ve İngilizce cümlenin ve uzun bir kelimenin kelime ve parça sayısı](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/turkce_ingilizce.png)
 
 - İngilizce cümle: her kelime tek parça
 - Türkçe ekler art arda dizilir; her biçim seyrek kalır, bölünür
 
 -----
 
-## Tek bir Türkçe kelime 8 parçaya dağılıyor
+## Tek bir Türkçe kelime 10 parçaya dağılıyor
 
-![Kütüphanedekilerden misiniz: 11 renkli parça](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/uzun_kelime.png)
+![Görselleştiremediklerimizden: 10 renkli parça](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/uzun_kelime.png)
 
 Parça sözlüğü dilbilgisinden değil, metinlerde **sık geçen harf dizilerinden** kurulmuş.
 
@@ -62,76 +62,43 @@ Parça sözlüğü dilbilgisinden değil, metinlerde **sık geçen harf dizileri
 
 -----
 
-## Kendi küçük modelimiz: "biraz"dan sonra ne geliyor?
+## Tahmin et: müşteriler "biraz"dan sonra ne yazmış?
 
-![biraz kelimesinden sonra gelen dört kelime: pahalı, karanlık, kısa, fazla](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/biraz_sonra.png)
+![biraz kelimesinden sonra gelen dört boş kutu](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/biraz_sonra.png)
 
-- Veri: Konu 1'in 30 kafe yorumu
-- Model yok, sadece sayıyoruz: hangi kelimeden hemen sonra ne gelmiş?
-- Müşteriler överken "biraz" demiyor; şikâyeti yumuşatırken diyor
-
------
-
-## Bulgu: "biraz" neyi düzelteceğini söylüyor
-
-![Dört şikâyet cümlesi ve her birinin kimin işi olduğu](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/biraz_okuma.png)
-
-- Işık ve menü tasarımcının işi; fiyat değil
-- "biraz fazla sessiz": aynı özellik, iki kullanıcı
-- Bir kelimenin ne anlattığını, ardından gelenler söyler
+- Veri: Konu 1'in 30 kafe yorumu. Model yok, sadece sayacağız
+- **Sohbete yaz:** "biraz"dan sonra övgü mü gelir, şikâyet mi?
+- Cevabı defterde, Adım 2'de bulacağız
 
 -----
 
-## "çok"tan sonra: bir olasılık dağılımı
+## Olasılık dağılımı: "bir"den sonra hangi kelime, hangi şansla?
 
-![çok kelimesinden sonra güzel 0.4, kalabalık, keyifli, tatlı 0.2](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/cok_dagilim.png)
+![bir kelimesinden sonra yer 0.50, şey 0.33, köşe 0.17](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/bir_dagilim.png)
 
-- Olasılık = adet / toplam; hepsinin toplamı **1**
-- "çok" çoğunlukla övgü; beşten üçü **bahçe**. "biraz" düzeltilecekleri, "çok" korunacakları veriyor
-- Gerçek model de her adımda böyle bir dağılım hesaplar; 30 yorumdan değil, milyarlarca metinden
-
------
-
-## Hep en olasıyı seç: her ikili gerçek, cümle anlamsız
-
-![kahve ortalama tatlılar güzel yazın bahçede oturmak için en: kelime kutuları zinciri](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/acgozlu_zincir.png)
-
-- Metin üretmek = tahmini tekrarlamak
-- Her seferinde **aynı** cümle
-- Bir yorum gibi duruyor ama hiçbir müşteri yazmadı: kafe sitesinde fark eder miydin?
+- Olasılık = adet / toplam: "yer" 6 geçişin 3'ü
+- Üç olasılığı topla: kaç ediyor?
+- Gerçek model de her adımda böyle bir dağılım hesaplar; 30 yorumdan değil, milyarlarca metinden öğrenmiş
 
 -----
 
-## Zar at: "güzel" çoğu zaman gelir, ama hep değil
+## Metin üretmek = tahmini tekrar tekrar yapmak
 
-![çok kelimesinden sonra gelen beş kutu, ikisi güzel](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/zar.png)
+![kahve kelimesinden başlayan, sekiz soru işaretli kutudan oluşan zincir](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/acgozlu_zincir.png)
 
-- Listede iki kez geçen kelimenin şansı iki kat
+- Her turda son kelimeden sonra **en olası** kelimeyi ekle
+- **Tahmin et:** 8 tur sonra anlamlı bir cümle çıkar mı?
+- İkinci kez çalıştırınca aynı cümle mi gelir? Defterde Adım 4'te göreceğiz
+
+-----
+
+## Zar at: en olası çoğu zaman gelir, ama hep değil
+
+![bir kelimesinden sonra gelen altı kutu, üçü yer](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/zar.png)
+
+- Listede üç kez geçen kelimenin şansı, bir kez geçenin üç katı
 - Her çalıştırmada **başka** bir cümle
 - Gerçek modelde "metin bitti" diye bir parça da var; onu seçince yazmayı bırakır
-
------
-
-## Sıcaklık: aynı dağılım, üç ayar
-
-![çok dağılımı sıcaklık 0.5, 1 ve 2'de](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/sicaklik.png)
-
-- Düşük: uzun çubuk uzar → hep en olası (Adım 4)
-- 1: olasılığa göre zar (Adım 5)
-- Yüksek: çubuklar eşitlenir → seyrek seçenekler daha çok şans bulur
-- Çizim bizim "çok" sayımımızdan hesaplandı; gerçek model aynı işi kendi olasılıklarına yapar
-
------
-
-## Yüksek sıcaklık "daha yaratıcı" değil, "daha dağınık"
-
-| Sıcaklık | Ne yapar | Defterde |
-|---|---|---|
-| Düşük (0.1) | Hep en olası parçayı seçer | Adım 4: hep aynı cümle |
-| Orta (0.7–1) | Olasılığa göre zar atar | Adım 5: zar |
-| Yüksek (1.5) | Zar hileli: düşük olasılıklara daha çok şans | Adım 6'da göreceğiz |
-
-Sıcaklık bir **seçim kuralı** ayarı, yaratıcılık düğmesi değil.
 
 -----
 
@@ -139,7 +106,17 @@ Sıcaklık bir **seçim kuralı** ayarı, yaratıcılık düğmesi değil.
 
 - Defterde önce 30 yorumdan **sayan** küçük bir model kuracağız
 - Gerçek model de her adımda sıradaki parçayı seçer; milyarlarca metinden öğrenmiş
-- En olasıyı mı seçsin, zar mı atsın? Bunu **sıcaklık** ayarlar; gerçek modelde onu biz değiştireceğiz
+- En olasıyı mı seçsin, zar mı atsın? Bunu **sıcaklık** ayarlar
+
+-----
+
+## Sıcaklık: aynı dağılım, üç ayar
+
+![bir dağılımı sıcaklık 0.5, 1 ve 2'de; örnek çizim](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/sicaklik.png)
+
+- **Örnek çizim:** bizim "bir" sayımımızdan hesaplandı, model çıktısı değil
+- Düşük: uzun çubuk uzar → hep en olası. Yüksek: çubuklar eşitlenir → seyrek seçenekler şans bulur
+- Yüksek sıcaklık "daha yaratıcı" değil, **daha dağınık**: bir seçim kuralı ayarı
 
 -----
 
@@ -149,7 +126,7 @@ Sıcaklık bir **seçim kuralı** ayarı, yaratıcılık düğmesi değil.
 
 - **Kurumsal tabela, menü, yönlendirme** için hangi sıcaklık?
 - **Fikir fırtınası, ilk eskiz** için hangisi?
-- 1.5'teki sloganlardan kaçı kullanılabilir?
+- **Tahmin et:** 1.5'teki sloganlardan kaçı kullanılabilir olacak?
 
 Sıcaklık bir **araç ayarı**: işin türüne göre seçilir, "en iyisi" yok.
 
@@ -157,7 +134,7 @@ Sıcaklık bir **araç ayarı**: işin türüne göre seçilir, "en iyisi" yok.
 
 ## Şimdi deftere geçiyoruz: `ders.ipynb`
 
-**Isınma** — cevapları `Counter` ile say
+**Isınma** — sınıfın cevaplarını `Counter` ile say
 **1.** Cümleyi belirteçlere ayır (önce `tiktokenizer.vercel.app`)
 **2.** "biraz" ve "çok"tan sonra ne geliyor?
 **3.** Sayıdan olasılığa, çubuk grafik
@@ -167,6 +144,16 @@ Sıcaklık bir **araç ayarı**: işin türüne göre seçilir, "en iyisi" yok.
 **7.** Slogan panosu: `pano.txt`
 
 Isınma ve Adım 1–5 **anahtarsız**. Adım 6–7 `anahtar.txt` ister.
+
+-----
+
+## Adım 2'den sonra: "biraz" bir iş listesi
+
+![Dört şikâyet cümlesi ve her birinin kimin işi olduğu](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/biraz_okuma.png)
+
+- Işık ve menü tasarımcının işi; fiyat değil
+- "biraz fazla sessiz": aynı özellik, iki kullanıcı
+- Bir kelimenin ne anlattığını, ardından gelenler söyler
 
 -----
 
@@ -186,8 +173,8 @@ Ayrıntı: `odevler/odev5.md`
 
 **2. Model her adımda sıradaki parçayı tahmin eder.** Uzun metin, bu tahminin tekrarıdır.
 
-**3. Tahmin bir olasılık dağılımıdır.** Model anlamaz; milyarlarca metinden sayar.
+**3. Tahmin bir olasılık dağılımıdır.** Model anlamaz; milyarlarca metinden öğrendiği olasılıklarla seçer.
 
-**4. Sıcaklık seçimi ayarlar.** Düşük: hep en olası, hep aynı. Yüksek: zar, her seferinde farklı.
+**4. Sıcaklık seçimi ayarlar.** Düşük: hep en olası, hep aynı. Yükseldikçe: zar, her seferinde farklı.
 
 Sıradaki konu: **Konu 6 — Kaput açma: üretmek ne demek.**

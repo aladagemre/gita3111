@@ -12,6 +12,7 @@ Ahmet Emre Aladağ
 - Konu 2'de hazır bir model kullandık; bugün kutuyu açıyoruz
 - Veri: sınıfın Konu 2 ödevinde etiketlediği 20 renk
 - Bugünün sorusu: Konu 1'deki sessiz kafenin paleti gerçekten **sakin** mi?
+- Sohbete yaz: sence bu palet sakin mi? Adım 7'de aynı soruyu modele soracağız
 
 -----
 
@@ -25,21 +26,22 @@ Ahmet Emre Aladağ
 
 -----
 
-## 20 rengin hiçbirinde sınıf oy birliğine varmadı
+## Tahmin et: sınıf bu iki renge aynı şeyi mi dedi?
 
-![Her rengin enerjik, sakin, ciddi etiket dağılımı](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/dagilim.png)
+![Kırık beyaz ve krem yan yana, etiketleri soru işaretiyle](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/krem_kirik_soru.png)
 
-- Her renk 12 kez etiketlendi; hepsinde farklı etiketler var
-- Bordo ve kırık beyazda neredeyse herkes aynı şeyi demiş, kremde sınıf ikiye bölünmüş
-- Bu bir hata değil; gerçek veri böyle görünür
+- İki renk ekranda neredeyse aynı; her birini 12 öğrenci etiketledi
+- Sohbete yaz: **aynı** mı, **farklı** mı?
 
 -----
 
-## Ekranda neredeyse aynı iki renk, sınıfta bambaşka iki karar
+## 20 rengin hiçbirinde sınıf oy birliğine varmadı
 
-![Kırık beyaz ve krem, etiket dağılımlarıyla](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/krem_kirik.png)
+![Her rengin enerjik, sakin, ciddi etiket dağılımı; krem ve kırık beyaz vurgulu](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/dagilim.png)
 
-Defterde bu iki rengi canlı sayacağız: krem 5–5–2, kırık beyaz 11–1.
+- Kırık beyaz 11–1 "sakin"; krem 5–5–2, sınıfın en tartışmalı rengi
+- Hiçbir renkte 12 öğrenci aynı etiketi vermedi
+- Bu bir hata değil; gerçek veri böyle görünür. Defterde ikisini kendin sayacaksın
 
 -----
 
@@ -53,21 +55,12 @@ Defterde bu iki rengi canlı sayacağız: krem 5–5–2, kırık beyaz 11–1.
 
 -----
 
-## Model renk görmez, üç sayı görür
+## Model renk görmez, üç sayı görür: X sayılar, y etiket
 
-![Kırmızı rengin R, G, B değerleri: 230, 57, 70](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/rgb_uc_sayi.png)
+![Veri dosyasından beş satır: X sütunları (r, g, b) ve y sütunu (etiket)](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/xy_tablo.png)
 
-- Renk seçicide `#E63946` yazınca yanında R 230, G 57, B 70 görürsün
-- Dosyada bu üç sayı hazır: `r`, `g`, `b` sütunları
-
------
-
-## X modelin baktığı şey, y tahmin etmesi gereken şey
-
-![Veri dosyasının ilk beş satırı: X sütunları ve y sütunu](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/xy_tablo.png)
-
-- **X** = öznitelikler (üç sayı), **y** = etiket
-- Her satırın X'i ile y'si aynı sırada durmalı
+- Renk seçicideki R, G, B: kırmızı `#E63946` = 230, 57, 70. Dosyada `r`, `g`, `b` sütunları
+- **X** = öznitelikler (üç sayı), **y** = etiket; her satırın X'i ile y'si aynı sırada durmalı
 - Model rengin adına, nerede kullanıldığına bakmıyor
 
 -----
@@ -98,21 +91,45 @@ Defterde bu iki rengi canlı sayacağız: krem 5–5–2, kırık beyaz 11–1.
 
 - "Benzer" burada üç sayının birbirine yakın olması demek
 - Her renk 12 kez geçtiği için model çoğu zaman **aynı rengi etiketleyen beş arkadaşa** soruyor
-- Kaç komşu? k=1 → 0.70, k=5 → 0.77, k=15 → 0.73
+- Kaç komşu (k)? Defterde 1 ve 15'i de deneyeceksin
 
 -----
 
-## Üç sayı: kör tahmin, model, tavan
+## Model kör tahmini açık farkla geçiyor, tavana iki cevap kalıyor
 
 ![Kör tahmin 0.45, model 0.77, tavan 0.80](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/uc_sayi.png)
 
 - **Kör tahmin:** hiç düşünmeden hep en sık etiketi ("enerjik") söylemek
-- Model kör tahmini açık farkla geçiyor; tavana iki cevap kalıyor
+- Tavan burada 0.80: yalnız bu 60 test satırının tavanı (240 satırın tamamında 0.74)
 - Başka bölmelerde doğruluk 0.65 ile 0.78 arasında oynuyor: tek sayıya güvenme
 
 -----
 
+## Tahmin et: defterde üç sorunun cevabını arayacağız
+
+Tahminini sohbete yaz; cevapları defterden sonra birlikte açacağız.
+
+1. Eğitim örneği 18'den 180'e çıkınca doğruluk **hep** artar mı?
+2. Model kafe paletine "sakin" der mi?
+3. Kırık beyazı **hiç görmemiş** bir model ona ne der?
+
+-----
+
+## Şimdi deftere geçiyoruz: `ders.ipynb`
+
+Hücreleri yukarıdan aşağı sırayla çalıştır (**Shift + Enter**).
+
+- **Isınma:** sayaç neyi sayıyor?
+- **Adım 1–2:** veriyi oku, krem ve kırık beyazı say, X ve y'yi kur
+- **Adım 3–4:** eğitim/test böl, modeli eğit, kör tahminle kıyasla
+- **Adım 5–8:** yanılgılar, öğrenme eğrisi, kafe paleti, hiç görülmemiş renk; her adımdan sonra sonucu sonraki slaytlarda birlikte okuyacağız
+- **Bonus:** kendi rengini sor
+
+-----
+
 ## Yanlışların çoğu azınlık görüşü
+
+*Adım 5'ten sonra*
 
 ![Modelin 14 yanılgısı: 12'si azınlık görüşü, 2'si çoğunluktan ayrılma](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/yanilgilar.png)
 
@@ -124,6 +141,8 @@ Defterde bu iki rengi canlı sayacağız: krem 5–5–2, kırık beyaz 11–1.
 
 ## Veri arttıkça doğruluk yükseliyor, sonra düzleşiyor
 
+*Adım 6'dan sonra · tahminin tuttu mu?*
+
 ![Öğrenme eğrisi: 18, 45, 90, 135, 180 örnekle test doğruluğu](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/ogrenme_egrisi.png)
 
 - Düzleştiği yerden sonra aynı türden veri eklemek pek işe yaramıyor
@@ -132,7 +151,9 @@ Defterde bu iki rengi canlı sayacağız: krem 5–5–2, kırık beyaz 11–1.
 
 -----
 
-## Kafe paleti için ikinci görüş
+## Kafe paleti için ikinci görüş: sıcak nötrler "enerjik" çıkıyor
+
+*Adım 7'den sonra · tahminin tuttu mu?*
 
 ![Kafe paletinin beş rengi, modelin cevabı ve en yakın bildiği renk](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/kafe_cevap.png)
 
@@ -142,36 +163,27 @@ Defterde bu iki rengi canlı sayacağız: krem 5–5–2, kırık beyaz 11–1.
 
 -----
 
-## Hiç görmediği bir renk gelince ne oluyor?
+## Hiç görmediği bir renk gelince model en yakın bildiğine bakıyor
+
+*Adım 8'den sonra · tahminin tuttu mu?*
 
 ![Kırık beyazı görmüş ve hiç görmemiş iki modelin cevabı](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/gorulmemis.png)
 
 - Rastgele bölmede her renk eğitimde de vardı; bu kolay bir sınav
-- Yeni bir renk gelince model sayıları ona en yakın **bildiği** renklerin etiketini söyler
+- Yeni bir renk gelince model sayıları ona en yakın **bildiği** renklerin etiketini söyler: kırık beyaza kremin "enerjik"ini
 - Sonucu söylerken sorulan soruyu da söyle: bilinen renk mi, yeni renk mi?
 
 -----
 
 ## RGB'de yakın, gözde uzak
 
+*Adım 8'den sonra*
+
 ![Gri maviye gül kurusu RGB'de orta maviden daha yakın](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/rgb_yakin.png)
 
 - Gri maviyi hiç görmeyen model ona gül kurusunun etiketini veriyor
 - Model "benzerlik"i rengi hangi sayılarla verdiğimizden (**temsilden**) alıyor
 - Konu 4'ün sorusu: sayılardaki yakınlık bizim "benzer" dediğimiz şeyi yakalıyor mu?
-
------
-
-## Şimdi deftere geçiyoruz: `ders.ipynb`
-
-Hücreleri yukarıdan aşağı sırayla çalıştır (**Shift + Enter**).
-
-- **Isınma:** sayaç neyi sayıyor?
-- **Adım 1–2:** veriyi oku, krem ve kırık beyazı say, X ve y'yi kur
-- **Adım 3–4:** eğitim/test böl, modeli eğit, kör tahminle kıyasla
-- **Adım 5–6:** yanıldığı renkler, öğrenme eğrisi
-- **Adım 7–8:** kafe paletini sor, kırık beyazı dışarıda bırak
-- **Bonus:** kendi rengini sor
 
 -----
 

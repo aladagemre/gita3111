@@ -31,11 +31,11 @@ Bir dil modeli "kafe" kelimesini hangi kelimelere yakın buluyor?
 
 ## Önce elle: iki eksenli bir mood-board
 
-![Altı kelimenin sıcaklık ve enerji haritası](https://raw.githubusercontent.com/aladagemre/gita3111/main/04-gomme-vektorleri/gorseller/isinma_haritasi.png)
+![Beş kelimenin sıcaklık ve enerji haritası; kahve soru işareti](https://raw.githubusercontent.com/aladagemre/gita3111/main/04-gomme-vektorleri/gorseller/isinma_haritasi.png)
 
 - **sıcaklık:** soğuk −1 … sıcak +1 · **enerji:** sakin −1 … canlı +1
-- Böyle bir sayı listesine **vektör** diyoruz: kahvenin vektörü 2 sayılı
-- Kahveye siz ne verirdiniz? Tek doğru yok: temsil bir **seçim**
+- Her kelime iki sayı. Böyle bir sayı listesine **vektör** diyoruz
+- **Sohbete yaz:** sen kahveye hangi iki sayıyı verirdin? Tek doğru yok: temsil bir **seçim**
 
 -----
 
@@ -43,7 +43,7 @@ Bir dil modeli "kafe" kelimesini hangi kelimelere yakın buluyor?
 
 ![Merkezden altı kelimeye çizilmiş oklar](https://raw.githubusercontent.com/aladagemre/gita3111/main/04-gomme-vektorleri/gorseller/oklar.png)
 
-- Kahve sağ üste bakıyor: sıcak ve biraz canlı
+- Biz kahveye `[0.6, 0.4]` verdik: sağ üste bakıyor, sıcak ve biraz canlı
 - Ateş de sağ üste bakıyor, yalnızca oku daha uzun
 - Deniz sol alta bakıyor: ateşin tam tersi
 
@@ -51,25 +51,25 @@ Bir dil modeli "kafe" kelimesini hangi kelimelere yakın buluyor?
 
 ## Benzerlik okların yönüne bakar, uzunluğuna değil
 
-![Aynı yön 0.98, neredeyse dik 0.11, zıt yön −1](https://raw.githubusercontent.com/aladagemre/gita3111/main/04-gomme-vektorleri/gorseller/benzerlik_yon.png)
+![Buz–kar 0.93 aynı yön, ateş–çay 0.11 neredeyse dik, ateş–deniz −1 zıt yön](https://raw.githubusercontent.com/aladagemre/gita3111/main/04-gomme-vektorleri/gorseller/benzerlik_yon.png)
 
 - **1** aynı yön · **0** dik, ilgisiz · **−1** zıt yön
-- Bu sayıyı hazır bir araç veriyor: `cosine_similarity` (scikit-learn, Konu 3)
-- İçini bilmen gerekmiyor; verdiği sayıyı okuman yeter
+- Kar okunun boyu buzunkinden kısa, yine de 0.93: uzunluk sayılmıyor
+- Bu sayıyı hazır bir araç veriyor: `cosine_similarity` (scikit-learn, Konu 3). Benzerlik büyükse iki kelime "yakın"
 
 -----
 
-## Kahveye en yakın ateş, en uzak deniz
+## Tahmin et: kahve çaya mı benzer, buza mı?
 
-![Kahvenin diğer beş kelimeyle benzerliği](https://raw.githubusercontent.com/aladagemre/gita3111/main/04-gomme-vektorleri/gorseller/kahve_benzerlik.png)
+![Kahve, çay ve buzun okları; iki benzerlik soru işareti](https://raw.githubusercontent.com/aladagemre/gita3111/main/04-gomme-vektorleri/gorseller/kahve_tahmin.png)
 
-- Ateş kahveden çok daha sıcak ve canlı, yine de 0.98: **aynı yön**
-- Çay da sıcak ama sakin: 0.30
-- Bundan sonra "yakın" dediğimizde bu sayıyı kastediyoruz
+- Oklara bak: hangi ikili daha çok aynı yöne bakıyor?
+- **Sohbete yaz:** hangisi büyük çıkar, hangisi eksi?
+- Cevabı defterin ısınmasında sen hesaplayacaksın
 
 -----
 
-## Isınmada eksenleri biz seçtik; model kendisi buluyor
+## Mood-board'da eksenleri biz seçtik; model kendisi buluyor
 
 ![Solda adlı iki eksen, sağda adsız yüzlerce eksen](https://raw.githubusercontent.com/aladagemre/gita3111/main/04-gomme-vektorleri/gorseller/yuzlerce_eksen.png)
 
@@ -79,13 +79,13 @@ Bir dil modeli "kafe" kelimesini hangi kelimelere yakın buluyor?
 
 -----
 
-## En yakın komşu: büyükten küçüğe sırala, ilk satırı atla
+## En yakın komşu: skorları büyükten küçüğe sırala
 
-![Kahvenin skorları Counter ile sıralanıyor](https://raw.githubusercontent.com/aladagemre/gita3111/main/04-gomme-vektorleri/gorseller/komsular.png)
+![Denizin skorları Counter ile sıralanıyor: kar ve buz en yakın](https://raw.githubusercontent.com/aladagemre/gita3111/main/04-gomme-vektorleri/gorseller/komsular.png)
 
-- Her kelimenin benzerliğini bir sözlüğe yaz: `skorlar`
-- Konu 1'in `Counter`'ı sözlüğü büyükten küçüğe dizer
-- İlk satır kelimenin kendisi (1.0): 3 komşu için 4 satır
+- Bir kelimeye en yakın kelimelere **komşu** diyoruz
+- Her kelimenin hedefle benzerliğini bir sözlüğe yaz: `skorlar`
+- Konu 1'in `Counter`'ı sözlüğü büyükten küçüğe dizer: denizin komşuları kar ve buz
 
 -----
 
@@ -119,27 +119,17 @@ Bir dil modeli "kafe" kelimesini hangi kelimelere yakın buluyor?
 
 -----
 
-## Benzer, eşanlamlı demek değil
-
-![Huzur, öfke, neşe, hüzün aynı boşluğa giriyor](https://raw.githubusercontent.com/aladagemre/gita3111/main/04-gomme-vektorleri/gorseller/ayni_bosluk.png)
-
-- Model anlamı sözlükten değil, kelimenin **hangi cümlelerde geçtiğinden** öğrenir
-- Zıt anlamlı huzur ile öfke aynı tür cümlelerde geçer, yakın düşebilir
-- Mood-board için "huzur"a yakın kelimeler istersen araya öfke de girebilir
-
------
-
 ## Şimdi deftere geçiyoruz
 
 `ders.ipynb`, hücreleri yukarıdan aşağı **Shift + Enter** ile.
 
-- **Isınma** — altı kelimenin elle haritası ve benzerlik (anahtarsız)
+- **Isınma** — slayttaki haritayı sen çiz, kahve tahminini ölç, kahveye kendi sayılarını ver (anahtarsız)
 - **Adım 1–3** — anahtarı oku, bir kelimenin vektörünü al, `vektor_al` fonksiyonu
 - **Adım 4** — kahve çaya mı benzer, tipografiye mi?
 - **Adım 5** — 24 kelimelik sözlük
 - **Adım 6** — "kafe"ye en yakın 3 kelime: **sen yazıyorsun**
 - **Adım 7** — PCA ile harita
-- **Adım 8** — haritayı oku: kümeler, huzur ile öfke
+- **Adım 8** — haritayı oku: kümeler; huzur öfkeye mi yakın, sakinliğe mi?
 
 -----
 
@@ -152,6 +142,16 @@ Bir dil modeli "kafe" kelimesini hangi kelimelere yakın buluyor?
 İpucu, Konu 1'den: `for kelime, adet in sayac.most_common(10):`
 
 **5 dakika.** Sonra birlikte bakalım.
+
+-----
+
+## Adım 8'den sonra: benzer, eşanlamlı demek değil
+
+![Huzur, öfke, neşe, hüzün aynı boşluğa giriyor](https://raw.githubusercontent.com/aladagemre/gita3111/main/04-gomme-vektorleri/gorseller/ayni_bosluk.png)
+
+- Ekranına bak: huzur–öfke, huzur–sakinlikten ne kadar geride kaldı?
+- Model anlamı sözlükten değil, kelimenin **hangi cümlelerde geçtiğinden** öğrenir: zıtlar aynı boşluğa girer
+- Mood-board için "huzur"a yakın kelimeler istersen araya öfke de girebilir
 
 -----
 
