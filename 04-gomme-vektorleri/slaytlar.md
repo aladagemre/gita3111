@@ -73,7 +73,7 @@ Bir dil modeli "kafe" kelimesini hangi kelimelere yakın buluyor?
 
 ![Solda adlı iki eksen, sağda adsız yüzlerce eksen](https://raw.githubusercontent.com/aladagemre/gita3111/main/04-gomme-vektorleri/gorseller/yuzlerce_eksen.png)
 
-- Dil modeli milyonlarca metin okur, kelimeleri bir haritaya yerleştirir
+- Dil modeli çok büyük miktarda metin okur, kelimeleri bir haritaya yerleştirir
 - 2 eksen değil **yüzlerce**; hiçbirinin adı yok
 - Kelimeyi vektöre çevirmeye **gömme** (embedding) diyoruz. Kaç sayı? Kendi çıktında göreceksin
 
@@ -85,7 +85,8 @@ Bir dil modeli "kafe" kelimesini hangi kelimelere yakın buluyor?
 
 - Bir kelimeye en yakın kelimelere **komşu** diyoruz
 - Her kelimenin hedefle benzerliğini bir sözlüğe yaz: `skorlar`
-- Konu 1'in `Counter`'ı sözlüğü büyükten küçüğe dizer: denizin komşuları kar ve buz
+- Konu 1'de `Counter` kelimeleri kendisi sayıyordu; sayıları hazır bir sözlük verirsen saymaz, yalnızca **büyükten küçüğe dizer**
+- Denizin en yakın komşuları: kar ve buz
 
 -----
 

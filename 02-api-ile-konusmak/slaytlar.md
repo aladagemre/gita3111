@@ -22,7 +22,7 @@ Ahmet Emre Aladağ
 - Soruyu paketleyip göndermek
 - Gelen cevabın içinden metni çıkarmak
 - Bir şey bozulunca bunu anlamak
-- Soruya bağlam yazınca cevabın değişip değişmediğine bakmak
+- Soruya **bağlam** (arka plan bilgisi, örneğin Konu 1'in bulgusu) yazınca cevabın değişip değişmediğine bakmak
 
 **Sohbete yaz:** bir sohbet sitesinde soruyu yazıp Enter'a bastığında sorun nereye gidiyor?
 
@@ -34,7 +34,8 @@ Ahmet Emre Aladağ
 
 - Mutfağa (modele) giremezsin, siparişi garsona (API'ye) verirsin
 - Sohbet sitesinde Enter'a basınca olan da bu; bugün siparişi arayüzsüz, koddan veriyoruz
-- Mutfak başkasının (Cloudflare): bu yüzden internet, kota ve kimlik gerekir
+- Koddan giden siparişe **istek** diyoruz
+- Mutfak başkasının (Cloudflare): bu yüzden internet, kimlik ve **kota** (ücretsiz kullanım sınırı) var
 
 -----
 
@@ -58,6 +59,16 @@ Ahmet Emre Aladağ
 
 -----
 
+## Durum kodu, cevabı okumadan önce ne olduğunu söyler
+
+![200, 401, 404, 429 kartları](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/durum_kodlari.png)
+
+- Gelen pakette iki şey var: **durum kodu** ve **yanıt**
+- İlk hane kime bakacağını söyler: **4xx senin tarafın**, **5xx sunucunun**
+- Kural: **200 değilse içine girme**; başarısız yanıtın içinde metin yok
+
+-----
+
 ## Cevap düz metin değil, iç içe kutular
 
 ![yanit kutusunun içinde result, onun içinde response](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/yanit_katmanlari.png)
@@ -69,29 +80,21 @@ Ahmet Emre Aladağ
 
 -----
 
-## Durum kodu, cevabı okumadan önce ne olduğunu söyler
-
-![200, 401, 404, 429 kartları](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/durum_kodlari.png)
-
-- Gelen pakette iki şey var: **durum kodu** ve **yanıt**
-- İlk hane kime bakacağını söyler: **4xx senin tarafın**, **5xx sunucunun**
-- Kural: **200 değilse içine girme**; başarısız yanıtın içinde metin yok
-
------
-
 ## Fonksiyon bir makine: bir kez yaz, istediğin kadar sor
 
 ![modele_sor makinesi ve içindeki dört adım](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/fonksiyon_makine.png)
 
 - Bir soru için yaptığımız dört iş tek bir ada toplanıyor: `modele_sor`
 - Makineye yalnızca değişen şeyi veriyoruz: soruyu
-- Sonra elli soruyu döngüyle sorup cevapları tek dosyaya yazıyoruz: arayüzde yapamayacağın iş
+- Sonra bir soru listesini döngüyle sorup cevapları tek dosyaya yazıyoruz: üç soru da olur elli de, kod aynı; arayüzde yapamayacağın iş
 
 -----
 
 ## Bağlam cevabı değiştirir mi?
 
 ![Bağlamsız ve bağlamlı iki soru yan yana; cevaplar boş](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/baglam_karsilastirma.png)
+
+Aynı soru iki kez: biri yalın, birinin başında kafe hakkında bildiğimiz şey (**bağlam**).
 
 **Çalıştırmadan önce tahmin et, sohbete yaz:** hangi cevapta "kahve" geçecek, hangisinde "sessizlik", "odak"?
 
@@ -125,6 +128,8 @@ Adım 1 `anahtar.txt` ister; dosya yoksa `FileNotFoundError` ile durur.
 -----
 
 ## Soru yazmak da tasarım
+
+*Adım 8'den sonra*
 
 - Model senin kafeni tanımıyor; ona ne söylersen onu biliyor
 - Konu 1'de veriden bulduğumuz şey ancak soruya yazınca cevaba girebilir

@@ -15,7 +15,7 @@ Sihir yok. Sayma ve seçme var.
 
 -----
 
-## Dil modeli tek bir iş yapar: sıradaki parçayı tahmin eder
+## Dil modeli tek bir iş yapar: sıradaki kelimeyi tahmin eder
 
 ![Sessiz bir çalışma cümlesinin sonu boş bir kutu: sen nasıl bitirirdin?](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/sonraki_parca.png)
 
@@ -58,7 +58,6 @@ Parça sözlüğü dilbilgisinden değil, metinlerde **sık geçen harf dizileri
 
 - Uzun sohbette ilk yazdıkların pencereden taşar: model onları **hiç görmez**
 - Türkçe pencereyi daha çabuk doldurur; ücretli modellerde daha pahalıya gelir
-- Her modelin kendi parça sözlüğü var; fikir aynı
 
 -----
 
@@ -98,15 +97,6 @@ Parça sözlüğü dilbilgisinden değil, metinlerde **sık geçen harf dizileri
 
 - Listede üç kez geçen kelimenin şansı, bir kez geçenin üç katı
 - Her çalıştırmada **başka** bir cümle
-- Gerçek modelde "metin bitti" diye bir parça da var; onu seçince yazmayı bırakır
-
------
-
-## Kendi modelimizden gerçek modele
-
-- Defterde önce 30 yorumdan **sayan** küçük bir model kuracağız
-- Gerçek model de her adımda sıradaki parçayı seçer; milyarlarca metinden öğrenmiş
-- En olasıyı mı seçsin, zar mı atsın? Bunu **sıcaklık** ayarlar
 
 -----
 
@@ -114,8 +104,9 @@ Parça sözlüğü dilbilgisinden değil, metinlerde **sık geçen harf dizileri
 
 ![bir dağılımı sıcaklık 0.5, 1 ve 2'de; örnek çizim](https://raw.githubusercontent.com/aladagemre/gita3111/main/05-dil-modelleri/gorseller/sicaklik.png)
 
+- **Sıcaklık:** gerçek modelde en olasıyı mı seçeceğini, zar mı atacağını belirleyen ayar
 - **Örnek çizim:** bizim "bir" sayımımızdan hesaplandı, model çıktısı değil
-- Düşük: uzun çubuk uzar → hep en olası. Yüksek: çubuklar eşitlenir → seyrek seçenekler şans bulur
+- Düşük: uzun çubuk uzar → en olası daha sık seçilir. Yüksek: çubuklar eşitlenir → seyrek seçenekler şans bulur
 - Yüksek sıcaklık "daha yaratıcı" değil, **daha dağınık**: bir seçim kuralı ayarı
 
 -----
@@ -175,6 +166,6 @@ Ayrıntı: `odevler/odev5.md`
 
 **3. Tahmin bir olasılık dağılımıdır.** Model anlamaz; milyarlarca metinden öğrendiği olasılıklarla seçer.
 
-**4. Sıcaklık seçimi ayarlar.** Düşük: hep en olası, hep aynı. Yükseldikçe: zar, her seferinde farklı.
+**4. Sıcaklık seçimi ayarlar.** Düşük: neredeyse hep en olası, hep aynı. Yükseldikçe: zar, her seferinde farklı.
 
 Sıradaki konu: **Konu 6 — Kaput açma: üretmek ne demek.**

@@ -81,6 +81,9 @@ pwd                neredeyim? (PowerShell'de de aynı)
 
 ## Adım 1 — uv kurulumu
 
+**uv ne?** Python'ı ve dersin **kütüphanelerini** (başkalarının yazdığı hazır kod paketleri,
+örneğin kelime bulutu çizen `wordcloud`) senin yerine kuran araç. Python'ı ayrıca kurmana gerek yok.
+
 **Windows** (PowerShell):
 
 ```text
@@ -104,6 +107,18 @@ terminali gerçekten kapatıp açmamışsındır.
 
 -----
 
+## git ne işe yarıyor?
+
+![1. derste git clone ile depo bir kez iner; sonraki derslerde git pull yalnızca yeni konuyu getirir](https://raw.githubusercontent.com/aladagemre/gita3111/main/00-hazirlik/gorseller/clone_pull.png)
+
+Ders materyali bir **depoda** duruyor: github.com/aladagemre/gita3111
+
+- `git clone` → dönemde **bir kez**: depoyu bilgisayarına indirir
+- `git pull` → **her dersten önce**: yalnızca yeni ve değişen dosyaları getirir
+- Yeni konular geldikçe depoya ekliyorum; klasörü baştan indirmen gerekmiyor
+
+-----
+
 ## Adım 2 — git kurulumu
 
 Önce kurulu mu diye bak: `git --version`. Sürüm numarası çıkarsa bu adımı atla.
@@ -121,18 +136,6 @@ hiçbir şeyi değiştirmeden **Next** de.
 bir pencere açılır. **Yükle** de.
 
 İkisinde de iş bitince **terminali kapat, yeniden aç.**
-
------
-
-## git ne işe yarıyor?
-
-![1. derste git clone ile depo bir kez iner; sonraki derslerde git pull yalnızca yeni konuyu getirir](https://raw.githubusercontent.com/aladagemre/gita3111/main/00-hazirlik/gorseller/clone_pull.png)
-
-Ders materyali bir **depoda** duruyor: github.com/aladagemre/gita3111
-
-- `git clone` → dönemde **bir kez**: depoyu bilgisayarına indirir
-- `git pull` → **her dersten önce**: yalnızca yeni ve değişen dosyaları getirir
-- Yeni konular geldikçe depoya ekliyorum; klasörü baştan indirmen gerekmiyor
 
 -----
 
@@ -169,7 +172,8 @@ Masaüstünde artık `gita3111` adında bir klasör var.
 ![pyproject.toml'daki Python sürümü ve kütüphane listesi, uv sync ile .venv ortamına dönüşür](https://raw.githubusercontent.com/aladagemre/gita3111/main/00-hazirlik/gorseller/uv_proje.png)
 
 - `pyproject.toml` dersin **hangi Python'u** ve **hangi kütüphaneleri** kullandığını yazar
-- `uv sync` bu listeyi okur, eksikleri kurar ve `gita3111` içinde **tek bir** `.venv` ortamı oluşturur
+- `uv sync` bu listeyi okur, eksikleri kurar ve `gita3111` içinde **tek bir** `.venv` klasörü oluşturur
+- `.venv` = **ortam**: dersin Python'unun ve kütüphanelerinin kurulu durduğu klasör
 - Sen hiçbir zaman "şu kütüphaneyi kur" diye uğraşmazsın
 
 Tek şart: komutu `gita3111` klasörünün ya da bir konu klasörünün **içinden** ver.
@@ -233,35 +237,7 @@ Dönem boyunca kuralımız bu:
 - Sonra kopyada çalış
 
 **Neden?** `git pull` senin adını verdiğin dosyalara hiç dokunmaz. Ama depodaki bir
-dosyayı değiştirdiysen ve ben de o dosyayı güncellediysem, `git pull` durur.
-
------
-
-## git pull takılırsa
-
-Şu hatayı görürsen:
-
-```text
-error: Your local changes to the following files would be overwritten by merge
-```
-
-bir depo dosyasını değiştirmişsin demektir. Çözüm üç adım:
-
-1. Değiştirdiğin dosyayı **yeni bir adla kopyala** (emeğin kaybolmasın)
-2. Depo dosyalarını ilk hâline döndür:
-
-```text
-git restore .
-```
-
-3. Tekrar dene:
-
-```text
-git pull
-```
-
-Senin oluşturduğun dosyalar (kopyalar, üretilen görseller, `anahtar.txt`) bu işlemden
-etkilenmez.
+dosyayı değiştirdiysen ve ben de o dosyayı güncellediysem, `git pull` durur (çözümü sondaki Ek slaytında).
 
 -----
 
@@ -285,6 +261,7 @@ VS Code'un içinde terminal de var: **Terminal → New Terminal**. Bu terminal
 
 - VS Code'un terminalinde `uv sync` yaz (ortam hazır olsun)
 - `00-hazirlik/ilk_defter.ipynb`'i aç; sağ üstte **Select Kernel** → **Python Environments** → `.venv`
+- **Çekirdek** (kernel) = defterin kodu çalıştırdığı Python; bu dönem her defterde `.venv`'i seçeceksin
 - Önce defteri `benim_defterim.ipynb` adıyla kopyala; kopyada turuncu satırları kendi verinle değiştir, **Shift + Enter**
 
 -----
@@ -339,22 +316,6 @@ Yapay zeka destekli kod aracı (Antigravity gibi) terminalde kendi başına komu
 
 -----
 
-## Sık karşılaşılan sorunlar
-
-| Belirti | Sebep | Çözüm |
-|---|---|---|
-| `uv` / `git` tanınmıyor | Kurulumdan sonra terminal yenilenmedi | Terminali kapat, yeniden aç |
-| İnternet hatası (`uv sync`, `git clone`) | Üniversite ağı bazı adresleri kapatıyor | Telefon internetini paylaşıp tekrar dene |
-| "No such file or directory" | Yanlış klasördesin | `pwd` ile bak, doğru klasöre `cd` ile gir |
-| "Repository not found" | Depo adresi yanlış yazıldı | Adresi kopyala-yapıştır yap |
-| Defterde **Select Kernel** listesinde `.venv` yok | `uv sync` çalıştırılmadı ya da VS Code'da alt klasör açıldı | `gita3111` klasöründe `uv sync`; VS Code'da `gita3111` klasörünü aç, listeyi yenile |
-| Cloudflare satırı HTTP 401 | Token yanlış kopyalandı | Yeni token üret, `anahtar.txt`'ye yapıştır |
-| Cloudflare satırı HTTP 403 | Token'ın izinleri eksik | Token'ı hazır bilgileri değiştirmeden yeniden üret |
-
-Listede olmayan bir şey görürsen: ekran görüntüsü, bana mesaj.
-
------
-
 ## Gelecek dersten önce kontrol listesi
 
 - [ ] `uv --version` ve `git --version` birer sürüm numarası yazıyor
@@ -381,3 +342,49 @@ uv sync
 ```
 
 Bu dönemin ritmi bu. Gelecek ders kelime bulutuyla başlıyoruz.
+
+Sondaki iki **Ek** slaytı derste anlatılmaz; evde takılırsan bak.
+
+-----
+
+## Ek — git pull takılırsa
+
+Şu hatayı görürsen:
+
+```text
+error: Your local changes to the following files would be overwritten by merge
+```
+
+bir depo dosyasını değiştirmişsin demektir. Çözüm üç adım:
+
+1. Değiştirdiğin dosyayı **yeni bir adla kopyala** (emeğin kaybolmasın)
+2. Depo dosyalarını ilk hâline döndür:
+
+```text
+git restore .
+```
+
+3. Tekrar dene:
+
+```text
+git pull
+```
+
+Senin oluşturduğun dosyalar (kopyalar, üretilen görseller, `anahtar.txt`) bu işlemden
+etkilenmez.
+
+-----
+
+## Ek — Sık karşılaşılan sorunlar
+
+| Belirti | Sebep | Çözüm |
+|---|---|---|
+| `uv` / `git` tanınmıyor | Kurulumdan sonra terminal yenilenmedi | Terminali kapat, yeniden aç |
+| İnternet hatası (`uv sync`, `git clone`) | Üniversite ağı bazı adresleri kapatıyor | Telefon internetini paylaşıp tekrar dene |
+| "No such file or directory" | Yanlış klasördesin | `pwd` ile bak, doğru klasöre `cd` ile gir |
+| "Repository not found" | Depo adresi yanlış yazıldı | Adresi kopyala-yapıştır yap |
+| Defterde **Select Kernel** listesinde `.venv` yok | `uv sync` çalıştırılmadı ya da VS Code'da alt klasör açıldı | `gita3111` klasöründe `uv sync`; VS Code'da `gita3111` klasörünü aç, listeyi yenile |
+| Cloudflare satırı HTTP 401 | Token yanlış kopyalandı | Yeni token üret, `anahtar.txt`'ye yapıştır |
+| Cloudflare satırı HTTP 403 | Token'ın izinleri eksik | Token'ı hazır bilgileri değiştirmeden yeniden üret |
+
+Listede olmayan bir şey görürsen: ekran görüntüsü, bana mesaj.

@@ -23,6 +23,28 @@ Ahmet Emre Aladağ
 - **Kural yazmak:** "şu şartta şunu de" diye sen yazarsın
 - **Makine öğrenmesi:** örnekleri verirsin, kuralı model çıkarır
 - Modelin örneklere bakıp öğrenmesine **eğitim** diyoruz
+- Kuraldaki 200 ve 100, rengin içindeki kırmızı ve yeşil miktarı: bir sonraki slayt
+
+-----
+
+## Model renk görmez, üç sayı görür: X sayılar, y etiket
+
+![Veri dosyasından beş satır: X sütunları (r, g, b) ve y sütunu (etiket)](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/xy_tablo.png)
+
+- Renk seçicideki R, G, B: kırmızı `#E63946` = 230, 57, 70. Dosyada `r`, `g`, `b` sütunları
+- **X** = öznitelikler (üç sayı), **y** = etiket; her satırın X'i ile y'si aynı sırada durmalı
+- Model rengin adına, nerede kullanıldığına bakmıyor
+- Veri: 20 renk × 12 öğrenci = **240 satır**; her satır bir öğrencinin bir renge verdiği etiket
+
+-----
+
+## Kural sınıfın "enerjik"ini tanımıyor
+
+![100 enerjik etiketinden kuralın yakaladığı 8 tanesi](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/kural_sonuc.png)
+
+- İki slayt önceki kural (kırmızı > 200, yeşil < 100) yalnızca kırmızıyı tanıyor
+- Sınıfın "enerjik"i çok daha geniş: sıcak tonların neredeyse hepsi
+- Bu genişlik kimsenin kuralında yoktu; verinin içinde zaten var
 
 -----
 
@@ -45,36 +67,6 @@ Ahmet Emre Aladağ
 
 -----
 
-## Anlaşmazlık bir tavan koyuyor
-
-![Model her renge tek cevap verir; azınlıktaki etiketleri bilemez](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/tavan.png)
-
-- Model bir renge **tek** cevap verir; en iyi ihtimalle çoğunluğu söyler
-- Mükemmel bir model bile her dört cevaptan birini "yanlış" bilir
-- Bu yanlışlar modelin değil, sınıfın görüş ayrılığının payı
-
------
-
-## Model renk görmez, üç sayı görür: X sayılar, y etiket
-
-![Veri dosyasından beş satır: X sütunları (r, g, b) ve y sütunu (etiket)](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/xy_tablo.png)
-
-- Renk seçicideki R, G, B: kırmızı `#E63946` = 230, 57, 70. Dosyada `r`, `g`, `b` sütunları
-- **X** = öznitelikler (üç sayı), **y** = etiket; her satırın X'i ile y'si aynı sırada durmalı
-- Model rengin adına, nerede kullanıldığına bakmıyor
-
------
-
-## Baştaki kural sınıfın "enerjik"ini tanımıyor
-
-![100 enerjik etiketinden kuralın yakaladığı 8 tanesi](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/kural_sonuc.png)
-
-- Kural yalnızca kırmızıyı tanıyor
-- Sınıfın "enerjik"i çok daha geniş: sıcak tonların neredeyse hepsi
-- Bu genişlik kimsenin kuralında yoktu; verinin içinde zaten var
-
------
-
 ## Veriyi ikiye bölüyoruz: eğitim ve test
 
 ![240 satırın 180'i eğitime, 60'ı teste ayrılıyor](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/bolme.png)
@@ -90,8 +82,18 @@ Ahmet Emre Aladağ
 ![Test rengi bal ve en yakın beş eğitim satırının etiketleri](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/knn.png)
 
 - "Benzer" burada üç sayının birbirine yakın olması demek
-- Her renk 12 kez geçtiği için model çoğu zaman **aynı rengi etiketleyen beş arkadaşa** soruyor
+- Veride her renk 12 kez var; bu yüzden en yakın beş satır çoğu zaman **aynı rengin**, başka öğrencilerden gelen etiketleri
 - Kaç komşu (k)? Defterde 1 ve 15'i de deneyeceksin
+
+-----
+
+## Anlaşmazlık bir tavan koyuyor
+
+![Model her renge tek cevap verir; azınlıktaki etiketleri bilemez](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/tavan.png)
+
+- Model bir renge **tek** cevap verir; en iyi ihtimalle çoğunluğu söyler
+- Kusursuz bir model bile azınlıktaki etiketleri bilemez; bilebileceği en yüksek orana **tavan** diyoruz
+- Bu yanlışlar modelin değil, sınıfın görüş ayrılığının payı
 
 -----
 
@@ -99,9 +101,9 @@ Ahmet Emre Aladağ
 
 ![Kör tahmin 0.45, model 0.77, tavan 0.80](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/uc_sayi.png)
 
+- **Doğruluk:** 60 test satırından kaçını bildi; model 46'sını bildi → 0.77
 - **Kör tahmin:** hiç düşünmeden hep en sık etiketi ("enerjik") söylemek
-- Tavan burada 0.80: yalnız bu 60 test satırının tavanı (240 satırın tamamında 0.74)
-- Başka bölmelerde doğruluk 0.65 ile 0.78 arasında oynuyor: tek sayıya güvenme
+- Veriyi başka türlü bölünce sonuç biraz değişir: tek sayıya güvenme
 
 -----
 
@@ -158,7 +160,7 @@ Hücreleri yukarıdan aşağı sırayla çalıştır (**Shift + Enter**).
 ![Kafe paletinin beş rengi, modelin cevabı ve en yakın bildiği renk](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/kafe_cevap.png)
 
 - Sıcak nötrler (bej, sütlü kahve) "sakin" değil, "enerjik" tarafta
-- Bejin kararını kremi etiketleyenler veriyor; krem sınıfın en tartışmalı rengi
+- Beje en yakın bilinen renk krem; yani bejin cevabını kreme verilen etiketler belirliyor (krem sınıfın en tartışmalı rengi)
 - Bu bir kesinlik değil, "kullanıcıyla sına" işareti
 
 -----
@@ -171,6 +173,7 @@ Hücreleri yukarıdan aşağı sırayla çalıştır (**Shift + Enter**).
 
 - Rastgele bölmede her renk eğitimde de vardı; bu kolay bir sınav
 - Yeni bir renk gelince model sayıları ona en yakın **bildiği** renklerin etiketini söyler: kırık beyaza kremin "enerjik"ini
+- 20 rengin her biri sırayla dışarıda bırakılınca doğruluk 0.77'den **0.60**'a düşüyor
 - Sonucu söylerken sorulan soruyu da söyle: bilinen renk mi, yeni renk mi?
 
 -----

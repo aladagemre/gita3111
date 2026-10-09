@@ -28,7 +28,6 @@ Ahmet Emre Aladağ
 ![dosya, metin, kelimeler, sayaç ve bulut adımlarını gösteren akış şeması](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/akis.png)
 
 - Dosyayı **bir kez** okuruz; her adım bir öncekinin ürettiğini kullanır
-- Sayılar gerçek: 2078 karakter, 298 kelime, 196 farklı kelime
 
 -----
 
