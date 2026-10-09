@@ -8,6 +8,8 @@ benzediğini ölçecek ve kelimelerin haritasını çizeceğiz.
 |---|---|
 | `ders.ipynb` | Derste birlikte çalıştıracağımız defter: Isınma, Adım 1–8 ve Bonus |
 | `alistirma.ipynb` | Derste kendi başına çözeceğin defter: bozuk kodlar ve boşluklu sorular (anahtar istemez) |
+| `slaytlar.md` | Kavram slaytları (görselli); ders bunlarla başlar, sonra deftere geçilir |
+| `gorseller/` | Slaytlardaki görseller |
 | `odevler/odev4.md` | Bu konunun ödevi |
 | `ders_notu.md` | Konu notu: adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
 

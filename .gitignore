@@ -4,6 +4,8 @@ __pycache__/
 *.pyc
 anahtar.txt
 *.png
+# Kavram slaytlarının görselleri depoya girer (slaytlar bunlara bağlantı verir)
+!*/gorseller/*.png
 
 # Hoca materyali: cevap anahtarları, öğretmen notları, planlama ve resmi belgeler.
 # Herhangi bir derinlikteki _hoca/ klasörü depoya girmez.

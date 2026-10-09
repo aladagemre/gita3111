@@ -5,576 +5,193 @@ Ahmet Emre Aladağ
 
 -----
 
-## Konu 2'den Konu 3'e
+## Konu 2'de modele soru sorduk, bugün kendi modelimizi eğitiyoruz
 
-**Konu 2'de:** hazır bir modele soru sorduk. Model kutunun içindeydi.
+![Kafe paleti: bej, sütlü kahve, adaçayı, orman yeşili, kirli beyaz](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/kafe_soru.png)
 
-**Bu konuda:** kutuyu açıyoruz. Kendi modelimizi eğiteceğiz.
-
-- Sınıfın Konu 2 ödevinde etiketlediği renklerle
-- Konu 1'deki "sessiz çalışma kafesi"nin paleti gerçekten **sakin** mi? Sonunda modele soracağız
-- Matematik yok, formül yok
-- Sonunda model yanılacak; asıl konumuz da bu olacak
-
-Bu konuda öğreneceğin şey, dönemin geri kalanında "model" dediğimiz şeyin ne olduğu.
+- Konu 2'de hazır bir model kullandık; bugün kutuyu açıyoruz
+- Veri: sınıfın Konu 2 ödevinde etiketlediği 20 renk
+- Bugünün sorusu: Konu 1'deki sessiz kafenin paleti gerçekten **sakin** mi?
 
 -----
 
-## Konunun planı
+## Kuralı ya sen yazarsın ya da model örneklerden çıkarır
 
-**1.** Sınıfın verisine bakalım — anlaşabilmiş miyiz?
-**2.** Rengi sayıya çevirelim
-**3.** Veriyi ikiye bölelim: eğitim ve test
-**4.** Modeli eğitelim ve ölçelim
-**5.** Yanıldığı yerlere bakalım
-**6.** Veri arttıkça ne değişiyor?
-**7.** Model ne öğrendi? Kafe paletini soralım
-**8.** Hiç görmediği bir renk
+![Kural yazmak ile örnekten öğrenmek](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/kural_ornek.png)
 
-Hepsi tek defterde: `ders.ipynb`. Hücreleri sırayla çalıştır (**Shift + Enter**).
+- **Kural yazmak:** "şu şartta şunu de" diye sen yazarsın
+- **Makine öğrenmesi:** örnekleri verirsin, kuralı model çıkarır
+- Modelin örneklere bakıp öğrenmesine **eğitim** diyoruz
 
 -----
 
-## Isınma — sayaç neyi sayıyor?
+## 20 rengin hiçbirinde sınıf oy birliğine varmadı
 
-`{'enerjik': 2, 'sakin': 1}` yazmalı. Ne yazıyor?
+![Her rengin enerjik, sakin, ciddi etiket dağılımı](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/dagilim.png)
 
-```python
-sayac = {}
-for kayit in kayitlar:
-    etiket = kayit["ad"]
-    if etiket in sayac:
-        sayac[etiket] = sayac[etiket] + 1
-    else:
-        sayac[etiket] = 1
-
-print(sayac)
-```
-
-> {'kırmızı': 1, 'orta mavi': 1, 'şeftali': 1}
-
-Hata mesajı yok, sonuç yanlış. Saydığımız alan `"ad"` değil, `"etiket"` olmalı.
+- Her renk 12 kez etiketlendi; hepsinde farklı etiketler var
+- Bordo ve kırık beyazda neredeyse herkes aynı şeyi demiş, kremde sınıf ikiye bölünmüş
+- Bu bir hata değil; gerçek veri böyle görünür
 
 -----
 
-## Kural yazmak ile öğretmek
+## Ekranda neredeyse aynı iki renk, sınıfta bambaşka iki karar
 
-Bir rengin "enerjik" mi "sakin" mi olduğunu kodla söylemek isteseydin:
+![Kırık beyaz ve krem, etiket dağılımlarıyla](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/krem_kirik.png)
 
-```py
-if kirmizi > 200 and yesil < 100:
-    print("enerjik")
-```
-
-Bu bir **kural**. Sen yazdın, sen düşündün.
-
-Makine öğrenmesi bunun tersi: kuralı sen yazmıyorsun, **örnek veriyorsun** ve
-kuralı modelin bulmasını istiyorsun.
-
-- Kural yazmak: "şu şartlarda şunu yap"
-- Öğretmek: "işte 240 örnek, kuralı sen çıkar"
+Defterde bu iki rengi canlı sayacağız: krem 5–5–2, kırık beyaz 11–1.
 
 -----
 
-## Adım 1 — Sınıfın verisine bakalım
+## Anlaşmazlık bir tavan koyuyor
 
-```python
-import csv
+![Model her renge tek cevap verir; azınlıktaki etiketleri bilemez](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/tavan.png)
 
-with open("veri/renkler-etiketli.csv", encoding="utf-8") as dosya:
-    kayitlar = list(csv.DictReader(dosya))
-
-print(len(kayitlar))
-print(kayitlar[0])
-```
-
-- `csv.DictReader` her satırı bir **sözlüğe** çeviriyor: `kayit["ad"]`, `kayit["etiket"]`
-- 12 öğrenci × 20 renk = 240 satır. Her renk 12 kez geçiyor
+- Model bir renge **tek** cevap verir; en iyi ihtimalle çoğunluğu söyler
+- Mükemmel bir model bile her dört cevaptan birini "yanlış" bilir
+- Bu yanlışlar modelin değil, sınıfın görüş ayrılığının payı
 
 -----
 
-## Sınıf "krem"e ne demiş?
+## Model renk görmez, üç sayı görür
 
-Konu 1'deki sayacın aynısı, yalnızca krem satırlarında:
+![Kırmızı rengin R, G, B değerleri: 230, 57, 70](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/rgb_uc_sayi.png)
 
-```python
-sayac = {}
-for kayit in kayitlar:
-    if kayit["ad"] == "krem":
-        etiket = kayit["etiket"]
-        if etiket in sayac:
-            sayac[etiket] = sayac[etiket] + 1
-        else:
-            sayac[etiket] = 1
-
-print(sayac)
-```
-
-> {'enerjik': 5, 'ciddi': 2, 'sakin': 5}
-
-`"krem"` yerine `"kırık beyaz"` yaz:
-
-> {'enerjik': 1, 'sakin': 11}
+- Renk seçicide `#E63946` yazınca yanında R 230, G 57, B 70 görürsün
+- Dosyada bu üç sayı hazır: `r`, `g`, `b` sütunları
 
 -----
 
-## Sınıf anlaşabilmiş mi?
+## X modelin baktığı şey, y tahmin etmesi gereken şey
 
-| Renk | Dağılım |
-|---|---|
-| krem | 5 enerjik, 5 sakin, 2 ciddi |
-| koyu yeşil | 6 ciddi, 4 sakin, 2 enerjik |
-| hardal | 7 enerjik, 3 sakin, 2 ciddi |
-| kırık beyaz | 11 sakin, 1 enerjik |
-| bordo | 11 enerjik, 1 ciddi |
+![Veri dosyasının ilk beş satırı: X sütunları ve y sütunu](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/xy_tablo.png)
 
-**Sınıf 20 rengin hiçbirinde oy birliğine varamamış.** Ama her renkte aynı ölçüde bölünmemiş.
-
-Kırık beyaz ile krem ekranda neredeyse aynı renk. Aradaki fark kremdeki hafif
-sarılık; sınıfın neredeyse yarısı için bu küçük fark rengi "enerjik" yapmış.
+- **X** = öznitelikler (üç sayı), **y** = etiket
+- Her satırın X'i ile y'si aynı sırada durmalı
+- Model rengin adına, nerede kullanıldığına bakmıyor
 
 -----
 
-## Anlaşmazlığın koyduğu tavan
+## Baştaki kural sınıfın "enerjik"ini tanımıyor
 
-Model bir renk için **tek** cevap verebilir. En iyi ihtimalle çoğunluğu söyler,
-azınlıktakilerin hepsinde yanılır.
+![100 enerjik etiketinden kuralın yakaladığı 8 tanesi](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/kural_sonuc.png)
 
-- Kırık beyazda en iyi ihtimalle 12'de 11
-- Kremde en iyi ihtimalle 12'de 5
-
-20 rengin hepsi için toplayınca: **0.74.**
-
-Mükemmel bir model bile her dört cevaptan birini "yanlış" bilecek.
-Bu yanlışlar modelin kusuru değil; sınıfın kendi içindeki görüş ayrılığı.
+- Kural yalnızca kırmızıyı tanıyor
+- Sınıfın "enerjik"i çok daha geniş: sıcak tonların neredeyse hepsi
+- Bu genişlik kimsenin kuralında yoktu; verinin içinde zaten var
 
 -----
 
-## Adım 2 — Rengi sayıya çevirmek
+## Veriyi ikiye bölüyoruz: eğitim ve test
 
-Model "kırmızı" kelimesini anlamaz. Sayı ister.
+![240 satırın 180'i eğitime, 60'ı teste ayrılıyor](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/bolme.png)
 
-Renk seçicide `#E63946` yazınca yanında **R 230, G 57, B 70** görürsün.
-Dosyada bu üç sayı hazır: `r`, `g`, `b` sütunları.
-
-```python
-X = []
-y = []
-for kayit in kayitlar:
-    r = int(kayit["r"])
-    g = int(kayit["g"])
-    b = int(kayit["b"])
-    X.append([r, g, b])
-    y.append(kayit["etiket"])
-
-print(len(X), len(y))
-print(X[0], y[0])
-```
-
-> 240 240
-> [230, 57, 70] enerjik
-
-`int(...)`: dosyadan okunan her şey metindir (`'230'`); sayıya çeviriyoruz.
+- Aynı örneklerle eğitip aynı örneklerle sınarsak **ezberi** ölçeriz
+- Test satırlarını model hiç görmez; ölçüm orada yapılır
+- Derste çözülen sorunun aynısıyla sınav yapılmaz
 
 -----
 
-## Öznitelik ve etiket: X ve y
+## En yakın komşular: en benzer 5 örnek ne dediyse onu de
 
-- **X** = modelin **baktığı** şey (öznitelikler): üç sayı
-- **y** = modelin **tahmin etmesi gereken** şey (etiket)
+![Test rengi bal ve en yakın beş eğitim satırının etiketleri](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/knn.png)
 
-`X[5]`'in cevabı `y[5]`'tir. İkisi aynı döngüde, aynı sırada doluyor. Sıra karışırsa
-model yanlış şeyi öğrenir ve **kimse fark etmez.**
-
-Model neye **bakmıyor**? Rengin adına, nerede kullanıldığına, yanındaki renklere.
+- "Benzer" burada üç sayının birbirine yakın olması demek
+- Her renk 12 kez geçtiği için model çoğu zaman **aynı rengi etiketleyen beş arkadaşa** soruyor
+- Kaç komşu? k=1 → 0.70, k=5 → 0.77, k=15 → 0.73
 
 -----
 
-## Baştaki kural ne kadar iş görüyor?
+## Üç sayı: kör tahmin, model, tavan
 
-`kirmizi > 200 and yesil < 100` kuralını sınıfın verisinde sınayınca:
+![Kör tahmin 0.45, model 0.77, tavan 0.80](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/uc_sayi.png)
 
-100 "enerjik" etiketinden yalnızca **8**'ini yakalıyor. Kural yalnızca kırmızıyı tanıyor.
-
-Sınıfın "enerjik" kavramı çok daha geniş: bordo, şeftali, somon, tarçın, bal...
-Canlı renklerle birlikte **sıcak** tonların neredeyse hepsi.
-
-Bu genişlik kimsenin kuralında yoktu; verinin içinde zaten var.
-
------
-
-## Adım 3 — Neden veriyi ikiye bölüyoruz?
-
-Modeli 240 örnekle eğitip yine aynı 240 örnekle sınarsak ne ölçmüş oluruz?
-
-**Ezberi.**
-
-Derste çözülen soruların aynısıyla sınav yapmak gibi. Öğrenci soruları ezberlemiş olabilir;
-öğrenip öğrenmediğini anlamak için **görmediği** bir soru sormak gerekir.
-
-- **Eğitim verisi:** model bunlara bakarak öğrenir
-- **Test verisi:** model bunları hiç görmez, ölçüm burada yapılır
-
------
-
-## Bölmeyi kodla yapmak
-
-```python
-from sklearn.model_selection import train_test_split
-
-X_egitim, X_test, y_egitim, y_test = train_test_split(
-    X, y, test_size=0.25, random_state=42
-)
-print(len(X_egitim), len(X_test))
-```
-
-> 180 60
-
-- Soldaki **dört değişken tek komutla** doluyor; sıra önemli, karıştırma
-- `test_size=0.25` → dörtte biri (60 satır) teste ayrılıyor
-- `random_state=42` → her çalıştırmada aynı bölme; herkes aynı sonucu görür
-
------
-
-## Adım 4 — Model: en yakın komşular
-
-Kullanacağımız modelin mantığı tek cümle:
-
-> Bu renge en çok benzeyen 5 rengi bul. Onlar ne dediyse onu de.
-
-- Formül yok, sezgi var
-- "Benzeme" burada RGB sayılarının yakınlığı demek
-- Konu 4'te aynı fikri kelimeler için kullanacağız
-
-Bizim veride her renk 12 kez geçiyor: model çoğu zaman **aynı rengi etiketleyen
-beş arkadaşına** soruyor.
-
------
-
-## Modeli eğitmek
-
-```python
-from sklearn.neighbors import KNeighborsClassifier
-
-model = KNeighborsClassifier(n_neighbors=5)
-model.fit(X_egitim, y_egitim)
-dogruluk = model.score(X_test, y_test)
-print(round(dogruluk, 2))
-```
-
-> 0.77
-
-- **`KNeighborsClassifier(...)`**: modeli kur, kaç komşuya bakacağını söyle
-- **`fit`**: "bu örneklere bak ve öğren"
-- **`score`**: "hiç görmediklerinin kaçını bildin?"
-
------
-
-## Sonuç bir şey ifade ediyor mu?
-
-Tek başına 0.77 bir şey söylemez. Kıyas gerekir.
-**Kör tahmin:** hiç düşünmeden hep en sık etiketi ("enerjik") söylemek.
-
-```python
-enerjik = 0
-for etiket in y_test:
-    if etiket == "enerjik":
-        enerjik = enerjik + 1
-
-kor_tahmin = enerjik / len(y_test)
-print(round(kor_tahmin, 2))
-```
-
-> 0.45
-
-Model kör tahmini açık farkla geçiyor: gerçekten bir şey öğrenmiş.
-
------
-
-## Alttan ve üstten kıyas
-
-| | Doğruluk |
-|---|---|
-| Kör tahmin (hep "enerjik") | 0.45 |
-| Bizim model | **0.77** |
-| Tavan (bu 60 test satırında) | 0.80 |
-
-Model kör tahmini açık farkla geçti ve **tavana iki cevap kaldı.**
-
-Bu veriyle modeli daha "akıllı" yapmaya çalışmak boşuna. Kalan yanlışlar
-modelin değil, sınıfın görüş ayrılığının payı.
-
------
-
-## Kaç arkadaşa sormalı? Tek sayıya güvenmeli mi?
-
-Adım 4'te `n_neighbors=5` yerine başka sayılar:
-
-k=1 → 0.70 · k=5 → 0.77 · k=15 → 0.73 · k=45 → 0.72
-
-- **k=1:** tek arkadaşa sormak. Azınlıktaysa yanılırsın — ezberin en basit hâli
-- **k çok büyük:** başka renklerin oyları karışıyor
-
-`random_state=42` yerine 0, 1, 2, 3, 4: doğruluk **0.65 ile 0.78** arasında oynuyor.
-60 test satırında tek bir satır doğruluğu ≈ 0.02 oynatıyor. "0.77" değil, "0.65–0.78 arası" demek daha dürüst.
-
------
-
-## Adım 5 — Yanıldığı yerlere bakmak
-
-Yanıldığı renklerin adını görmek için `kayitlar`'ı da bölüyoruz. **Aynı** `random_state` →
-aynı 60 satır teste düşer.
-
-```python
-egitim_kayitlari, test_kayitlari = train_test_split(
-    kayitlar, test_size=0.25, random_state=42
-)
-print(len(test_kayitlari))
-```
-
-`predict`: "bu renge sence hangi etiket uyar?" Her zaman bir **liste** ister: `[renk]`.
-
------
-
-## Her test satırını sor
-
-```python
-for kayit in test_kayitlari:
-    r = int(kayit["r"])
-    g = int(kayit["g"])
-    b = int(kayit["b"])
-    renk = [r, g, b]
-    tahminler = model.predict([renk])
-    tahmin = tahminler[0]
-    if tahmin != kayit["etiket"]:
-        print(kayit["ad"], "öğrenci:", kayit["etiket"], "model:", tahmin)
-```
-
-> lacivert öğrenci: enerjik model: ciddi
-> orta mavi öğrenci: sakin model: ciddi
-> şeftali öğrenci: ciddi model: enerjik
-> ... (14 satır)
+- **Kör tahmin:** hiç düşünmeden hep en sık etiketi ("enerjik") söylemek
+- Model kör tahmini açık farkla geçiyor; tavana iki cevap kalıyor
+- Başka bölmelerde doğruluk 0.65 ile 0.78 arasında oynuyor: tek sayıya güvenme
 
 -----
 
 ## Yanlışların çoğu azınlık görüşü
 
-60 test satırından 14'ünde yanıldı. 14 yanılgının **12'sinde** model sınıfın
-çoğunluğunu söylüyor; yanlış sayılan öğrenci azınlıkta.
-
-> şeftali: öğrenci "ciddi", model "enerjik" (sınıfın 10 kişisi de "enerjik" demiş)
-
-Bu 12'nin yarısında azınlık, sıcak toprak tonlarına (şeftali, tarçın, bal, somon,
-gül kurusu) "ciddi" demiş.
+![Modelin 14 yanılgısı: 12'si azınlık görüşü, 2'si çoğunluktan ayrılma](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/yanilgilar.png)
 
 - Model bir **çoğunluk sesi** üretir; azınlığın algısını siler
+- Azınlık yanılgılarının yarısında öğrenci sıcak toprak tonlarına "ciddi" demiş
 - Hedef kitlen o azınlıksa model sana yanlış yol gösterir
 
 -----
 
-## Adım 6 — Veri arttıkça ne oluyor?
+## Veri arttıkça doğruluk yükseliyor, sonra düzleşiyor
 
-Aynı model, beş farklı veri miktarı. `X_egitim[:adet]` → baştan `adet` tane örnek.
+![Öğrenme eğrisi: 18, 45, 90, 135, 180 örnekle test doğruluğu](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/ogrenme_egrisi.png)
 
-```python
-adetler = [18, 45, 90, 135, 180]
-dogruluklar = []
-for adet in adetler:
-    X_ilk = X_egitim[:adet]
-    y_ilk = y_egitim[:adet]
-    yeni_model = KNeighborsClassifier(n_neighbors=5)
-    yeni_model.fit(X_ilk, y_ilk)
-    dogruluk = yeni_model.score(X_test, y_test)
-    print(adet, round(dogruluk, 2))
-    dogruluklar.append(dogruluk)
-```
-
-> 18 0.48 · 45 0.72 · 90 0.62 · 135 0.75 · 180 0.77
-
------
-
-## Öğrenme eğrisi
-
-```python
-import matplotlib.pyplot as plt
-
-plt.plot(adetler, dogruluklar, marker="o")
-plt.xlabel("Eğitim örneği sayısı")
-plt.ylabel("Test doğruluğu")
-plt.show()
-```
-
-Eğri önce hızlı yükseliyor, sonra düzleşiyor. **Düzleştiği yer önemli:** oradan
-sonra aynı türden veri eklemek pek işe yaramıyor.
-
-Aynı 20 renge daha çok kişi sormak tavanı yükseltmez. Gereken **başka türlü** veri:
-daha çok renk, rengin kullanıldığı yer.
-
-Ortadaki düşüş hata değil; ödevde konuşacağız.
-
------
-
-## Adım 7 — Model ne öğrendi?
-
-Modelin içini açamayız. Ama kullanıcı testi gibi, hiç görmediği renkleri sorabiliriz.
-Bu kez **tüm veriyle** eğitiyoruz:
-
-```python
-model = KNeighborsClassifier(n_neighbors=5)
-model.fit(X, y)
-
-bej = [232, 220, 196]
-sutlu_kahve = [212, 163, 115]
-adacayi = [163, 177, 138]
-orman_yesili = [52, 78, 65]
-kirli_beyaz = [245, 245, 245]
-
-palet = [bej, sutlu_kahve, adacayi, orman_yesili, kirli_beyaz]
-tahminler = model.predict(palet)
-print(tahminler)
-```
-
-> ['enerjik' 'enerjik' 'sakin' 'ciddi' 'sakin']
+- Düzleştiği yerden sonra aynı türden veri eklemek pek işe yaramıyor
+- Gereken **başka türlü** veri: daha çok renk, rengin kullanıldığı yer
+- Ortadaki düşüş hata değil; ödevde konuşacağız
 
 -----
 
 ## Kafe paleti için ikinci görüş
 
-| Renk | Model | En yakın bildiği renk |
-|---|---|---|
-| bej `#E8DCC4` | enerjik | krem |
-| sütlü kahve `#D4A373` | enerjik | bal |
-| adaçayı `#A3B18A` | sakin | gri mavi |
-| orman yeşili `#344E41` | ciddi | petrol |
-| kirli beyaz `#F5F5F5` | sakin | kırık beyaz |
+![Kafe paletinin beş rengi, modelin cevabı ve en yakın bildiği renk](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/kafe_cevap.png)
 
-Sıcak nötrler (bej, sütlü kahve) "sakin" değil, "enerjik" tarafta.
-
-**Ama:** bej hakkındaki kararı kremi etiketleyenler veriyor ve krem, sınıfın en
-tartışmalı rengi. Bu bir kesinlik değil, "kullanıcıyla sına" işareti.
+- Sıcak nötrler (bej, sütlü kahve) "sakin" değil, "enerjik" tarafta
+- Bejin kararını kremi etiketleyenler veriyor; krem sınıfın en tartışmalı rengi
+- Bu bir kesinlik değil, "kullanıcıyla sına" işareti
 
 -----
 
-## Adım 8 — Hiç görmediği bir renk
+## Hiç görmediği bir renk gelince ne oluyor?
 
-Rastgele bölmede her renk hem eğitimde hem testte var: model testteki kırık beyazın
-kardeşlerini eğitimde görmüş. Asıl soru: **yeni bir renk gelince ne der?**
+![Kırık beyazı görmüş ve hiç görmemiş iki modelin cevabı](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/gorulmemis.png)
 
-```python
-X_haric = []
-y_haric = []
-for kayit in kayitlar:
-    if kayit["ad"] != "kırık beyaz":
-        r = int(kayit["r"])
-        g = int(kayit["g"])
-        b = int(kayit["b"])
-        X_haric.append([r, g, b])
-        y_haric.append(kayit["etiket"])
-
-print(len(X_haric))
-```
-
-> 228
-
------
-
-## Kırık beyazı hiç görmeyen model
-
-```python
-model_haric = KNeighborsClassifier(n_neighbors=5)
-model_haric.fit(X_haric, y_haric)
-
-kirik_beyaz = [241, 250, 238]
-tahminler = model_haric.predict([kirik_beyaz])
-print(tahminler[0])
-```
-
-> enerjik
-
-Kırık beyazı görmüş model (Adım 7) "sakin" diyor. Sınıfın 11/12'si de "sakin" demişti.
-
------
-
-## Her renk sırayla dışarıda
-
-Aynı şeyi 20 rengin her biri için yapınca:
-
-| Test türü | Doğruluk |
-|---|---|
-| Rastgele bölme (bilinen renkler) | 0.77 |
-| Hiç görülmemiş renkler | **0.60** |
-
-İkisi de doğru; yalnızca farklı soruları cevaplıyorlar.
+- Rastgele bölmede her renk eğitimde de vardı; bu kolay bir sınav
+- Yeni bir renk gelince model sayıları ona en yakın **bildiği** renklerin etiketini söyler
+- Sonucu söylerken sorulan soruyu da söyle: bilinen renk mi, yeni renk mi?
 
 -----
 
 ## RGB'de yakın, gözde uzak
 
-- **Kırık beyaz** → model "enerjik" (sınıf 11/12 "sakin"). En yakın bildiği renk: krem
-- **Gri mavi** → model "enerjik" (sınıf 10/12 "sakin"). En yakın bildiği renk: gül kurusu
+![Gri maviye gül kurusu RGB'de orta maviden daha yakın](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/rgb_yakin.png)
 
-Soğuk grimsi bir mavi ile tozlu bir pembe: bir tasarımcı bunlara asla "benzer" demez.
-Ama üç sayının farkına bakınca yakınlar.
-
-Model "benzerlik" kavramını, rengi hangi sayılarla verdiğimizden (**temsilden**) alıyor.
+- Gri maviyi hiç görmeyen model ona gül kurusunun etiketini veriyor
+- Model "benzerlik"i rengi hangi sayılarla verdiğimizden (**temsilden**) alıyor
+- Konu 4'ün sorusu: sayılardaki yakınlık bizim "benzer" dediğimiz şeyi yakalıyor mu?
 
 -----
 
-## Sekiz adım, tek defter
+## Şimdi deftere geçiyoruz: `ders.ipynb`
 
-| Adım | Ne yaptık | Elimizde |
-|---|---|---|
-| 1 | Veriyi okuduk, anlaşmazlığa baktık | `kayitlar` |
-| 2 | Rengi sayıya çevirdik | `X`, `y` |
-| 3 | İkiye böldük | `X_egitim`, `X_test`, `y_egitim`, `y_test` |
-| 4 | Eğittik, ölçtük, kör tahminle kıyasladık | `model` |
-| 5 | Yanılgılara baktık | modelin 14 yanılgısının listesi |
-| 6 | Veri miktarını değiştirdik | öğrenme eğrisi |
-| 7 | Kafe paletini sorduk | ikinci görüş |
-| 8 | Hiç görmediği renkte sınadık | `model_haric` |
+Hücreleri yukarıdan aşağı sırayla çalıştır (**Shift + Enter**).
 
------
-
-## Dört yeni kavram, dört cümle
-
-**Öznitelik ve etiket.** Modelin baktığı şey X, tahmin etmesi gereken şey y.
-Aynı sırada olmak zorundalar.
-
-**Eğitim ve test ayrımı.** Model test verisini hiç görmez. Görürse ölçtüğün şey
-öğrenme değil ezber olur.
-
-**Yanılma normaldir, ölçülür.** Doğruluğu kör tahmin ve tavanla kıyasla. %100
-çıkıyorsa sevinme, önce hata ara.
-
-**Test hangi soruyu soruyor?** Bilinen renklerde 0.77, hiç görülmemiş renklerde 0.60.
-Sonucu söylerken soruyu da söyle.
+- **Isınma:** sayaç neyi sayıyor?
+- **Adım 1–2:** veriyi oku, krem ve kırık beyazı say, X ve y'yi kur
+- **Adım 3–4:** eğitim/test böl, modeli eğit, kör tahminle kıyasla
+- **Adım 5–6:** yanıldığı renkler, öğrenme eğrisi
+- **Adım 7–8:** kafe paletini sor, kırık beyazı dışarıda bırak
+- **Bonus:** kendi rengini sor
 
 -----
 
 ## Bu konunun ödevi
 
-Adım 6'nın çıktısına bak: **yarısıyla** (90 örnek) ve **tamamıyla** (180 örnek) eğitilen model.
+Defterde Adım 6'nın çıktısına bak: **yarısıyla** (90 örnek) ve **tamamıyla** (180 örnek) eğitilen model.
 
 1. İki doğruluk oranını yaz
 2. Öğrenme eğrisini `veri-miktari.png` olarak kaydet
 3. Tek cümle: fark ne, neden böyle olmuş olabilir?
 
-İstersen defterin sonundaki **Bonus** hücresiyle kendi seçtiğin renkleri de sor:
-modelle aynı fikirde misin?
-
 Puan yok; Konu 4'ün başında birkaç kişi ekranını paylaşıp gösterecek.
 
 -----
 
-## Sonraki konu: Konu 4
+## Hatırlanacaklar
 
-**Temsil ve gömme vektörleri.**
+- **Öznitelik ve etiket:** modelin baktığı şey X, tahmin etmesi gereken şey y; aynı sırada olmalı
+- **Eğitim ve test:** model test verisini hiç görmez; görürse ölçtüğün şey ezber olur
+- **Yanılma normaldir, ölçülür:** doğruluğu kör tahmin ve tavanla kıyasla
+- **Test hangi soruyu soruyor?** Bilinen renklerde 0.77, hiç görülmemiş renklerde 0.60
 
-Bu konuda rengi üç sayıya çevirdik: `[230, 57, 70]`.
-Konu 4'te **kelimeleri** sayıya çevireceğiz; bu kez üç değil, yüzlerce sayıya.
-
-Bu konunun "en yakın komşu" fikri orada da karşımıza çıkacak: iki kelime
-birbirine benziyor mu, sayılarına bakarak söyleyeceğiz.
-
-Ve gri mavi ile gül kurusunun sorusu orada daha da önemli: **sayılardaki yakınlık,
-bizim "benzer" dediğimiz şeyi yakalıyor mu?**
+Konu 4'te rengin yerine kelimeleri sayıya çevireceğiz; "en yakın komşu" fikri orada da var.

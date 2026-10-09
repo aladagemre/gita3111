@@ -1,6 +1,6 @@
 # Konu 1 — Veriyi Kodla İşlemek ve Kelime Bulutu
 
-Bu not konunun özetidir; ısınmadan sonra slaytlarla ve defterle (`ders.ipynb`) **aynı
+Bu not konunun özetidir; kavram slaytlarından sonra defterle (`ders.ipynb`) **aynı
 sırada** ilerler. Derste kaçırdığın bir yer olursa buradan oku, sonra defterde o adımın
 hücrelerini çalıştır. Derste anlatılanlardan biraz daha uzun: her adımda **neden** o
 adımı attığımızı, atmazsak ne olduğunu ve en sık karşılaşacağın hata mesajlarını da yazdık.
@@ -976,7 +976,7 @@ tam olarak eşit. Bulut bunu sezdirir, grafik ölçer.
 
 ## Defterin bölümleri
 
-Slaytlardaki program `ders.ipynb`'de adım adım büyüyor; her adım bir öncekinin ürettiğini
+Program `ders.ipynb`'de adım adım büyüyor; her adım bir öncekinin ürettiğini
 kullanıyor. Dosyayı yalnızca Adım 1'de okuyoruz.
 
 | Defterde | Ne yaptık | Elimizde ne oluştu |
