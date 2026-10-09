@@ -7,161 +7,184 @@ Ahmet Emre Aladağ
 
 ## Kodun ilk kez bilgisayarının dışına çıkıyor
 
-![Konu 1'de kod ve veri aynı bilgisayardaydı; Konu 2'de model uzakta](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/yerel_uzak.png)
-
-- **Konu 1'in bulgusu:** müşteriler kafeyi **sessiz bir çalışma yeri** olarak anlatıyor
-- **Bugün** o kafe için uzaktaki bir modele soru soracağız
-- Dersin **kritik konusu**: sonraki konuların çoğu bunun üstüne kuruluyor
-
------
-
-## Bugünün sorusu
-
-**Kodumuz uzaktaki bir modele nasıl soru sorar, gelen cevabı nasıl okur?**
-
-- Soruyu paketleyip göndermek
-- Gelen cevabın içinden metni çıkarmak
-- Bir şey bozulunca bunu anlamak
-- Soruya **bağlam** (arka plan bilgisi, örneğin Konu 1'in bulgusu) yazınca cevabın değişip değişmediğine bakmak
+- Konu 1'de kod da veri de senin bilgisayarındaydı; her şey yerel
+- Bugün kodumuz internet üzerinden **başka bir bilgisayardaki** bir yapay zeka modeline soru soracak
+- O model çok büyük; dizüstü bilgisayarına sığmaz, güçlü sunucularda çalışır
+- Sohbet sitelerinin yaptığı da bu: yazdığın soru uzaktaki bir modele gider, cevap geri gelir
+- Bugün aynı işi arayüz olmadan, doğrudan koddan yapacağız
+- Dersin **kritik konusu**: görsel üretimi, toplu üretim ve finaldeki araçlar bunun üstüne kuruluyor
 
 **Sohbete yaz:** bir sohbet sitesinde soruyu yazıp Enter'a bastığında sorun nereye gidiyor?
 
 -----
 
-## API, mutfağa giremeyen müşteri için bir garson
+## İstemci ve sunucu
 
-![Müşteri, garson ve mutfak; altta kodun, API ve model](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/api_garson.png)
-
-- Mutfağa (modele) giremezsin, siparişi garsona (API'ye) verirsin
-- Sohbet sitesinde Enter'a basınca olan da bu; bugün siparişi arayüzsüz, koddan veriyoruz
-- Koddan giden siparişe **istek** diyoruz
-- Mutfak başkasının (Cloudflare): bu yüzden internet, kimlik ve **kota** (ücretsiz kullanım sınırı) var
-
------
-
-## Her istek üç soruya cevap verir
-
-![Adres, başlık ve gövde kartları](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/istek_parcalari.png)
-
-- **Adres**: nereye gidiyorum (hangi model)
-- **Başlık**: ben kimim (anahtar burada gider)
-- **Gövde**: ne istiyorum (soru)
+- İnternetteki her konuşmanın iki tarafı var: **istemci** soran, **sunucu** cevap veren
+- Tarayıcında bir web sitesi açtığında tarayıcın istemci, sitenin bilgisayarı sunucu
+- İstemci bir **istek** gönderir, sunucu bir **yanıt** döndürür
+- Instagram'da akışı yenilemek, hava durumuna bakmak, harita açmak: hepsi istek ve yanıt
+- Bugün istemci biziz: kodumuz istek gönderecek, yanıtı okuyacak
+- Sunucu Cloudflare'in bilgisayarları; modeli onlar çalıştırıyor
 
 -----
 
-## Anahtar senin imzan: koda yazılmaz
+## API: mutfağa giremeyen müşteri için garson
 
-![Anahtar ayrı dosyada; üç kural](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/anahtar_imza.png)
+- Bir restoranda mutfağa girip yemeği kendin yapamazsın; siparişi **garsona** verirsin
+- Garson siparişi mutfağa iletir, yemeği sana getirir; mutfağın içini görmen gerekmez
+- **API** (uygulama programlama arayüzü) programlar için garson: bir hizmete koddan nasıl sipariş verileceğini tanımlar
+- Mutfak: yapay zeka modeli · garson: API · müşteri: senin kodun
+- Garsonun dili bellidir: siparişi menüdeki biçimde vermezsen anlamaz
+- Hava durumu uygulamaları, ödeme sayfaları, harita gömen siteler: hepsi başka bir hizmetin API'sini kullanır
 
-- Başkasının eline geçerse **senin adına** istek atar, kotanı bitirir
+-----
+
+## Bir isteğin üç parçası
+
+Her istek bir zarf gibi üç soruya cevap verir:
+
+- **Adres — nereye?** Zarfın üstündeki adres: isteğin hangi sunucuya, hangi modele gideceği
+- **Başlık — ben kimim?** Zarftaki imza: senin anahtarın burada gider
+- **Gövde — ne istiyorum?** Zarfın içindeki mektup: modele sorduğun soru
+
+- Üçünden biri eksik ya da yanlışsa istek ya hiç ulaşmaz ya da geri çevrilir
+- Bütün API'ler bu üç parçayla çalışır; bugün öğrendiğin şey ileride görsel ve video üretiminde de aynı
+
+-----
+
+## Adres: hangi kapıya, hangi modele?
+
+- İnternetteki her hizmetin bir adresi (URL) var; tarayıcının üstündeki adres çubuğundaki gibi
+- Adresin başı **hangi sunucu** olduğunu söyler: örneğin `api.cloudflare.com`
+- Devamı o sunucunun **hangi hizmeti** olduğunu söyler: bizim için hesabın ve kullanacağımız model
+- Cloudflare'de onlarca model var; adresteki model adını değiştirince başka bir modelle konuşursun
+- Model adları uzun ve tuhaf görünür: hangi firmanın modeli, kaçıncı sürümü, ne kadar büyük olduğu içinde yazar
+
+-----
+
+## Anahtar: senin imzan
+
+- Sunucu her istekte "bu kim?" diye sorar; cevabı isteğin başlığındaki **anahtar** verir
 - Cloudflare buna **token** diyor; derste "anahtar" diyoruz, ikisi aynı şey
+- Anahtar bir şifre gibidir: kimin elindeyse **senin adına** istek atar ve kotanı bitirir
+- Bu yüzden anahtar koda yazılmaz; ayrı bir dosyada durur, kod onu oradan okur
+- Ekran paylaşırken, ödev teslim ederken, bir yere kod yapıştırırken anahtar görünmemeli
 - Yanlışlıkla paylaştıysan panik yok: panelden silip yenisini üretmek bir dakika
 
 -----
 
-## Durum kodu, cevabı okumadan önce ne olduğunu söyler
+## Yanıt önce bir durum kodu söyler
 
-![200, 401, 404, 429 kartları](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/durum_kodlari.png)
-
-- Gelen pakette iki şey var: **durum kodu** ve **yanıt**
-- İlk hane kime bakacağını söyler: **4xx senin tarafın**, **5xx sunucunun**
-- Kural: **200 değilse içine girme**; başarısız yanıtın içinde metin yok
-
------
-
-## Cevap düz metin değil, iç içe kutular
-
-![yanit kutusunun içinde result, onun içinde response](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/yanit_katmanlari.png)
-
-- Konu 1'deki sözlüğün aynısı; tek fark, kutunun içinde kutu olması
-- Metin en içte: önce `result` katına, sonra `response` katına inersin
-
-**Tahmin et, sohbete yaz:** en dış kutudan doğrudan `response`'u istersen ne olur? Isınmada deneyeceğiz.
+- Sunucu her yanıtın başına üç haneli bir **durum kodu** koyar: "ne oldu?"
+- **200** her şey yolunda · **400** isteğin biçimi bozuk · **401** anahtar yanlış · **403** anahtarın izni yok
+- **404** böyle bir adres yok · **429** çok sık istek attın, biraz bekle · **500** sunucu tarafında sorun
+- İlk hane kime bakacağını söyler: **4 ile başlıyorsa senin tarafında**, **5 ile başlıyorsa sunucuda**
+- Tarayıcıda gördüğün "404 Not Found" sayfası da aynı sistem
+- Kural: **200 değilse yanıtın içine girme**; başarısız yanıtın içinde cevap metni yoktur
 
 -----
 
-## Fonksiyon bir makine: bir kez yaz, istediğin kadar sor
+## Yanıtın içi: JSON, iç içe kutular
 
-![modele_sor makinesi ve içindeki dört adım](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/fonksiyon_makine.png)
+- Başarılı yanıt düz bir metin değil, **JSON** adlı bir biçimde gelir
+- JSON, Konu 1'deki sözlüğün aynısı: anahtar ve değer çiftleri
+- Tek fark, bir değerin içinde başka bir sözlük olabilmesi: kutunun içinde kutu
 
-- Bir soru için yaptığımız dört iş tek bir ada toplanıyor: `modele_sor`
-- Makineye yalnızca değişen şeyi veriyoruz: soruyu
-- Sonra bir soru listesini döngüyle sorup cevapları tek dosyaya yazıyoruz: üç soru da olur elli de, kod aynı; arayüzde yapamayacağın iş
+```json
+{
+  "success": true,
+  "result": {
+    "response": "Sessizliğin tadını çıkar."
+  }
+}
+```
 
------
-
-## Bağlam cevabı değiştirir mi?
-
-![Bağlamsız ve bağlamlı iki soru yan yana; cevaplar boş](https://raw.githubusercontent.com/aladagemre/gita3111/main/02-api-ile-konusmak/gorseller/baglam_karsilastirma.png)
-
-Aynı soru iki kez: biri yalın, birinin başında kafe hakkında bildiğimiz şey (**bağlam**).
-
-**Çalıştırmadan önce tahmin et, sohbete yaz:** hangi cevapta "kahve" geçecek, hangisinde "sessizlik", "odak"?
-
-İki cevabı defterin son adımında yan yana okuyacağız.
+- Modelin cevabı en içte: önce `result` kutusunu açarsın, sonra içindeki `response`'u
+- Hangi bilginin hangi kutuda olduğunu API'nin belgesi söyler
 
 -----
 
-## Şimdi deftere geçiyoruz
+## Kota, hız sınırı ve maliyet
 
-`ders.ipynb`, yukarıdan aşağı:
-
-- **Isınma:** iç içe sözlük
-- **Adım 1–3:** anahtarı oku, isteği hazırla (adres, başlık, gövde), gönder
-- **Adım 4–5:** yanıtın içine in; yanlış anahtarla dene
-- **Adım 6–8:** fonksiyon, çok soru ve dosya, bağlam
-
-Konu 1'deki gibi: çekirdek **`.venv`**, **Shift + Enter**, hücreler **sırayla**; atlarsan `NameError`.
+- Model çalıştırmak pahalıdır: güçlü ekran kartları, elektrik, soğutma
+- Bu yüzden her hizmet kullanımı ölçer ve sınırlar
+- **Kota:** belli bir sürede kullanabileceğin toplam miktar; bizim derste ücretsiz kotayla çalışıyoruz
+- **Hız sınırı:** kısa sürede çok fazla istek atarsan sunucu 429 der ve bekletir
+- Ücretli hizmetlerde fiyat çoğunlukla gönderdiğin ve aldığın metnin uzunluğuna göre hesaplanır
+- Tasarımcı için anlamı: toplu üretim yaparken hem süreyi hem bütçeyi planlamak gerekir
 
 -----
 
-## Anahtarın yoksa?
+## Neden arayüz değil de kod?
 
-Adım 1 `anahtar.txt` ister; dosya yoksa `FileNotFoundError` ile durur.
-
-- Ders boyunca **yanındakiyle birlikte** çalış: onun ekranında izle, hücreleri sen de yaz
-- Isınma ve alıştırma defteri (`alistirma.ipynb`) anahtarsız çalışır
-- Konu 00'daki kurulum yönergesinin **6. adımını** (Cloudflare hesabı) bugün bitir
-
-Ödev için kendi anahtarın gerekiyor; Konu 4'ten itibaren her derste de gerekecek.
-
------
-
-## Soru yazmak da tasarım
-
-*Adım 8'den sonra*
-
-- Model senin kafeni tanımıyor; ona ne söylersen onu biliyor
-- Konu 1'de veriden bulduğumuz şey ancak soruya yazınca cevaba girebilir
-- Model her seferinde başka cümle kurar: tek cevaba değil, birkaç denemedeki yöne bak
-
-Soruyu yazmak bir **brief** yazmak gibi.
-
-**Sohbete yaz:** bağlamlı sloganlardan hangisini kafenin afişine koyardın, neden?
+- Sohbet ekranında bir soru sorarsın, cevabı okursun; elli soruda elli kez kopyala-yapıştır
+- Kodla aynı soruyu bir listedeki elli ürün, elli renk, elli slogan için tek seferde sorarsın
+- Cevaplar otomatik olarak bir dosyaya yazılır; düzenli, karşılaştırılabilir
+- Aynı kodu yarın tekrar çalıştırırsın: işin **tekrarlanabilir** olur
+- Cevabı başka bir programa verebilirsin: bir grafiğe, bir görsel üreticiye, bir web sayfasına
+- Dönemin ikinci yarısındaki bütün üretim araçları bu fikrin üstüne kurulu
 
 -----
 
-## Bu konunun ödevi — iki parça
+## Fonksiyon: bir kez kur, istediğin kadar kullan
 
-**1. Kendi soruların.** `ders.ipynb`'yi yeni bir adla kopyala; Adım 7'deki listeye
-aynı konuda **kendi beş sorunu** yaz, çalıştır, `cevaplar.txt` getir.
-Tek soru cevapla: hangi cevap işe yaramazdı, neden?
+- Bir soru sormak için birkaç iş yapıyoruz: isteği hazırla, gönder, durum koduna bak, cevabı çıkar
+- Her soruda bunları baştan yazmak hem uzun hem hataya açık
+- Hepsini tek bir adın altında toplarız: bir **fonksiyon**
+- Fonksiyon bir makine gibi: içine soruyu koyarsın, cevap metni çıkar
+- Makineye yalnızca **değişen** şeyi veririz; adres ve anahtar her seferinde aynı
+- Geçen dönem öğrendiğin fonksiyon kavramı, bugün gerçek bir işin içinde
 
-**2. Renk etiketleme.** `veri/renkler.csv`'yi kendi adınla kopyala, 20 renge duygu
-etiketi ver: sakin / enerjik / ciddi.
+-----
 
-İkinci parça **Konu 3'ün verisi.** Doğru cevap yok; herkesin etiketi farklı olacak.
+## Model seni tanımıyor: bağlam
+
+- Model senin kafeni, müşterini, projeni bilmez; yalnızca sorunda yazanı bilir
+- "Bir kafe için slogan yaz" dersen her kafeye uyan sıradan bir cevap gelir
+- Soruya arka plan bilgisi eklersen, yani **bağlam** verirsen, cevap o bilgiye göre şekillenir
+- Konu 1'de yorumlardan çıkardığımız bulgu, ancak soruya yazılırsa cevaba girebilir
+- Soruyu yazmak bir **brief** yazmak gibidir: hedef kitle, ton, kısıtlar, ne istemediğin
+- İyi bir brief tasarımcıdan iyi iş çıkarır; iyi bir soru da modelden
+
+-----
+
+## Aynı soru, farklı cevap
+
+- Aynı soruyu iki kez sorarsan büyük ihtimalle iki farklı cevap alırsın
+- Bu bir hata değil; model cevabını her seferinde biraz rastlantıyla kurar (nedenini Konu 5'te göreceğiz)
+- Tek bir cevaba bakıp "model bunu düşünüyor" demek yanıltıcı
+- Bir fikri değerlendirmek için birkaç deneme yap, cevapların **ortak yönüne** bak
+- Kodla bu kolay: aynı soruyu beş kez sorup beş cevabı yan yana koyarsın
+
+-----
+
+## Bu modelleri kim sağlıyor?
+
+- **Cloudflare Workers AI:** farklı firmaların açık modellerini çalıştırıyor; derste bunu kullanıyoruz, ücretsiz kotası var
+- **OpenAI, Anthropic, Google:** kendi modellerini kendi API'leriyle sunuyorlar, çoğunlukla ücretli
+- Adres, anahtar ve gövdenin ayrıntıları değişir; mantık hep aynı
+- Bir hizmette öğrendiğin şeyi diğerine birkaç satır değiştirerek taşırsın
+- Görsel ve video üreten modeller de aynı şekilde API ile çağrılır
+
+-----
+
+## Bu konunun ödevi: iki parça
+
+**1. Kendi soruların.** Dersteki defteri yeni bir adla kopyala, aynı konuda **kendi beş sorunu** yaz, çalıştır, `cevaplar.txt` dosyasını getir. Tek soru cevapla: hangi cevap işe yaramazdı, neden?
+
+**2. Renk etiketleme.** `veri/renkler.csv` dosyasını kendi adınla kopyala, 20 renge birer duygu etiketi ver: sakin / enerjik / ciddi.
+
+- İkinci parça **Konu 3'ün verisi**: sınıfın etiketleriyle bir model eğiteceğiz
+- Doğru cevap yok; herkesin etiketi farklı olacak, olmalı da
 
 -----
 
 ## Hatırlanacak dört şey
 
-**1. Bir istek üç şeyden oluşur:** nereye, kim olduğun, ne istediğin.
+1. **Bir istek üç şeyden oluşur:** nereye (adres), kim olduğun (başlık), ne istediğin (gövde)
+2. **Önce durum koduna bak, sonra kutuları aç.** 200 değilse içinde cevap yok
+3. **Anahtar koda yazılmaz.** Ayrı dosyada durur, teslime konmaz, ekranda gösterilmez
+4. **Model yalnızca sorunda yazanı bilir.** Bağlam vermezsen sıradan cevap alırsın
 
-**2. Gelen cevap iç içe kutulardır.** Önce durum koduna bak, sonra kat kat in.
-
-**3. Anahtar koda yazılmaz.** Ayrı dosyada durur, teslime konmaz, ekranda gösterilmez.
-
-**4. Soruya yazdığın bağlam cevabı değiştirir.** Model senin bulgunu bilmez.
-
-Sıradaki konu: **Konu 3 — makine öğrenmesi.** Sınıfın etiketlediği renklerle model eğiteceğiz.
+Sıradaki konu: **Konu 3 — Makine öğrenmesi.** Sınıfın etiketlediği renklerle kendi modelimizi eğiteceğiz.

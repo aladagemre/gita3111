@@ -5,194 +5,209 @@ Ahmet Emre Aladağ
 
 -----
 
-## Konu 2'de modele soru sorduk, bugün kendi modelimizi eğitiyoruz
+## Konu 2'den Konu 3'e: hazır modelden kendi modelimize
 
-![Kafe paleti: bej, sütlü kahve, adaçayı, orman yeşili, kirli beyaz](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/kafe_soru.png)
+- Konu 2'de hazır bir modele soru sorduk; model kapalı bir kutuydu
+- Bugün kutuyu açıyoruz: bir model nasıl ortaya çıkar, neyi bilir, neyi bilemez?
+- Bunu milyarlarca metinle değil, sınıfın kendi verisiyle göreceğiz: Konu 2 ödevinde etiketlediğiniz 20 renk
+- Model kuracağız, eğiteceğiz, sınavdan geçireceğiz ve yanıldığı yerlere bakacağız
+- Matematik yok; her kavramın bir günlük hayat karşılığı var
 
-- Konu 2'de hazır bir model kullandık; bugün kutuyu açıyoruz
-- Veri: sınıfın Konu 2 ödevinde etiketlediği 20 renk
-- Bugünün sorusu: Konu 1'deki sessiz kafenin paleti gerçekten **sakin** mi?
-- Sohbete yaz: sence bu palet sakin mi? Adım 7'de aynı soruyu modele soracağız
+-----
+
+## Yapay zeka, makine öğrenmesi, derin öğrenme
+
+- Üç terim sık karıştırılır; iç içe halkalar gibi düşün
+- **Yapay zeka:** insan zekası gerektiren işleri yapan programların genel adı; en dış halka
+- **Makine öğrenmesi:** yapay zekanın bir yolu; kuralı insan yazmaz, program örneklerden çıkarır
+- **Derin öğrenme:** makine öğrenmesinin çok katmanlı, çok büyük modellerle yapılanı; en iç halka
+- Sohbet modelleri ve görsel üreticiler derin öğrenme ürünleri
+- Bugün en basit makine öğrenmesi modellerinden biriyle çalışıyoruz; ama temel fikirler büyük modellerde de aynı
 
 -----
 
 ## Kuralı ya sen yazarsın ya da model örneklerden çıkarır
 
-![Kural yazmak ile örnekten öğrenmek](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/kural_ornek.png)
-
-- **Kural yazmak:** "şu şartta şunu de" diye sen yazarsın
-- **Makine öğrenmesi:** örnekleri verirsin, kuralı model çıkarır
-- Modelin örneklere bakıp öğrenmesine **eğitim** diyoruz
-- Kuraldaki 200 ve 100, rengin içindeki kırmızı ve yeşil miktarı: bir sonraki slayt
-
------
-
-## Model renk görmez, üç sayı görür: X sayılar, y etiket
-
-![Veri dosyasından beş satır: X sütunları (r, g, b) ve y sütunu (etiket)](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/xy_tablo.png)
-
-- Renk seçicideki R, G, B: kırmızı `#E63946` = 230, 57, 70. Dosyada `r`, `g`, `b` sütunları
-- **X** = öznitelikler (üç sayı), **y** = etiket; her satırın X'i ile y'si aynı sırada durmalı
-- Model rengin adına, nerede kullanıldığına bakmıyor
-- Veri: 20 renk × 12 öğrenci = **240 satır**; her satır bir öğrencinin bir renge verdiği etiket
+- **Klasik program:** kuralı sen yazarsın. "E-postada 'bedava kazandınız' geçiyorsa spam klasörüne at"
+- Spam yazanlar kelimeyi değiştirir; kural yazan her seferinde bir adım geride kalır
+- **Makine öğrenmesi:** binlerce örnek verirsin: "bu spam, bu değil"
+- Program örneklerdeki ortak deseni kendisi bulur; bu sürece **eğitim** denir
+- Eğitimin sonunda elde edilen şeye **model** denir: yeni bir örnek gelince cevap veren kural kümesi
+- Kuralı yazmanın zor ya da imkânsız olduğu her yerde makine öğrenmesi devreye girer
 
 -----
 
-## Kural sınıfın "enerjik"ini tanımıyor
+## Makine öğrenmesi zaten her yerde
 
-![100 enerjik etiketinden kuralın yakaladığı 8 tanesi](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/kural_sonuc.png)
-
-- İki slayt önceki kural (kırmızı > 200, yeşil < 100) yalnızca kırmızıyı tanıyor
-- Sınıfın "enerjik"i çok daha geniş: sıcak tonların neredeyse hepsi
-- Bu genişlik kimsenin kuralında yoktu; verinin içinde zaten var
-
------
-
-## Tahmin et: sınıf bu iki renge aynı şeyi mi dedi?
-
-![Kırık beyaz ve krem yan yana, etiketleri soru işaretiyle](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/krem_kirik_soru.png)
-
-- İki renk ekranda neredeyse aynı; her birini 12 öğrenci etiketledi
-- Sohbete yaz: **aynı** mı, **farklı** mı?
+- **Telefonun kamerası:** portre modunda yüzü bulup arka planı bulanıklaştırır
+- **Yüz tanıma:** telefonun kilidini senin yüzünle açar, başkasınınkiyle açmaz
+- **Spotify ve Netflix:** dinlediğine, izlediğine bakıp sana öneri yapar; Netflix sana gösterdiği kapak görselini bile seçer
+- **Photoshop ve Canva:** arka planı tek tıkla silen araç binlerce örnekle eğitildi
+- **E-posta:** spam filtresi ve otomatik cümle tamamlama
+- Ortak nokta: hiçbirinde "şu şartta şunu yap" kuralını bir insan tek tek yazmadı
 
 -----
 
-## 20 rengin hiçbirinde sınıf oy birliğine varmadı
+## Veri: öznitelik ve etiket
 
-![Her rengin enerjik, sakin, ciddi etiket dağılımı; krem ve kırık beyaz vurgulu](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/dagilim.png)
-
-- Kırık beyaz 11–1 "sakin"; krem 5–5–2, sınıfın en tartışmalı rengi
-- Hiçbir renkte 12 öğrenci aynı etiketi vermedi
-- Bu bir hata değil; gerçek veri böyle görünür. Defterde ikisini kendin sayacaksın
-
------
-
-## Veriyi ikiye bölüyoruz: eğitim ve test
-
-![240 satırın 180'i eğitime, 60'ı teste ayrılıyor](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/bolme.png)
-
-- Aynı örneklerle eğitip aynı örneklerle sınarsak **ezberi** ölçeriz
-- Test satırlarını model hiç görmez; ölçüm orada yapılır
-- Derste çözülen sorunun aynısıyla sınav yapılmaz
+- Makine öğrenmesinin verisi bir tabloya benzer: her satır bir örnek
+- **Öznitelik:** modelin baktığı bilgiler; tablonun sütunları
+- **Etiket:** modelin tahmin etmesi gereken cevap
+- Ev fiyatı örneği: metrekare, oda sayısı, semt öznitelik; fiyat etiket
+- Bizim verimiz: bir rengin sayıları öznitelik, öğrencinin o renge verdiği "sakin / enerjik / ciddi" etiketi etiket
+- Kodda geleneksel adları: öznitelikler **X**, etiketler **y**; her satırın X'i ile y'si aynı sırada durmalı
 
 -----
 
-## En yakın komşular: en benzer 5 örnek ne dediyse onu de
+## Model renk görmez, sayı görür
 
-![Test rengi bal ve en yakın beş eğitim satırının etiketleri](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/knn.png)
-
-- "Benzer" burada üç sayının birbirine yakın olması demek
-- Veride her renk 12 kez var; bu yüzden en yakın beş satır çoğu zaman **aynı rengin**, başka öğrencilerden gelen etiketleri
-- Kaç komşu (k)? Defterde 1 ve 15'i de deneyeceksin
-
------
-
-## Anlaşmazlık bir tavan koyuyor
-
-![Model her renge tek cevap verir; azınlıktaki etiketleri bilemez](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/tavan.png)
-
-- Model bir renge **tek** cevap verir; en iyi ihtimalle çoğunluğu söyler
-- Kusursuz bir model bile azınlıktaki etiketleri bilemez; bilebileceği en yüksek orana **tavan** diyoruz
-- Bu yanlışlar modelin değil, sınıfın görüş ayrılığının payı
+- Bilgisayar için her şey sayıdır; renk de
+- Ekrandaki her renk üç ışığın karışımı: **kırmızı, yeşil, mavi** (RGB), her biri 0 ile 255 arasında
+- Tasarım programlarındaki renk seçicide gördüğün `#E63946` gibi kod da bu üç sayının kısaltması
+- Model rengin adını, nerede kullanıldığını, hangi duyguyu çağrıştırdığını bilmez; yalnızca üç sayıya bakar
+- Bu yüzden modelin "benzer renk" dediği şey, sayıları birbirine yakın renk demek
+- Sayılardaki yakınlık gözümüzdeki benzerlikle her zaman örtüşmez; bunu konunun sonunda konuşacağız
 
 -----
 
-## Model kör tahmini açık farkla geçiyor, tavana iki cevap kalıyor
+## İki tür soru: sınıflandırma ve sayı tahmini
 
-![Kör tahmin 0.45, model 0.77, tavan 0.80](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/uc_sayi.png)
+- **Sınıflandırma:** cevap birkaç kategoriden biri. "Bu renk sakin mi, enerjik mi, ciddi mi?"
+- **Sayı tahmini (regresyon):** cevap bir sayı. "Bu evin fiyatı ne olur?"
+- Spam filtresi, yüz tanıma, renk duygusu: sınıflandırma
+- Ev fiyatı, yarın kaç kişinin kafeye geleceği, bir gönderinin kaç beğeni alacağı: sayı tahmini
+- Bugünkü işimiz sınıflandırma: her renge üç etiketten birini vereceğiz
 
-- **Doğruluk:** 60 test satırından kaçını bildi; model 46'sını bildi → 0.77
-- **Kör tahmin:** hiç düşünmeden hep en sık etiketi ("enerjik") söylemek
-- Veriyi başka türlü bölünce sonuç biraz değişir: tek sayıya güvenme
-
------
-
-## Tahmin et: defterde üç sorunun cevabını arayacağız
-
-Tahminini sohbete yaz; cevapları defterden sonra birlikte açacağız.
-
-1. Eğitim örneği 18'den 180'e çıkınca doğruluk **hep** artar mı?
-2. Model kafe paletine "sakin" der mi?
-3. Kırık beyazı **hiç görmemiş** bir model ona ne der?
+**Sohbete yaz:** "bir afiş tasarımının kaç beğeni alacağını tahmin etmek" hangisi?
 
 -----
 
-## Şimdi deftere geçiyoruz: `ders.ipynb`
+## Etiketleri insanlar verir
 
-Hücreleri yukarıdan aşağı sırayla çalıştır (**Shift + Enter**).
+- Modelin öğrendiği her şey etiketlerden gelir; etiketleri de çoğunlukla **insanlar** verir
+- Büyük şirketler binlerce kişiye görsel, metin, ses etiketletir
+- "Bu fotoğrafta kedi var mı?" gibi sorularda insanlar çoğunlukla anlaşır
+- "Bu renk sakin mi?" gibi **öznel** sorularda anlaşamazlar; renk algısı kültüre, deneyime, zevke bağlı
+- Etiketler tutarsızsa model de tutarsız olanı öğrenir
+- Bugünkü veride her rengi 12 öğrenci etiketledi: bu anlaşmazlığı kendi gözümüzle göreceğiz
 
-- **Isınma:** sayaç neyi sayıyor?
-- **Adım 1–2:** veriyi oku, krem ve kırık beyazı say, X ve y'yi kur
-- **Adım 3–4:** eğitim/test böl, modeli eğit, kör tahminle kıyasla
-- **Adım 5–8:** yanılgılar, öğrenme eğrisi, kafe paleti, hiç görülmemiş renk; her adımdan sonra sonucu sonraki slaytlarda birlikte okuyacağız
-- **Bonus:** kendi rengini sor
+**Tahmin et, sohbete yaz:** neredeyse aynı görünen iki açık renge sınıf aynı etiketi mi verdi?
 
 -----
 
-## Yanlışların çoğu azınlık görüşü
+## Eğitim ve test: ezberi değil, öğrenmeyi ölç
 
-*Adım 5'ten sonra*
+- Bir öğretmen sınavda derste çözdüğü soruların aynısını sorarsa ne ölçer? **Ezberi**
+- Model için de aynısı: eğittiğin örneklerle sınarsan sonuç olduğundan iyi görünür
+- Bu yüzden veriyi ikiye böleriz: **eğitim** verisi ve **test** verisi
+- Model yalnızca eğitim verisini görür; test verisi sınav günü çıkar
+- Genellikle verinin dörtte üçü eğitime, dörtte biri teste ayrılır
+- Test verisi eğitime bir kez bile karışırsa ölçüm bozulur; buna **sızıntı** denir
 
-![Modelin 14 yanılgısı: 12'si azınlık görüşü, 2'si çoğunluktan ayrılma](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/yanilgilar.png)
+-----
 
-- Model bir **çoğunluk sesi** üretir; azınlığın algısını siler
-- Azınlık yanılgılarının yarısında öğrenci sıcak toprak tonlarına "ciddi" demiş
+## Ezber tuzağı: aşırı öğrenme
+
+- Bir öğrenci soruların cevabını ezberler ama konuyu anlamaz: soru biraz değişince bilemez
+- Model de eğitim örneklerini fazla ezberleyebilir; buna **aşırı öğrenme** denir
+- Eğitim verisinde mükemmel, yeni örneklerde kötü sonuç verir
+- Tersi de olur: model fazla kaba kalır, en belirgin deseni bile yakalayamaz
+- İyi model ikisinin arasında: örneklerden genel bir kural çıkarır, yeni örneğe uygular
+- Test verisi tam olarak bunu ölçer: model **görmediği** örneklerde ne kadar iyi?
+
+-----
+
+## En yakın komşular: bana arkadaşını söyle
+
+- Bugünkü modelin fikri bir atasözü kadar basit: "bana arkadaşını söyle, sana kim olduğunu söyleyeyim"
+- Yeni bir renk gelince model eğitim verisindeki **en benzer** renklere bakar
+- Bu komşuların çoğunluğu hangi etiketi verdiyse onu söyler
+- Kaç komşuya bakılacağı (**k**) bizim kararımız: 1 komşu çok oynak, çok fazla komşu çok genel
+- Model aslında hiçbir "kural" yazmaz; bütün eğitim verisini hatırlar ve her soruda yeniden bakar
+- Emlakçının bir evin fiyatını çevredeki benzer evlerin fiyatına bakarak tahmin etmesi de aynı mantık
+
+-----
+
+## Model ne kadar iyi? Doğruluk
+
+- **Doğruluk:** test örneklerinin yüzde kaçını doğru bildiği; 0 ile 1 arası bir oran
+- 100 test örneğinden 80'ini bildiyse doğruluk 0.80
+- Tek başına bir doğruluk sayısı az şey söyler: 0.80 iyi mi, kötü mü?
+- Cevap, neyle kıyasladığına bağlı; bunun için iki referans noktası kullanacağız: alt sınır ve üst sınır
+
+-----
+
+## Alt sınır: kör tahmin
+
+- **Kör tahmin:** hiç düşünmeden hep en sık etiketi söylemek
+- Verinin yarısı "enerjik" ise, her renge "enerjik" diyen tembel bir model bile 0.50 doğruluk alır
+- Bir model kör tahmini geçemiyorsa hiçbir şey öğrenmemiş demektir
+- Bu yüzden her doğruluk sayısını önce kör tahminle karşılaştırırız
+- Gerçek hayatta da geçerli: nadir görülen bir durumu yakalayan bir sistem, "hep yok" diyerek bile yüksek doğruluk alabilir; doğruluk tek başına yanıltabilir
+
+-----
+
+## Üst sınır: insanlar anlaşamıyorsa tavan
+
+- Model bir renge **tek** cevap verir; en iyi ihtimalle sınıfın çoğunluğunu söyler
+- Bir renge 12 öğrenciden 8'i "enerjik", 4'ü "sakin" dediyse model en fazla 8'ini bilebilir
+- Azınlıktaki öğrencileri **hiçbir model** bilemez; onların görüşü verinin içinde ama tek cevaba sığmaz
+- Kusursuz bir modelin bile ulaşabileceği en yüksek doğruluğa **tavan** diyoruz
+- Tavana yakın bir model, verinin izin verdiği kadarını öğrenmiş demektir
+- Öznel işlerde düşük doğruluk her zaman kötü model demek değildir; bazen insanların anlaşamadığı demektir
+
+-----
+
+## Daha çok veri her zaman işe yarar mı?
+
+- Makine öğrenmesinde sık duyulan cümle: "daha çok veri, daha iyi model"
+- Ama veri toplamak ve etiketlemek pahalıdır; ne kadarının yeteceğini bilmek gerekir
+- Aynı türden veri eklemek ile **yeni türden** veri eklemek aynı şey değildir
+- 20 rengi 100 kişiye etiketletmek mi, 100 rengi 20 kişiye etiketletmek mi daha çok şey öğretir?
+- Bugün eğitim örneği sayısını adım adım artırıp doğruluğun ne yaptığını izleyeceğiz
+
+**Tahmin et, sohbete yaz:** eğitim örneği arttıkça doğruluk hep artar mı?
+
+-----
+
+## Hiç görmediği örnek: genelleme
+
+- Bir modelin asıl sınavı, hiç görmediği türden bir örnekle karşılaşmasıdır
+- Eğitimde gördüğü renklerin başka öğrencilerden gelen etiketlerini tahmin etmek kolay bir sınavdır
+- Eğitimde **hiç bulunmayan** bir rengi tahmin etmek zor bir sınavdır
+- Modelin yeni durumlara doğru cevap verebilmesine **genelleme** denir
+- Bir sonucu söylerken sorulan soruyu da söyle: model bilinen örneklerde mi sınandı, yenilerinde mi?
+- Bir şirketin "modelimiz %95 doğru" demesi, hangi verilerle sınandığını söylemezse eksik bilgidir
+
+**Tahmin et, sohbete yaz:** bir rengi hiç görmemiş model ona ne der?
+
+-----
+
+## Model çoğunluğun sesidir
+
+- Model, etiketlerdeki çoğunluğu öğrenir; azınlığın algısını siler
 - Hedef kitlen o azınlıksa model sana yanlış yol gösterir
+- Gerçek dünyada bu ciddi sonuçlar doğurur: yüz tanıma sistemlerinin koyu tenli kadınlarda çok daha sık yanıldığı araştırmalarla gösterildi
+- Sebep çoğunlukla veri: eğitim verisinde bazı gruplar az temsil ediliyordu
+- Buna **yanlılık** (bias) denir; model kendi başına önyargılı değildir, verinin önyargısını öğrenir
+- Tasarımcı için soru: bu modelin verisinde kimin sesi var, kimin sesi yok?
 
 -----
 
-## Veri arttıkça doğruluk yükseliyor, sonra düzleşiyor
+## Benzerlik, temsile bağlı
 
-*Adım 6'dan sonra · tahminin tuttu mu?*
-
-![Öğrenme eğrisi: 18, 45, 90, 135, 180 örnekle test doğruluğu](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/ogrenme_egrisi.png)
-
-- Düzleştiği yerden sonra aynı türden veri eklemek pek işe yaramıyor
-- Gereken **başka türlü** veri: daha çok renk, rengin kullanıldığı yer
-- Ortadaki düşüş hata değil; ödevde konuşacağız
-
------
-
-## Kafe paleti için ikinci görüş: sıcak nötrler "enerjik" çıkıyor
-
-*Adım 7'den sonra · tahminin tuttu mu?*
-
-![Kafe paletinin beş rengi, modelin cevabı ve en yakın bildiği renk](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/kafe_cevap.png)
-
-- Sıcak nötrler (bej, sütlü kahve) "sakin" değil, "enerjik" tarafta
-- Beje en yakın bilinen renk krem; yani bejin cevabını kreme verilen etiketler belirliyor (krem sınıfın en tartışmalı rengi)
-- Bu bir kesinlik değil, "kullanıcıyla sına" işareti
-
------
-
-## Hiç görmediği bir renk gelince model en yakın bildiğine bakıyor
-
-*Adım 8'den sonra · tahminin tuttu mu?*
-
-![Kırık beyazı görmüş ve hiç görmemiş iki modelin cevabı](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/gorulmemis.png)
-
-- Rastgele bölmede her renk eğitimde de vardı; bu kolay bir sınav
-- Yeni bir renk gelince model sayıları ona en yakın **bildiği** renklerin etiketini söyler: kırık beyaza kremin "enerjik"ini
-- 20 rengin her biri sırayla dışarıda bırakılınca doğruluk 0.77'den **0.60**'a düşüyor
-- Sonucu söylerken sorulan soruyu da söyle: bilinen renk mi, yeni renk mi?
-
------
-
-## RGB'de yakın, gözde uzak
-
-*Adım 8'den sonra*
-
-![Gri maviye gül kurusu RGB'de orta maviden daha yakın](https://raw.githubusercontent.com/aladagemre/gita3111/main/03-makine-ogrenmesi/gorseller/rgb_yakin.png)
-
-- Gri maviyi hiç görmeyen model ona gül kurusunun etiketini veriyor
-- Model "benzerlik"i rengi hangi sayılarla verdiğimizden (**temsilden**) alıyor
-- Konu 4'ün sorusu: sayılardaki yakınlık bizim "benzer" dediğimiz şeyi yakalıyor mu?
+- Model "benzer" kavramını rengi hangi sayılarla verdiğimizden alır; buna **temsil** denir
+- RGB'de sayıları yakın iki renk, gözümüze hiç benzemeyebilir
+- Tersi de olur: gözümüze çok benzeyen iki renk RGB'de uzak düşebilir
+- Bu yüzden tasarım programlarında RGB dışında renk sistemleri de var: HSB, Lab
+- Aynı model, farklı temsille farklı sonuçlar verir
+- Konu 4'ün sorusu: kelimeleri sayıya çevirirsek, sayılardaki yakınlık bizim "benzer anlam" dediğimiz şeyi yakalar mı?
 
 -----
 
 ## Bu konunun ödevi
 
-Defterde Adım 6'nın çıktısına bak: **yarısıyla** (90 örnek) ve **tamamıyla** (180 örnek) eğitilen model.
+Dersteki defterde eğitim örneği sayısını artırdığımız adımın çıktısına bak: **yarısıyla** ve **tamamıyla** eğitilen modeli karşılaştır.
 
 1. İki doğruluk oranını yaz
 2. Öğrenme eğrisini `veri-miktari.png` olarak kaydet
@@ -204,9 +219,10 @@ Puan yok; Konu 4'ün başında birkaç kişi ekranını paylaşıp gösterecek.
 
 ## Hatırlanacaklar
 
+- **Makine öğrenmesi:** kuralı insan yazmaz, model örneklerden çıkarır
 - **Öznitelik ve etiket:** modelin baktığı şey X, tahmin etmesi gereken şey y; aynı sırada olmalı
 - **Eğitim ve test:** model test verisini hiç görmez; görürse ölçtüğün şey ezber olur
-- **Yanılma normaldir, ölçülür:** doğruluğu kör tahmin ve tavanla kıyasla
-- **Test hangi soruyu soruyor?** Bilinen renklerde 0.77, hiç görülmemiş renklerde 0.60
+- **Doğruluğu kıyasla:** alt sınır kör tahmin, üst sınır insanların anlaşabildiği kadarı (tavan)
+- **Model çoğunluğun sesidir:** verinin dışında kalanı bilemez, verideki önyargıyı öğrenir
 
-Konu 4'te rengin yerine kelimeleri sayıya çevireceğiz; "en yakın komşu" fikri orada da var.
+Sıradaki konu: renklerin yerine kelimeleri sayıya çevireceğiz; "en yakın komşu" fikri orada da var.

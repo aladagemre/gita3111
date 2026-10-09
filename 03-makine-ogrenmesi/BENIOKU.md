@@ -6,8 +6,7 @@ kaldığın adımdan devam et.
 
 | Klasör / dosya | Ne işe yarıyor |
 |---|---|
-| `slaytlar.md` | Kavram slaytları (görselli) |
-| `gorseller/` | Slaytlardaki görseller (sınıfın verisinden üretildi) |
+| `slaytlar.md` | Kavram slaytları |
 | `ders.ipynb` | Derste birlikte çalıştıracağımız defter: Isınma, Adım 1–8 ve Bonus |
 | `alistirma.ipynb` | Derste kendi başına çözeceğin defter: bozuk kodlar ve boşluklu sorular |
 | `veri/renkler-etiketli.csv` | Sınıfın etiketleri, tek dosyada (`hex,ad,r,g,b,ogrenci,etiket`) |

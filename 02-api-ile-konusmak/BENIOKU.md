@@ -11,8 +11,7 @@ gönderip cevabını alacaksın. Konu 1'in bulgusundan (müşteriler kafeyi sess
 | `veri/renkler.csv` | Ödevin ikinci parçası için 20 renk (Konu 3'ün verisi) |
 | `odevler/odev2.md` | Bu konunun ödevi — iki parça |
 | `ders_notu.md` | Konu notu — adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
-| `slaytlar.md` | Kavram slaytları (görselli) — dersin ilk bölümü, defterden önce |
-| `gorseller/` | Slaytlardaki şemaların PNG dosyaları |
+| `slaytlar.md` | Kavram slaytları — dersin ilk bölümü, defterden önce |
 
 ## Çalıştırma
 

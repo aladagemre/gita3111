@@ -5,175 +5,166 @@ Ahmet Emre Aladağ
 
 -----
 
-## Geçen hafta Python'u tazeledin, bugün gerçek bir metne uyguluyoruz
+## Metin de bir veri
 
-- Geçen hafta: liste, sözlük, döngü ve `if` tekrarı; bir de kurulum
-- İlk defterde verisini değiştirip bir grafik çizdin; o grafiğin kodunu **bu konuda** öğreneceğiz
-- Bugün aynı araçlar, gerçek bir metin: bir kafeye yazılmış **30 müşteri yorumu**
-- Yeni olan tek şey ölçek: gözle okunabilecek şeyi kodla saymak
+- Veri deyince akla tablolar ve sayılar gelir; oysa dünyadaki verinin çoğu **metin**
+- Müşteri yorumları, sosyal medya gönderileri, şarkı sözleri, haberler, mesajlar
+- Bir insan birkaç yüz yorumu okuyabilir; on bin yorumu okuyamaz
+- Bilgisayar okumaz ama **sayar**: hangi kelime kaç kez geçiyor?
+- Saymak basit görünür, ama doğru saymak için önce metni temizlemek gerekir
+- Bugün bu iş için yeni bir şey öğrenmiyoruz: liste, sözlük, döngü ve `if` yetiyor
+
+-----
+
+## Yakın okuma, uzak okuma
+
+- **Yakın okuma:** bir metni satır satır, dikkatle okumak; edebiyat dersinde yaptığın şey
+- **Uzak okuma:** binlerce metni okumadan, sayarak genel bir resim çıkarmak
+- Uzak okuma "ne çok konuşuluyor?" sorusunu cevaplar; yakın okuma "nasıl konuşuluyor?" sorusunu
+- İkisi birbirinin yerine geçmez: sayma nereye bakacağını gösterir, okuma anlamı verir
+- Tasarımda karşılığı: kullanıcı araştırmasında önce eğilimi görmek, sonra tek tek alıntılara inmek
 
 -----
 
 ## Bugünün sorusu: müşteriler bu kafeyi nasıl anlatıyor?
 
-- Kafenin görsel kimliğini yenileyeceksin; tasarıma başlamadan önce müşteriyi dinlemek istiyorsun
+- Bir kafenin görsel kimliğini yenileyeceksin; tasarıma başlamadan önce müşteriyi dinlemek istiyorsun
+- Elinde kafeye yazılmış 30 müşteri yorumu var
 - 30 yorumu gözle okursun; 3000 yorum olsaydı?
-- **Tahmin et, sohbete yaz:** yorumlarda en çok geçen üç kelime sence hangileri?
-- Cevabı sayarak bulacağız; tahminlerine dersin ortasında döneceğiz
+- Yorumları kodla sayıp müşterinin kafeyi hangi kelimelerle anlattığını bulacağız
+
+**Tahmin et, sohbete yaz:** bir kafe yorumunda en çok geçen üç kelime sence hangileri?
 
 -----
 
-## Bugünün yolu: beş durak
+## Bir metni saymanın beş adımı
 
-![dosya, metin, kelimeler, sayaç ve bulut adımlarını gösteren akış şeması](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/akis.png)
+1. **Dosya:** yorumlar bir metin dosyasında durur
+2. **Metin:** dosyayı açıp tek bir uzun yazı olarak okuruz
+3. **Kelimeler:** yazıyı kelimelere böleriz ve temizleriz
+4. **Sayaç:** her kelimenin kaç kez geçtiğini sayarız
+5. **Görsel:** sonucu bir kelime bulutu ya da çubuk grafikle gösteririz
 
-- Dosyayı **bir kez** okuruz; her adım bir öncekinin ürettiğini kullanır
+- Her adım bir öncekinin ürettiğini kullanır; dosyayı yalnızca bir kez okuruz
+- Bu beş adım, metinle çalışan her programın iskeleti
 
 -----
 
 ## Bilgisayar "kelime" bilmez, boşluktan böler
 
-![Ham bölmede sessiz kelimesinin dört farklı yazılışa dağılması](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/ham_bolme.png)
-
-- `yer.` ile `yer`, `Sessiz,` ile `sessiz` bilgisayar için ayrı kelimeler
-- "sessiz" 8 kez geçiyor; tam bu yazılışıyla yalnızca **1** kez görünüyor
-- Temizlemeden sayarsak asıl bulguyu kaçırırız
-- **Sence?** Büyük harfleri küçültmek çözer mi? "İnternet" küçülünce ne olur?
-
------
-
-## Türkçe tuzağı: büyük İ küçülünce bozuluyor
-
-![İnternet kelimesinin küçültülünce dokuz karaktere çıkması](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/turkce_kucultme.png)
-
-- Python, **İ**'yi küçültürken noktayı ayrı bir işaret olarak bırakır
-- Ekranda ikisi de "internet"; sayaç ise 3 ve 1 diye ikiye böler
-- Büyük **I** da noktasız ı yerine noktalı **i** olur: "Işık" → "işık"
+- Bilgisayar için metin harflerden ve işaretlerden oluşan uzun bir dizi
+- "Kelime" dediğimiz şeyi bulmak için en basit yol: metni **boşluklardan** bölmek
+- Ama o zaman `Kahve`, `kahve`, `kahve.` ve `kahve,` dört **ayrı** kelime sayılır
+- Büyük harf ve noktalama, aynı kelimeyi parçalara dağıtır
+- Temizlemeden sayarsak en sık geçen kelime bile listenin altında kalabilir
+- Bu yüzden saymadan önce her kelimeyi **aynı biçime** getiririz
 
 -----
 
-## Temizlik üç adım, sıra önemli
+## Temizlik: aynı kelimeyi aynı yaz
 
-![Gerçek kelimelerin üç temizlik adımından geçişi](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/temizlik.png)
-
-1. İ ve I'yı **kendimiz** çeviririz
-2. **Sonra** küçültürüz; sıra ters olursa İ çoktan bozulmuş olur
-3. Noktalamayı **boşluğa** çeviririz; silseydik `yer.Sessiz` → `yerSessiz` olurdu
-
------
-
-## Sayaç bir sözlük: kelime anahtar, sayı değer
-
-![Sayaç sözlüğü: dört kelime ve kaç kez geçtikleri, bir de tahmin sorusu](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/sozluk.png)
-
-- Sözlükte her **anahtarın** bir **değeri** var: "sessiz" → 8
-- Değeri almak için anahtarı söylersin: "sessiz" diye sorarsan 8 gelir
-- **Tahmin et:** "ilk kelime" diye 0 ile sorarsan ne olur? Cevap defterde, ilk hücreden başlayarak
+- **Küçültmek:** bütün harfleri küçük harfe çeviririz; "Kahve" ile "kahve" birleşir
+- **Noktalamayı atmak:** nokta, virgül, ünlem gibi işaretleri kaldırırız
+- Noktalamayı silmek yerine **boşluğa** çeviririz: "yer.Sessiz" silinirse "yerSessiz" diye tek kelime olur
+- Temizlikte **sıra** önemlidir; yanlış sırada yapılan doğru adımlar bile sonucu bozabilir
+- Temizlik bir tasarım kararıdır: "kahve" ile "kahveler" aynı mı sayılsın? Cevap sorunun ne olduğuna bağlı
 
 -----
 
-## Sayaç: ilk görüşte 1 yaz, sonra 1 ekle
+## Türkçe tuzağı: İ ve I
 
-![Gerçek bir yorumun kelime kelime sayılması, sayacın tur tur hâli](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/sayac_tur.png)
-
-- Her kelime için tek soru: "bu anahtar sayaçta var mı?"
-- Yoksa 1 yazılır, varsa üstüne 1 eklenir
-- Bütün yorumlar bitince elimizde 196 anahtarlı bir sözlük olur
-- Defterde önce bunu **elle** yazacağız; sonra Python'un hazır sayacıyla (`Counter`) karşılaştıracağız
-
------
-
-## Elemeden önce listenin başı dilin kendisi
-
-![En sık 10 kelime: durak kelimeler elenmeden önce ve sonra](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/durak_once_sonra.png)
-
-- **için, var, bir, ama, çok, her** her Türkçe metinde üste çıkar; kafe hakkında bir şey söylemez
-- Bunlara **durak kelime** denir; hazır bir listeyle eleriz
-- Eledikten sonra: **sessiz · çalışmak · yer · priz · internet · öğrenci**
+- Python'ın küçültme komutu İngilizce kurallarıyla çalışır
+- İngilizcede büyük I'nın küçüğü noktalı i'dir: "IŞIK" küçülünce "işik" olur
+- Türkçe büyük **İ** küçülürken noktası ayrı bir işaret olarak kalır: ekranda "internet" görünür ama bilgisayar için farklıdır
+- Sonuç: aynı kelime iki ayrı satırda sayılır ve sayılar bölünür
+- Çözüm: **önce** İ ve I'yı kendimiz doğru harfe çeviririz, **sonra** küçültürüz
+- Ders: hazır araçlar çoğu zaman İngilizce düşünülerek yazılır; Türkçe metinde sonucu mutlaka kontrol et
 
 -----
 
-## Müşteriler kafeyi kahvesiyle değil, sessizliğiyle anlatıyor
+## Sözlük: anahtar ve değer
 
-![Durak kelimeler elendikten sonra 30 yorumun kelime bulutu](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/bulut.png)
+- Python'da sözlük, her **anahtara** bir **değer** bağlayan yapı
+- Telefon rehberi gibi: isim anahtar, numara değer; numarayı isimle bulursun
+- Sözlükte sıra numarası yoktur; "ilk eleman" diye sormazsın, anahtarın adını söylersin
+- Kelime saymak için ideal: anahtar kelimenin kendisi, değer kaç kez geçtiği
+- Örnek: "kahve" → 5, "sessiz" → 3, "masa" → 2
+- Geçen dönem en çok zorlandığımız konulardan biriydi; bugün her adımda kullanacağız
 
-- Sohbete yazdığın tahminlere dön: kaç kişi "kahve" demişti?
-- Bulutta "kahve" küçük; büyük olanlar **sessiz, çalışmak, yer, priz**
-- Tasarım için anlamı: yeni kimlik "kahve" değil, **sessiz bir çalışma yeri** vaadi üzerine kurulabilir
+-----
+
+## Saymanın mantığı: çetele tutmak
+
+- Kâğıt kalemle sayarken ne yaparsın? Kelimeyi ilk görünce yazar, yanına bir çizgi çekersin
+- Aynı kelimeyi tekrar görünce yeni satır açmaz, yanına bir çizgi daha eklersin
+- Kodda da aynısı: her kelime için tek soru, "bu kelime sözlükte var mı?"
+- Yoksa değerini 1 yaparız; varsa değerine 1 ekleriz
+- Bütün kelimeler bitince elimizde her kelimenin kaç kez geçtiğini söyleyen bir sözlük olur
+- Önce bunu elle yazacağız, sonra Python'un hazır sayacı `Counter`'ın aynı işi tek satırda yaptığını göreceğiz
+
+-----
+
+## Durak kelimeler: her metinde en üstteler
+
+- Sayımı sıralayınca listenin başında hep aynı kelimeler çıkar: **ve, bir, bu, için, çok, ama**
+- Bunlar dilin yapıştırıcısıdır; metnin **konusu** hakkında bir şey söylemezler
+- Bunlara **durak kelime** denir; hazır bir listeyle elenir
+- Her dilde böyledir: birkaç işlev kelimesi metnin büyük kısmını oluşturur, çoğu kelime ise bir iki kez geçer
+- Elemeden çizilen bir kelime bulutu metnin değil, **dilin** fotoğrafıdır
+- Hangi kelimenin durak sayılacağı da bir karardır: kafe yorumlarında "kafe" kelimesi bir şey anlatır mı?
+
+-----
+
+## Kelime bulutu nedir?
+
+- Her kelimenin **boyutu**, metinde kaç kez geçtiğine göre belirlenir
+- Tek bakışta "bu metin genel olarak neyi anlatıyor?" sorusuna cevap verir
+- Sunumlarda, raporlarda, sosyal medya analizlerinde sık kullanılır
+- Hazırlaması kolay, okuması eğlenceli; bu yüzden çok da yanlış kullanılır
+- Bugün bulutu kendi sayacımızdan çizeceğiz ve neyi gösterip neyi göstermediğini konuşacağız
 
 -----
 
 ## Bulutta yalnızca boyut veri taşır
 
-![Aynı sayaçtan iki kez çizilmiş iki kelime bulutu](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/iki_bulut.png)
-
-- Konum, renk ve yön rastgele; her çizimde değişir
-- "sessiz ortada, demek ki önemli" ya da "priz mavi, demek ki olumlu": ikisi de yanlış okuma
-- İzleyici her görsel farkın bir anlamı olduğunu varsayar; bu yanlış okumayı önlemek **tasarımcının işi**
-
------
-
-## Bulut sezdirir, çubuk grafik ölçer
-
-![Aynı sayımın kelime bulutu ve çubuk grafik olarak yan yana gösterimi](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/bulut_vs_grafik.png)
-
-- "Bu metin genel olarak neyi anlatıyor?" → kelime bulutu
-- "Hangi konu ötekinden ne kadar önde?" → çubuk grafik
-- Bulutta uzun kelime daha çok yer kaplar; grafikte çalışmak, yer, priz tam eşit
-- Hangisini seçeceğin izleyicine ne söylemek istediğine bağlı: bir **tasarım kararı**
+- Kelimelerin **konumu**, **rengi** ve **yönü** rastgeledir; her çizimde değişir
+- "Bu kelime ortada, demek ki önemli" yanlış bir okumadır
+- "Bu kelime kırmızı, demek ki olumsuz" da yanlış bir okumadır
+- İzleyici her görsel farkın bir anlamı olduğunu varsayar
+- Tasarımcının işi, veri taşımayan görsel farkları ya kaldırmak ya da anlamlı hâle getirmek
+- Uzun kelimeler daha çok yer kaplar; bu da sıklığı olduğundan büyük gösterir
 
 -----
 
-## Ekleri toplayınca kahve prizi geçiyor. Bulgumuz çöktü mü?
+## Bulut mu, çubuk grafik mi?
 
-![Kahve geçen beş farklı kelimenin toplamının 6 etmesi, priz 5](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/kahve_toplam.png)
-
-- `kahve`, `kahvesi`, `kahvenin` bilgisayar için ayrı kelimeler; tek başına "kahve" yalnızca 2
-- İçinde "kahve" geçenleri toplayınca **6**: priz 5'i geçiyor
-- **Tahmin et, sohbete yaz:** bulgu çöktü mü, çökmedi mi? Sayı bunu söyleyebilir mi?
-- Cevabı defterde yorumların kendisini okuyarak bulacağız
-
------
-
-## Şimdi deftere geçiyoruz
-
-`ders.ipynb`, aynı yolu kodla yürüyoruz:
-
-- **Önce (yalnız ilk oturum):** kurulum testi; herkesin ekranında **KURULUM TAMAM**
-- **Isınma:** geçen dönemden iki bozuk kod; hatayı önce sen bul
-- **Adım 1–2:** dosyayı aç → `metin`; böl, Türkçe küçült, noktalamayı at → `kelimeler`
-- **Adım 3–5:** elle say → `sayac`; `Counter` ve `most_common`; durak kelimeleri ele → `anlamli`
-- **Adım 6–8:** kelime bulutu; kahve ve ışık yorumlarını oku; çubuk grafik
+- **Kelime bulutu** sezdirir: "genel tema ne?" sorusuna hızlı bir izlenim verir
+- **Çubuk grafik** ölçer: "hangisi ne kadar önde?" sorusunu kesin cevaplar
+- Bulutta birbirine yakın iki kelimenin hangisinin büyük olduğunu gözle ayırt edemezsin
+- Grafikte uzunluk karşılaştırması kolaydır; insan gözü uzunluğu alandan daha iyi okur
+- Hangisini seçeceğin, izleyicine ne söylemek istediğine bağlı: bir **tasarım kararı**
 
 -----
 
-## Defterde takılırsan
+## Saymanın sınırları
 
-- Çekirdek (kernel) olarak `.venv` seç; hücreyi **Shift + Enter** ile çalıştır
-- Sıra önemli: atlanan hücrenin değişkeni yoktur → `NameError`
-- Defter kendi klasöründe çalışır; `veri/...` bu klasörün içindeki `veri` demek
-- Hata mesajında üç soru: **türü ne**, **hangi satır** (ok işareti), **tırnak içinde ne var**
-
------
-
-## Kahve çok anılıyor ama az övülüyor
-
-![Kahve geçen altı yorumun alıntı kartları ve tonları](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/kahve_yorumlar.png)
-
-- Defterde Adım 7'de okuduk: sayı **kaç kez** geçtiğini söyler, **nasıl** geçtiğini söylemez
-- Üç yorum ılık: "fena değil", "ortalama", "biraz pahalı"; kahveyi doğrudan öven **tek** yorum var
-- Bulgu çökmedi, güçlendi: kimlikte kahveyi öne çıkarmak, müşterinin söylemediğini vaat etmek olur
+- **Ekler:** "kahve", "kahvesi", "kahvenin" bilgisayar için ayrı kelimeler; Türkçede bu sorun büyük
+- **Olumsuzluk:** "hiç sessiz değil" cümlesi de "sessiz" sayımına bir ekler
+- **Bağlam:** "servisi fena değil" bir övgü mü, bir şikâyet mi? Sayı söylemez
+- **Az geçen ama önemli:** iki kez geçen bir şikâyet, yirmi kez geçen bir övgüden daha değerli olabilir
+- Sayı **kaç kez** geçtiğini söyler, **nasıl** geçtiğini söylemez
+- Bu yüzden saydıktan sonra öne çıkan kelimelerin geçtiği yorumları **okuruz**
 
 -----
 
-## Bulutta görünmeyen bulgu: iç mekân karanlık
+## Tasarımcı için ne işe yarar?
 
-![Işık geçen üç gerçek yorumun alıntı kartları](https://raw.githubusercontent.com/aladagemre/gita3111/main/01-veri-ve-kelime-bulutu/gorseller/isik_kartlar.png)
-
-- "ışık" bulutta neredeyse görünmüyor: yalnızca 2 kez
-- Okuyunca somut bir tasarım sorunu çıkıyor: çalışmaya gelinen bir yerde içerisi okumak için karanlık
-
-> Sayma **nereye bakacağını** söyler. Bulguyu **bağlamda okuyarak** bulursun.
+- **Kullanıcı araştırması:** müşteriler ürünü hangi kelimelerle anlatıyor?
+- **Marka sesi:** bir markanın kendi gönderileri hangi kelimeleri tekrar ediyor? Müşterininkiyle örtüşüyor mu?
+- **Rakip analizi:** rakiplerin yorumlarında hangi şikâyetler öne çıkıyor?
+- **Brief:** "müşteri ne istiyor?" sorusuna sezgi yerine veriyle başlamak
+- **İçerik:** şarkı sözleri, şiirler, konuşmalar üzerine bilgi görselleştirmesi
+- Ortak nokta: sayma bir başlangıç noktası, bulgu ise okuyarak ve yorumlayarak çıkar
 
 -----
 
@@ -184,8 +175,7 @@ Kendi seçtiğin bir Türkçe metinle **iki** kelime bulutu üret:
 1. Durak kelimeler **elenmeden**
 2. Durak kelimeler **elendikten sonra**
 
-Sonra tek cümle yaz: eleme öncesi en büyük kelimeler neydi, sonra ne oldu?
-
+- Sonra tek cümle yaz: eleme öncesi en büyük kelimeler neydi, sonra ne oldu?
 - Metin en az 300 kelime olsun: şarkı sözü, kendi yazın, bir markanın gönderileri
 - Puan yok; bir sonraki derste sıradaki arkadaşlar ekranda gösterecek
 
@@ -193,9 +183,9 @@ Sonra tek cümle yaz: eleme öncesi en büyük kelimeler neydi, sonra ne oldu?
 
 ## Hatırlanacak dört şey
 
-1. **Sözlük anahtarla açılır.** "sessiz" anahtarı 8'i verir; 0 diye bir anahtar yoktur
-2. **Türkçe küçültme özel iş.** Büyük İ ve I önce elle çevrilir
+1. **Sözlük anahtarla açılır.** Değeri sıra numarasıyla değil, anahtarın adıyla alırsın
+2. **Türkçe küçültme özel iş.** Büyük İ ve I önce elle çevrilir, sonra küçültülür
 3. **Temizlik olmadan sonuç yanıltır.** Elenmemiş bulut metnin değil dilin fotoğrafıdır
 4. **Sayı nereye bakacağını söyler.** Bulguyu kelimeyi bağlamında okuyarak bulursun
 
-Sıradaki konu (Konu 2): kod ile internete bağlanıyoruz. Cloudflare hesabın ve anahtarın hazır olsun.
+Sıradaki konu: kodumuzla internetteki bir yapay zeka modeline soru soracağız. Cloudflare anahtarın hazır olsun.

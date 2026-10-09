@@ -6,8 +6,7 @@ gördük. Kurulumu **bu dersten sonra evde**, `kurulum-yonergesi.md` dosyasına 
 | Dosya | Ne işe yarıyor |
 |---|---|
 | `kurulum-yonergesi.md` | Kurulumun adım adım yazılı hâli — evde buna bakarak ilerle |
-| `slaytlar.md` | Derste gösterilen slaytlar (görselli) |
-| `gorseller/` | Slaytlardaki şemalar |
+| `slaytlar.md` | Derste gösterilen slaytlar |
 | `ornekler/kurulum_testi.py` | Kurulumun tamam olup olmadığını denetler |
 | `ilk_defter.ipynb` | İlk defterin: VS Code'da defter açmayı dene, kendi verinle ilk grafiğini çiz |
 

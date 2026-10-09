@@ -8,8 +8,7 @@ nasıl değiştirdiğine. Önce Konu 1'in kafe yorumlarından, yalnızca sayarak
 
 | Klasör / dosya | Ne işe yarıyor |
 |---|---|
-| `slaytlar.md` | Kavram slaytları (görselli); dersin başında gösterilir |
-| `gorseller/` | Slaytlardaki görseller (gerçek veriden üretildi) |
+| `slaytlar.md` | Kavram slaytları; dersin başında gösterilir |
 | `ders.ipynb` | Derste birlikte çalıştıracağımız defter: Isınma, Adım 1–7 ve Bonus |
 | `alistirma.ipynb` | Derste kendi başına çözeceğin defter: bozuk kodlar ve boşluklu sorular (anahtar istemez) |
 | `veri/kafe-yorumlari.txt` | Konu 1'deki 30 kafe yorumu (aynı dosya); Adım 2–5'in verisi |

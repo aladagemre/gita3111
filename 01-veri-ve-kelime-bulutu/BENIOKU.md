@@ -4,8 +4,7 @@ Bu klasörde ne var:
 
 | Klasör / dosya | Ne işe yarıyor |
 |---|---|
-| `slaytlar.md` | Kavram slaytları (görselli): dersin başında, deftere geçmeden önce |
-| `gorseller/` | Slaytlardaki görseller, bu konunun verisinden üretildi |
+| `slaytlar.md` | Kavram slaytları: dersin başında, deftere geçmeden önce |
 | `ders.ipynb` | Derste birlikte çalıştıracağımız defter: ısınma, Adım 1–8 ve bir bonus |
 | `alistirma.ipynb` | Derste kendi başına çözeceğin alıştırma: beş bozuk kod, sonra boşluk doldurma |
 | `veri/` | Üzerinde çalışacağımız metinler ve Türkçe durak kelime listesi |
