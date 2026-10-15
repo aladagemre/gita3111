@@ -955,7 +955,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 
 ## Sonraki konu
 
-**Konu 6 — Kaput açma: üretmek ne demek.** Bu konuda üretmenin "olasılık dağılımından seçim"
+**Konu 6 — Üretmek ne demek?** Bu konuda üretmenin "olasılık dağılımından seçim"
 olduğunu gördük. Konu 4'te kelimelerin bir haritada nokta olduğunu görmüştük. Konu 6 bu iki
 fikri birleştiriyor: üretmek, öğrenilmiş bir haritada nokta seçmek. Görsel üreten modellere
 geçmeden önceki son kavramsal adım.

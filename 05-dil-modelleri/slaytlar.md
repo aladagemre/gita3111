@@ -161,4 +161,4 @@ Ayrıntı: `odevler/odev5.md`
 3. **Tahmin bir olasılık dağılımıdır.** Model doğru olanı değil, olası olanı seçer; bu yüzden halüsinasyon görür
 4. **Sıcaklık seçimi ayarlar.** Düşük: neredeyse hep en olası, hep aynı. Yükseldikçe: zar, her seferinde farklı
 
-Sıradaki konu: **Konu 6 — Kaput açma: üretmek ne demek.**
+Sıradaki konu: **Konu 6 — Üretmek ne demek?**
