@@ -53,10 +53,11 @@ kendi anahtarın gerekiyor.
 | Bölüm | Ne yapılıyor | Anahtar |
 |---|---|---|
 | Isınma | Altı kelimeye elle iki sayı vermek, haritasını çizmek, benzerliği ölçmek | gerekmez |
+| Isınma 2 | Kral − erkek + kadın hesabını elle yapmak, oklarla çizmek | gerekmez |
 | Adım 1 | Anahtarı dosyadan okumak (Konu 2'nin aynısı) | gerekir |
 | Adım 2 | Bir kelimenin vektörünü modelden almak | gerekir |
 | Adım 3 | `vektor_al` fonksiyonu | gerekir |
-| Adım 4 | İki kelime ne kadar benzer? | gerekir |
+| Adım 4 | İki kelime ne kadar benzer? Aynı hesap gerçek modelle | gerekir |
 | Adım 5 | 24 kelimelik sözlük | gerekir |
 | Adım 6 | "kafe"ye en yakın 3 kelime (sen yazıyorsun) | gerekir |
 | Adım 7 | Yüzlerce sayıyı 2'ye indirip harita çizmek | gerekir |

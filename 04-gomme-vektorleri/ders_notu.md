@@ -1,7 +1,7 @@
 # Konu 4 — Temsil ve Gömme Vektörleri
 
 Bu not konunun özetidir; derste çalıştırdığımız `ders.ipynb` defteriyle **aynı sırada**
-ilerler: Isınma, sonra Adım 1–8 ve kısa bir Bonus. Derste kaçırdığın bir yer olursa
+ilerler: Isınma, Isınma 2, sonra Adım 1–8 ve kısa bir Bonus. Derste kaçırdığın bir yer olursa
 buradan oku, sonra defterde o adımın hücrelerini çalıştır. Nottaki kod blokları
 defterdeki hücrelerin birebir aynısı; notu okurken defter yanında açık dursun.
 
@@ -17,11 +17,11 @@ deneyeceğiz; sonra bir modelden her kelime için yüzlerce sayı alacağız.
 
 - bir kelimeyi modelden sayı listesi (vektör) olarak alan bir fonksiyon (`vektor_al`),
 - "kafe"ye en çok benzeyen kelimeleri bulan, **senin yazdığın** birkaç satır,
-- ve 24 kelimenin haritası: renkler, duygular, tasarım terimleri, mekânlar.
+- ve 24 kelimenin haritası: içecekler, duygular, tasarım terimleri, mekânlar.
 
 **Kurulum (dersten önce):** `gita3111` klasöründe bir kez `uv sync` çalıştır. Bu konu yeni
 bir kütüphane istemiyor: internete istek atan `requests` (Konu 2) ve `scikit-learn`
-(Konu 3) yeterli.
+(Konu 3) yeterli. Isınma 2'de kullandığımız NumPy, scikit-learn ile birlikte zaten kurulu.
 
 **Defteri açmak:** VS Code'da `04-gomme-vektorleri` klasöründeki `ders.ipynb`'yi aç.
 Sağ üstten çekirdek (kernel) olarak **`.venv`**'i seç. Sonra hücreleri yukarıdan aşağı,
@@ -75,7 +75,7 @@ ikincisi enerji:
 
 ```python
 kahve = [0.6, 0.4]
-cay = [0.5, -0.4]
+cay = [0.5, 0.3]
 buz = [-0.9, 0.1]
 deniz = [-0.5, -0.5]
 ates = [0.9, 0.9]
@@ -84,7 +84,7 @@ kar = [-0.7, -0.2]
 print(cay)
 ```
 
-Çıktı: `[0.5, -0.4]`. Her kelime iki sayılık küçük bir liste. Çay: biraz sıcak (0.5), biraz sakin (−0.4).
+Çıktı: `[0.5, 0.3]`. Her kelime iki sayılık küçük bir liste. Çay: biraz sıcak (0.5), biraz canlı (0.3).
 Böyle bir sayı listesine **vektör** diyoruz: ısınmada her kelimenin vektörü 2 sayılı.
 
 Çizerken her noktanın yanına kelimenin adını yazacağız. Bunun için adı sayılarla eşleştiren bir sözlük kuruyoruz:
@@ -181,24 +181,24 @@ okun baktığı taraf onun yönü. Aşağıda "Uzaklık değil, yön" bölümün
 
 ```python
 print(benzerlik(kahve, cay))
-print(benzerlik(kahve, buz))
+print(benzerlik(kahve, kar))
 ```
 
 Çıktı:
 
 ```text
-0.3032036572769468
--0.765704864789611
+0.9988681377244376
+-0.9524241471993242
 ```
 
-Kahve de çay da sıcak tarafta, ama biri canlı, biri sakin: 0.3, hafif benzer.
-Buz karşı tarafta: −0.77, neredeyse zıt.
+Kahve de çay da sıcak ve biraz canlı: neredeyse 1, çok benzer.
+Kar karşı tarafta, soğuk ve sakin: −0.95, neredeyse zıt.
 
 ### Uzaklık değil, yön
 
-Hücrede `buz` yerine `ates` yazıp çalıştırınca `0.9805806756909202` çıkar: neredeyse 1.
-Oysa ateş haritada kahveyle aynı yerde değil: çok daha sıcak, çok daha canlı. Kahveye
-haritada daha yakın duran çay ise yalnızca 0.3 aldı. Nasıl olur?
+Hücrede `kar` yerine `ates` yazıp çalıştırınca `0.9805806756909202` çıkar: neredeyse 1.
+Oysa ateş haritada kahveyle aynı yerde değil: çok daha sıcak, çok daha canlı; kahveye
+çaydan çok daha uzak duruyor. Yine de neredeyse çay kadar benzer çıktı. Nasıl olur?
 
 Her kelimeyi, haritanın ortasından (0, 0) kelimeye uzanan bir **ok** olarak düşün.
 Kahvenin oku sağ üste bakıyor; ateşin oku da sağ üste bakıyor, sadece daha uzun.
@@ -209,11 +209,11 @@ Isınmanın bütün ikilileri:
 
 | İkili | Benzerlik | Okuması |
 |---|---|---|
+| kahve – çay | 1.00 | neredeyse aynı yön: ikisi de sıcak ve biraz canlı |
 | kahve – ateş | 0.98 | aynı yön; ateş yalnızca "daha fazlası" |
 | buz – kar | 0.93 | ikisi de soğuk tarafta |
-| kahve – çay | 0.30 | ikisi de sıcak; enerjileri ters |
-| çay – ateş | 0.11 | neredeyse ilgisiz: biri sakin, öbürü çok canlı |
 | kahve – buz | −0.77 | karşı taraflarda |
+| kahve – kar | −0.95 | karşı taraflarda: biri sıcak ve canlı, öbürü soğuk ve sakin |
 | ateş – deniz | −1.0 | tam zıt yön: deniz `[-0.5, -0.5]`, ateş `[0.9, 0.9]` |
 
 Ateş ile deniz neden tam −1? Denizin iki sayısı ateşinkilerin tam tersi işaretli
@@ -226,6 +226,85 @@ bu sayıyı kastediyoruz: benzerlik büyükse yakın.
 
 **Kendin dene:** `kar` ile `deniz` ne kadar benzer? Önce haritaya bakıp tahmin et, sonra
 `print(benzerlik(kar, deniz))` yazıp çalıştır.
+
+## Isınma 2: kelimelerle hesap
+
+Vektörler sayı listesi olduğu için onlarla **toplama ve çıkarma** da yapabiliriz. Yeni bir
+duvar, iki yeni eksen:
+
+- **kraliyet:** soldan sağa, sıradan (0) … kraliyet (1)
+- **cinsiyet:** aşağıdan yukarıya, erkek (−1) … kadın (+1)
+
+```python
+erkek = [0, -1]
+kadin = [0, 1]
+kral = [1, -1]
+kralice = [1, 1]
+```
+
+Kral sağ altta (kraliyet, erkek), kraliçe sağ üstte (kraliyet, kadın). Soru şu: kraldan
+erkekliği çıkarıp kadınlık eklersek nereye varırız?
+
+Python listeleri bu hesabı yapamaz: `[1, -1] + [0, 1]` sonucu `[1, -1, 0, 1]` olur, iki
+liste uç uca eklenir. Sayıları **karşılıklı** toplamak için NumPy kütüphanesinin
+`np.array`'ini kullanıyoruz:
+
+```python
+import numpy as np
+
+kral = np.array(kral)
+erkek = np.array(erkek)
+kadin = np.array(kadin)
+
+hukumdar = kral - erkek
+sonuc = hukumdar + kadin
+print(hukumdar)
+print(sonuc)
+```
+
+Çıktı:
+
+```text
+[1 0]
+[1 1]
+```
+
+- `np.array(kral)` listeyi hesap yapılabilen bir vektöre çevirir. NumPy vektörleri
+  ekrana virgülsüz yazılır: `[1 0]`.
+- `kral - erkek` her sayıyı karşılığından çıkarır: `[1 − 0, −1 − (−1)]` = `[1, 0]`.
+  Kraliyet kaldı, cinsiyet sıfırlandı: ne kral ne kraliçe, yalnızca **hükümdar**.
+- `hukumdar + kadin` = `[1 + 0, 0 + 1]` = `[1, 1]`: kraliçenin tam yeri.
+
+Haritada oklarla görelim:
+
+```python
+harita2 = {"erkek": erkek, "kadın": kadin, "kral": kral, "kraliçe": kralice, "hükümdar": hukumdar}
+
+for kelime in harita2:
+    nokta = harita2[kelime]
+    plt.scatter(nokta[0], nokta[1], color="#4a6fa5")
+    plt.text(nokta[0], nokta[1], kelime)
+
+# kral (1, -1) noktasından 1 yukarı: erkekliği çıkar
+plt.arrow(1, -1, 0, 1, color="red", width=0.02, length_includes_head=True)
+# hükümdar (1, 0) noktasından 1 yukarı: kadınlığı ekle
+plt.arrow(1, 0, 0, 1, color="green", width=0.02, length_includes_head=True)
+
+plt.axhline(0, color="lightgray")
+plt.axvline(0, color="lightgray")
+plt.xlabel("sıradan — kraliyet")
+plt.ylabel("erkek — kadın")
+plt.show()
+```
+
+- `plt.arrow(x, y, sağa, yukarı)` (x, y) noktasından başlayan bir ok çizer; ok verilen
+  kadar sağa ve yukarı gider. `length_includes_head=True` okun ucunun tam hedefte
+  bitmesini sağlar.
+- `#` ile başlayan satırlar **yorum**: Python onları çalıştırmaz, yalnızca okuyana not.
+
+Kırmızı ok kraldan hükümdara, yeşil ok hükümdardan kraliçeye gider. Hesap tam kraliçenin
+üstüne düştü, çünkü eksenleri **biz** seçtik ve sayıları ona göre verdik. Adım 4'te aynı
+hesabı modelin vektörleriyle deneyeceğiz.
 
 ---
 
@@ -410,6 +489,38 @@ aralığı vardır. Güvenli okuma şu: **iki sayıyı yan yana koy, hangisi bü
 çaya tipografiden daha çok benziyor" demek anlamlı; "kahve ile çay şu kadar benzer"
 demek o kadar anlamlı değil.
 
+### Aynı hesap, gerçek modelle
+
+Isınma 2'de kral − erkek + kadın tam kraliçeye düştü, çünkü eksenleri biz seçmiştik.
+Modelin eksenleriyle de olur mu? Bu hesap modelde İngilizce kelimelerle daha iyi
+çalışıyor; king (kral), man (erkek), woman (kadın) ile deniyoruz.
+
+**Tahmin et:** sonuç hangi adaya en yakın çıkar: queen (kraliçe), prince (prens),
+princess (prenses), emperor (imparator)?
+
+```python
+kral = np.array(vektor_al("king"))
+erkek = np.array(vektor_al("man"))
+kadin = np.array(vektor_al("woman"))
+sonuc = kral - erkek + kadin
+
+for aday in ["queen", "prince", "princess", "emperor"]:
+    print(aday, round(benzerlik(sonuc, vektor_al(aday)), 2))
+```
+
+- `np` ısınmada içeri alındı; ısınmayı atladıysan burada `NameError` alırsın.
+- `vektor_al` bir liste döndürür; `np.array` onu ısınmadaki gibi hesap yapılabilir hâle
+  getirir. Hesap aynı, yalnızca her vektörde 2 değil yüzlerce sayı var.
+- Döngü her aday için bir istek atar ve sonucun o adaya benzerliğini yazar.
+
+Hangi aday en üstte? Erkek kelimeler (prince, emperor) nereye düştü? Sonuç ısınmadaki
+gibi tam kraliçenin üstüne düşmez, en fazla yakınına düşer: modelin yüzlerce ekseni var
+ve onları kimse "kraliyet" ya da "cinsiyet" diye seçmedi.
+
+**Kendin dene:** aynı hesabı Türkçe kelimelerle yap (`"kral"`, `"erkek"`, `"kadın"`;
+adaylara `"kraliçe"` ve `"kız"` koy). Kraliçe yine birinci mi? Model her dilde aynı
+iyi değil.
+
 ## Adım 5 — 24 kelimelik sözlük
 
 **(anahtar gerekir)** Haritayı kalabalık bir kelime listesiyle çizeceğiz. Dört grup,
@@ -417,23 +528,22 @@ altışar kelime:
 
 ```python
 kelimeler = [
-    "kırmızı", "mavi", "yeşil", "bej", "siyah", "beyaz",
+    "kahve", "çay", "espresso", "latte", "limonata", "buzlu kahve",
     "huzur", "öfke", "neşe", "hüzün", "heyecan", "sakinlik",
     "tipografi", "logo", "afiş", "palet", "kontrast", "serif",
-    "kafe", "kütüphane", "park", "ofis", "atölye", "sahne",
+    "kafe", "kütüphane", "park", "ofis", "restoran", "pastane",
 ]
 print(len(kelimeler))
 ```
 
-Çıktı: `24`. Her satıra bir grubu yazdık ki listeyi okumak kolay olsun: renkler,
+Çıktı: `24`. Her satıra bir grubu yazdık ki listeyi okumak kolay olsun: içecekler,
 duygular, tasarım terimleri, mekânlar. Python için satırların bir anlamı yok; köşeli
 parantez kapanana kadar hepsi tek liste.
 
-Renklerde **bej** bilerek var. Konu 3'te kafe paleti için beji sormuştuk; sınıfın
-verisiyle eğitilen model ona "enerjik" demişti, ama zayıf bir işaretle (en yakın bildiği
-renk olan krem, sınıfın en çok tartıştığı renkti). Şimdi aynı rengin **adına** dil
-modelinin gözünden bakacağız: Adım 6'da ve Adım 8'de bejin hangi duygulara yakın
-düştüğünü kendi çıktında gör.
+İçeceklerde **buzlu kahve** bilerek var: iki kelime, ama model onu da tek bir vektöre
+çevirir. Isınmada kahve ile buz haritanın iki ucundaydı, çünkü eksenimiz sıcaklıktı. Model
+ise kelimelerin hangi metinlerde **birlikte** geçtiğine bakar: buzlu kahve, kahveye yakın
+mı düşecek, uzak mı? Adım 6'da kendi çıktında gör.
 
 ```python
 vektorler_sozlugu = {}
@@ -525,8 +635,10 @@ kafe de var ve her kelime kendisine tam benzer. İlk satır her zaman hedefin ke
 
 **Tasarım açısından okuması.** Konu 1'de müşteri yorumlarını saymış ve müşterilerin bu
 kafeyi kahvesiyle değil, **sessiz bir çalışma yeri** olarak anlattığını bulmuştuk.
-Şimdi modele soruyoruz: "kafe" kelimesi neye yakın? Kütüphaneye mi (sessizlik, çalışma),
-parka mı (açık hava, dinlenme), sahneye mi (kalabalık, gösteri)? Kendi çıktına bak.
+Şimdi modele soruyoruz: "kafe" kelimesi neye yakın? İçeceklere mi (kahve, çay),
+kütüphaneye mi (sessizlik, çalışma), restorana mı (yemek, kalabalık)? Kendi çıktına bak.
+Kütüphane ilk üçte yoksa "kafe" kelimesi tek başına bu markayı anlatmıyor demektir;
+sloganın başka bir kelimeye ihtiyacı var.
 
 Model "kafe"nin **genel** anlamını, milyonlarca metinde nasıl geçtiğinden öğrendi.
 Konu 1'deki müşteriler ise **bir** kafeyi anlatıyordu. İkisi farklı çıkarsa bu bir hata
@@ -536,9 +648,9 @@ burada aynı şeyi tersinden görüyoruz: bağlamsız bir kelime, ortalama anlam
 
 **Kendin dene:** `hedef = "kafe"` yerine `"huzur"` yaz, iki hücreyi yeniden çalıştır.
 Huzur, kafenin müşterilerine vermek istediği his. Huzura en yakın kelimeler hep duygular
-mı? Altı renkten hangisi en üstte: bej mi, mavi mi, beyaz mı? Bu bir palet kararı değil
-(model renk görmedi, yalnızca renk **adlarının** hangi metinlerde geçtiğini biliyor), ama
-mood-board'a başlarken bir ipucu. Sonra `"afiş"` dene: tasarım terimleri kendi aralarında
+mı? Altı içecekten hangisi en üstte: çay mı, kahve mi, limonata mı? Bu bir menü kararı
+değil (model hiçbir şey içmedi, yalnızca içecek **adlarının** hangi metinlerde geçtiğini
+biliyor), ama mood-board'a başlarken bir ipucu. Sonra `"afiş"` dene: tasarım terimleri kendi aralarında
 mı toplanıyor?
 
 ## Adım 7 — Harita
@@ -628,11 +740,11 @@ göstermez. Haritada bir şey dikkatini çekerse, emin olmak için asıl sayıya
 
 **(anahtar gerekir)** Haritaya bak ve şu soruları cevapla:
 
-- Dört grup (renkler, duygular, tasarım, mekânlar) ayrı kümeler oluşturdu mu?
+- Dört grup (içecekler, duygular, tasarım, mekânlar) ayrı kümeler oluşturdu mu?
 - Kendi grubundan kaçan bir kelime var mı? Nereye gitmiş? Neden olabilir?
-  (Örneğin "palet" renklerin yanına mı düştü, tasarım terimlerinin yanına mı?)
-- Hangi renk duyguların kümesine en yakın? Bej nereye düştü? Konu 3'teki model onu
-  "enerjik" demişti; dil modeli onu hangi duygunun yanına koyuyor?
+  (Örneğin "restoran" mekânların yanına mı düştü, içeceklerin yanına mı?)
+- "kafe" haritada nereye düştü: mekânların yanına mı, içeceklerin yanına mı? Adım 6'daki
+  komşularıyla uyuşuyor mu?
 - **huzur** ile **öfke** zıt anlamlı. Haritada uzak mı düştüler?
 
 Haritaya güvenmeden önce asıl sayılara bakalım:
@@ -673,7 +785,7 @@ söylüyor" demiyor.
 ## Bonus — Kendi 5 kelimen
 
 ```python
-yeni_kelimeler = ["espresso", "minimal", "gürültü", "sessizlik", "poster"]
+yeni_kelimeler = ["kitap", "minimal", "gürültü", "sessizlik", "poster"]
 for kelime in yeni_kelimeler:
     vektorler_sozlugu[kelime] = vektor_al(kelime)
 
@@ -696,10 +808,11 @@ yerleri de değişebilir. Harita, içindeki kelimelere göre kurulan bir özet.
 | Adım | Ne yaptık | Elimizde ne oluştu |
 |---|---|---|
 | Isınma | Altı kelimeye elle iki sayı verdik, çizdik, benzerliği ölçtük | `harita`, `benzerlik` |
+| Isınma 2 | Kral − erkek + kadın hesabını elle yaptık, oklarla çizdik | `hukumdar`, `sonuc` |
 | 1 | Anahtarı okuduk | `hesap`, `anahtar` |
 | 2 | Bir kelimenin vektörünü aldık | `vektor` |
 | 3 | Fonksiyona koyduk | `vektor_al` |
-| 4 | İki kelimeyi kıyasladık | — |
+| 4 | İki kelimeyi kıyasladık; kral − erkek + kadın hesabını modelle denedik | — |
 | 5 | 24 kelimenin vektörünü aldık | `vektorler_sozlugu` |
 | 6 | En yakın komşuları bulduk | `skorlar` |
 | 7 | 2 boyuta indirip çizdik | `pca`, `model_haritasi` |
