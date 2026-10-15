@@ -116,7 +116,7 @@ Ahmet Emre Aladağ
 - Ama haritayı adım adım tarayıp her noktadan bir A kurarsan, eksenin ne anlattığını **görebilirsin**
 - Bir eksen boyunca yürüyünce harfte hep aynı şey değişiyorsa, o eksen bir **özellik düğmesi** gibidir
 - Tasarımcı için bu çok tanıdık bir araç: bir özelliği bir sürgüyle ayarlamak
-- Fark: değişken fontta eksenleri tasarımcı belirler; burada model veriden kendisi bulur
+- Fark: değişken fontlarda (variable fonts) kalınlık gibi özellikleri sürgüyle ayarlatan eksenleri tasarımcı belirler; burada model veriden kendisi bulur
 
 **Tahmin et, sohbete yaz:** yüzlerce fontun A'ları en çok hangi bakımdan birbirinden farklıdır? Haritanın iki ekseni ne olabilir?
 

@@ -34,7 +34,7 @@ marka olabilir (bir kahve dükkânı, bir festival, bir kitabevi) ya da hayalî.
 2. **İki cümle:** Hangi görsel dil bu marka için işe yaradı? Neden? (Öbür ikisinde ne eksikti?)
 3. **Üretim günlüğü:** kopyanın en sonuna bir metin (Markdown) hücresi ekle; her görsel bir satır:
    `dosya adı | model | tohum | yönergenin tamamı`, örneğin
-   `012.jpg | flux | 42 | a small bookshop ..., linocut print, ...`. Dosya adı ve yönerge Adım 4'ün
+   `ciktilar/012.jpg | flux | 42 | a small bookshop ..., linocut print, ...`. Dosya adı ve yönerge Adım 4'ün
    hücresinin çıktısında yan yana yazıyor.
 
 `anahtar.txt`'yi **gönderme**.

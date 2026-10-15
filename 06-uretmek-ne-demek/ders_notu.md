@@ -422,7 +422,7 @@ Küçük **g**'nin iki ünlü biçimi var:
 - **İki katlı g:** üstte bir halka, altta kapalı ikinci bir halka (çoğu serif fontta).
 - **Tek katlı g:** üstte bir halka, altta açık bir kanca (çoğu sans fontta ve el yazısında).
 
-g'nin ızgarasında soldan sağa bu iki biçim arasında bir geçiş görüyor musun? Harita bu kez
+Adım 7'nin soldan sağa yürüyüşünde g'nin bu iki biçimi arasında bir geçiş görüyor musun? Harita bu kez
 neyi "en önemli fark" diye seçmiş? Sonra `veri["a"]` (o da iki katlı / tek katlı olabilir)
 ve `veri["R"]` dene.
 
@@ -546,10 +546,12 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 
 ## Ödev
 
-`odevler/odev6.md` (puansız), iki parça:
+`odevler/odev6.md` (puansız). Konu 7'nin ilk oturumu vizenin sözlü teyidine ayrıldığı için
+gösterimi Konu 8'in başında, Konu 7'nin ödeviyle birlikte. İki parça:
 
 1. Kendi seçtiğin bir harfle (g, a ya da R) haritayı, iki eksen boyunca yürüyüşü ve iki font
-   arasındaki yürüyüşü çıkar; harita bu harfte neyi "en önemli fark" diye seçmiş, tek cümleyle yaz.
+   arasındaki yürüyüşü çıkar. İki cümle: yürürken harfte ne değişiyor, harita neyi "en önemli
+   fark" diye seçmiş?
 2. Adım 6'daki noktayı değiştirerek **en garip** A'yı bul; noktasını ve neden garip olduğunu yaz.
 
 ## Vize

@@ -12,7 +12,7 @@ dosyaya dokunmazsan `git pull` çakışmaz.
 
 1. Kopyada Adım 1'in ilk hücresinde `veri["A"]` yazan yeri `veri["g"]`, `veri["a"]` ya da
    `veri["R"]` yap: harfi sen seç.
-2. Hücreleri Adım 1'den Adım 8'in sonuna kadar sırayla çalıştır.
+2. Hücreleri **Isınma'dan** Adım 8'in sonuna kadar sırayla çalıştır (`plt` Isınma'da alınıyor).
 3. Dört görselin ekran görüntüsünü al: **harita** (Adım 5), **soldan sağa yürüyüş** ve
    **yukarıdan aşağı yürüyüş** (Adım 7), **iki font arasındaki yürüyüş** (Adım 8).
 

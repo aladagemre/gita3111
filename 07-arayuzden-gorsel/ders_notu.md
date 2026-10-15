@@ -185,7 +185,8 @@ yan_yana(yollar, stiller, kaydet="stil_panosu.png")
 
 - Her turda yeni stille bir `deneme` yönergesi kuruyoruz: dört parça aynı, yalnızca stil değişiyor.
   Isınmadaki `yonerge` ve `stil` değişmeden kalıyor; sonraki adımlar onları kullanacak.
-- `print(yol, deneme)` her görselin dosya adını ve yönergesini yazıyor: üretim günlüğüne bunları yazacaksın.
+- `print(yol, deneme)` her görselin dosya adını ve yönergesini yazıyor: üretim günlüğüne bunları,
+  model (`flux`) ve tohumla (`42`) birlikte yazacaksın.
 - `kaydet="stil_panosu.png"`: panoyu bu klasöre bir görsel dosyası olarak da kaydeder. Ödevde
   kendi panonu böyle kaydedeceksin.
 

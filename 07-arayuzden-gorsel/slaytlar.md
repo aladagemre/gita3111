@@ -71,8 +71,9 @@ Bir brif yazar gibi düşün: modele neyi, nasıl, hangi duyguyla istediğini an
 
 **Tahmin et, sohbete yaz:** aynı yönergeyi Türkçe yazarsak görsel İngilizcedekine ne kadar benzer?
 
-- Görsel üreticiler çoğunlukla İngilizce açıklamalı görsellerle eğitildi
-- Konu 5'i hatırla: Türkçe metin daha çok belirtece (parçaya) bölünür ve eğitim verisinde çok daha az bulunur
+- Yönergeyi hangi dilde yazdığın, modelin onu ne kadar "anladığını" etkileyebilir
+- Kendine sor: modelin eğitildiği görsellerin açıklamaları çoğunlukla hangi dilde yazılmıştı?
+- Konu 5'i hatırla: aynı söz Türkçede ve İngilizcede kaç belirtece (parçaya) bölünüyordu?
 - Derste aynı yönergeyi iki dilde deneyip farkı kendin göreceksin
 - Stil ve teknik terimlerin İngilizcesini öğrenmek (watercolor, linocut, isometric, bokeh) bir tasarımcıya bugün çok şey kazandırır
 
@@ -172,9 +173,9 @@ Seçtiğin bir marka ya da etkinlik için **üç farklı görsel dil** dene.
 1. Dersteki defteri kopyala; yönergenin beş parçasını (özne, ortam, stil, ışık, kompozisyon) kendi brifine göre yaz
 2. Tohumu sabit tutup yalnızca **stili** üç kez değiştir; karşılaştırma panosunu kaydet
 3. **İki cümle:** hangi görsel dil bu marka için işe yaradı, neden?
-4. Üretim günlüğüne model adını, tohumu ve üç yönergeyi yaz
+4. Üretim günlüğüne her görselin dosya adını, model adını, tohumu ve yönergesini yaz
 
-Ayrıntılar: `odevler/odev7.md`. Puan yok; Konu 8'in başında sıradaki arkadaşlar gösterecek.
+Ayrıntılar: `odevler/odev7.md`. Puan yok; Konu 8'in başında, Konu 6'nın ödeviyle birlikte, sıradaki arkadaşlar gösterecek.
 
 -----
 
