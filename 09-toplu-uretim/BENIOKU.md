@@ -1,10 +1,10 @@
 # Konu 9 — Ölçek: Toplu Üretim
 
 Bu konuda arayüzün yapamadığı işi yapıyoruz: bir şablon ve iki listeyle (3 stil × 4 renk)
-12 görseli tek seferde üretmek. Döngüden önce kota hesabı yapacak, önce küçük bir deneme (3 görsel) yapıp sınırın çalıştığını görecek,
-bir istek başarısız olunca bekleyip yeniden deneyecek, var olan görselleri atlayıp kaldığı
-yerden devam edecek, her görselin nasıl üretildiğini bir JSON günlüğüne yazacak ve hepsini
-tek bir kontak sayfasında yan yana koyacaksın. Son olarak görselleri, görsel anlayan (çok kipli) bir
+12 görseli tek seferde üretmek. Döngüden önce kota hesabı yapacak, küçük bir denemeyle (3 görsel)
+sınırın çalıştığını göreceksin. Yazdığın kod, başarısız bir isteği bekleyip yeniden deneyecek ve var olan
+görselleri atlayıp kaldığı yerden devam edecek. Her görselin nasıl üretildiğini bir JSON günlüğüne yazacak,
+hepsini tek bir kontak sayfasında yan yana koyacaksın. Son olarak görselleri, görsel anlayan (çok kipli) bir
 modele okutup brife ne kadar uyduklarını soracaksın.
 
 | Klasör / dosya | Ne işe yarıyor |

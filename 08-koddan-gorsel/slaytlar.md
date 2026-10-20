@@ -12,7 +12,7 @@ Ahmet Emre Aladağ
 - Yeni olanlar: görselin bayt olarak gelmesi, onu dosyaya yazmak, dosyalara düzenli ad vermek, hataları yakalamak
 - Gerisini biliyorsun: anahtar, adres, istek, durum kodu Konu 2'den; tohum ve yönerge Konu 7'den
 - Bu konunun sonunda kendi küçük üretim aracın olacak
-- Konu 9'da bu araçla onlarca görsel üreteceğiz; bugünkü sağlamlık orada işe yarayacak
+- Konu 9'da bu araçla onlarca görsel üreteceğiz; bugün eklediğimiz hata kontrolleri orada işe yarayacak
 
 -----
 
@@ -20,10 +20,10 @@ Ahmet Emre Aladağ
 
 - Bir üretim arayüzünde yönergeyi bir kutuya yazarsın, ayarları düğmelerle seçersin, "üret"e basarsın
 - Görseli beğenirsen "indir"e basarsın; tarayıcı ona bir ad verir: çoğu zaman anlamsız bir ad
-- Hangi tohumla, hangi ayarla ürettiğini çoğu zaman bir yere yazmazsın; bir hafta sonra aynısını üretemezsin
+- Hangi tohumla, hangi ayarla ürettiğini genellikle bir yere yazmazsın; bir hafta sonra aynısını üretemezsin
 - Kodda her düğme bir **değişken**, "üret" bir **istek**, "indir" bir **dosyaya yazma** işlemi
 - Kod her şeyi kaydedebilir: ne istendi, ne zaman, hangi tohumla
-- Aynı işi bir kez değil, istediğin kadar tekrarlayabilir
+- Üstelik aynı işi bir kez değil, istediğin kadar tekrarlayabilir
 
 -----
 
@@ -33,7 +33,7 @@ Ahmet Emre Aladağ
 - Değişkeni değiştirip yeniden çalıştırırsın; geri kalan her şey aynı kalır (Konu 7'deki kontrollü deney)
 - Aynı değişkenlerle bir ay sonra çalıştırırsın, aynı görseli alırsın (model sürümü değişmediyse): iş **tekrarlanabilir** olur
 - Bir müşteri "geçen ayki afişin aynısı, yalnızca rengi farklı" dediğinde ne yapacağını bilirsin
-- Yönergenin parçalarını ayrı değişkenlerde tutmak bir **şablon** kurmak demek
+- Yönergenin parçalarını (stil, renk, konu) ayrı değişkenlerde tutmak bir **şablon** kurmak demek
 - Şablon + değişken listesi = toplu üretim (Konu 9)
 
 -----
@@ -77,7 +77,7 @@ Ahmet Emre Aladağ
 - Kötü ad bir hafta sonra işe yaramaz: hangisi hangi müşteriye, hangi ayarla, hangi gün?
 - İyi bir dosya adı kendini anlatır: **ne zaman**, **ne istendi**, **hangi ayarla**
 - Tarih yıl-ay-gün sırasıyla yazılırsa (2026-10-19) dosyalar adlarına göre sıralanınca tarih sırasına da girer
-- Dosya adında boşluk, Türkçe karakter, `/` ve `:` gibi işaretler sorun çıkarır; tire ve alt çizgi güvenlidir
+- Dosya adında boşluk, Türkçe karakter, `/` ve `:` gibi işaretler sorun çıkarabilir; tire ve alt çizgi güvenlidir
 - Kod adı her seferinde aynı kurala göre üretir; insan unutur, kod unutmaz
 
 -----
@@ -121,7 +121,8 @@ Ahmet Emre Aladağ
 - Böyle durumlarda birkaç saniye bekleyip **yeniden denemek** çoğu zaman işe yarar (bekleme kodunu Konu 9'da yazacağız)
 - Ama sınır koy: üç deneme, beş deneme; sonsuza kadar denemek kotayı ve zamanı yer
 - Kalıcı hatada (yanlış anahtar) yeniden denemek işe yaramaz; önce sebebi düzelt
-- Ücretsiz kota günlüktür: dolduysa birkaç saniye beklemek işe yaramaz, kota ertesi gün yenilenir; deneme yaparken kaç istek gönderdiğini bil
+- Ücretsiz kota günlüktür: dolduysa birkaç saniye beklemek işe yaramaz, kota ertesi gün yenilenir
+- Deneme yaparken kaç istek gönderdiğini takip et
 - Konu 9'da onlarca istek gönderirken bu kurallara ihtiyacımız olacak
 
 -----
@@ -150,7 +151,7 @@ Ahmet Emre Aladağ
 
 ## Neden kod?
 
-- Arayüz tek görsel için hızlıdır; kod **kayıt, tekrar ve ölçek** için
+- Arayüz tek görsel için hızlıdır; kod **kayıt, tekrar, ölçek ve sağlamlık** için
 - **Kayıt:** her dosyanın adı, görselin ne zaman, hangi yönergeyle ve hangi tohumla üretildiğini söyler
 - **Tekrar:** aynı ayarlarla aynı görseli bir ay sonra yeniden alırsın
 - **Ölçek:** bir yönerge yerine bir liste, bir tohum yerine on tohum: Konu 9
@@ -176,7 +177,7 @@ Ayrıntılar: `odevler/odev8.md`. Puan yok; Konu 9'un başında sıradaki arkada
 
 1. **Görsel bir ikili dosyadır.** İkili okunur, ikili yazılır; harf değil, bayt
 2. **base64 görseli metne çevirir.** API görseli JSON içinde metin olarak gönderir; geri çevirince tek bayt kaybolmaz
-3. **Desen hep aynı:** istek → durum kodu → metin → bayt → dosya
+3. **Desen:** istek → durum kodu → metin → bayt → dosya
 4. **Dosya adı kendini anlatır.** Ne zaman, ne istendi, hangi tohum; yazmadan önce "bu ad alınmış mı?"
 5. **Hatayı yakala, çökme.** Sunucu "olmaz" derse durum koduna bak; cevap hiç gelmezse `try` / `except`
 

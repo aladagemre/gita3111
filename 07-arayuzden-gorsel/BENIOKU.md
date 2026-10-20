@@ -1,10 +1,10 @@
 # Konu 7 — Görsel Üretimi: Yönergeden Görsele
 
 Bu konuda bir görsel üreticiyi tasarımcı gözüyle yönetmeyi öğreneceğiz: yönergeyi parçalarına
-ayırmak, **tohumla** rastgeleliği sabitlemek, görselin gürültüden adım adım nasıl çıktığını
-izlemek, bir seferde tek bir şeyi değiştirerek **kontrollü deney** yapmak, iki modeli
+ayırmak, **tohumla** rastgeleliği sabitlemek, adım sayısının görseli nasıl değiştirdiğini
+görmek, bir seferde tek bir şeyi değiştirerek **kontrollü deney** yapmak, iki modeli
 karşılaştırmak ve var olan bir görseli talimatla düzenlemek. Bu konuda yeni kod yazmıyoruz: hazır
-bir aracı (`gorsel_araci.py`) arayüz gibi kullanıyor, hazır hücrelerde yalnızca metinleri ve sayıları
+bir aracı (`gorsel_araci.py`) arayüz gibi kullanıyor, defterin hücrelerinde yalnızca metinleri ve sayıları
 değiştiriyoruz; aracın içini Konu 8'de açacağız.
 
 | Klasör / dosya | Ne işe yarıyor |

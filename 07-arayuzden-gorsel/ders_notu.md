@@ -79,7 +79,7 @@ daha az bulunur. Adım 6'da bunu sınayacağız.
 from gorsel_araci import ciz, duzenle, yan_yana
 ```
 
-Bu satır bu klasördeki `gorsel_araci.py` dosyasından üç fonksiyonu alır. Konu 4'teki
+Bu satır, klasördeki `gorsel_araci.py` dosyasından üç fonksiyonu alır. Konu 4'teki
 `from sklearn.decomposition import PCA` gibi; tek fark, bu dosya senin klasöründe.
 
 ```python
@@ -158,7 +158,7 @@ yan_yana(yollar, ["1 adım", "2 adım", "4 adım", "8 adım"])
 
 **Bak:** 1 adımla 8 adım arasındaki fark nerede: biçimde mi, renkte mi, ayrıntıda mı? Fark
 beklediğinden küçükse şaşırma: bu model (FLUX.1 schnell) az adımda bitirmek için özel olarak
-eğitildi. Daha çok adım daha çok süre ve kota demek; bu model 4 adımda çoğu zaman yeterli.
+eğitildi. Daha çok adım daha çok süre ve kota demek; 4 adım çoğu zaman yeterli.
 
 ### Difüzyon nasıl öğrenildi?
 
@@ -175,6 +175,9 @@ Tohum başlangıç noktasını belirlediği için aynı tohum aynı görseli ver
 
 ## Adım 4 — Kontrollü deney: yalnızca stil değişsin
 
+Adım 3'te yalnızca adım sayısını değiştirdik. Şimdi aynı yöntemle yönergenin bir parçasını
+değiştiriyoruz.
+
 ```python
 stiller = ["watercolor illustration", "flat vector poster", "35mm film photograph"]
 
@@ -190,9 +193,9 @@ yan_yana(yollar, stiller, kaydet="stil_panosu.png")
 
 - Her turda yeni stille bir `deneme` yönergesi kuruyoruz: dört parça aynı, yalnızca stil değişiyor.
   Isınmadaki `yonerge` ve `stil` değişmeden kalıyor; sonraki adımlar onları kullanacak.
-- `print(yol, deneme)` her görselin dosya adını ve yönergesini yazıyor: üretim günlüğüne bunları,
-  model (`flux`) ve tohumla (`42`) birlikte yazacaksın.
-- `kaydet="stil_panosu.png"`: panoyu bu klasöre bir görsel dosyası olarak da kaydeder. Ödevde
+- `print(yol, deneme)` her görselin dosya adını ve yönergesini yazıyor. Bunları, model (`flux`) ve
+  tohumla (`42`) birlikte **üretim günlüğüne** yazacaksın: hangi görseli nasıl ürettiğini gösteren kayıt.
+- Yan yana dizilmiş görseller bir **stil panosu**. `kaydet="stil_panosu.png"` panoyu bu klasöre bir görsel dosyası olarak da kaydeder. Ödevde
   kendi panonu böyle kaydedeceksin.
 
 **Bak:** tohum aynı olduğu için üç görselin kompozisyonu (fincanın yeri, açısı) birbirine

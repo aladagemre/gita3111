@@ -9,8 +9,8 @@ defterdeki hücrelerin birebir aynısı.
 **Bu konuda:** aynı `ciz` fonksiyonuyla bir görsel **ızgarası** üretiyoruz. "Neden kod öğreniyorum?"
 sorusunun cevabı bu konu:
 
-> Bir şablon ve iki liste: stiller × renkler, tek hücre. Önce hesap, sonra küçük bir deneme; sınır koyarak,
-> kaldığı yerden devam ederek, her şeyi kayda geçirerek; sonunda hepsi tek bir kontak sayfasında.
+> Bir şablon ve iki liste: stiller × renkler, tek hücre. Önce hesap, sonra küçük bir deneme. Sınır koyar,
+> kaldığı yerden devam eder, her şeyi kayda geçiririz. Sonunda hepsi tek bir kontak sayfasında.
 
 **Konunun sonunda elinde:** `izgara/` klasöründe 12 görsel, hepsini gösteren bir kontak sayfası
 (`kontak_sayfasi.png`) ve her görselin nasıl üretildiğini kaydeden bir günlük (`uretim_gunlugu.json`).
@@ -53,8 +53,8 @@ Satırları tek tek saymak yerine çarpabiliriz:
 print(len(stiller) * len(renkler))
 ```
 
-Çıktı: `12`. 5 stil ve 6 renk: 5 × 6 = 30. Bir renk eklersen 3 × 5 = 15; üstüne iki stil daha eklersen 5 × 5 = 25. Liste büyüdükçe görsel
-sayısı **çarpılarak** büyür; kota da öyle.
+Çıktı: `12`. 5 stil ve 6 renk: 5 × 6 = 30. Elimizdeki 3 × 4'e bir renk eklersen 3 × 5 = 15; üstüne iki stil daha
+eklersen 5 × 5 = 25. Liste büyüdükçe görsel sayısı **çarpılarak** büyür; kota da öyle.
 
 ---
 
@@ -155,8 +155,8 @@ iki eksenli hâli.
 ## Adım 2 — Kota ve güvenlik sınırı
 
 Cloudflare kotayı **neuron** denen bir birimle sayar; günde 10.000 neuron ücretsiz. Bir görsel (1024 × 1024,
-4 adım) yaklaşık 58 neuron tutar: Cloudflare 1024'lük görseli 512 × 512'lik 4 kare olarak sayar; 4 kare × 4,8 +
-4 adım × 9,6. Yani günde kabaca 170 görsel.
+Konu 7'deki gibi 4 adım) yaklaşık 58 neuron tutar. Hesap şöyle: Cloudflare 1024'lük görseli 512 × 512'lik 4 kare
+sayar; her kare 4,8, her adım 9,6 neuron: 4 × 4,8 + 4 × 9,6 ≈ 58. Günde kabaca 170 görsel eder.
 
 ```python
 MAKS_URETIM = 12
@@ -196,7 +196,8 @@ from uretim import ciz, gorsele_sor
 - `uretim.py` anahtarı bir kez, bu hücre ilk çalıştığında okur. `anahtar.txt`'yi sonradan düzeltirsen çekirdeği
   yeniden başlat (**Restart**) ve hücreleri baştan çalıştır.
 
-Toplu üretimde bir istek başarısız olursa bütün iş durmamalı. Bir adım daha: **bekleyip yeniden denemek**.
+Toplu üretimde bir istek başarısız olursa bütün iş durmamalı. Konu 8'de hatayı yakalamıştık; bugün bir şey ekliyoruz:
+**bekleyip yeniden denemek**.
 
 ```python
 def sabirli_ciz(yonerge, tohum):
@@ -261,8 +262,8 @@ def toplu_uret(liste, sinir):
     print("Bu çalıştırmada denenen:", denenen)
 ```
 
-- Döngü bir fonksiyonda: `toplu_uret(liste, sinir)` bir kart listesi ve bir sınır alır. `sinir` bu çalıştırmada en
-  fazla kaç görsel deneneceği.
+- Döngü bir fonksiyonda, çünkü onu farklı sınırlarla iki kez çağıracağız: `toplu_uret(liste, sinir)` bir kart
+  listesi ve bir sınır alır. `sinir` bu çalıştırmada en fazla kaç görsel deneneceği.
 - `klasor / kart["dosya"]`: Konu 8'deki gibi klasör ve dosya adını birleştirir.
 - **Zaten varsa** atla: `continue` bu kartı bırakır, döngünün başına döner, sıradakine geçer. Dosya varsa daha önce
   üretilmiştir; o yüzden durumu `uretildi`.
@@ -270,9 +271,9 @@ def toplu_uret(liste, sinir):
 - Değilse üret ve kaydet. Kartın içine sonucunu yaz: `kart["durum"] = "uretildi"` ya da `"olmadi"`. Sözlükteki
   bir değer böyle değiştirilir; anahtar yoksa eklenir (Adım 7'deki `model_puani` gibi).
 - `denenen` üretmeyi denediğimiz kartları sayar; atlanan kartlar sayılmaz. Sınır bu sayaca bakar.
-- Dosya adında **tarih yok** (Konu 8'deki `kaydet`'ten farkı): aynı kart her zaman aynı adı alır. Bu sayede "zaten
-  var mı?" sorusu bir **kaldığı yerden devam** düğmesine dönüşür. Bu yüzden Konu 8'in `kaydet`'ini kullanmıyoruz;
-  o, her kayıtta yeni (tarihli) bir ad üretiyordu.
+- Dosya adında **tarih yok** (Konu 8'deki `kaydet`'ten farkı): aynı kart her zaman aynı adı alır. Böylece "zaten
+  var mı?" sorusu bir **kaldığı yerden devam** düğmesine dönüşür. Konu 8'in `kaydet`'ini kullanmamamızın sebebi de
+  bu: o, her kayıtta yeni (tarihli) bir ad üretiyordu.
 
 Önce küçük bir deneme:
 
@@ -329,7 +330,7 @@ print(len(okunan))
 print(okunan[5]["yonerge"])
 ```
 
-- `json.load` dosyayı yeniden listeye çevirir. `okunan[5]["yonerge"]`: altıncı kartın yönergesi.
+- `json.load` dosyayı yeniden listeye çevirir. `okunan[5]["yonerge"]`: altıncı kartın yönergesi (sıra 0'dan başlar).
 - Bir müşteri aylar sonra "altıncı görselin aynısı" derse yönergesi ve tohumu elinde.
 
 ---
@@ -499,7 +500,7 @@ kopyada çalış. **Anahtar istemez ve görsel üretmez:** listeler, sözlükler
 | `KeyError: 'ACCOUNT_ID'` (Adım 3) | `anahtar.txt`'de `=` yerine `:` ya da satır eksik | İki satır `AD = değer` biçiminde olmalı |
 | `NameError: name 'ciz' is not defined` ya da `'Path'` | Adım 3'ün ilk hücresi hata verdi ya da çalıştırılmadı | Önce o hücredeki hatayı düzelt |
 | `İstek başarısız, durum kodu: 401` (her kartta üç kez) | Anahtar yanlış | `anahtar.txt`'yi düzelt, çekirdeği yeniden başlat (**Restart**), baştan çalıştır: `uretim.py` anahtarı yalnızca ilk okumada alır |
-| `Bağlanamadım ya da cevap gelmedi` | İnternet yok ya da sunucu 2 dakikada cevap vermedi | İnternete bak; sonra aynı hücre kaldığı yerden devam eder |
+| `Bağlanamadım ya da cevap gelmedi` | İnternet yok ya da sunucu 2 dakikada (görsel anlayan model 3 dakikada) cevap vermedi | İnternete bak; sonra aynı hücre kaldığı yerden devam eder |
 | `İstek başarısız, durum kodu: 429` ve `Deneme ... olmadı` | Çok hızlı istek ya da günlük kota doldu | Bekle; üst üste geliyorsa hücreyi durdur. Kota 03:00'te (Türkiye saati) yenilenir; sonra aynı hücreyi çalıştır, kaldığı yerden devam eder |
 | Hücre uzun süre bitmiyor | `sabirli_ciz` bekliyor (başarısız her denemeden sonra 5 saniye) ya da 12 istek sürüyor | Bekle; mesajlara bak |
 | `NameError: name 'sabirli_ciz' is not defined` | Adım 3'ün fonksiyon hücresi çalıştırılmadı | Adım 3'ü çalıştır |
@@ -553,7 +554,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 | Terim | Anlamı |
 |---|---|
 | **Kombinasyon** | İki ya da daha çok listenin her elemanının birbiriyle eşleşmesi: 3 × 4 = 12 |
-| **İç içe döngü** | Bir döngünün içinde başka bir döngü; içteki her tur için baştan sona döner |
+| **İç içe döngü** | Bir döngünün içinde başka bir döngü; içteki döngü, dıştakinin her turunda baştan sona döner |
 | **Şablon** | Sabit kısmı ve değişen boşlukları olan yönerge |
 | **Kart** | Bir kombinasyonun bütün bilgileri: stil, renk, dosya adı, yönerge, tohum (bir sözlük) |
 | **Izgara** | Satırları bir değişken, sütunları öbür değişken olan görsel düzeni |

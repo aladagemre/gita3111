@@ -22,9 +22,9 @@ Kendi seçtiğin bir konuda (bir marka, bir etkinlik, bir kitap kapağı...) bir
    - Toplam en fazla 12 kart (ör. 2 × 3, 3 × 4).
 3. Adım 4'ün ilk hücresinde `Path("izgara")` yerine `Path("odev9")` yaz: ödevin görselleri dersten kalanlarla karışmasın.
 4. Adım 7'deki `brif_ingilizce = "..."` satırını kendi brifine göre İngilizce yaz.
-5. Isınma'dan başlayıp **Adım 7'nin sonuna kadar** sırayla çalıştır. Bonus 2'yi çalıştırma. Bir listeyi ya da
-   sözlüğü sonradan değiştirirsen yine Isınma'dan itibaren sırayla çalıştır; yoksa kartlar eski kalır. Adım 6'daki
-   `benim_secimim` satırına kendi kazananının dosya adını yaz.
+5. Isınma'dan başlayıp **Adım 7'nin sonuna kadar** sırayla çalıştır. Bonus 2'yi çalıştırma. Adım 6'daki
+   `benim_secimim` satırına kendi kazananının dosya adını yaz. Bir listeyi ya da sözlüğü sonradan değiştirirsen
+   yine Isınma'dan itibaren sırayla çalıştır; yoksa kartlar eski kalır.
    Kontak sayfasının ızgarası liste uzunluklarına göre kendini ayarlar (`satir = len(stiller)`).
    `kontak_sayfasi.png` ve `uretim_gunlugu.json` dersteki dosyaların üzerine yazılır; dersinkini saklamak
    istersen önce başka bir ada kopyala.

@@ -98,7 +98,7 @@ b'/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQE'
 
 - 9579 bayt 12772 karaktere dönüştü: base64'te her 3 bayt 4 karakter olur; metin üçte bir kadar uzar.
 - İçinde yalnızca harf, rakam, `+` ve `/` var. Her JPEG'in base64 hâli `/9j/` ile başlar.
-- Başta hâlâ `b'...'` görünüyor: `b64encode` sonucu bayt olarak verir, ama içinde yalnızca harf ve rakam var.
+- Başta hâlâ `b'...'` görünüyor: `b64encode` sonucu bayt olarak verir; ama bu baytların her biri bir harfe karşılık gelir.
 - **Yanılgı:** base64 şifreleme ya da sıkıştırma değildir. Dosyayı büyütür ve herkes geri çevirebilir.
 
 Geri çevirip asılla karşılaştırıyoruz:
@@ -108,7 +108,7 @@ geri = base64.b64decode(metin)
 print(geri == baytlar)
 ```
 
-Çıktı: `True`. Tek bayt kaybolmadı. E-posta ekleri de yıllardır böyle gönderilir.
+Çıktı: `True`. Tek bayt kaybolmadı. E-posta ekleri de yıllardır base64 metni olarak gönderilir.
 
 ---
 
@@ -199,7 +199,7 @@ with open("deneme.jpg", "w") as dosya:
 TypeError: write() argument must be str, not bytes
 ```
 
-`"w"` metin yazar; biz bayt verdik. (Dosya açıldığı için klasörde boş bir `deneme.jpg`
+Hata "yazılacak şey metin olmalı, bayt değil" diyor: `"w"` metin yazar, biz bayt verdik. (Dosya açıldığı için klasörde boş bir `deneme.jpg`
 oluştu; silebilirsin.) Baytları yazmanın yolu `"wb"`: **w**rite (yaz) + **b**inary (ikili).
 
 ```python
@@ -244,7 +244,8 @@ def ciz(yonerge, tohum):
     return base64.b64decode(metin)
 ```
 
-- Adım 2–4'ün aynısı, tek bir adın altında (Konu 2'deki `modele_sor` gibi).
+- Adım 2–4'ün (dosyaya yazma hariç) aynısı, tek bir adın altında (Konu 2'deki `modele_sor` gibi). Böylece her
+  görselde aynı satırları yeniden yazmayız.
 - **Yeni:** durum koduna bakıyoruz. 200 değilse fonksiyon bir mesaj yazar ve `None` döndürür.
   `None`, Python'da "hiçbir şey" demek.
 - `return` fonksiyonu **orada bitirir**: alttaki `cevap.json()` satırları hiç çalışmaz. Böylece
@@ -259,7 +260,7 @@ resim = ciz("a red bicycle leaning on a yellow wall, flat vector poster", 7)
 print(len(resim))
 ```
 
-Bir sayı yazar (görselin bayt sayısı). Henüz dosyaya yazmadık.
+Yine görselin bayt sayısını görürsün. Henüz dosyaya kaydetmedik.
 
 ---
 
@@ -312,6 +313,7 @@ print(ad)
 - `yonerge[:20]`: yönergenin ilk 20 karakteri (Konu 3'teki `[:adet]` gibi; boşluklar da sayılır).
   Kesik olabilir (`leanin`); amaç hatırlatmak.
 - `.replace(" ", "-")`: boşlukları tireye çevirir. Dosya adında boşluk sorun çıkarabilir.
+- Üçüncü parça tohum; en sona `.jpg` ekliyoruz.
 - Bizim kod yalnızca boşluğu düzeltiyor. Yönergenin ilk 20 karakterinde `/` olursa Python onu bir alt
   klasör sanır; Windows'ta `\ : ? * " < > |` işaretleri de hata verir. Yönergeye bu işaretleri koyma.
 
@@ -346,7 +348,7 @@ Hücreyi **bir kez daha** çalıştır: `Bu ad alınmış, üzerine yazmıyorum`
 
 ## Adım 7 — Hepsi bir arada: yönergeyi kullanıcıdan al
 
-Adım 6'yı da bir fonksiyona koyuyoruz:
+Adım 6'nın satırlarını da bir fonksiyona koyuyoruz:
 
 ```python
 def kaydet(resim, yonerge, tohum):
@@ -364,8 +366,8 @@ def kaydet(resim, yonerge, tohum):
 
 - `kaydet` baytları, yönergeyi ve tohumu alır; dosyanın yolunu geri verir.
 - Ad alınmışsa `None` döndürür ve hiçbir şeyi silmez.
-- Adda saniye olduğu için bu kontrol çoğu zaman tetiklenmez. Ama aynı saniyede iki kayıt olursa ya da
-  bir gün adı tarihsiz kurarsan (Konu 7'deki `001.jpg` gibi) seni bu satır korur.
+- Adda saniye olduğu için bu kontrol çoğu zaman devreye girmez. Ama aynı saniyede iki kayıt olursa ya da
+  bir gün adı tarihsiz kurarsan (Konu 7'deki `001.jpg` gibi) seni korur.
 
 ```python
 yonerge = input("Yönerge (İngilizce): ")
@@ -376,6 +378,7 @@ if resim is not None:
     print(yol)
 ```
 
+- Şimdiye kadar yönergeyi kodun içine yazdık; şimdi programın kendisi soruyor.
 - `input` GİTA2112'den tanıdık: kullanıcıya bir soru sorar, yazdığını metin olarak verir. VS
   Code'da ekranın üstünde bir kutu açılır; yönergeni İngilizce yaz, **Enter**'a bas.
 - `resim is not None`: "resim boş değilse", yani istek başarılıysa.
@@ -420,8 +423,8 @@ except requests.exceptions.ConnectionError:
 
 - `try:` altındaki satırlar denenir.
 - Orada `requests.exceptions.ConnectionError` çıkarsa program durmaz, `except` altındaki satırlara
-  geçer. `except`'ten sonra yazdığımız ad, en alttaki satırdaki hatanın adı; `requests` kütüphanesinin
-  hatalarından biri olduğu için başında `requests.exceptions.` var.
+  geçer. `except`'ten sonra yazdığımız ad, en alttaki satırdaki hatanın adı. Bu hata `requests`
+  kütüphanesine ait; bu yüzden başında `requests.exceptions.` var.
 - Hatayı **adıyla** yakalıyoruz. Yalnızca `except:` yazmak her hatayı sessizce geçiştirir; yazım
   hatalarını bile saklar ve neyin bozulduğunu bulmayı zorlaştırır.
 
@@ -452,7 +455,7 @@ gorsel.save("ilk_kucuk.jpg")
 ```
 
 - `PIL` (Pillow) görsel açıp düzenlemeye yarayan kütüphane.
-- `Image.open` görseli açar. `thumbnail((512, 512))` en-boy oranını koruyarak 512'ye sığdırır;
+- `Image.open` görseli açar. `thumbnail((512, 512))` en-boy oranını koruyarak 512 × 512'lik bir kutuya sığdırır;
   sonucu bir değişkene atamıyoruz, çünkü görseli **yerinde** değiştirir. İç içe parantez: `(512, 512)`
   tek bir bilgi, "en ve boy".
 - `save` yeni bir dosyaya yazar.
@@ -496,12 +499,12 @@ plt.show()
 ```
 
 Yanıt yine base64: Adım 3–4'ün aynısı. Bu kez `kaydet` ile düzenli bir ada yazıp gösteriyoruz.
-Dosya adındaki 42, düzenleme isteğine gönderdiğimiz tohum. Cevabı ayrı bir değişkende (`duzen_cevap`)
-tutuyoruz: istek hiç gitmezse bu hücre `NameError` verir ve hata görünür olur; Adım 2'nin `cevap`'ı
-sessizce kullanılıp eski görsel "düzenlenmiş" diye kaydedilmez.
+Dosya adındaki 42, düzenleme isteğine gönderdiğimiz tohum. Cevabı neden ayrı bir değişkende (`duzen_cevap`)
+tuttuk? İstek hiç gitmezse bu hücre `NameError` verir ve hata görünür olur. Aynı adı kullansaydık Adım 2'nin
+`cevap`'ı sessizce kullanılır, eski görsel "düzenlenmiş" diye kaydedilirdi.
 
-**Desen hep aynı:** istek → durum kodu → base64 metni → bayt → `"wb"` ile dosya. Görsel üretimi,
-düzenleme, ileride video çoğunlukla bu deseni kullanır.
+**Üretimde de düzenlemede de desen aynı:** istek → durum kodu → base64 metni → bayt → `"wb"` ile dosya.
+İleride video üretimi de çoğunlukla bu deseni kullanır.
 
 ---
 
@@ -523,7 +526,7 @@ if resim is None:
 
 - Kısa sürede çok istek gönderdiysen (429) yeniden denemek işe yarayabilir. Günlük kota dolduysa
   beklemek de yeniden denemek de işe yaramaz; kota ertesi gün 03:00'te (Türkiye saati) yenilenir.
-- `break` döngüyü erkenden bitirir: başarılı olunca kalan denemeler yapılmaz.
+- `break` döngüyü erken bitirir: başarılı olunca kalan denemeler yapılmaz.
 - Sınır koyduk: en fazla üç deneme. Üçü de olmazsa döngüden sonraki `if` bunu söylüyor.
 - Bu kod denemeler arasında beklemiyor; gerçek bir araçta birkaç saniye beklenir (`time.sleep`). Beklemeyi Konu 9'da ekleyeceğiz.
 
@@ -542,8 +545,8 @@ if resim is None:
 Bir istisna: araçtaki `sdxl` modeli görseli base64 metni olarak değil, doğrudan bayt olarak
 gönderiyor (`cevap.content`). Desenin "metin" adımı orada yok.
 
-**3. Konu 9'a hazırlık.** Bu iki fonksiyonla (`ciz`, `kaydet`) 3 stil × 4 renk = 12 görseli nasıl
-üretirdin? Ortadaki bir istek hata verirse ne olur?
+**3. Konu 9'a hazırlık.** Bu iki fonksiyonla (`ciz`, `kaydet`) birkaç stil ve birkaç rengin bütün
+eşleşmelerini nasıl üretirdin? Ortadaki bir istek hata verirse ne olur?
 
 ---
 
@@ -657,7 +660,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 
 ## Ödev
 
-`odevler/odev8.md` (puansız): kendi konunda 5 yönerge × 2 tohum = 10 görsel, düzenli
+`odevler/odev8.md` (puansız): kendi seçtiğin bir konuda 5 yönerge × 2 tohum = 10 görsel, düzenli
 adlandırmayla ayrı bir `odev8/` klasörüne; hiçbir dosya üzerine yazılmasın. İki cümle: aynı
 yönergenin iki tohumu arasındaki fark neydi?
 

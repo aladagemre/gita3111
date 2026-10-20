@@ -14,7 +14,7 @@ Ahmet Emre Aladağ
 - Yeni olanlar: kombinasyon, şablon, güvenlik sınırı ve kaldığı yerden devam
 - Sonra: kendiliğinden yazılan bir üretim günlüğü ve bütün görselleri tek sayfada gösteren bir kontak sayfası
 - Hepsi Konu 8'deki `ciz` fonksiyonunun ve dosyaya yazma deseninin üstüne kuruluyor
-- Konu 8'in son Bonus sorusu: 3 stil × 4 renk = 12 görseli nasıl üretirdin, ortadaki bir istek hata verirse ne olur? Bugün ikisini de cevaplıyoruz
+- Konu 8'in son Bonus sorusu: birkaç stil ve rengin bütün eşleşmelerini nasıl üretirdin, ortadaki bir istek hata verirse ne olur? Bugün ikisini de cevaplıyoruz
 
 -----
 
@@ -47,7 +47,7 @@ Ahmet Emre Aladağ
 - Bir **şablon**, sabit bir kısım ve doldurulacak boşluklardan oluşur
 - Yönergede: "ahşap masada bir fincan, ___ stilinde, ___ paletiyle"
 - Ofis programlarındaki "adres mektup birleştirme" de böyle: tek mektup, yüz farklı isim
-- Tasarım sistemlerindeki bileşenler de böyle: aynı düğme, farklı metin ve renk
+- Tasarım sistemlerindeki bileşenler aynı mantıkla çalışır: aynı düğme, farklı metin ve renk
 - Şablonun gücü tutarlılık: değişmesini istemediğin her şey sabit kalır
 - Boşluklara giden kısa adlar (dosya adı için) ile uzun açıklamalar (model için) ayrı tutulursa her ikisi de temiz kalır
 
@@ -56,7 +56,7 @@ Ahmet Emre Aladağ
 ## İç içe döngü: saat ve dakika
 
 - Bir saati düşün: akrep bir saat ilerlerken yelkovan bir tam tur atar
-- **İç içe döngü** de böyle çalışır: dıştaki döngü bir adım atar, içteki döngü baştan sona döner
+- **İç içe döngü** de aynı mantıkla çalışır: dıştaki döngü bir adım atar, içteki döngü baştan sona döner
 - Dıştaki her stil için içteki döngü bütün renkleri gezer; sonra dıştaki bir sonraki stile geçer
 - Girinti hangi satırın hangi döngünün içinde olduğunu söyler
 - **Yanılgı:** içteki işi yapan satır dıştaki döngünün hizasına kayarsa hata çıkmayabilir; bazı kombinasyonlar sessizce kaybolur
@@ -67,7 +67,7 @@ Ahmet Emre Aladağ
 ## Kontrollü varyasyon: iki eksenli tablo
 
 - Konu 7'de bir seferde tek değişken değiştirdik; bugün geri kalan her şey sabitken iki değişkeni **düzenli** değiştiriyoruz
-- Her stil her renkle bir kez: bir tablo gibi düşün, satırlar stil, sütunlar renk
+- Her stil her renkle bir kez: bir tablo (ızgara) gibi düşün, satırlar stil, sütunlar renk
 - Bir satırın tamamı kötüyse sorun stilde; bir sütunun tamamı kötüyse renkte
 - Yalnızca bir hücre kötüyse o eşleşmeye özgü bir sorun var
 - Rastgele denemede bu ayrımı yapamazsın; düzenli tabloda göz hemen görür
@@ -176,4 +176,4 @@ Ayrıntılar: `odevler/odev9.md`. Görsellerini sakla: Konu 10'da birini videoya
 4. **Kararlı ad, kaldığı yerden devam.** Aynı iş aynı ad; var olanı atla
 5. **Kayıt, sayfa, seçim.** Günlük her şeyi kaydeder, kontak sayfası karşılaştırır, son kararı tasarımcı verir
 
-Sıradaki konu: **Konu 10 — Video üretimi.** Hareket ekliyoruz. Video hem pahalı hem yavaş: sonuç hemen gelmez; bugünkü sınır ve kaldığı yerden devam orada şart.
+Sıradaki konu: **Konu 10 — Video üretimi.** Hareket ekliyoruz. Video hem pahalı hem yavaş: sonuç hemen gelmez; bugünkü sınır ve kaldığı yerden devam orada daha da önemli.

@@ -11,8 +11,8 @@ Ahmet Emre Aladağ
 - İkinci yarıda bu modellerle **üretiyoruz**: görsel, toplu üretim, video, üretim hattı
 - Bugün bir görsel üreticiyi tasarımcı gözüyle yönetmeyi öğreniyoruz
 - Hedef: "rastgele deneyip şansını beklemek"ten **kontrollü denemeye** geçmek
-- Bugün yeni kod yazmıyoruz: hazır bir aracı arayüz gibi kullanıyor, yalnızca metinleri ve sayıları değiştiriyoruz; aracın içini Konu 8'de açacağız
-- Bu konudan itibaren yapay zeka araçları serbest ve bekleniyor; her üretimin modelini, tohumunu ve yönergesini üretim günlüğüne yaz
+- Yeni kod yazmıyoruz: hazır bir aracı arayüz gibi kullanıyor, yalnızca metinleri ve sayıları değiştiriyoruz; aracın içini Konu 8'de açacağız
+- Bu konudan itibaren yapay zeka araçlarını kullanmak serbest, hatta bekleniyor; her görselin nasıl üretildiğini bir **üretim günlüğüne** yaz (neyin yazılacağını birazdan göreceğiz)
 
 -----
 
@@ -21,7 +21,7 @@ Ahmet Emre Aladağ
 - Konu 6'da öğrenilmiş bir haritada **noktayı biz seçtik** ve oradan bir A geri kurduk
 - Görsel üreticide noktayı **yönerge** (prompt) seçer: yazdığın cümle haritada bir bölgeyi tarif eder
 - Harita çok daha büyük: yüz milyonlarca görsel ve onların açıklamalarından öğrenildi
-- Model işe haritada **rastgele bir başlangıç noktasından** başlar: buna gürültü diyoruz
+- Model haritada **rastgele bir noktadan** yola çıkar: buna gürültü diyoruz
 - Her adımda bu noktayı yönergenin tarif ettiği bölgeye biraz kaydırır
 - En sonda çözücü, Konu 6'daki gibi, noktadan görseli geri kurar
 
@@ -34,7 +34,7 @@ Ahmet Emre Aladağ
 - Her **adımda** nokta yönergenin bölgesine biraz yaklaşır; ekranda bu, gürültünün bir kısmının silinmesi gibi görünür
 - Bu yöntemin adı **difüzyon** (diffusion)
 - Model bunu nasıl öğrendi? Eğitimde görsellere adım adım gürültü eklendi; model bu işi **tersine** yapmayı öğrendi
-- Adım sayısı süreyi ve kotayı belirler
+- Adım sayısı, üretimin ne kadar süreceğini ve kotadan ne kadar harcayacağını belirler
 - Derste farklı adım sayılarıyla baştan üretip sonuçları karşılaştıracağız
 
 **Tahmin et, sohbete yaz:** yalnızca 1 adımda üretilen bir görsel, 8 adımdakinden ne kadar farklı olur?
@@ -47,7 +47,7 @@ Ahmet Emre Aladağ
 - Başlangıç gürültüsünü üreten sayıya **tohum** (seed) denir
 - Yönerge **bölgeyi** seçer, tohum o bölgeye **hangi noktadan** yola çıkılacağını seçer
 - **Aynı model + aynı yönerge + aynı tohum = aynı görsel**
-- Tohum, deney yapabilmenin şartı: bir şeyi değiştirdiğinde farkın gerçekten o değişiklikten geldiğinden emin olursun
+- Tohumu sabit tutmak deneyin şartı: bir şeyi değiştirdiğinde farkın gerçekten o değişiklikten geldiğinden emin olursun
 - Sohbet arayüzlerinin çoğu tohumu gizler; API'de ve profesyonel araçlarda sen seçersin
 
 -----
@@ -83,7 +83,7 @@ Bir brif yazar gibi düşün: modele neyi, nasıl, hangi duyguyla istediğini an
 
 - Yaygın inanış: "ne kadar çok sıfat, o kadar iyi görsel"
 - İnternette dolaşan kalıplar: *8k, masterpiece, best quality, award winning, trending*
-- Bunlar çoğu zaman bir şey katmaz; bazen görseli herkesinkine benzeyen jenerik bir hâle iter
+- Bunlar çoğu zaman bir şey katmaz; bazen görseli herkesinkine benzeyen sıradan bir hâle iter
 - **Çelişen istekler** daha kötü: *minimal* ve *son derece detaylı* aynı anda; *gece* ve *güneşli* aynı anda
 - Model ya birini seçer ya da ikisini tuhaf biçimde karıştırır; hangisinin olacağını sen belirleyemezsin
 - İyi yönerge uzun değil, **net** olandır: her kelime bir işe yaramalı
@@ -105,7 +105,7 @@ Bir brif yazar gibi düşün: modele neyi, nasıl, hangi duyguyla istediğini an
 
 - Her görsel üretici farklı verilerle, farklı yöntemlerle eğitildi
 - Bu yüzden aynı yönergeye farklı "ellerle" cevap verirler: renk, çizgi, ayrıntı, kompozisyon alışkanlıkları farklı
-- Bir modelin güçlü olduğu yerde öbürü zayıf olabilir: biri yazıda iyi, öbürü fotoğraf gerçekçiliğinde
+- Bir modelin güçlü olduğu yerde öbürü zayıf olabilir: biri görselin içine yazı koymakta iyi, öbürü fotoğraf gerçekçiliğinde
 - Tohum yalnızca **aynı modelde** işe yarar; iki model aynı tohumla aynı görseli vermez
 - Bugün karşılaştırmada iki model var: **FLUX** (Black Forest Labs) ve **Stable Diffusion XL** (Stability AI); düzenlemede üçüncü bir model çalışıyor
 - Bir tasarımcı nasıl iş için doğru illüstratörü seçerse, doğru modeli seçmek de bir karar
@@ -140,7 +140,7 @@ Bir brif yazar gibi düşün: modele neyi, nasıl, hangi duyguyla istediğini an
 - Arayüzler bazı ayarları gizler (tohum, adım sayısı), bazılarını düğmeye çevirir (en-boy oranı, stil)
 - Bugün öğrendiğin ilkeler hepsinde geçerli: net yönerge, tek değişken, yan yana karşılaştırma
 - Biz bugün defterde hazır bir araç kullanıyoruz: bütün ayarlar elimizin altında ve her görsel bir dosya olarak kaydediliyor
-- Konu 8'de bu aracın içini açacağız; Konu 9'da aynı fikirle yüzlerce görsel üreteceğiz
+- Konu 8'de bu aracın içini açacağız; Konu 9'da aynı fikirle onlarca görsel üreteceğiz
 
 -----
 
