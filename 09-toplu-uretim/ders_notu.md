@@ -154,7 +154,7 @@ iki eksenli hâli.
 
 ## Adım 2 — Kota ve güvenlik sınırı
 
-Cloudflare kotayı **neuron** denen bir birimle sayar; günde 10.000 neuron ücretsiz. Bir görsel (1024 × 1024,
+Konu 2'den hatırla: Cloudflare kotayı **neuron** ile sayar; günde 10.000 neuron ücretsiz. Bir görsel (1024 × 1024,
 Konu 7'deki gibi 4 adım) yaklaşık 58 neuron tutar. Hesap şöyle: Cloudflare 1024'lük görseli 512 × 512'lik 4 kare
 sayar; her kare 4,8, her adım 9,6 neuron: 4 × 4,8 + 4 × 9,6 ≈ 58. Günde kabaca 170 görsel eder.
 
@@ -197,7 +197,7 @@ from uretim import ciz, gorsele_sor
   yeniden başlat (**Restart**) ve hücreleri baştan çalıştır.
 
 Toplu üretimde bir istek başarısız olursa bütün iş durmamalı. Konu 8'de hatayı yakalamıştık; bugün bir şey ekliyoruz:
-**bekleyip yeniden denemek**.
+**bekleyip yeniden denemek** (Konu 8'in Bonus 1'i bunun beklemesiz hâliydi).
 
 ```python
 def sabirli_ciz(yonerge, tohum):

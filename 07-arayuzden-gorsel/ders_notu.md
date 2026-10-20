@@ -462,8 +462,8 @@ denemesi; tohum sabit, yalnızca stil değişiyor. Pano + iki cümle + üretim g
 ## Sonraki konu
 
 **Konu 8 — Koddan görsel üretimi.** Bugün `gorsel_araci.py`'yi bir arayüz gibi kullandık.
-Konu 8'de içini açıyoruz: isteği kendimiz kuracak, gelen görseli ikili veriye (binary) çevirip
-dosyaya kendimiz yazacak, dosya adlarını düzenleyecek ve hataları yakalayacağız.
+Konu 8'de içini açıyoruz: isteği kendimiz kuracak, gelen görseli dosyaya
+kendimiz yazacak, dosya adlarını düzenleyecek ve hataları yakalayacağız.
 
 ---
 

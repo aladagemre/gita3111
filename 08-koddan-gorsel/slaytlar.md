@@ -12,7 +12,7 @@ Ahmet Emre Aladağ
 - Yeni olanlar: görselin bayt olarak gelmesi, onu dosyaya yazmak, dosyalara düzenli ad vermek, hataları yakalamak
 - Gerisini biliyorsun: anahtar, adres, istek, durum kodu Konu 2'den; tohum ve yönerge Konu 7'den
 - Bu konunun sonunda kendi küçük üretim aracın olacak
-- Konu 9'da bu araçla onlarca görsel üreteceğiz; bugün eklediğimiz hata kontrolleri orada işe yarayacak
+- Konu 9'da bu araçla tek seferde birçok görsel üreteceğiz; bugün eklediğimiz hata kontrolleri orada işe yarayacak
 
 -----
 
@@ -173,7 +173,7 @@ Ayrıntılar: `odevler/odev8.md`. Puan yok; Konu 9'un başında sıradaki arkada
 
 -----
 
-## Hatırlanacak beş şey
+## Hatırlanacaklar
 
 1. **Görsel bir ikili dosyadır.** İkili okunur, ikili yazılır; harf değil, bayt
 2. **base64 görseli metne çevirir.** API görseli JSON içinde metin olarak gönderir; geri çevirince tek bayt kaybolmaz
@@ -181,4 +181,4 @@ Ayrıntılar: `odevler/odev8.md`. Puan yok; Konu 9'un başında sıradaki arkada
 4. **Dosya adı kendini anlatır.** Ne zaman, ne istendi, hangi tohum; yazmadan önce "bu ad alınmış mı?"
 5. **Hatayı yakala, çökme.** Sunucu "olmaz" derse durum koduna bak; cevap hiç gelmezse `try` / `except`
 
-Sıradaki konu: **Konu 9 — Ölçek: toplu üretim.** Bugünkü aracı onlarca görsel için kullanacağız.
+Sıradaki konu: **Konu 9 — Ölçek: toplu üretim.** Bugünkü araçla bir şablondan birçok görseli tek seferde üreteceğiz.

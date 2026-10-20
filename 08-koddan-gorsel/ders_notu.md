@@ -12,6 +12,9 @@ defterdeki hücrelerin birebir aynısı.
 > İstek → durum kodu → base64 metni → bayt → `"wb"` ile dosya. Dosya adı kendini anlatır;
 > yazmadan önce "bu ad alınmış mı?" diye sorulur. Hata olunca program çökmez.
 
+Konu 7'de kod yazmadık; bugün yeniden yazıyoruz. Yeni kavram çok, ama her biri ayrı bir adımda geliyor;
+anahtar, istek, durum kodu ve fonksiyon Konu 2'den tanıdık.
+
 **Konunun sonunda elinde:** yönergeyi kullanıcıdan alıp görsel üreten ve düzenli bir klasöre,
 kendini anlatan bir adla kaydeden iki fonksiyon (`ciz`, `kaydet`) ve koddan düzenlenmiş bir görsel.
 
@@ -667,7 +670,7 @@ yönergenin iki tohumu arasındaki fark neydi?
 ## Sonraki konu
 
 **Konu 9 — Ölçek: toplu üretim.** Bugün tek tek ürettik. Konu 9'da bir yönerge şablonu ve
-değişken listeleriyle onlarca kombinasyonu tek seferde üreteceğiz, sonuçları bir kontak sayfasında
+değişken listeleriyle bütün kombinasyonları tek seferde üreteceğiz, sonuçları bir kontak sayfasında
 toplayacağız. Bugünkü hata yakalama ve dosya adı kuralları orada gerçek ihtiyaca dönüşecek.
 
 ---

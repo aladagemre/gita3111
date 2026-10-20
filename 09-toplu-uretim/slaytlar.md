@@ -25,7 +25,7 @@ Ahmet Emre Aladağ
 - Bir marka yeni kimliği için 4 stil × 5 renk paletini müşteriye göstermek istiyor
 - Arayüzde her biri ayrı bir yönerge, ayrı bir tıklama, ayrı bir "indir" demek: saatler ve hata
 - Kodda bir şablon ve birkaç liste: aynı iş birkaç dakika, her dosya düzenli adlı ve kayıtlı
-- Tasarımcının işi değişmiyor: brifi yazmak, seçenekleri değerlendirmek, seçmek; tekrar eden kısmı kod üstleniyor
+- Brifi yazmak ve seçmek yine tasarımcının işi; kod yalnızca tekrar eden kısmı üstleniyor
 
 -----
 
@@ -59,18 +59,18 @@ Ahmet Emre Aladağ
 - **İç içe döngü** de aynı mantıkla çalışır: dıştaki döngü bir adım atar, içteki döngü baştan sona döner
 - Dıştaki her stil için içteki döngü bütün renkleri gezer; sonra dıştaki bir sonraki stile geçer
 - Girinti hangi satırın hangi döngünün içinde olduğunu söyler
-- **Yanılgı:** içteki işi yapan satır dıştaki döngünün hizasına kayarsa hata çıkmayabilir; bazı kombinasyonlar sessizce kaybolur
+- **Yanılgı:** "hata çıkmadıysa kod doğrudur." İçteki işi yapan satır dıştaki döngünün hizasına kayarsa çoğu zaman hata çıkmaz; bazı kombinasyonlar sessizce kaybolur
 - İki liste için iki döngü, üç liste için üç döngü; her yeni katman sayıyı çarpar
 
 -----
 
-## Kontrollü varyasyon: iki eksenli tablo
+## Kontrollü varyasyon: iki eksenli ızgara
 
 - Konu 7'de bir seferde tek değişken değiştirdik; bugün geri kalan her şey sabitken iki değişkeni **düzenli** değiştiriyoruz
-- Her stil her renkle bir kez: bir tablo (ızgara) gibi düşün, satırlar stil, sütunlar renk
+- Her stil her renkle bir kez: satırları stil, sütunları renk olan bir **ızgara** (tablo) düşün
 - Bir satırın tamamı kötüyse sorun stilde; bir sütunun tamamı kötüyse renkte
-- Yalnızca bir hücre kötüyse o eşleşmeye özgü bir sorun var
-- Rastgele denemede bu ayrımı yapamazsın; düzenli tabloda göz hemen görür
+- Yalnızca bir kutu kötüyse o eşleşmeye özgü bir sorun var
+- Rastgele denemede bu ayrımı yapamazsın; düzenli ızgarada göz hemen görür
 - Tohum sabit kalmalı: yoksa fark stilden mi renkten mi gürültüden mi, bilemezsin
 
 -----
@@ -90,10 +90,9 @@ Ahmet Emre Aladağ
 
 - Elli isteğin birinde internet kopabilir, sunucu meşgul olabilir, bir istek reddedilebilir
 - Kötü bir program orada durur; sıradaki işler hiç yapılmaz
-- İyi bir program hatayı yakalar (Konu 8), bir süre **bekler** ve **yeniden dener**
-- Deneme sayısı sınırlıdır: üç denemede de olmazsa o işi bırakıp sıradakine geçer
-- Bazı hatalar geçicidir (sunucu meşgul), bazıları kalıcı (yanlış anahtar, kota bitti); kalıcı hatada beklemek işe yaramaz
-- Basit bir program bu ikisini ayırt edemez; kalıcı hatayı görünce programı sen durdurursun
+- Kuralları Konu 8'den biliyorsun: hatayı yakala, geçici hatada biraz **bekleyip yeniden dene**, deneme sayısına sınır koy
+- Bugün bu kuralları tek bir yerde birleştiriyoruz: üç denemede de olmazsa program o işi bırakıp sıradakine geçer
+- Kalıcı hatada (yanlış anahtar, kota bitti) beklemek işe yaramaz; basit bir program bunu ayırt edemez, programı sen durdurursun
 - İyi bir program her işin sonucunu kaydeder: hangisi üretildi, hangisi olmadı; sonradan bakınca görürsün
 
 -----
@@ -106,7 +105,7 @@ Ahmet Emre Aladağ
 - Program her işten önce sorar: "bu dosya zaten var mı?" Varsa atlar
 - Kota biterse ya da bağlantı koparsa, ertesi gün aynı programı çalıştırmak yeter
 - Konu 8'deki tarihli adlar tek tek üretim için iyiydi; toplu üretimde kararlı adlar gerekir
-- **Yanılgı:** adda olmayan bir şeyi (özne, tohum) değiştirirsen program yeni iş olduğunu bilemez ve eskileri atlar; öyle bir değişiklikte yeni klasör aç
+- **Dikkat:** adda olmayan bir şeyi (özne, tohum) değiştirirsen program yeni iş olduğunu bilemez ve eskileri atlar; öyle bir değişiklikte yeni klasör aç
 
 -----
 
@@ -115,7 +114,7 @@ Ahmet Emre Aladağ
 - Konu 7'de günlüğü elle tuttuk, Konu 8'de dosya adına sığdırdık; bugün program kendisi yazıyor
 - Her görsel için: stil, renk, yönergenin tamamı, tohum, model
 - Kayıt **JSON** biçiminde: insan okuyabilir, program geri okuyabilir (Konu 2'deki API cevaplarının biçimi)
-- Bir müşteri aylar sonra "üçüncü satırdakinin aynısı" dediğinde bütün bilgi elinde
+- Bir müşteri aylar sonra "geçen seferki şu görselin aynısı" dediğinde bütün bilgi elinde
 - Şeffaflık için de gerekli: hangi görselin nasıl üretildiğini göstermek (Konu 7: etik ve telif)
 - Kayıt, üretimin bir parçası olmalı; sonradan hatırlamaya çalışılan kayıt eksik olur
 
@@ -134,7 +133,7 @@ Ahmet Emre Aladağ
 
 ## Modele kendi çıktısını okutmak
 
-- Bazı modeller hem metni hem görseli anlar: **çok kipli** (multimodal) modeller
+- Bazı modeller hem metni hem görseli anlar: bunlara **çok kipli** (multimodal) ya da kısaca **görsel anlayan** modeller denir
 - Bir görseli ve bir soruyu gönderirsin: "bu görsel brife ne kadar uyuyor?" Model cevap yazar
 - Ölçekte işe yarar: 120 görseli gözle tek tek tartmak yerine model ilk elemeyi yapar
 - Ama model bir **eleme aracı**, karar verici değil: onun da bir zevki ve yanlılığı var (Konu 3)
@@ -168,7 +167,7 @@ Ayrıntılar: `odevler/odev9.md`. Görsellerini sakla: Konu 10'da birini videoya
 
 -----
 
-## Hatırlanacak beş şey
+## Beş cümlede toplu üretim
 
 1. **Kombinasyon çarpılarak büyür.** Her yeni liste sayıyı çarpar; toplu üretim bir hesapla başlar
 2. **Şablon tutarlılık sağlar.** Sabit kısım sabit kalır; kısa adlar dosya için, uzun açıklamalar model için

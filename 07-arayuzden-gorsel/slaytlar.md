@@ -140,7 +140,7 @@ Bir brif yazar gibi düşün: modele neyi, nasıl, hangi duyguyla istediğini an
 - Arayüzler bazı ayarları gizler (tohum, adım sayısı), bazılarını düğmeye çevirir (en-boy oranı, stil)
 - Bugün öğrendiğin ilkeler hepsinde geçerli: net yönerge, tek değişken, yan yana karşılaştırma
 - Biz bugün defterde hazır bir araç kullanıyoruz: bütün ayarlar elimizin altında ve her görsel bir dosya olarak kaydediliyor
-- Konu 8'de bu aracın içini açacağız; Konu 9'da aynı fikirle onlarca görsel üreteceğiz
+- Konu 8'de bu aracın içini açacağız; Konu 9'da aynı ilkelerle tek seferde birçok görsel üreteceğiz
 
 -----
 
