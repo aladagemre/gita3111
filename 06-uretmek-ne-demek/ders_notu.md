@@ -564,8 +564,8 @@ düzeltme ve boşluk doldurma (son ikisi alıştırma defterlerindeki gibi).
 
 **Konu 7 — Görsel üretimi.** Bugün haritada noktayı biz seçtik ve geri kurduk. Konu 7'de
 gerçek bir görsel üreticiye yönerge yazacağız: noktayı yönerge seçecek. Gürültüden
-başlayıp adım adım temizlenen görseli izleyecek, tohum, stil ve ışıkla kontrollü deneyler
-yapacağız.
+adım adım temizlenen görseli farklı adım sayılarıyla karşılaştıracak, tohum, stil ve ışıkla
+kontrollü deneyler yapacağız.
 
 ---
 

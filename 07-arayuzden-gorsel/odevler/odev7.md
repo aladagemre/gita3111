@@ -43,5 +43,6 @@ marka olabilir (bir kahve dükkânı, bir festival, bir kitabevi) ya da hayalî.
 
 ## İstersen (zorunlu değil)
 
-En beğendiğin görseli Adım 8'deki gibi `duzenle` ile değiştir (Adım 4'ün çıktısında her görselin dosya adı yazıyor; ör. `duzenle("ciktilar/002.jpg", "...")`): renk paletini markanın
-renklerine çek ya da arka planı sadeleştir. Önce ve sonra hâlini yan yana getir.
+En beğendiğin görseli Adım 8'deki gibi `duzenle` ile değiştir: renk paletini markanın
+renklerine çek ya da arka planı sadeleştir. Görselin dosya adı Adım 4'ün çıktısında yazıyor;
+örneğin `duzenle("ciktilar/002.jpg", "...")`. Önce ve sonra hâlini yan yana getir.

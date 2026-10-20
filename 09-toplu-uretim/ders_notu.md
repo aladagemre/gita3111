@@ -196,7 +196,7 @@ from uretim import ciz, gorsele_sor
 - `uretim.py` anahtarı bir kez, bu hücre ilk çalıştığında okur. `anahtar.txt`'yi sonradan düzeltirsen çekirdeği
   yeniden başlat (**Restart**) ve hücreleri baştan çalıştır.
 
-Toplu üretimde bir istek bağlanamazsa bütün iş durmamalı. Bir adım daha: **bekleyip yeniden denemek**.
+Toplu üretimde bir istek başarısız olursa bütün iş durmamalı. Bir adım daha: **bekleyip yeniden denemek**.
 
 ```python
 def sabirli_ciz(yonerge, tohum):
@@ -215,7 +215,7 @@ def sabirli_ciz(yonerge, tohum):
 ```
 
 - `time.sleep(5)`: programı 5 saniye bekletir. Sunucu kısa süreli meşgulse ya da çok hızlı istek
-  gönderdiysek (429) bu çoğu zaman yeter.
+  gönderdiysek (durum kodu 429) bu çoğu zaman yeter.
 - `try` / `except`: Konu 8'deki gibi; bu kez `requests.exceptions.RequestException` yakalıyoruz: `requests`'in bütün
   hatalarının ortak adı. Bağlantı kopması (`ConnectionError`) da, cevabın zamanında gelmemesi (`Timeout`) da bununla
   yakalanır. (`uretim.py`'deki istekler 2 dakikada cevap gelmezse bırakılıyor.)
@@ -266,9 +266,9 @@ def toplu_uret(liste, sinir):
 - `klasor / kart["dosya"]`: Konu 8'deki gibi klasör ve dosya adını birleştirir.
 - **Zaten varsa** atla: `continue` bu kartı bırakır, döngünün başına döner, sıradakine geçer. Dosya varsa daha önce
   üretilmiştir; o yüzden durumu `uretildi`.
-- **Sınıra geldiysen** dur: `break` döngüyü tamamen bitirir (Konu 8).
-- Değilse üret ve kaydet. Kartın içine sonucunu yaz: `kart["durum"] = "uretildi"` ya da `"olmadi"`. Sözlüğe
-  yeni bir anahtar böyle eklenir.
+- **Sınıra geldiysen** dur: `break` döngüyü tamamen bitirir (Konu 8, Bonus 1).
+- Değilse üret ve kaydet. Kartın içine sonucunu yaz: `kart["durum"] = "uretildi"` ya da `"olmadi"`. Sözlükteki
+  bir değer böyle değiştirilir; anahtar yoksa eklenir (Adım 7'deki `model_puani` gibi).
 - `denenen` üretmeyi denediğimiz kartları sayar; atlanan kartlar sayılmaz. Sınır bu sayaca bakar.
 - Dosya adında **tarih yok** (Konu 8'deki `kaydet`'ten farkı): aynı kart her zaman aynı adı alır. Bu sayede "zaten
   var mı?" sorusu bir **kaldığı yerden devam** düğmesine dönüşür. Bu yüzden Konu 8'in `kaydet`'ini kullanmıyoruz;
@@ -389,9 +389,9 @@ cevap = gorsele_sor(ilk_yol, "Describe this image in one short sentence.")
 print(cevap)
 ```
 
-- Görsel yine base64 metni olarak gidiyor; bu kez Konu 8'in **tersi** yönde: biz görseli base64'e çeviriyoruz,
-  model geri çeviriyor.
-- Soruyu İngilizce soruyoruz (Konu 7: modeller İngilizcede daha iyi).
+- Görsel yine base64 metni olarak taşınıyor, ama Konu 8'in **tersi** yönde: orada sunucu görseli base64'e çevirip
+  bize göndermişti, bu kez biz çevirip gönderiyoruz.
+- Soruyu İngilizce yazıyoruz (Konu 7: modeller çoğunlukla İngilizce metinle eğitildi).
 
 ```python
 brif_ingilizce = "a poster for a quiet cafe where people come to study and work"
@@ -406,7 +406,7 @@ for kart in kartlar:
 print("Benim seçimim:", benim_secimim)
 ```
 
-- `brif_ingilizce` ayrı bir değişkende: ödevde yalnızca bu satırı değiştireceksin.
+- `brif_ingilizce` ayrı bir değişkende: ödevde bu satırı kendi brifine göre değiştireceksin.
 - Her kartın içine `model_puani` diye yeni bir alan ekliyoruz.
 - Model bazen yalnızca bir sayı, bazen bir cümle yazar; o yüzden cevabı olduğu gibi (metin) saklıyoruz.
 - 12 istek birkaç dakika sürer. Sonunda kendi seçimin de yazılır: karşılaştır.
@@ -475,7 +475,7 @@ kez daha çalıştırırsan kalan bir kart üretilir. Kontak sayfasını yeniden
 | 5 | Üretim günlüğü: yaz ve geri oku | `uretim_gunlugu.json` | gerekmez |
 | 6 | Kontak sayfası; kendi seçimin | `kontak_sayfasi.png`, `benim_secimim` | gerekmez |
 | 7 | Modele görselleri okuttuk, puanlattık | `model_puani` alanları | gerekir |
-| Bonus | Tohum ekseni; sınırın çalıştığını görmek | `izgara/kazanan_*.jpg` | gerekir |
+| Bonus | Tohum ekseni; sınırın çalıştığını görmek | `izgara/` içinde tohumlu üç dosya (ör. `suluboya_adacayi_1.jpg`) | gerekir |
 
 Derste kendi başına çalışacağın defter: `alistirma.ipynb`. Önce aynı klasörde yeni bir adla kopyala,
 kopyada çalış. **Anahtar istemez ve görsel üretmez:** listeler, sözlükler, döngüler ve JSON. İki bölümü var:
@@ -590,7 +590,7 @@ da yönergeyi kısa bir videoya çevirmek. Video pahalıdır ve sonucu hemen gel
 3. Sınır bir istek **gönderilmeden önce** bilinmeli: istek bir kez gitti mi kota harcanmıştır. Önce bakınca `sinir`
    0 bile olsa hiç istek gitmez. Ayrıca sayaç "zaten var" kontrolünden sonra olduğu için atlanan kartlar sayılmaz.
 4. Bekleme olmadan üç deneme saniyeler içinde biter; çok hızlı istek gönderdiğin için (429) üçü de büyük ihtimalle
-   reddedilir ve sunucuyu daha da yorarsın. Bekleme sunucuya nefes aldırır.
+   reddedilir ve sunucuya daha çok yük bindirirsin. Bekleme sunucuya toparlanması için zaman tanır.
 5. Sorun büyük ihtimalle **stilde** (linol bu brif için uygun değil), renkte değil; `pastel` sütunundaki tek kötü
    görsel o stil–renk eşleşmesine özgü. Kontrollü kurulum bu ayrımı mümkün kılıyor.
 6. Kendine. Model brifteki kelimeleri görseldeki nesnelerle (fincan, defter) eşliyor olabilir; ışığı, havayı,

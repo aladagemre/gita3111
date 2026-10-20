@@ -62,5 +62,8 @@ Kurallar:
 
 En beğendiğin görseli Adım 9'daki gibi koddan düzenle. Önce Adım 9'un hücrelerini oku; sonra
 `gorsel = Image.open("ilk.jpg")` satırındaki dosya adını kendi görselinin yoluyla değiştir ve talimatı
-kendin yaz. Yolu `print`'in yazdığı gibi kopyala; Windows'ta da ters bölü (`\`) yerine düz bölü (`/`)
-kullan: `"odev8/2026-10-19_..._1.jpg"`.
+kendin yaz. Yolu `print`'in yazdığı yerden kopyala; Windows'ta ters bölüleri (`\`) düz bölüye (`/`)
+çevir: `"odev8/2026-10-19_..._1.jpg"`. Adım 9'un son hücresi görseli `plt` ile gösteriyor; kopyanda
+Adım 4'ü çalıştırmadığın için önce yeni bir hücrede `import matplotlib.pyplot as plt` çalıştır.
+`kaydet` satırındaki açıklamayı (`"edit sage green background"`) da kendi talimatına göre değiştir; dosya adı
+bu açıklamadan oluşur.

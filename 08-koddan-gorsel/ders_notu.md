@@ -293,7 +293,7 @@ print(tarih)
 
 - `datetime.now()`: şu anki tarih ve saat.
 - `strftime(...)`: tarihi istediğimiz biçimde yazar. `%Y` yıl, `%m` ay, `%d` gün, `%H` saat,
-  `%M` dakika, `%S` saniye. **Dikkat:** küçük `m` ay, büyük `M` dakika; karıştırmak en sık hata.
+  `%M` dakika, `%S` saniye. **Dikkat:** küçük `m` ay, büyük `M` dakika; bu ikisini karıştırmak en sık yapılan hatalardan biri.
 - Yıl başta olduğu için dosyalar adlarına göre sıralanınca tarih sırasına da girer.
 - İki nokta (`:`) yerine tire kullanıyoruz: Windows dosya adında `:` kabul etmez.
 
@@ -431,13 +431,13 @@ except requests.exceptions.ConnectionError:
 Sunucuya ulaşılamadı. İnternetini kontrol et, sonra yeniden dene.
 ```
 
-Gerçek bir araçta `try`'ı `ciz` çağrısının etrafına koyarsın: bir istek bağlanamazsa sıradakine geçilir.
+Gerçek bir araçta `try`'ı `ciz` çağrısının etrafına koyarsın: bir döngüde bir istek bağlanamazsa program durmaz, sıradakine geçer.
 
 ---
 
 ## Adım 9 — Var olanı değiştirmek: düzenleme koddan
 
-Bu adımı derste hoca gösterir; sen evde kendin çalıştır.
+Bu adımı derste hoca gösterir; sen izle, evde kendin çalıştır.
 
 Konu 7'deki `duzenle` başka bir modelle (FLUX.2 klein) çalışıyordu ve görseli **bir form gibi**
 gönderiyordu: yazı alanları (talimat, boyut, tohum) + bir dosya (görsel). Düzenleyici en fazla
@@ -525,8 +525,7 @@ if resim is None:
   beklemek de yeniden denemek de işe yaramaz; kota ertesi gün 03:00'te (Türkiye saati) yenilenir.
 - `break` döngüyü erkenden bitirir: başarılı olunca kalan denemeler yapılmaz.
 - Sınır koyduk: en fazla üç deneme. Üçü de olmazsa döngüden sonraki `if` bunu söylüyor.
-- Bu kod denemeler arasında beklemiyor; gerçek bir araçta birkaç
-  saniye beklenir (`time.sleep`). Beklemeyi Konu 9'da ekleyeceğiz.
+- Bu kod denemeler arasında beklemiyor; gerçek bir araçta birkaç saniye beklenir (`time.sleep`). Beklemeyi Konu 9'da ekleyeceğiz.
 
 **2. Konu 7'nin aracını oku.** `../07-arayuzden-gorsel/gorsel_araci.py` dosyasını VS Code'da aç.
 Çoğu parçasını artık tanıyorsun:
@@ -604,7 +603,7 @@ base64'e çevirip API'nin biçiminde bir sözlüğe koyuyor). İki bölümü var
 | `İstek başarısız, durum kodu: 400` | Yönerge boş ya da bir ayar sınır dışı | Yönergeyi yaz; ayarlara bak |
 | Adım 7'de hücre bitmiyor, yıldız `[*]` dönüyor | `input` cevap bekliyor | Ekranın üstündeki kutuya yönergeni yaz, Enter |
 | Dosya adındaki ay tuhaf (`2026-57-19`) ya da dakika hep aynı sayı | `%m` (ay) ile `%M` (dakika) karıştı | Küçük `m` ay, büyük `M` dakika |
-| `Bu ad alınmış, üzerine yazmıyorum` | Aynı saniyede aynı yönerge ve tohumla ikinci kayıt | Bu bir hata değil; tohumu değiştir ya da bir saniye sonra tekrar çalıştır |
+| `Bu ad alınmış, üzerine yazmıyorum` | Adım 6'nın son hücresini ikinci kez çalıştırdın (beklenen sonuç) ya da aynı saniyede aynı yönerge ve tohumla ikinci kayıt yapıldı | Bu bir hata değil; tohumu değiştir ya da bir saniye sonra tekrar çalıştır |
 
 ---
 
@@ -679,8 +678,8 @@ toplayacağız. Bugünkü hata yakalama ve dosya adı kuralları orada gerçek i
 4. Aynı adla ikinci kez kaydedince önceki görsel **sessizce** silinir. Çoğu zaman ancak eski görseli
    aradığında fark edersin; o zaman geri getirmek mümkün olmaz.
 5. Sunucu 401 döndürür; yanıtta `result` boş (`None`) gelir. `sonuc["image"]` satırında
-   `TypeError: 'NoneType' object is not subscriptable` görür: hata, asıl sebebin (anahtar) değil, bir
-   sonraki satırın üzerinde çıkar. Durum kodu kontrolü bu yüzden var.
+   `TypeError: 'NoneType' object is not subscriptable` görür. Bu mesaj asıl sebebi (yanlış anahtar)
+   söylemez; hata başka bir satırda, başka bir adla çıkar. Durum kodu kontrolü bu yüzden var.
 6. `except:` her hatayı sessizce geçiştirir: yazım hatalarını, yanlış değişken adlarını bile. Program
    "internet yok" der ama asıl sorun başka bir yerdedir. Hatayı adıyla yakalayınca yalnızca beklediğin
    durumu karşılarsın.

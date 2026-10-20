@@ -30,7 +30,7 @@ Ahmet Emre Aladağ
 ## Difüzyon: gürültüden görsele
 
 - Rastgele başlangıç noktasını hemen çözücüye verirsen anlamsız bir **gürültü** görürsün: eski televizyonlardaki karıncalanma gibi
-- Konu 6'daki `[[20, 20]]` gibi: verinin olmadığı bir yerdesin; "rastgele pikseller yalnızca gürültü olur" demiştik, başlangıç tam olarak o
+- Konu 6'da "rastgele pikseller yalnızca gürültü olur" demiştik; difüzyonun başlangıcı tam olarak o
 - Her **adımda** nokta yönergenin bölgesine biraz yaklaşır; ekranda bu, gürültünün bir kısmının silinmesi gibi görünür
 - Bu yöntemin adı **difüzyon** (diffusion)
 - Model bunu nasıl öğrendi? Eğitimde görsellere adım adım gürültü eklendi; model bu işi **tersine** yapmayı öğrendi
@@ -75,17 +75,17 @@ Bir brif yazar gibi düşün: modele neyi, nasıl, hangi duyguyla istediğini an
 - Kendine sor: modelin eğitildiği görsellerin açıklamaları çoğunlukla hangi dilde yazılmıştı?
 - Konu 5'i hatırla: aynı söz Türkçede ve İngilizcede kaç belirtece (parçaya) bölünüyordu?
 - Derste aynı yönergeyi iki dilde deneyip farkı kendin göreceksin
-- Stil ve teknik terimlerin İngilizcesini öğrenmek (watercolor, linocut, isometric, bokeh) bir tasarımcıya bugün çok şey kazandırır
+- Stil ve teknik terimlerin İngilizcesini bilmek (watercolor, linocut, isometric, bokeh) bir tasarımcının işini kolaylaştırır
 
 -----
 
-## Uzun yönerge daha iyi değildir
+## Uzun yönerge, iyi yönerge demek değil
 
 - Yaygın inanış: "ne kadar çok sıfat, o kadar iyi görsel"
 - İnternette dolaşan kalıplar: *8k, masterpiece, best quality, award winning, trending*
 - Bunlar çoğu zaman bir şey katmaz; bazen görseli herkesinkine benzeyen jenerik bir hâle iter
 - **Çelişen istekler** daha kötü: *minimal* ve *son derece detaylı* aynı anda; *gece* ve *güneşli* aynı anda
-- Model çelişkiden birini seçmek zorunda; hangisini seçeceğini sen belirleyemezsin
+- Model ya birini seçer ya da ikisini tuhaf biçimde karıştırır; hangisinin olacağını sen belirleyemezsin
 - İyi yönerge uzun değil, **net** olandır: her kelime bir işe yaramalı
 
 -----
@@ -97,7 +97,7 @@ Bir brif yazar gibi düşün: modele neyi, nasıl, hangi duyguyla istediğini an
 - Görselde: tohum sabit, özne sabit, ışık sabit; yalnızca **stil** değişsin
 - Sonra stil sabit, yalnızca **ışık** değişsin
 - Sonuçları **yan yana** koy: bir karşılaştırma panosu
-- Tasarım ajanslarında müşteriye seçenek sunmanın da en dürüst yolu bu: farkın nereden geldiği görünür
+- Müşteriye seçenek sunarken de işe yarar: farkın nereden geldiği görünür
 
 -----
 
@@ -117,7 +117,7 @@ Bir brif yazar gibi düşün: modele neyi, nasıl, hangi duyguyla istediğini an
 - **Negatif yönerge:** görselde **istemediğin** şeyleri yazarsın: *yazı, harf, filigran, insan*
 - Bir istektir, garanti değildir; model yine de bazılarını koyabilir
 - Her model desteklemez: bugünkü iki modelden yalnızca biri negatif yönerge alıyor
-- **En-boy oranı:** görselin şekli. Kare (1:1) sosyal medya gönderisi, yatay (16:9) sunum ve web afişi, dikey (9:16) hikâye ve poster
+- **En-boy oranı:** görselin şekli. Kare (1:1) sosyal medya gönderisi, yatay (16:9) sunum ve web afişi, dikey (9:16) telefon ekranında hikâye
 - En-boy oranını sonradan kırpmak yerine baştan doğru seçmek kompozisyonu korur
 - Model eğitildiği boyutlardan çok uzaklaşınca tuhaf kompozisyonlar ve tekrar eden nesneler çıkabilir
 
@@ -126,10 +126,10 @@ Bir brif yazar gibi düşün: modele neyi, nasıl, hangi duyguyla istediğini an
 ## Var olanı değiştirmek: görsel düzenleme
 
 - Tasarımcının işi çoğu zaman sıfırdan üretmek değil, eldekini **değiştirmek**
-- Yeni modeller bir görsel ve bir talimat alır: *ürünün rengini laciverte çevir*, *arka plandaki kişiyi çıkar*, *gündüz sahnesini akşama çevir*
-- Model görselin geri kalanını korumaya çalışır; ama her zaman başaramaz
+- Yeni modellerin bir kısmı bir görsel ve bir talimat alır: *ürünün rengini laciverte çevir*, *arka plandaki kişiyi çıkar*, *gündüz sahnesini akşama çevir*
+- Model görselin geri kalanını korumaya çalışır; ama bu her seferinde tutmaz
 - Kontrollü deney burada da geçerli: tek talimat, sonucu öncesiyle yan yana koy
-- Ürün fotoğrafının arka planını değiştirmek, bir afişin renk varyasyonları, bir eskizi farklı tekniklere çevirmek
+- Tasarımdan örnekler: ürün fotoğrafının arka planını değiştirmek, bir afişin renk varyasyonları, bir eskizi farklı tekniklere çevirmek
 - Bugün bir görseli talimatla düzenleyeceğiz
 
 -----
@@ -149,7 +149,7 @@ Bir brif yazar gibi düşün: modele neyi, nasıl, hangi duyguyla istediğini an
 - Görsel üreticiler internetten toplanan yüz milyonlarca görselle eğitildi
 - Bu görsellerin çoğunun sahibine sorulmadı; birçok sanatçı ve fotoğraf ajansı dava açtı
 - "Yaşayan bir illüstratörün tarzında" istemek, o kişinin yıllarca kurduğu üslubu onun izni olmadan kullanmak demek
-- Model eğitim verisindeki görsellere çok benzeyen, hatta neredeyse aynısı olan çıktılar verebilir
+- Model zaman zaman eğitim verisindeki bir görsele çok benzeyen, hatta neredeyse aynısı olan bir çıktı verebilir
 - Kendine sor: bu görseli bir insana ısmarlasaydım, aynı şeyi istemek doğru olur muydu?
 - Derste kuralımız: yaşayan bir sanatçının adını stil olarak yazmıyoruz
 

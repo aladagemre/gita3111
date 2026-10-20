@@ -15,7 +15,7 @@ kullanıcıdan alıp görsel üreten ve düzenli bir klasöre kaydeden kendi kü
 | `ders_notu.md` | Konu notu — adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
 
 `ciz` ve `kaydet` ile ürettiğin görseller bu klasörde `ciktilar/` içine, tarih, yönerge ve tohum taşıyan
-adlarla kaydedilir. Isınma ve Adım 4'ün dosyaları (`ilk.jpg`, `deneme.jpg`) konu klasörüne yazılır.
+adlarla kaydedilir. Adım 4 ve Adım 9'un dosyaları (`deneme.jpg`, `ilk.jpg`, `ilk_kucuk.jpg`) konu klasörüne yazılır.
 
 ## Çalıştırma
 

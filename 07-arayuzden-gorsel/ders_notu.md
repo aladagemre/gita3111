@@ -14,8 +14,12 @@ gözüyle yönetmeyi öğreniyoruz: rastgele denemekten **kontrollü denemeye**.
 > İyi deney, bir seferde tek bir şeyi değiştirir.
 
 **Bu konuda yeni kod yazmıyoruz:** hazır hücrelerde yalnızca tırnak içindeki metinleri ve
-sayıları değiştiriyoruz. `gorsel_araci.py` adlı hazır bir aracı bir arayüz gibi kullanıyoruz: içine yönergeyi yazıyorsun, görsel çıkıyor. Aracın içini (istek, anahtar,
-yanıtı dosyaya yazmak) **Konu 8'de** birlikte açacağız.
+sayıları değiştiriyoruz. `gorsel_araci.py` adlı hazır bir aracı bir arayüz gibi kullanıyoruz:
+içine yönergeyi yazıyorsun, görsel çıkıyor. Aracın içini (istek, anahtar, yanıtı dosyaya
+yazmak) **Konu 8'de** birlikte açacağız.
+
+**Bugünün brifi:** Konu 1'deki kafe. Müşterilerin **sessiz bir çalışma yeri** diye anlattığı
+kafe için bir afiş görseli arıyoruz.
 
 **Konunun sonunda elinde:** `ciktilar/` klasöründe yaklaşık 25 görsel, bir stil panosu
 (`stil_panosu.png`) ve kendi brifin için bir başlangıç.
@@ -60,7 +64,8 @@ print(yonerge)
 | Kompozisyon | Kamera nerede? | *top-down view*, *close-up*, *wide shot* |
 
 `stil` satırındaki metni `"flat vector poster"` yapıp yeniden çalıştırınca yönergenin yalnızca
-o parçası değişir (denemeden sonra yeniden `"watercolor illustration"` yap). Bugünkü bütün deneyler bu fikre dayanıyor: **bir seferde tek parça.**
+o parçası değişir (denemeden sonra yeniden `"watercolor illustration"` yap). Bugünkü bütün
+deneyler bu fikre dayanıyor: **bir seferde tek parça.**
 
 **Neden İngilizce?** Görsel üreticiler çoğunlukla İngilizce açıklamalı görsellerle eğitildi.
 Konu 5'teki gibi: Türkçe metin daha çok belirtece (parçaya) bölünür ve eğitim verisinde çok
@@ -233,9 +238,9 @@ Uzun yönergede birbiriyle **çelişen** istekler var: *minimal* ve *extremely d
 *at night* ve *sunny*, *watercolor* ve *photorealistic*. Bir de internetten kopyalanan
 kalıplar: *8k, masterpiece*.
 
-**Bak:** hangisi brife daha yakın? Çelişen isteklerden model hangisini seçmiş? Model
-çelişkiden birini seçmek zorunda ve hangisini seçeceğini sen belirleyemiyorsun. "8k,
-masterpiece" gibi kalıplar da çoğu zaman bir şey katmaz.
+**Bak:** hangisi brife daha yakın? Çelişen isteklerden model hangisini seçmiş, yoksa ikisini
+karıştırmış mı? Hangisinin olacağını sen belirleyemiyorsun. "8k, masterpiece" gibi kalıplar
+da çoğu zaman bir şey katmaz.
 
 Senin denemende iddia tutmadıysa bu da bir bulgu: tek modelde, tek tohumla yapılan tek deney
 kesin hüküm vermez. Tohumu değiştirip tekrarla.
@@ -418,7 +423,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 - **Tohum.** Başlangıç gürültüsünü belirleyen sayı. Aynı model + yönerge + tohum = aynı görsel.
 - **Yönerge anatomisi.** Özne, ortam, stil, ışık, kompozisyon. Uzun değil net; çelişkisiz.
 - **Kontrollü deney.** Bir seferde tek değişken; sonuçları yan yana bir panoda karşılaştırmak.
-- **Dil.** Modeller İngilizce yönergede daha iyi; Türkçe parçalar kaybolabilir.
+- **Dil.** Çoğu model İngilizce yönergede daha iyi; Türkçe yönergenin bazı parçaları kaybolabilir.
 - **Modellerin karakteri.** Aynı yönergeye farklı modeller farklı "ellerle" cevap verir.
 - **Negatif yönerge, en ve boy, düzenleme.** İstemediğini söylemek, şekli baştan seçmek, var olanı
   talimatla değiştirmek.
@@ -443,7 +448,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 | **En-boy oranı** | Görselin genişliğinin yüksekliğine oranı: 1:1 kare, 16:9 yatay, 9:16 dikey |
 | **Kontrollü deney** | Diğer her şeyi sabit tutup tek bir şeyi değiştirerek yapılan deney |
 | **Görsel düzenleme** | Var olan bir görseli bir talimatla değiştirmek |
-| **FLUX / SDXL** | Bugün kullandığımız iki görsel modeli: Black Forest Labs'in FLUX'u ve Stability AI'ın Stable Diffusion XL'i |
+| **FLUX / SDXL** | Bugün karşılaştırdığımız iki görsel modeli: Black Forest Labs'in FLUX'u ve Stability AI'ın Stable Diffusion XL'i |
 | **Üretim günlüğü** | Hangi görseli hangi model, tohum ve yönergeyle ürettiğini yazdığın kayıt |
 
 ## Ödev
@@ -454,8 +459,7 @@ denemesi; tohum sabit, yalnızca stil değişiyor. Pano + iki cümle + üretim g
 ## Sonraki konu
 
 **Konu 8 — Koddan görsel üretimi.** Bugün `gorsel_araci.py`'yi bir arayüz gibi kullandık.
-Konu 8'de içini açıyoruz: isteği kendimiz kuracak, gelen görseli (metin değil, ikili veri:
-binary)
+Konu 8'de içini açıyoruz: isteği kendimiz kuracak, gelen görseli ikili veriye (binary) çevirip
 dosyaya kendimiz yazacak, dosya adlarını düzenleyecek ve hataları yakalayacağız.
 
 ---

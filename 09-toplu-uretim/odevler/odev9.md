@@ -2,7 +2,7 @@
 
 **Puan yok.** Konu 10'un başında sıradaki arkadaşlar gösterecek.
 
-Bu ödev kendi `anahtar.txt` dosyanı ister (Konu 2). En fazla 12 görsel (İstersen bölümüyle 15) üretir ve en fazla 13 kez
+Bu ödev kendi `anahtar.txt` dosyanı ister (Konu 2). En fazla 12 görsel ("İstersen" bölümüyle 15) üretir ve en fazla 13 kez
 görsel anlayan modele soru sorar.
 
 ---

@@ -23,7 +23,7 @@ Ahmet Emre Aladağ
 - Hangi tohumla, hangi ayarla ürettiğini çoğu zaman bir yere yazmazsın; bir hafta sonra aynısını üretemezsin
 - Kodda her düğme bir **değişken**, "üret" bir **istek**, "indir" bir **dosyaya yazma** işlemi
 - Kod her şeyi kaydedebilir: ne istendi, ne zaman, hangi tohumla
-- Ve aynı işi bir kez değil, istediğin kadar tekrarlayabilir
+- Aynı işi bir kez değil, istediğin kadar tekrarlayabilir
 
 -----
 
@@ -54,7 +54,7 @@ Ahmet Emre Aladağ
 - Ama görsel metin değil, bayt. Çözüm: baytları harf ve rakamlara çeviren bir kodlama, **base64**
 - 64 farklı karakter kullanır: büyük harfler, küçük harfler, rakamlar ve iki işaret
 - Her 3 bayt 4 karakter olur; görsel metne çevrilince yaklaşık üçte bir büyür
-- E-posta ekleri de yıllardır böyle gönderilir: ek görünmez ama aslında e-postanın içinde base64 metni olarak durur
+- E-posta ekleri de yıllardır böyle gönderilir: ek ayrı bir dosya gibi görünür, ama aslında e-postanın içinde base64 metni olarak durur
 - Öbür uçta metin geri çevrilir ve tek bayt kaybolmadan aynı görsel elde edilir
 - **Yanılgı:** base64 şifreleme ya da sıkıştırma değildir; dosyayı büyütür ve herkes geri çevirebilir
 
@@ -67,11 +67,11 @@ Ahmet Emre Aladağ
 - **Metin:** yanıtın içinde görsel, base64 metni olarak durur
 - **Bayt:** metni geri çevirince görselin baytları elde edilir
 - **Dosya:** baytları bir dosyaya yazarsın
-- Görsel üretimi, görsel düzenleme, ileride video çoğunlukla bu deseni kullanır; bir kez öğrenince her yerde tanırsın
+- Görsel üretimi, görsel düzenleme, ileride video çoğunlukla bu deseni kullanır; bir kez öğrenince başka yerlerde de tanırsın
 
 -----
 
-## Dosya adlandırma: tasarımcının ezeli derdi
+## Dosya adlandırma: tasarımcının eski derdi
 
 - "afis_son.jpg", "afis_son_2.jpg", "afis_SON_bu.jpg": her tasarım klasörünün hikâyesi
 - Kötü ad bir hafta sonra işe yaramaz: hangisi hangi müşteriye, hangi ayarla, hangi gün?
@@ -85,11 +85,11 @@ Ahmet Emre Aladağ
 ## Üzerine yazma tehlikesi
 
 - Bir dosyayı var olan bir adla kaydedersen eskisi **sessizce** silinir; geri dönüşüm kutusuna bile gitmez
-- Toplu üretimde bu, saatlerin emeğinin bir satırda kaybolması demek
+- Toplu üretimde bu, saatlerce emek verilmiş dosyaların tek bir satırla kaybolması demek
 - Kural: yazmadan önce sor, **bu ad alınmış mı?**
 - Alınmışsa ya yazmayı bırak ya da adı değiştir (bir sayı, bir saniye ekle)
 - Çıktıları tek bir klasörde toplamak hem düzen hem güvenlik sağlar: neyin nerede olduğunu bilirsin
-- Tasarım programlarındaki "Farklı Kaydet" ve sürüm geçmişi de aynı korkudan doğdu
+- Tasarım programlarındaki "Farklı Kaydet" ve sürüm geçmişi de aynı ihtiyaçtan doğdu
 
 -----
 
@@ -98,7 +98,7 @@ Ahmet Emre Aladağ
 - **Sunucu cevap verdi ama "olmaz" dedi:** anahtar yanlış (401), çok hızlı istek ya da kota doldu (429), ayar sınır dışı (400)
 - Bunu Konu 2'den biliyorsun: durum koduna bakarsın, 200 değilse yanıtın içine girmezsin
 - **Cevap hiç gelmedi:** internet yok, adres yanlış, sunucu çökmüş
-- Bu ikincisinde program bir **hata fırlatır** ve olduğu yerde durur
+- İkincisinde program bir **hata fırlatır** ve olduğu yerde durur
 - Tek bir görsel üretirken bu küçük bir sorun; yüz görsellik bir işin ortasında bütün işin durması demek
 - İyi bir araç iki durumu da tanır ve kullanıcıya ne olduğunu anlaşılır bir dille söyler
 
@@ -121,8 +121,8 @@ Ahmet Emre Aladağ
 - Böyle durumlarda birkaç saniye bekleyip **yeniden denemek** çoğu zaman işe yarar (bekleme kodunu Konu 9'da yazacağız)
 - Ama sınır koy: üç deneme, beş deneme; sonsuza kadar denemek kotayı ve zamanı yer
 - Kalıcı hatada (yanlış anahtar) yeniden denemek işe yaramaz; önce sebebi düzelt
-- Ücretsiz kota günlüktür: dolduysa beklemek işe yaramaz, ertesi gün yenilenir; deneme yaparken kaç istek gönderdiğini bil
-- Konu 9'da onlarca istek gönderirken bu kurallar hayat kurtaracak
+- Ücretsiz kota günlüktür: dolduysa birkaç saniye beklemek işe yaramaz, kota ertesi gün yenilenir; deneme yaparken kaç istek gönderdiğini bil
+- Konu 9'da onlarca istek gönderirken bu kurallara ihtiyacımız olacak
 
 -----
 
@@ -133,7 +133,7 @@ Ahmet Emre Aladağ
 - Kullanıcı sen olabilirsin, bir ekip arkadaşın ya da bir müşteri
 - Kullanıcıya güvenme: boş bir yönerge, çok uzun bir metin, dosya adında sorun çıkaracak işaretler gelebilir
 - İyi bir araç ne beklediğini söyler ("Yönerge (İngilizce):") ve beklenmeyen girdiye hazırlıklıdır
-- Konu 9'da bu fonksiyonları bir döngüye koyacağız: bir yönerge yerine bir liste
+- Konu 9'da aynı işi bir döngüye koyacağız: tek bir yönerge yerine bir liste
 
 -----
 
@@ -142,7 +142,7 @@ Ahmet Emre Aladağ
 - Görsel düzenlemede modele yalnızca metin değil, bir **görsel** de gönderirsin
 - Bunun yolu bir web formuna dosya eklemek gibidir: birkaç yazı alanı (talimat, boyut) ve bir dosya
 - Dosya yine ikili okunur ve gönderilir
-- Modelin bir boyut sınırı vardır; büyük görseli önce küçültmek gerekir
+- Düzenleme modellerinin çoğu bir boyut sınırı koyar; büyük görseli önce küçültmek gerekir
 - Gelen cevap yine base64 metni: desen aynı, yalnızca giden paket farklı
 - Formlar her şeyi metin olarak gönderir; sayılar bile yazı olarak gider
 
@@ -163,7 +163,7 @@ Ahmet Emre Aladağ
 
 **5 yönerge × 2 tohum = 10 görsel.**
 
-1. Dersteki defteri kopyala; kendi konunda beş farklı yönerge yaz
+1. Dersteki defteri kopyala; kendi seçtiğin bir konuda beş farklı yönerge yaz
 2. Her yönergeyi iki farklı tohumla üret ve düzenli adlandırmayla ayrı bir `odev8/` klasörüne kaydet
 3. Hiçbir dosya üzerine yazılmasın
 4. **İki cümle:** aynı yönergenin iki tohumu arasındaki fark neydi? Hangi yönerge iki tohumda da tutarlı kaldı?

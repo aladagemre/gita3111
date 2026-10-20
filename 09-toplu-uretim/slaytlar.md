@@ -14,7 +14,7 @@ Ahmet Emre Aladağ
 - Yeni olanlar: kombinasyon, şablon, güvenlik sınırı ve kaldığı yerden devam
 - Sonra: kendiliğinden yazılan bir üretim günlüğü ve bütün görselleri tek sayfada gösteren bir kontak sayfası
 - Hepsi Konu 8'deki `ciz` fonksiyonunun ve dosyaya yazma deseninin üstüne kuruluyor
-- Konu 8'in son sorusu: 3 stil × 4 renk = 12 görseli nasıl üretirdin, ortadaki bir istek hata verirse ne olur? Bugün ikisini de cevaplıyoruz
+- Konu 8'in son Bonus sorusu: 3 stil × 4 renk = 12 görseli nasıl üretirdin, ortadaki bir istek hata verirse ne olur? Bugün ikisini de cevaplıyoruz
 
 -----
 
@@ -36,7 +36,7 @@ Ahmet Emre Aladağ
 - Görselde de aynısı: stiller × renkler × tohumlar
 - Bu çarpma hızla büyür: 4 stil × 7 renk × 3 tohum = 84 görsel
 - Buna **kombinatoryal patlama** denir; kotayı ve zamanı yiyen şey budur
-- Bu yüzden toplu üretim her zaman bir **hesapla** başlar: kaç görsel, ne kadar kota?
+- Bu yüzden toplu üretim bir **hesapla** başlamalı: kaç görsel, ne kadar kota?
 
 **Sohbete yaz:** senin bir projende hangi iki şeyi her biri öbürüyle eşleşecek biçimde denemek isterdin? (Ör. 3 yazı tipi × 4 renk: 12 deneme)
 
@@ -60,7 +60,7 @@ Ahmet Emre Aladağ
 - Dıştaki her stil için içteki döngü bütün renkleri gezer; sonra dıştaki bir sonraki stile geçer
 - Girinti hangi satırın hangi döngünün içinde olduğunu söyler
 - **Yanılgı:** içteki işi yapan satır dıştaki döngünün hizasına kayarsa hata çıkmayabilir; bazı kombinasyonlar sessizce kaybolur
-- İki liste için iki döngü; üç liste için üç döngü: ama her katman sayıyı çarpar
+- İki liste için iki döngü, üç liste için üç döngü; her yeni katman sayıyı çarpar
 
 -----
 
@@ -80,8 +80,8 @@ Ahmet Emre Aladağ
 - Ücretsiz kota günlüktür ve sınırlıdır; bir görsel üretimi ondan bir parça yer
 - Döngüyü başlatmadan önce sor: kaç görsel, toplam ne kadar kota?
 - Bir **güvenlik sınırı** koy: "en fazla şu kadar üret" (kredi kartındaki harcama sınırı gibi)
-- Sınır, listeyi yanlışlıkla fazla büyüttüğün günü kurtarır
-- Ücretli hizmetlerde aynı hata doğrudan para demek; profesyonel araçların hepsinde bütçe sınırı var
+- Listeyi yanlışlıkla fazla büyütürsen sınır kotanın bir anda bitmesini önler
+- Ücretli hizmetlerde aynı hata doğrudan para demek; profesyonel araçların çoğunda bütçe sınırı koyma seçeneği var
 - İyi alışkanlık: önce küçük bir deneme (2–3 görsel), beğenirsen hepsi
 
 -----
@@ -89,11 +89,12 @@ Ahmet Emre Aladağ
 ## Sağlamlık: bir hata bütün işi durdurmamalı
 
 - Elli isteğin birinde internet kopabilir, sunucu meşgul olabilir, bir istek reddedilebilir
-- Kötü bir program orada durur; o ana kadar gelenler de yarım kalır
+- Kötü bir program orada durur; sıradaki işler hiç yapılmaz
 - İyi bir program hatayı yakalar (Konu 8), bir süre **bekler** ve **yeniden dener**
 - Deneme sayısı sınırlıdır: üç denemede de olmazsa o işi bırakıp sıradakine geçer
-- Bazı hatalar geçicidir (sunucu meşgul), bazıları kalıcı (yanlış anahtar, kota bitti): ikincisinde beklemek işe yaramaz; basit bir program bunları ayırt edemez, sen durdurursun
-- Her işin sonucunu kaydeder: hangisi üretildi, hangisi olmadı; sonradan bakınca görürsün
+- Bazı hatalar geçicidir (sunucu meşgul), bazıları kalıcı (yanlış anahtar, kota bitti); kalıcı hatada beklemek işe yaramaz
+- Basit bir program bu ikisini ayırt edemez; kalıcı hatayı görünce programı sen durdurursun
+- İyi bir program her işin sonucunu kaydeder: hangisi üretildi, hangisi olmadı; sonradan bakınca görürsün
 
 -----
 
@@ -175,4 +176,4 @@ Ayrıntılar: `odevler/odev9.md`. Görsellerini sakla: Konu 10'da birini videoya
 4. **Kararlı ad, kaldığı yerden devam.** Aynı iş aynı ad; var olanı atla
 5. **Kayıt, sayfa, seçim.** Günlük her şeyi kaydeder, kontak sayfası karşılaştırır, son kararı tasarımcı verir
 
-Sıradaki konu: **Konu 10 — Video üretimi.** Hareket ekliyoruz. Video hem pahalı hem yavaş: sonuç dakikalar sonra gelir; bugünkü sınır ve kaldığı yerden devam orada şart.
+Sıradaki konu: **Konu 10 — Video üretimi.** Hareket ekliyoruz. Video hem pahalı hem yavaş: sonuç hemen gelmez; bugünkü sınır ve kaldığı yerden devam orada şart.
