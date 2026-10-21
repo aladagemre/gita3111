@@ -77,7 +77,7 @@ print("Ücret:", toplam_kisa * UCRET_SANIYE, "USD")
 
 - Fiyatı yalnızca **süre** belirliyor: yarı fiyat, yarı süre. 20 saniye yerine 10 saniyelik bir kurgu, iki klip (4 + 6).
 - Tek klipte de aynı: 8 saniyelik klip yerine 4 saniyelik klip yarı fiyat.
-- **Süre kararı bir bütçe kararıdır.** Sosyal medyada izlenen bir tanıtım için 10 saniye yeter mi? Hangi planları atardın?
+- **Süre kararı bir bütçe kararıdır.** Sosyal medyada izlenen bir tanıtım için 10 saniye yeter mi? Hangi çekimleri atardın?
 
 Video ile görseli karşılaştıralım. Konu 9'da bir görsel ~58 neuron tutuyordu; Cloudflare ücretsiz kotayı aşanlardan
 1.000 neuron için 0,011 dolar alıyor.

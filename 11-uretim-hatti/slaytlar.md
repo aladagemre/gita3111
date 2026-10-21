@@ -11,7 +11,7 @@ Ahmet Emre Aladağ
 - Her biri ayrı bir defterdi; birinin sonucunu öbürüne sen taşıdın: kopyala, yapıştır, dosyayı bul
 - Bugün bu taşıma işini programa veriyoruz: tek bir **brif** girer, bir taslak seti çıkar
 - Yeni olan araçlar değil, aralarındaki **bağlar**: bir adımın çıktısı sıradakinin girdisi
-- Konu 9'daki kurallar (kararlı ad, kaldığı yerden devam, kayıt) hattın her adımında geçerli
+- Konu 9'daki kurallar (kararlı ad, kaldığı yerden devam, üretim günlüğü) hattın her adımında geçerli
 - Final projesi tam olarak bu: konu girer; metin, görsel ve video çıkar, hepsi düzenli ve kayıtlı
 - Konu 10'da gördün: video geç gelir ve her deneme bir bedel ödetir; bir hatta bu bedel her halkada birikir
 
@@ -77,8 +77,8 @@ Ahmet Emre Aladağ
 
 ## Klasör düzeni: her işin bir çekmecesi
 
-- Bir hat çalıştıkça dosya üretir: metinler, görseller, pano, kayıt; düzen yoksa birkaç günde kaybolurlar
-- Her brif için bir **çalışma klasörü**: o işin bütün çıktıları ve kaydı aynı yerde
+- Bir hat çalıştıkça dosya üretir: metinler, görseller, pano, günlük; düzen yoksa birkaç günde kaybolurlar
+- Her brif için bir **çalışma klasörü**: o işin bütün çıktıları ve günlüğü aynı yerde
 - Klasörün adını kim verir? Program otomatik bir tarihle verirse her çalıştırma yeni bir klasör açar ve hiçbir şey "zaten var" olmaz
 - Ad ayarlardan gelirse aynı brif hep aynı klasöre gider; biten iş atlanır (Konu 9: aynı iş, aynı ad)
 - Tarih yine de işe yarar: arşiv için adı sen koyarsın (`2026-11-04_kafe`); brif değişince yeni ad, yeni klasör
@@ -94,17 +94,17 @@ Ahmet Emre Aladağ
 - İyi bir hat kopuk halkayı **kayda geçirir** ve sıradaki işle **devam eder**
 - Sonraki çalıştırmada yalnızca eksik olan denenir; bitenler yerinde durur
 - Bir halkanın çıktısına sıradakine vermeden önce bakmak gerekir: boş ya da bozuk bir sonuç, hata vermeden sonraki halkayı da bozar
-- **Yanılgı:** "hata çıkmadıysa her şey yolunda." Hat bazen hata vermeden yanlış bir şey üretir; bunu yalnızca kayıt gösterir
+- Konu 9'daki uyarı burada da geçerli: hata çıkmaması her şeyin yolunda olduğunu göstermez. Hat bazen hata vermeden yanlış bir şey üretir; bunu ancak günlük gösterir
 
 -----
 
-## Kayıt: hattın seyir defteri
+## Üretim günlüğü: hattın seyir defteri
 
 - Gemilerde seyir defteri tutulur: ne zaman, nereden, hangi rotayla; bir şey ters gidince geriye bakılır
-- Hattın kaydı da öyle: hangi ayarlarla çalıştı, hangi ara çıktılar oluştu, her işin sonucu ne oldu
-- Her kaydın aynı biçimi var: hangi halka, ne girdi, ne çıktı, durum (oldu / olmadı)
-- Bir halkanın çıktısı sıradakinin girdisi olduğu için kayıtta zincir görünür: bu video şu görselden, o görsel şu slogandan
-- Final projesinde teslim edilen **üretim günlüğü** budur; hangi model, hangi parametre, ne çıktı, ne düzeltildi
+- Hattın günlüğü de öyle: hangi ayarlarla çalıştı, hangi ara çıktılar oluştu, her işin sonucu ne oldu
+- Günlükteki her kaydın aynı biçimi var: hangi halka, ne girdi, ne çıktı, durum (oldu / olmadı)
+- Bir halkanın çıktısı sıradakinin girdisi olduğu için günlükte zincir görünür: bu video şu görselden, o görsel şu slogandan
+- Final projesinde teslim edilen üretim günlüğü de budur; hangi model, hangi parametre, ne çıktı, ne düzeltildi
 - Şeffaflık için de gerekli: bir müşteriye ya da hocana hangi işin nasıl üretildiğini gösterebilirsin (Konu 7: etik ve telif)
 
 -----
@@ -150,7 +150,7 @@ Ahmet Emre Aladağ
 
 1. Final projen için bir konu seç (bir marka, bir etkinlik, bir kampanya); kendi ayarlar dosyanı yaz
 2. Dersteki defterin kopyasıyla en az iki halkayı çalıştır: metin ve görsel
-3. Panoyu ve kaydı (`uretim.json`) kaydet
+3. Panoyu ve üretim günlüğünü (`uretim.json`) kaydet
 4. **Üç cümle:** hangi halkaya elle müdahale ettin? Hangi slogan–görsel eşleşmesi işe yaradı? Final projende hangi halkayı eklemek istersin?
 
 Ayrıntılar: `odevler/odev11.md`. Güzel olması gerekmiyor; final projesinin ilk taslağı. Puan yok; Konu 12'nin başında sıradaki arkadaşlar gösterecek.

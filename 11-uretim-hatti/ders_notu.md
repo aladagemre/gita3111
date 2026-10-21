@@ -8,11 +8,11 @@ defterdeki hücrelerin birebir aynısı.
 **Konu 10'a kadar:** her iş ayrı bir defterdi: Konu 5'te slogan, Konu 8'de tek görsel, Konu 9'da bir ızgara, Konu 10'da video.
 **Bu konuda:** bunları tek bir **hatta** bağlıyoruz:
 
-> Bir brif dosyası → metin modeliyle sloganlar → görsel modeliyle her slogana bir görsel → (Bonus) videoya çevrilen bir görsel.
+> `ayarlar.json`'daki brif → metin modeliyle sloganlar → görsel modeliyle her slogana bir görsel → (Bonus) videoya çevrilen bir görsel.
 > Bir halkanın çıktısı, sıradaki halkanın girdisi. Biten halka yeniden çalışmaz, kopan halka hattı durdurmaz, her şey kayda geçer.
 
 **Konunun sonunda elinde:** `ciktilar/kafe_afisi_1/` klasöründe üç slogan (`sloganlar.json`), her slogana bir görsel
-(`gorsel_1.jpg` ...), ikisini yan yana gösteren bir pano (`pano.png`) ve hattın bütün kaydı (`uretim.json`).
+(`gorsel_1.jpg` ...), ikisini yan yana gösteren bir pano (`pano.png`) ve hattın üretim günlüğü (`uretim.json`).
 
 **Kurulum:** yeni kütüphane yok. `git pull` ile konu klasörü geldikten sonra `gita3111` klasöründe bir kez `uv sync` çalıştır.
 
@@ -113,7 +113,7 @@ ucuz (10 neuron'dan az). Ama Adım 4'te göreceğiz: sloganı saklamanın asıl 
 
 ---
 
-## Adım 1 — Brif dosyası: `ayarlar.json`
+## Adım 1 — Ayarlar dosyası: `ayarlar.json`
 
 Konu klasöründe `ayarlar.json` diye bir dosya var:
 
@@ -299,7 +299,7 @@ print(sloganlar)
 Çıktı: `Dosyadan okundu, istek gitmedi` ve **aynı** üç slogan. Hiç istek gitmedi.
 
 Yalnızca kota için değil, **tutarlılık** için de saklıyoruz. Sıcaklık 0.9; her istekte başka bir slogan gelir (Konu 5). Sloganları her
-çalıştırmada yeniden üretseydik `gorsel_1.jpg` dünkü sloganla, kayıt bugünkü sloganla kalırdı: görsel ile metin birbirini
+çalıştırmada yeniden üretseydik `gorsel_1.jpg` dünkü sloganla, günlük bugünkü sloganla kalırdı: görsel ile metin birbirini
 tutmazdı.
 
 > **Kural:** pahalı ya da her seferinde farklı çıkan ara çıktıyı sakla. Ucuz ve her seferinde aynı çıkanı (Adım 5'teki
@@ -359,7 +359,7 @@ def gorsel_halkasi(sira, yonerge):
 - Her yoldan bir **kayıt** (sözlük) çıkıyor: hangi halka (`halka`), ne girdi (`girdi`: yönerge), hangi dosya çıktı (`cikti`),
   sonuç ne (`durum`: `uretildi` ya da `olmadi`).
 - `kayit["durum"] = ...`: sözlükteki bir değeri değiştirir (Konu 9'daki `kart["durum"]`).
-- `str(yol)`: dosya yolunu metne çevirir. Kayıt sonunda JSON'a yazılacak; JSON `Path`'i tanımaz, metni tanır.
+- `str(yol)`: yolu metne çevirir. Kayıt sonunda JSON'a yazılacak; JSON `Path`'i yazamaz (Konu 10'daki günlükte de böyleydi).
 - `return kayit` fonksiyonu orada bitirir; hangi yoldan çıkarsa çıksın elimize bir kayıt gelir.
 
 Şimdi zinciri kuruyoruz:
@@ -424,12 +424,12 @@ Olmadı, atlıyorum: ciktilar/kafe_afisi_1/gorsel_4.jpg
 | Kopan halka hattı durdurursa | Kopan halka kayda geçerse |
 |---|---|
 | Üçüncü görselde internet gitti: dördüncü ve beşinci hiç denenmedi | Üçüncü `olmadi` diye kaydedildi; dördüncü ve beşinci üretildi |
-| Neyin eksik olduğunu bulmak için klasöre tek tek bakarsın | Eksikler kayıtta yazıyor |
+| Neyin eksik olduğunu bulmak için klasöre tek tek bakarsın | Eksikler günlükte yazıyor |
 | Baştan çalıştırırsın | Yeniden çalıştırınca yalnızca eksik olan denenir |
 
 ---
 
-## Adım 7 — Kayıt: `uretim.json`
+## Adım 7 — Üretim günlüğü: `uretim.json`
 
 ```python
 gunluk = {"ayarlar": ayarlar, "sloganlar": sloganlar, "kayitlar": kayitlar}
@@ -437,17 +437,17 @@ gunluk = {"ayarlar": ayarlar, "sloganlar": sloganlar, "kayitlar": kayitlar}
 with open(klasor / "uretim.json", "w", encoding="utf-8") as dosya:
     json.dump(gunluk, dosya, ensure_ascii=False, indent=2)
 
-print("Kayıt yazıldı:", len(kayitlar), "kayıt")
+print("Günlük yazıldı:", len(kayitlar), "kayıt")
 ```
 
-Çıktı: `Kayıt yazıldı: 4 kayıt`.
+Çıktı: `Günlük yazıldı: 4 kayıt`.
 
 - `gunluk` bir sözlük, içinde üç bölüm: hangi ayarlarla çalıştı (`ayarlar`), hangi sloganlar çıktı (`sloganlar`), her görselin
   sonucu ne (`kayitlar`).
-- `klasor / "uretim.json"`: kayıt, çıktıların yanında, aynı klasörde. Her brifin kaydı kendi klasöründe.
-- `json.dump` Konu 9'daki gibi: önce yazılacak şey, sonra dosya; `ensure_ascii=False` Türkçe harfler için, `indent=2` okunur olsun diye.
+- `klasor / "uretim.json"`: günlük, çıktıların yanında, aynı klasörde. Her brifin günlüğü kendi klasöründe.
+- `json.dump` Adım 4'teki gibi: önce yazılacak şey, sonra dosya.
 
-Program kaydı geri okuyup eksikleri bulabilir:
+Program günlüğü geri okuyup eksikleri bulabilir:
 
 ```python
 with open(klasor / "uretim.json", encoding="utf-8") as dosya:
@@ -557,7 +557,7 @@ else:
   yok, yeni ve ücretli bir iş başlar. Konu 10'un kuralı: işi bir kez başlat, numarayı sakla. İş numarasını not et; Konu 10
   defterinde `bekle(is_no)` ile yeniden sorabilirsin, bu ücretsiz.
 
-Kaydı videoyla birlikte yeniden yaz:
+Günlüğü videoyla birlikte yeniden yaz:
 
 ```python
 gunluk = {"ayarlar": ayarlar, "sloganlar": sloganlar, "kayitlar": kayitlar}
@@ -565,10 +565,10 @@ gunluk = {"ayarlar": ayarlar, "sloganlar": sloganlar, "kayitlar": kayitlar}
 with open(klasor / "uretim.json", "w", encoding="utf-8") as dosya:
     json.dump(gunluk, dosya, ensure_ascii=False, indent=2)
 
-print("Kayıt güncellendi:", len(kayitlar), "kayıt")
+print("Günlük güncellendi:", len(kayitlar), "kayıt")
 ```
 
-Video kaydının `girdi`'si bir görsel kaydının `cikti`'sı: zincir kayıtta da görünüyor.
+Video kaydının `girdi`'si bir görsel kaydının `cikti`'sı: zincir günlükte de görünüyor.
 
 ---
 
@@ -577,13 +577,13 @@ Video kaydının `girdi`'si bir görsel kaydının `cikti`'sı: zincir kayıtta 
 | Adım | Ne yaptık | Elimizde ne oluştu | Anahtar |
 |---|---|---|---|
 | Isınma | Sahte halkalarla zincir; konuyu değiştirmek; istek hesabı | — | gerekmez |
-| 1 | Brif dosyasını okuduk | `ayarlar`, `konu`, `stil`, `tohum` ... | gerekmez |
+| 1 | Ayarlar dosyasını okuduk | `ayarlar`, `konu`, `stil`, `tohum` ... | gerekmez |
 | 2 | Çalışma klasörü | `klasor` (`ciktilar/kafe_afisi_1/`) | gerekmez |
 | 3 | Hazır halkalar; bir deneme sloganı, temizleme | `modele_sor`, `sabirli_ciz`, `video_uret`, `soru` | gerekir |
 | 4 | 1. halka: sloganlar; ara çıktıyı sakla | `slogan_halkasi`, `sloganlar`, `sloganlar.json` | gerekir |
 | 5 | 2. halka: yönergeler ve görseller | `yonergeler`, `gorsel_halkasi`, `kayitlar`, `gorsel_1.jpg` ... | gerekir |
 | 6 | Bir halkayı bilerek kopardık | `olmadi` durumlu bir kayıt | gerekir |
-| 7 | Kayıt: yaz ve eksikleri bul | `uretim.json` | gerekmez |
+| 7 | Üretim günlüğü: yaz ve eksikleri bul | `uretim.json` | gerekmez |
 | 8 | Pano; kendi seçimin | `pano.png`, `secilen` | gerekmez |
 | Bonus | Ara çıktıya elle dokunmak; 3. halka: video | `video_halkasi`, `video.mp4` | gerekir |
 
@@ -651,13 +651,13 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 - **Ara çıktıyı saklamak.** Pahalı ya da her seferinde farklı çıkanı sakla; ucuz ve aynı çıkanı yeniden kur.
 - **Her halka aynı kalıp.** Zaten var mı? Varsa onu ver. Yoksa üret, sakla, ver.
 - **Kopan halka.** Hattı durdurmaz; kayda `olmadi` diye geçer, sonraki çalıştırmada yalnızca o denenir.
-- **Kayıt.** `uretim.json`: ayarlar, ara çıktılar ve her işin sonucu bir arada.
+- **Üretim günlüğü.** `uretim.json`: ayarlar, ara çıktılar ve her işin sonucu bir arada.
 - **İnsan döngüde.** Hat taslak üretir; slogan seçimi, tipografi ve son karar tasarımcının.
 
 ## Bu konunun tek cümlesi
 
-> Bir brif dosyasıyla çalışan hat, halkaları birbirine bağlar; biteni yeniden üretmez, kopanı kayda geçirip devam eder ve
-> her şeyi tek bir klasörde, kaydıyla birlikte bırakır.
+> Bir ayarlar dosyasıyla çalışan hat, halkaları birbirine bağlar; biteni yeniden üretmez, kopanı kayda geçirip devam eder ve
+> her şeyi tek bir klasörde, üretim günlüğüyle birlikte bırakır.
 
 ## Sözlükçe
 
@@ -669,6 +669,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 | **Yapılandırma dosyası (config)** | Programın ayarlarını koddan ayrı tutan dosya (`ayarlar.json`) |
 | **Çalışma klasörü** | Bir brifin bütün çıktılarının toplandığı klasör |
 | **Kayıt** | Bir işin girdisi, çıktısı ve sonucu (bir sözlük) |
+| **Üretim günlüğü** | Hattın ayarlarını, ara çıktılarını ve bütün kayıtlarını tutan dosya (`uretim.json`) |
 | **`true` / `false`** | JSON'da doğru / yanlış; Python'a `True` / `False` olarak gelir |
 | **`.strip()` / `.replace(a, b)`** | Baştaki ve sondaki boşlukları silmek / metindeki `a`'ları `b` ile değiştirmek |
 | **`str(yol)`** | Dosya yolunu metne çevirmek (JSON'a yazmak için) |
@@ -677,7 +678,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 ## Ödev
 
 `odevler/odev11.md` (puansız): kendi projenin hat iskeleti. Kendi ayarlar dosyan, en az iki halka çalışıyor (metin ve görsel),
-panosu ve kaydı. Güzel olması gerekmiyor; final projesinin ilk taslağı.
+panosu ve üretim günlüğü. Güzel olması gerekmiyor; final projesinin ilk taslağı.
 
 ## Sonraki konu
 
@@ -698,10 +699,10 @@ modele elimizdeki fonksiyonları ("araçları") tanıtıyoruz, model cümleye ba
 3. `Dosyadan okundu` ve eski (kafe) sloganlar; görseller de `Zaten var`. Program klasör adına bakıyor, konuya değil. Yeni brif için
    `calisma` adını değiştir.
 4. Dördüncü ve beşinci görsel hiç denenmezdi; neyin eksik olduğunu klasöre bakarak bulman gerekirdi. Kopan halka kayda geçince
-   hat devam eder ve eksik kayıtta yazar.
+   hat devam eder ve eksik günlükte yazar.
 5. Görsel modeller harfleri çoğu zaman bozar ve yazının yerine, biçimine tasarımcı karar vermeli. Slogan afişe tasarımcının
    elinde (bir tasarım programında) dizilir; hat görseli ve sloganı taslak olarak hazırlar.
-6. Çünkü video halkasının girdisi görsel halkasının çıktısı. Kayıtta bu bağ görünüyor: hangi videonun hangi görselden, o görselin
+6. Çünkü video halkasının girdisi görsel halkasının çıktısı. Günlükte bu bağ görünüyor: hangi videonun hangi görselden, o görselin
    hangi yönergeden çıktığı.
 7. Kendine. Genellikle: metin (slogan, başlık), görsel, (isteğe bağlı) video, pano. Metin halkasının çıktısı mutlaka saklanmalı:
    her seferinde farklı çıkar ve sonraki halkalar ona dayanır. Görseller de: pahalı.

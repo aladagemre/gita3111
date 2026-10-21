@@ -43,7 +43,7 @@ Ahmet Emre Aladağ
 ## Araç nedir?
 
 - **Araç** (tool): modele tanıttığımız, adı ve ne yaptığı belli bir fonksiyon
-- Benzetme: Konu 11'deki mutfağa bir garson ve bir menü ekleyelim. Her yemeğin bir adı ve kısa bir açıklaması var; garson siparişi dinler, menüden seçer, mutfağa iletir
+- Konu 11'deki mutfağa bir garson ve bir menü ekleyelim. Her yemeğin bir adı ve kısa bir açıklaması var; garson siparişi dinler, menüden seçer, mutfağa iletir
 - Garson yemeği pişirmez; pişiren mutfak. Model de aracı çalıştırmaz; çalıştıran program
 - Bir aracın üç parçası var: adı, tarifi (ne yapar, ne zaman seçilir), aldığı bilgiler
 - Tasarım dünyasında örnek: bir görsel üretme aracı, bir düzenleme aracı, bir metin yazma aracı
@@ -88,7 +88,7 @@ Ahmet Emre Aladağ
 
 - Bir ajan aracın sonucuna bakıp bir sonraki adıma karar verebilir: "görsel olmadı, yeniden düzenleyeyim"
 - Yeniden bakar, yine beğenmez, yine düzenler... Kimse durdurmazsa döngü kota bitene kadar dönebilir
-- Benzetme: sonu gelmeyen revizyon. "Bir tur daha" diyen müşteriyle sözleşmeye revizyon sayısı yazılır
+- Tasarımdaki karşılığı sonu gelmeyen revizyondur; bu yüzden "bir tur daha" diyen müşteriyle sözleşmeye revizyon sayısı yazılır
 - **Durma koşulu** her döngünün ilk yazılan satırıdır: en fazla şu kadar tur, ya da "bitti" kararı, ya da insanın "dur" demesi
 - Konu 9'daki güvenlik sınırının aynısı; karar modelde olunca daha da gerekli
 - Ücretli bir hizmette durmayan döngü doğrudan fatura demektir

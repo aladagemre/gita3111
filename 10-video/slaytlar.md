@@ -116,7 +116,7 @@ Ahmet Emre Aladağ
 - Video ücretli; her öğrenci kendi kartını vermek zorunda kalmasın diye videolar hocanın hesabından üretiliyor
 - Hesabın anahtarı paylaşılmaz: çoğu sağlayıcının kullanım şartları anahtar ve hesap paylaşımını yasaklıyor
 - Çözüm bir **aracı hizmet** (proxy): senin isteğini alır, hocanın hesabıyla modele iletir, sonucu sana verir
-- Restorandaki garson gibi: mutfağa sen girmezsin, siparişi garson götürür ve getirir
+- Kapalı raflı bir kütüphane gibi: depoya sen girmezsin; görevli istediğin kitabı getirir ve kaç kitap aldığını kartına yazar
 - Sana özel bir **video kodun** var; aracı hizmet seni onunla tanır ve kaç klip ürettiğini sayar
 - Aracı hizmet ayarları kilitler: hangi model, hangi çözünürlük, en uzun süre. Kimse yanlışlıkla pahalı bir ayar seçip bütçeyi bitiremez
 - Birçok kurum yapay zeka hizmetlerini çalışanlarına böyle açar: tek hesap, tek bütçe, kişi başına sınır
