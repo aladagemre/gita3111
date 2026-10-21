@@ -558,7 +558,7 @@ Derste kendi başına çalışacağın defter: `alistirma.ipynb`. Önce aynı kl
 | `NameError: name 'adres' is not defined` | Adım 1'in ilk hücresi hata verdi ya da çalıştırılmadı | Önce o hücredeki hatayı düzelt |
 | `401` ya da `İstek başarısız, durum kodu: 401` | Anahtar yanlış | `anahtar.txt`'yi düzelt, çekirdeği yeniden başlat (**Restart**), baştan çalıştır |
 | Adım 2'de `200` dışında bir kod | Model istenen biçime uyamadı ya da kota/hız sorunu | Hücreyi bir kez daha çalıştır; `429` ise bekle |
-| `TypeError: string indices must be integers, not 'str'` (Adım 2) | `sonuc["response"]` sözlük değil metin olarak geldi | Hocaya söyle: cevabı sözlüğe çeviren tek bir satır eklenecek |
+| `TypeError: string indices must be integers, not 'str'` (Adım 2) | `sonuc["response"]` sözlük değil metin olarak geldi | Hocaya söyle: cevabı sözlüğe çeviren `json.loads` eklenecek (hoca gösterecek) |
 | `TypeError: 'NoneType' object is not subscriptable` | `json_sor` `None` verdi: istek başarısız | Üstteki `İstek başarısız, durum kodu` satırına bak |
 | `KeyError: 'ton'` ya da `KeyError: 'arac'` | Model istenen alanı yazmadı ya da başka adla yazdı (`"tool"`, `"araç"`) | `print(kart)` ya da `print(karar)` ile cevaba bak; hücreyi yeniden çalıştır |
 | `Bilinmeyen araç: ...` | Model listede olmayan bir ad yazdı | `else` dalı çalıştı: doğru davranış. Tarifi netleştir (Adım 7) |

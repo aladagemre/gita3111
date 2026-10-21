@@ -35,7 +35,7 @@ dil modelinin yazdığı metni verir (ör. bir afiş sloganı, bir ürün açık
    ```
    Metin bir görsel değil; o yüzden dosyaya yazmadan yazdırıp fonksiyondan çıkıyoruz.
 6. **Ölç.** Isınma'dan başlayıp Adım 6'nın sonuna kadar sırayla çalıştır. Adım 3'ü (slogan kartları) atlayabilirsin;
-   Adım 2'nin `bicim` ve `json_sor` hücrelerini **çalıştırmalısın**. Adım 5'te klasör ve `uygula` hücrelerini çalıştır,
+   Adım 2'nin ilk hücresini (`bicim` orada tanımlanıyor) ve `json_sor` hücresini **çalıştırmalısın**. Adım 5'te klasör ve `uygula` hücrelerini çalıştır,
    sonraki dört hücreyi (iki örnek ve görselleri) istersen atla: görsel üretirler. `olc(araclar, istekler, etiketlerim)`
    sonucunu not et.
 7. **Düzelt ve yeniden ölç.** Model en çok hangi istekte ayrıştı? Adım 7'deki gibi bir `yeni_araclar` tarifi yaz:
