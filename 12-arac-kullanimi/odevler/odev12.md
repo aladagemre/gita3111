@@ -16,7 +16,7 @@ dil modelinin yazdığı metni verir (ör. bir afiş sloganı, bir ürün açık
 1. `ders.ipynb`'yi aynı klasörde yeni bir adla kopyala (ör. `odev12-ayse.ipynb`).
 2. Adım 1'in ilk hücresindeki son satırın sonuna `, metin_yaz` ekle:
    `from gorsel_araclari import ciz, duzenle, adres, basliklar, metin_yaz`.
-3. **Kendi istekleri.** Isınma hücresinde `istekler` listesini kendi projene göre değiştir: **en az 6** istek; en az
+3. **Kendi isteklerin.** Isınma hücresinde `istekler` listesini kendi projene göre değiştir: **en az 6** istek; en az
    ikisi metin istesin (ör. "afişin altına iki satırlık bir açıklama yaz"), en az biri bilerek muğlak olsun.
    `etiketlerim` listesine her isteğin doğru aracını aynı sırayla yaz: `"uret"`, `"duzenle"` ya da `"metin_yaz"`.
    `print(len(istekler), len(etiketlerim))` aynı sayıyı yazmalı.
@@ -25,7 +25,8 @@ dil modelinin yazdığı metni verir (ör. bir afiş sloganı, bir ürün açık
    Model aracın adını tariften öğrenir. `karar_ver`'de yalnızca bir yeri değiştir: `yonerge` açıklaması "görsel
    modeline gidecek kısa İngilizce yönerge" diyor; metin Türkçe olsun diye şöyle yaz:
    `yonerge (seçilen araca gidecek kısa yönerge; görsel için İngilizce, metin için Türkçe)`.
-5. **Üçüncü dal.** Adım 5'teki `uygula` fonksiyonuna `else`'ten önce bir `elif` ekle (alıştırmanın Soru 5'i):
+5. **Üçüncü dal.** Adım 5'teki `uygula` fonksiyonuna `else`'ten önce bir `elif` ekle (alıştırmanın Soru 5'i);
+   `elif` satırı öbür `elif` ile aynı hizada olsun:
    ```
    elif arac == "metin_yaz":
        metin = metin_yaz(yonerge)

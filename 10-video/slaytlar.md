@@ -24,7 +24,7 @@ Ahmet Emre Aladağ
 - Zor olan kareleri tek tek çizmek değil, aralarındaki **tutarlılık**: fincan kare kare şekil değiştirmemeli, ışık bir anda zıplamamalı
 - Bu yüzden video modelleri görsel modellerinden çok daha fazla hesap yapar
 - Yeni modellerin çoğu ses de üretir: ortam sesi, efekt, bazen konuşma
-- Konu 6'daki gizli uzay fikri burada da geçerli; bu kez uzayda bir **yol** boyunca ilerleniyor
+- Konu 6'daki gizli uzay burada da var; ama model kareleri tek tek değil, hepsini **birlikte** kurar: tutarlılık buradan gelir
 
 -----
 

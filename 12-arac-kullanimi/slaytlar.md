@@ -124,7 +124,7 @@ Ahmet Emre Aladağ
 - Tarifi düzeltirken ayrıştığın örneklere bakarsın; bu doğru
 - Ama aynı örneklerle yeniden ölçersen yalnızca o örnekleri ezberleyen bir kural yazmış olabilirsin
 - Konu 3'teki tuzak: test sonucuna bakıp ayar yapmak, sonra aynı testte ölçmek
-- Çözüm: tarifi düzelttikten sonra modelin hiç görmediği **yeni** isteklerle de ölç
+- Çözüm: tarifi düzelttikten sonra, tarifi yazarken bakmadığın **yeni** isteklerle de ölç
 - Yeni kural fazla dar da çıkabilir: bir durumu düzeltirken başka bir durumu dışarıda bırakır
 - Döngü: yaz, ölç, ayrışana bak, düzelt, yeni örneklerle yeniden ölç
 

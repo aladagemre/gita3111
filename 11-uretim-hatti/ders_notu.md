@@ -18,7 +18,7 @@ defterdeki hücrelerin birebir aynısı.
 
 **Anahtar:** Isınma, Adım 1 ve Adım 2 anahtarsız. Adım 3'ten sonrası `anahtar.txt` ister (Konu 2'deki dosya, `gita3111`
 klasöründe). Defterin tamamı 4 metin ve 3 görsel isteği gönderir (Bonus 1 ile 4 görsel); Adım 6'da bilerek
-reddettirilen 3 istek de buna eklenir. Hepsi ücretsiz günlük kotanın küçük bir kısmı. Video (Bonus 2) varsayılan olarak kapalı; açarsan `anahtar.txt`'deki Konu 10 satırları
+reddedilen 3 görsel isteği de var. Hepsi ücretsiz günlük kotanın küçük bir kısmı. Video (Bonus 2) varsayılan olarak kapalı; açarsan `anahtar.txt`'deki Konu 10 satırları
 (`VIDEO_ADRES`, `VIDEO_KOD`) da gerekir.
 
 > **Bu nottaki çıktılar hakkında.** Isınma, Adım 1 ve 2'nin çıktıları her bilgisayarda aynıdır. Sloganlar ve görseller gerçek
@@ -62,10 +62,33 @@ risograph poster, idea: sessiz bir çalışma kafesi: burada zaman yavaşlar
 [görsel] risograph poster, idea: sessiz bir çalışma kafesi: burada zaman yavaşlar
 ```
 
-- Her satır bir öncekinin sonucunu alıyor: `slogan_yaz`'ın çıktısı `yonerge_kur`'un girdisi, onun çıktısı `gorsel_ciz`'in girdisi.
-  **Hat** (pipeline) budur.
-- İlk satırdaki konuyu değiştirirsen üç satırın üçü de değişir. Hattın başındaki tek girdi sonuna kadar taşınır; hattın en önemli
-  satırı brif.
+Her satır bir öncekinin sonucunu alıyor: `slogan_yaz`'ın çıktısı `yonerge_kur`'un girdisi, onun çıktısı `gorsel_ciz`'in girdisi.
+**Hat** (pipeline) budur.
+
+**Tahmin et:** ilk satırdaki konuyu `"gece açık bir kitapçı"` yapıp yeniden çalıştırırsan üç satırdan kaçı değişir? Defterde
+sıradaki hücre üsttekinin kopyası; yalnızca ilk satırı farklı:
+
+```python
+konu = "gece açık bir kitapçı"
+slogan = slogan_yaz(konu)
+yonerge = yonerge_kur(slogan, "risograph")
+gorsel = gorsel_ciz(yonerge)
+
+print(slogan)
+print(yonerge)
+print(gorsel)
+```
+
+Çıktı:
+
+```
+gece açık bir kitapçı: burada zaman yavaşlar
+risograph poster, idea: gece açık bir kitapçı: burada zaman yavaşlar
+[görsel] risograph poster, idea: gece açık bir kitapçı: burada zaman yavaşlar
+```
+
+- Üç satırın üçü de değişti. Hattın başındaki tek girdi sonuna kadar taşınır; bu yüzden hattın en önemli satırı brif.
+- Konuyu kendi seçtiğin bir şeyle değiştirip bir kez daha dene.
 
 Gerçek hatta her halka bir istek. Bugünkü hat 3 slogan ve 3 görsel istiyor:
 
@@ -192,7 +215,7 @@ from halkalar import modele_sor, sabirli_ciz, video_uret
 | `sabirli_ciz(yonerge, tohum)` | Konu 9 | Görsel modeline (`flux-1-schnell`) en fazla üç kez dener, görselin baytlarını verir | `None` |
 | `video_uret(yonerge, yol, gorsel_yolu)` | Konu 10 | Video aracı hizmetine görseli gönderir, bitene kadar bekler, videoyu `yol`'a kaydeder; video zaten varsa istek göndermez | `None` |
 
-Anahtarı `../anahtar.txt`'den kendisi okur, bu hücre ilk çalıştığında. `anahtar.txt`'yi sonradan düzeltirsen çekirdeği yeniden
+`halkalar.py` anahtarı `../anahtar.txt`'den kendisi okur: bu hücre ilk çalıştığında. `anahtar.txt`'yi sonradan düzeltirsen çekirdeği yeniden
 başlat (**Restart**). Halkalar hazır; onları **birbirine bağlamak** bugün senin işin.
 
 Konu 5'teki slogan sorusunu bir kalıba çeviriyoruz: sabit kısım ve sonunda brifteki konu. Önce tek bir istek:
@@ -302,7 +325,7 @@ for slogan in sloganlar:
 Çıktı: üç yönerge, her biri `risograph print poster, two colors, a poster illustration that expresses this idea: ...,
 no text, no letters` biçiminde.
 
-- Bu bir kalıp (Konu 9'daki şablon): sabit kısım ve iki boşluk (`stil`, `slogan`).
+- Bu bir kalıp (Konu 9'daki şablon): sabit kısım ve iki değişen yer (`stil`, `slogan`).
 - Yönergeleri saklamıyoruz: sloganlardan ve ayarlardan her seferinde aynı biçimde, bedavaya kurulur.
 - Sloganlar Türkçe, yönergenin geri kalanı İngilizce. Görsel model çoğunlukla İngilizce metinle eğitildi (Konu 7); Türkçe
   sloganın fikrini ne kadar anladığı görsellerde görülür.
@@ -530,6 +553,9 @@ else:
 
 - Video kapalıysa `Video kapalı: ayarlar.json'da video false` yazar, istek gitmez.
 - Açıksa birkaç dakika sürebilir; ekranda `İş başladı: ...` ve `Henüz bitmedi, geçen süre: ... saniye` satırlarını görürsün.
+- **Zaman aşımı olursa** (`Zaman aşımı; iş sürüyor olabilir. İş numarası: ...`) hücreyi yeniden çalıştırma: `video.mp4` henüz
+  yok, yeni ve ücretli bir iş başlar. Konu 10'un kuralı: işi bir kez başlat, numarayı sakla. İş numarasını not et; Konu 10
+  defterinde `bekle(is_no)` ile yeniden sorabilirsin, bu ücretsiz.
 
 Kaydı videoyla birlikte yeniden yaz:
 
@@ -550,7 +576,7 @@ Video kaydının `girdi`'si bir görsel kaydının `cikti`'sı: zincir kayıtta 
 
 | Adım | Ne yaptık | Elimizde ne oluştu | Anahtar |
 |---|---|---|---|
-| Isınma | Sahte halkalarla zincir; istek hesabı | — | gerekmez |
+| Isınma | Sahte halkalarla zincir; konuyu değiştirmek; istek hesabı | — | gerekmez |
 | 1 | Brif dosyasını okuduk | `ayarlar`, `konu`, `stil`, `tohum` ... | gerekmez |
 | 2 | Çalışma klasörü | `klasor` (`ciktilar/kafe_afisi_1/`) | gerekmez |
 | 3 | Hazır halkalar; bir deneme sloganı, temizleme | `modele_sor`, `sabirli_ciz`, `video_uret`, `soru` | gerekir |
@@ -595,6 +621,7 @@ Derste kendi başına çalışacağın defter: `alistirma.ipynb`. Önce aynı kl
 | `NameError: name 'slogan_halkasi' is not defined` ya da `'gorsel_halkasi'` | Fonksiyonun tanımlandığı hücre atlandı | O hücreyi çalıştır |
 | Panoda boş kutu | O görsel üretilemedi | Kayıtta `olmadi` yazar; Adım 5'in döngü hücresini, sonra panoyu yeniden çalıştır |
 | `Video kapalı ...` ama `ayarlar.json`'da `true` yazdım | Adım 1 yeniden çalıştırılmadı | Adım 1'in iki hücresini yeniden çalıştır |
+| `Zaman aşımı; iş sürüyor olabilir. İş numarası: ...` (Bonus 2) | Video işi 6 dakikadan uzun sürdü | Hücreyi yeniden çalıştırma (yeni ücretli iş); numarayı not et, Konu 10 defterinde `bekle(is_no)` ile sor |
 | `anahtar.txt'de VIDEO_ADRES ya da VIDEO_KOD satırı yok` | Konu 10'un satırları anahtar dosyasında yok | Konu 10'daki iki satırı ekle, çekirdeği yeniden başlat |
 
 ---

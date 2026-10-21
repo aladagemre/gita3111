@@ -8,7 +8,7 @@ defterdeki hücrelerin birebir aynısı.
 **Konu 9'da:** bir şablon ve listelerle bir görsel ızgarası ürettik; her görsel birkaç saniyede geldi.
 **Bu konuda:** görsele zaman ekliyoruz. Kodun yeni fikri **uzun süren iş**:
 
-> Video istediğin anda gelmez. İsteği başlatırsın, bir iş numarası alırsın, numarayı saklarsın,
+> Video istediğin anda gelmez; hazır olması birkaç dakika sürebilir. İsteği başlatırsın, bir iş numarası alırsın, numarayı saklarsın,
 > arada bir "bitti mi?" diye sorarsın (bir sınıra kadar), bitince indirirsin. Ve her saniyenin bir fiyatı var.
 
 **Konunun sonunda elinde:** `videolar/` klasöründe iki kısa video (biri yalnız yönergeden, biri Konu 9'daki
@@ -17,7 +17,7 @@ görselinden) ve her videonun nasıl üretildiğini ve kaça mal olduğunu kayde
 **Kurulum:** yeni kütüphane yok. `git pull` ile konu klasörü geldikten sonra `gita3111` klasöründe
 bir kez `uv sync` çalıştır.
 
-**Anahtar:** Isınma, Adım 1 ve Adım 2 internetsiz ve anahtarsız. Adım 3'ten sonrası `anahtar.txt`'ye derste
+**Anahtar:** Isınma, Adım 1 ve Adım 2 anahtarsız; Isınma ve Adım 2 internetsiz de çalışır. Adım 3'ten sonrası `anahtar.txt`'ye derste
 eklediğimiz iki satırı (`VIDEO_ADRES`, `VIDEO_KOD`) ister. Videolar hocanın hesabından bir **aracı hizmet**
 üzerinden üretiliyor; defter 2 klip üretir (4'er saniye, 720p), Bonus ile 3. Klip hakkın sınırlı.
 
@@ -29,7 +29,7 @@ eklediğimiz iki satırı (`VIDEO_ADRES`, `VIDEO_KOD`) ister. Videolar hocanın 
 ## Isınma: bir video kaç para?
 
 Görseller ücretsiz kotadan geliyordu. Video saniye başına ücretlidir. Dersin modeli Gemini Omni Flash; Gemini API
-fiyat sayfasına göre 720p'de saniyesi **yaklaşık 0,10 dolar** (Ekim 2026). Aracı hizmet çözünürlüğü 720p'ye kilitliyor.
+fiyat sayfasına göre 720p'de (1280 × 720 piksel) saniyesi **yaklaşık 0,10 dolar** (Ekim 2026). Aracı hizmet çözünürlüğü 720p'ye kilitliyor.
 
 ```python
 UCRET_SANIYE = 0.10
@@ -44,8 +44,8 @@ print(sure, "saniyelik klip:", sure * UCRET_SANIYE, "USD")
 - Python ondalık sayıları **noktayla** yazar: `0.10`. Notta Türkçe yazımla 0,10 diyoruz; ikisi aynı sayı.
 - Fiyatlar sık değişir; bu rakam Ekim 2026'daki fiyat sayfasından alındı ve yaklaşık bir değer.
 
-Bir müşteri 20 saniyelik bir tanıtım istiyor. Aracı hizmet klipleri 4, 6 ya da 8 saniye üretiyor; daha uzun video, kliplerin
-kurguda birleşmesi. 20 = 8 + 8 + 4:
+Bir müşteri 20 saniyelik bir tanıtım istiyor. Aracı hizmet klipleri 4, 6 ya da 8 saniye üretiyor; daha uzun bir video, klipleri
+kurguda birleştirerek yapılır. 20 = 8 + 8 + 4:
 
 ```python
 klipler = [8, 8, 4]
@@ -314,7 +314,7 @@ klasor.mkdir(exist_ok=True)
 metin_yolu = klasor / "metinden.mp4"
 ```
 
-Videolar `videolar/` klasörüne (Konu 8'deki `mkdir`). İlk videonun yolu `videolar/metinden.mp4`.
+Videolar `videolar/` klasörüne kaydedilecek (klasörü Konu 8'deki gibi `mkdir` açıyor). İlk videonun yolu `videolar/metinden.mp4`.
 
 ```python
 cevap = requests.get(video_adresi, headers=basliklar, timeout=120)
@@ -633,7 +633,7 @@ Görsel hareket edince ne korundu, ne bozuldu? Aynı klip 8 saniye olsaydı kaç
 
 **Konu 11 — Zincirleme: üretim hattı.** Şimdiye kadar her şeyi ayrı ayrı ürettik: metin (Konu 5), görsel (Konu 8–9),
 video (bugün). Konu 11'de bunları tek bir programda birbirine bağlıyoruz: bir adımın çıktısı ötekinin girdisi. Video,
-hattın son ve en pahalı halkası; bugünkü "bir kez başlat, numarayı sakla" kuralı orada da geçerli.
+hattın son (isteğe bağlı) ve en pahalı halkası; bugünkü "bir kez başlat, numarayı sakla" kuralı orada da geçerli.
 
 ---
 
@@ -644,7 +644,7 @@ hattın son ve en pahalı halkası; bugünkü "bir kez başlat, numarayı sakla"
 2. Video daha çabuk gelmez: işin süresi senin ne sıklıkla sorduğuna bağlı değil. Döngü 36 soruyu birkaç saniyede bitirir ve
    iş bitmeden "zaman aşımı" der. Sunucuyu da gereksiz yere yorar.
 3. Her turda **yeni bir iş** başlar: yeni bir klip, yeni bir ücret. Hiçbiri beklenmediği için hiçbiri indirilmez; klip hakkı
-   birkaç dakikada biter. Başlatma döngünün **dışında**, bir kez.
+   birkaç turda biter. Başlatma döngünün **dışında**, bir kez.
 4. Yeni iş başlatmazsın. İş numarası elinde: bir süre sonra `bekle(is_no)` ile yeniden sorarsın. Zaman aşımı işi iptal etmedi.
 5. `timeout=30` **tek bir isteğin** cevabı için en fazla 30 saniye bekler. `range(36)` (her turda 10 saniye) **bütün bekleyişi**
    en fazla yaklaşık 6 dakikayla sınırlar.

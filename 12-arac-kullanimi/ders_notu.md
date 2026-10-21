@@ -67,7 +67,7 @@ for istek in istekler:
 
 - İki listeyi aynı anda gezmek için bir **sıra sayacı** tutuyoruz: `sira` 0'dan başlar, her turda bir artar.
   `etiketlerim[sira]` o sıradaki etiket.
-- `sira = sira + 1` satırı döngünün içinde olmalı; dışında kalırsa hep ilk etikete bakılır (alıştırmada var).
+- `sira = sira + 1` satırı döngünün içinde olmalı; yoksa hep ilk etikete bakılır (alıştırmanın 4. bozuk kodu).
 
 Hangi istekte karar vermek zor geldi? "afişi daha sıcak yap" iki türlü okunabilir: var olan bir afişi mi değiştirelim,
 yeni ve daha sıcak bir afiş mi üretelim? Elimizde afiş yok, yalnızca fincan fotoğrafı var. Bu etiketler Konu 3'teki
@@ -359,7 +359,7 @@ bir sözlük ve bir `if`.
 
 ## Adım 6 — Model ne kadar doğru seçiyor?
 
-İki örnek bir şey kanıtlamaz. Isınmadaki altı isteğin hepsini soruyoruz ve kararları senin etiketlerinle
+Model iki örnekte doğru seçmiş olabilir, ama iki örnek bir şey kanıtlamaz. Isınmadaki altı isteğin hepsini soruyoruz ve kararları senin etiketlerinle
 karşılaştırıyoruz: Konu 3'teki **doğruluk** (doğru / toplam). Bu adımda görsel üretmiyoruz; her istek tek bir metin
 isteği.
 
@@ -382,7 +382,7 @@ def olc(tarif, liste, etiketler):
 - `olc` bir tarif, bir istek listesi ve bir etiket listesi alıyor; Adım 7'de başka listelerle çağıracağız.
 - Isınmadaki sıra sayacı burada da var: `etiketler[sira]` o isteğin senin etiketin.
 - Karar etiketle aynıysa `dogru` bir artar; değilse ayrıştığınız istek yazılır.
-- `dogru = 0` döngünün **dışında**, başta bir kez. İçine koyarsan her turda sıfırlanır (alıştırmada var).
+- `dogru = 0` döngünün **dışında**, başta bir kez. İçine koyarsan her turda sıfırlanır (alıştırmanın 5. bozuk kodu).
 
 ```python
 olc(araclar, istekler, etiketlerim)
@@ -396,7 +396,7 @@ olc(araclar, istekler, etiketlerim)
 
 ---
 
-## Adım 7 — Sorun modelde değil tarifte
+## Adım 7 — Sorun çoğu zaman tarifte
 
 Bir tasarımcıya "afişi daha sıcak yap" desen o da sorar: hangi afiş? Modele verdiğimiz tarif de bir **brif**. Muğlak
 brif, ister insana ister modele verilsin, yanlış işi getirir. Tarifi netleştiriyoruz:
@@ -437,9 +437,9 @@ yeni_etiketlerim = ["duzenle", "uret", "duzenle", "uret", "duzenle"]
 olc(yeni_araclar, yeni_istekler, yeni_etiketlerim)
 ```
 
-- Modelin hiç görmediği beş istek; önce yine sen etiketle (`yeni_etiketlerim`).
+- Tarifi yazarken bakmadığımız beş istek; önce yine sen etiketle (`yeni_etiketlerim`).
 - Son isteğe bak: "görseli biraz daha aydınlat". "Görseli" diyor, yani var olan bir görseli işaret ediyor; ama "bu",
-  "şu" ya da "fotoğraf" demiyor. Kuralımız ona ne dedirtiyor? Kuralı fazla dar yazmak da bir hata.
+  "şu" ya da "fotoğraf" demiyor. Kuralımıza göre model hangi aracı seçmeli? Kuralı fazla dar yazmak da bir hata.
 
 Tarif yazmak bir kez yapılıp biten iş değil:
 
@@ -493,6 +493,7 @@ duzenle_araci = {"name": "duzenle", "description": duzenle_tarifi, "parameters":
 
 - Her aracın bir adı (`name`), bir tarifi (`description`) ve aldığı bilgiler (`parameters`) var.
 - Bilgilerin biçimi iç içe sözlükler; her katmanı ayrı satırda kuruyoruz. İki aracımız da aynı bilgiyi alıyor: `yonerge`.
+- `"string"` bilginin metin olduğunu, `"required"` hangi bilgilerin zorunlu olduğunu söyler.
 - Adım 7'deki ders burada da geçerli: `description` bir brif. Muğlaksa model yanlış aracı seçer.
 
 ```python
@@ -647,7 +648,7 @@ kullanımı final projesi için **zorunlu değil**; kullanırsan ekstra sayılı
 5. 4 / 6 ≈ 0,67. Tek başına bir şey söylemez: altı istek çok az, ve ayrışılan istekler belki iki türlü okunabiliyor
    (sorun istekte ya da tarifte olabilir). Konu 3'teki gibi: sayıya değil, ayrışılan örneklere bak.
 6. Tarifi o altı isteğe göre ayarladın; aynı isteklerle ölçmek ezberi ölçer (Konu 3: test sonucuna bakıp ayar
-   yapmak). Tarifin işe yarayıp yaramadığını yalnızca görülmemiş istekler gösterir.
+   yapmak). Tarifin işe yarayıp yaramadığını ancak tarifi yazarken bakmadığın istekler gösterir.
 7. Büyük ihtimalle hiçbir şey. Tek bir aracı olan, tek adımlı bir işte karar zaten belli; araç kullanımı yalnızca bir
    istek, biraz gecikme ve bir hata ihtimali ekler. Araç kullanımı birden çok seçenek ve gerçek bir karar olduğunda
    anlamlı.
