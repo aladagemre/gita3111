@@ -2,7 +2,7 @@
 
 **Puan yok.** Konu 12'nin başında sıradaki arkadaşlar gösterecek.
 
-Bu ödev kendi `anahtar.txt` dosyanı ister (Konu 2). En fazla 5 metin isteği (bir deneme + en fazla 4 slogan) ve
+Bu ödev kendi `anahtar.txt` dosyanı ister (Konu 2). En fazla 5 metin isteği (bir deneme + en fazla 4 slogan) gönderir ve
 4 görsel üretir; bir sloganı değiştirip görselini yeniden ürettiğinde her biri için bir görsel daha. Günlük kotanın küçük bir kısmı.
 
 Bu ödev final projesinin ilk taslağı: kendi konunda, kendi brifinle çalışan bir hat. **Güzel olması gerekmiyor**;

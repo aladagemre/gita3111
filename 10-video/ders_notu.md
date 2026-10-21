@@ -28,7 +28,7 @@ eklediğimiz iki satırı (`VIDEO_ADRES`, `VIDEO_KOD`) ister. Videolar hocanın 
 
 ## Isınma: bir video kaç para?
 
-Görseller ücretsiz kotadan geliyordu. Video saniye başına ücretlidir. Dersin modelinin (Gemini Omni Flash) fiyatı Gemini API
+Görseller ücretsiz kotadan geliyordu. Video saniye başına ücretlidir. Dersin modeli Gemini Omni Flash; Gemini API
 fiyat sayfasına göre 720p'de saniyesi **yaklaşık 0,10 dolar** (Ekim 2026). Aracı hizmet çözünürlüğü 720p'ye kilitliyor.
 
 ```python
@@ -42,7 +42,7 @@ print(sure, "saniyelik klip:", sure * UCRET_SANIYE, "USD")
 
 - `UCRET_SANIYE` büyük harfle: değişmeyen bir sabit (Konu 9'daki `MAKS_URETIM` gibi).
 - Python ondalık sayıları **noktayla** yazar: `0.10`. Notta Türkçe yazımla 0,10 diyoruz; ikisi aynı sayı.
-- Fiyatlar sık değişir; bu rakam Ekim 2026'daki fiyat sayfasından ve "yaklaşık".
+- Fiyatlar sık değişir; bu rakam Ekim 2026'daki fiyat sayfasından alındı ve yaklaşık bir değer.
 
 Bir müşteri 20 saniyelik bir tanıtım istiyor. Aracı hizmet klipleri 4, 6 ya da 8 saniye üretiyor; daha uzun video, kliplerin
 kurguda birleşmesi. 20 = 8 + 8 + 4:
@@ -78,7 +78,6 @@ print("Ücret:", toplam_kisa * UCRET_SANIYE, "USD")
 - Fiyatı yalnızca **süre** belirliyor: yarı fiyat, yarı süre. 20 saniye yerine 10 saniyelik bir kurgu, iki klip (4 + 6).
 - Tek klipte de aynı: 8 saniyelik klip yerine 4 saniyelik klip yarı fiyat.
 - **Süre kararı bir bütçe kararıdır.** Sosyal medyada izlenen bir tanıtım için 10 saniye yeter mi? Hangi planları atardın?
-  Planın sorusu "aynı işi hangi ayarla yarı fiyatına yaparsın?" idi: cevap süre.
 
 Video ile görseli karşılaştıralım. Konu 9'da bir görsel ~58 neuron tutuyordu; Cloudflare ücretsiz kotayı aşanlardan
 1.000 neuron için 0,011 dolar alıyor.
@@ -95,7 +94,7 @@ print("Bir klip kaç görsel eder:", klip_ucreti / gorsel_ucreti)
 
 - 4 saniyelik bir klip yaklaşık **600 görsel** eder. Video art arda gelen onlarca kareden oluşur (saniyede 24 kare:
   4 saniye yaklaşık 100 kare); karelerin birbirini tutması ve ses de işin içinde.
-- Sonuç: önce görselle dene (ucuz), beğendiğini videoya çevir (pahalı).
+- Bir video denemesi yüzlerce görsel denemesine bedel: önce görselle dene (ucuz), beğendiğini videoya çevir (pahalı).
 
 ---
 
@@ -599,7 +598,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 - **Zaman aşımı.** Döngünün sınırı bütün bekleyişin sınırıdır; işi iptal etmez. `timeout` ise tek bir isteğin sınırı.
 - **`requests.get`.** Gövdesiz istek: "bana şunu ver". Durum sormak ve indirmek için.
 - **Görselden video.** Görsel base64 metni olarak gövdeye girer (`b64encode` + `decode`); ilk kare olur.
-- **Kamera dili.** Hareket yönergesi: yaklaşma, uzaklaşma, kaydırma; öznenin hareketi ayrı yazılır.
+- **Kamera dili.** Hareket yönergesi: yaklaşma, uzaklaşma, yana kaydırma, yukarı kalkış; öznenin hareketi ayrı yazılır.
 - **Günlük ve bütçe.** Her videonun ayarları ve maliyeti kayıtta.
 
 ## Bu konunun tek cümlesi

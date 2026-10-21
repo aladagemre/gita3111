@@ -81,7 +81,8 @@ def sabirli_ciz(yonerge, tohum):
 
 
 def video_uret(yonerge, yol, gorsel_yolu=None):
-    # Konu 10'daki video_uret'in aynısı (kısaltılmış): videoyu yol'a kaydeder; başarılıysa yol'u, değilse None verir.
+    # Konu 10'daki video_uret'in kısa hâli: süre 4 sn, oran 16:9 sabit. İlk üç parametre ve davranış aynı:
+    # videoyu yol'a kaydeder; başarılıysa yol'u, değilse None verir.
     # gorsel_yolu verilirse o görsel videonun ilk karesi olur. yol zaten varsa hiç istek göndermez (video pahalı).
     yol = Path(yol)
     if yol.exists():
@@ -100,31 +101,44 @@ def video_uret(yonerge, yol, gorsel_yolu=None):
 
     try:
         cevap = requests.post(adres_video + "/baslat", headers=basliklar_video, json=govde, timeout=60)
-        if cevap.status_code != 200:
-            print("Başlatılamadı, durum kodu:", cevap.status_code)
-            return None
-        is_no = cevap.json()["is_no"]
-        print("İş başladı:", is_no)
+        yanit = cevap.json()
+    except (requests.exceptions.RequestException, ValueError):
+        print("Aracı hizmete bağlanamadım ya da cevabı okuyamadım")
+        return None
+    if cevap.status_code != 200 or "is_no" not in yanit:
+        print("Başlatılamadı:", cevap.status_code, yanit)
+        return None
+    is_no = yanit["is_no"]
+    print("İş başladı:", is_no)
 
-        for deneme in range(36):                          # en fazla 36 × 10 saniye = 6 dakika
-            cevap = requests.get(adres_video + "/durum/" + is_no, headers=basliklar_video, timeout=30)
-            durum = cevap.json()
-            if "hata" in durum:
-                print("İş başarısız:", durum["hata"])
-                return None
-            if durum["bitti"]:
-                cevap = requests.get(durum["video"], headers=basliklar_video, timeout=120)
-                if cevap.status_code != 200:
-                    print("Videoyu indiremedim, durum kodu:", cevap.status_code)
-                    return None
-                yol.write_bytes(cevap.content)
-                print("Kaydedildi:", yol)
-                return yol
-            print("Henüz bitmedi, geçen süre:", deneme * 10, "saniye")
+    video_adresi = None
+    for deneme in range(36):                              # en fazla 36 × 10 saniye = 6 dakika
+        try:
+            durum = requests.get(adres_video + "/durum/" + is_no, headers=basliklar_video, timeout=30).json()
+        except (requests.exceptions.RequestException, ValueError):
+            print("Durumu soramadım, biraz sonra yeniden soracağım")   # iş sürüyor; yeni iş başlatmıyoruz
             time.sleep(10)
-    except requests.exceptions.RequestException:
-        print("Aracı hizmete bağlanamadım ya da cevap gelmedi")
+            continue
+        if "hata" in durum:
+            print("İş başarısız:", durum["hata"])
+            return None
+        if durum["bitti"]:
+            video_adresi = durum["video"]
+            break
+        print("Henüz bitmedi, geçen süre:", deneme * 10, "saniye")
+        time.sleep(10)
+    if video_adresi is None:
+        print("Zaman aşımı; iş sürüyor olabilir. İş numarası:", is_no)
         return None
 
-    print("Zaman aşımı; iş sürüyor olabilir. İş numarası:", is_no)
-    return None
+    try:
+        cevap = requests.get(video_adresi, headers=basliklar_video, timeout=120)
+    except requests.exceptions.RequestException:
+        print("Videoyu indiremedim. İş numarası:", is_no)
+        return None
+    if cevap.status_code != 200:
+        print("Videoyu indiremedim, durum kodu:", cevap.status_code)
+        return None
+    yol.write_bytes(cevap.content)
+    print("Kaydedildi:", yol)
+    return yol

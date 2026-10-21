@@ -57,5 +57,4 @@ dil modelinin yazdığı metni verir (ör. bir afiş sloganı, bir ürün açık
 ## İstersen (zorunlu değil)
 
 Adım 8'i çalıştır (Adım 7'deki `yeni_araclar` tarifini kullanır) ve `input` kutusuna üç araçtan her birini
-seçtirecek birer istek yaz. Model üçünü de
-doğru seçti mi? (Görsel isteyen her tur bir görsel üretir.)
+seçtirecek birer istek yaz. Model üçünü de doğru seçti mi? (Görsel isteyen her tur bir görsel üretir.)

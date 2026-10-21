@@ -17,8 +17,8 @@ defterdeki hücrelerin birebir aynısı.
 **Kurulum:** yeni kütüphane yok. `git pull` ile konu klasörü geldikten sonra `gita3111` klasöründe bir kez `uv sync` çalıştır.
 
 **Anahtar:** Isınma, Adım 1 ve Adım 2 anahtarsız. Adım 3'ten sonrası `anahtar.txt` ister (Konu 2'deki dosya, `gita3111`
-klasöründe). Defterin tamamı 4 metin isteği ve 3 görsel (Bonus 1 ile 4) gönderir (Adım 6'da bilerek reddettirilen 3 istek daha); ücretsiz günlük
-kotanın küçük bir kısmı. Video (Bonus 2) varsayılan olarak kapalı; açarsan `anahtar.txt`'deki Konu 10 satırları
+klasöründe). Defterin tamamı 4 metin ve 3 görsel isteği gönderir (Bonus 1 ile 4 görsel); Adım 6'da bilerek
+reddettirilen 3 istek de buna eklenir. Hepsi ücretsiz günlük kotanın küçük bir kısmı. Video (Bonus 2) varsayılan olarak kapalı; açarsan `anahtar.txt`'deki Konu 10 satırları
 (`VIDEO_ADRES`, `VIDEO_KOD`) da gerekir.
 
 > **Bu nottaki çıktılar hakkında.** Isınma, Adım 1 ve 2'nin çıktıları her bilgisayarda aynıdır. Sloganlar ve görseller gerçek
@@ -275,7 +275,7 @@ print(sloganlar)
 
 Çıktı: `Dosyadan okundu, istek gitmedi` ve **aynı** üç slogan. Hiç istek gitmedi.
 
-Kota için değil, **tutarlılık** için de saklıyoruz. Sıcaklık 0.9; her istekte başka bir slogan gelir (Konu 5). Sloganları her
+Yalnızca kota için değil, **tutarlılık** için de saklıyoruz. Sıcaklık 0.9; her istekte başka bir slogan gelir (Konu 5). Sloganları her
 çalıştırmada yeniden üretseydik `gorsel_1.jpg` dünkü sloganla, kayıt bugünkü sloganla kalırdı: görsel ile metin birbirini
 tutmazdı.
 
@@ -395,7 +395,7 @@ Olmadı, atlıyorum: ciktilar/kafe_afisi_1/gorsel_4.jpg
   bir hatada beklemek işe yaramaz ama basit bir program bunu ayırt edemez.
 - Hücre **çökmedi**: `gorsel_halkasi` hata yerine `"durum": "olmadi"` yazan bir kayıt verdi. Bir döngünün içinde olsaydık döngü
   sıradaki görsele geçerdi.
-- Hat iki şeyi birlikte yapıyor: kopuk halkayı **kayda geçiriyor** (hangisi, neden) ve kopmayanlarla **devam ediyor**.
+- Hat iki şeyi birlikte yapıyor: kopuk halkayı **kayda geçiriyor** (hangi görsel, `durum`: `olmadi`) ve kopmayanlarla **devam ediyor**.
 - `gorsel_4.jpg` hiç oluşmadı; hattı yarın yeniden çalıştırırsan yalnızca o denenir (kaldığı yerden devam).
 
 | Kopan halka hattı durdurursa | Kopan halka kayda geçerse |
@@ -498,7 +498,7 @@ secilen = klasor / "gorsel_1.jpg"
 Slogan halkası dosyadan okur (senin sloganınla, istek gitmez). Görsel halkası 1 ve 3'ü atlar, yalnızca 2'yi üretir: tek istek.
 Panoda yalnızca bir kutu değişir. Hat makinenin işini yapıyor; sen istediğin yerde araya girip yönünü değiştiriyorsun.
 
-**2. 3. halka: video.** Varsayılan olarak kapalı: video öğretim üyesinin hesabından, ücretli üretiliyor ve sayısı sınırlı (Konu 10).
+**2. 3. halka: video.** Varsayılan olarak kapalı: video hocanın hesabından, ücretli üretiliyor ve sayısı sınırlı (Konu 10).
 Açmak için `ayarlar.json`'da `"video": false` satırını `"video": true` yap, kaydet, Adım 1'in iki hücresini yeniden çalıştır.
 
 ```python
@@ -590,10 +590,10 @@ Derste kendi başına çalışacağın defter: `alistirma.ipynb`. Önce aynı kl
 | Görsel eski sloganı anlatıyor | Sloganı değiştirdin ama görseli silmedin | O görseli sil; görsel halkası yalnızca olmayanı üretir |
 | `TypeError: Object of type PosixPath is not JSON serializable` (Windows'ta `WindowsPath`) | Kayda `yol` metne çevrilmeden yazıldı | `str(yol)` |
 | `İstek başarısız, durum kodu: 400` (Adım 6) | Boş yönerge; bilerek | Doğru davranış: kayıtta `olmadi` |
-| `İstek başarısız, durum kodu: 429` ve `Deneme ... olmadı` | Çok hızlı istek ya da günlük kota doldu | Bekle; üst üste geliyorsa hücreyi durdur (**Interrupt**). Kota yenilenince aynı hücre kaldığı yerden devam eder |
+| `İstek başarısız, durum kodu: 429` ve `Deneme ... olmadı` | Çok hızlı istek ya da günlük kota doldu | Bekle; üst üste geliyorsa hücreyi durdur (**Interrupt**). Kota yenilenince aynı hücreyi yeniden çalıştır; kaldığı yerden devam eder |
 | `NameError: name 'klasor' is not defined` | Adım 2 çalıştırılmadı | Sırayla çalıştır |
 | `NameError: name 'slogan_halkasi' is not defined` ya da `'gorsel_halkasi'` | Fonksiyonun tanımlandığı hücre atlandı | O hücreyi çalıştır |
-| Panoda boş kutu | O görsel üretilemedi | Kayıtta `olmadi` yazar; görsel halkasını yeniden çalıştır |
+| Panoda boş kutu | O görsel üretilemedi | Kayıtta `olmadi` yazar; Adım 5'in döngü hücresini, sonra panoyu yeniden çalıştır |
 | `Video kapalı ...` ama `ayarlar.json`'da `true` yazdım | Adım 1 yeniden çalıştırılmadı | Adım 1'in iki hücresini yeniden çalıştır |
 | `anahtar.txt'de VIDEO_ADRES ya da VIDEO_KOD satırı yok` | Konu 10'un satırları anahtar dosyasında yok | Konu 10'daki iki satırı ekle, çekirdeği yeniden başlat |
 
@@ -658,7 +658,7 @@ panosu ve kaydı. Güzel olması gerekmiyor; final projesinin ilk taslağı.
 slogan, sonra görsel, sonra video; sıra kodda yazılı. Peki kullanıcı "kafeye aylık bir afiş yap" ya da "şu görselin arka planını
 sadeleştir" diye serbest bir cümle yazsa, hangi halkanın çalışacağına kim karar verir? Konu 12'de bu kararı modele bırakıyoruz:
 modele elimizdeki fonksiyonları ("araçları") tanıtıyoruz, model cümleye bakıp hangisinin çağrılacağını söylüyor, program o aracı
-çalıştırıyor. Bugünkü halkalar o konunun araçları olacak.
+çalıştırıyor. Bugünkü görsel halkası gibi fonksiyonlar o konunun araçları olacak.
 
 ---
 

@@ -35,7 +35,7 @@ Ahmet Emre Aladağ
 - Görselden video tasarımcıya kontrol verir: kompozisyonu, stili, rengi sen belirlemiş olursun
 - Reklam ajanslarında sık bir iş akışı: önce görseli onaylat (ucuz), sonra hareket ver (pahalı)
 - Afiş, ürün fotoğrafı ya da illüstrasyon "canlandırılmış" bir sosyal medya gönderisine dönüşür
-- **Yanılgı:** "görseli verdim, video aynısı olur." Model hareket ederken görselde olmayanı da uydurur: kenarlar, arka taraf, ışık
+- **Yanılgı:** "görseli verdim, video aynısı olur." Model hareket ederken görselde olmayanı da uydurur: nesnenin arka yüzü, gölgeler, değişen ışık
 
 **Sohbete yaz:** senin bir işinden hangisi harekete en uygun olurdu? Neden?
 
@@ -48,8 +48,8 @@ Ahmet Emre Aladağ
 - **Uzaklaşma (pull out):** kamera geri çekilir; bağlam ortaya çıkar
 - **Yana kaydırma (pan):** kamera döner ya da kayar; mekânı tanıtır
 - **Yukarı kalkış (tilt up):** alttan yukarı; büyüklük, ihtişam
-- Sinematografların yüz yıldır kullandığı bu terimler modelin eğitim verisinde de var; o yüzden İngilizce adlarıyla daha iyi anlaşılır
-- Konunun hareketi (buhar yükselir, yaprak düşer) ile kameranın hareketi ayrı şeylerdir; ikisini ayrı yaz
+- Sinematografların yüz yıldır kullandığı bu terimler modelin eğitim verisinde de sık geçer; o yüzden İngilizce adlarıyla yazmak çoğu zaman daha iyi sonuç verir
+- Öznenin hareketi (buhar yükselir, yaprak düşer) ile kameranın hareketi ayrı şeylerdir; ikisini ayrı yaz
 
 -----
 
@@ -89,10 +89,10 @@ Ahmet Emre Aladağ
 
 ## Aralıklarla sormak ve zaman aşımı
 
-- Kargo takibini düşün: siteye her saniye bakmazsın; arada bir bakarsın
+- Kargo takibinde siteye her saniye bakmazsın; arada bir bakarsın
 - Programda da aynı: sor, cevap "henüz değil"se biraz bekle, yeniden sor
 - Çok sık sormak sunucuyu yorar, işi hızlandırmaz; çok seyrek sormak hazır olan sonucu geç görmek demek
-- Sonsuza kadar sormamak için bir sınır koyarsın: "en fazla şu kadar dakika": buna **zaman aşımı** denir
+- Sonsuza kadar sormamak için bir sınır koyarsın ("en fazla şu kadar dakika"); buna **zaman aşımı** denir
 - Zaman aşımı işi iptal etmez; yalnızca senin beklemeni bitirir. İş numaran elindeyse sonra yeniden sorarsın
 - **Yanılgı:** "cevap gelmedi, çalışmadı." Uzun işlerde çoğu zaman yalnızca **henüz bitmedi**
 
@@ -118,8 +118,8 @@ Ahmet Emre Aladağ
 - Çözüm bir **aracı hizmet** (proxy): senin isteğini alır, hocanın hesabıyla modele iletir, sonucu sana verir
 - Restorandaki garson gibi: mutfağa sen girmezsin, siparişi garson götürür ve getirir
 - Sana özel bir **video kodun** var; aracı hizmet seni onunla tanır ve kaç klip ürettiğini sayar
-- Aracı hizmet ayarları kilitler: hangi model, hangi çözünürlük, en uzun süre. Pahalı bir ayar seçip bütçeyi bitirmek mümkün değil
-- Kurumların çoğu yapay zeka hizmetlerini çalışanlarına böyle açar: tek hesap, tek bütçe, kişi başına sınır
+- Aracı hizmet ayarları kilitler: hangi model, hangi çözünürlük, en uzun süre. Kimse yanlışlıkla pahalı bir ayar seçip bütçeyi bitiremez
+- Birçok kurum yapay zeka hizmetlerini çalışanlarına böyle açar: tek hesap, tek bütçe, kişi başına sınır
 
 -----
 
@@ -136,9 +136,9 @@ Ahmet Emre Aladağ
 
 ## Etik: hareket eden görüntüye güven
 
-- Gerçekçi video, sahte haberin ve kişiyi taklit eden içeriğin (deepfake) en güçlü aracıdır
+- Gerçekçi video, sahte haber ve kişiyi taklit eden içerik (deepfake) üretmek için de kullanılabilir
 - Sağlayıcılar insan yüzü ve gerçek kişi içeren istekleri sınırlıyor; bazı bölgelerde ya da görselden videoda istek reddedilebilir
-- Üretilen videolara gözle görülmeyen bir **filigran** (watermark) gömülüyor; içeriğin yapay zekayla üretildiği sonradan tespit edilebiliyor
+- Büyük sağlayıcılar ürettikleri videolara gözle görülmeyen bir **filigran** (watermark) gömüyor; içeriğin yapay zekayla üretildiği sonradan tespit edilebiliyor
 - Konu 7'deki kural videoda daha da önemli: yaşayan bir kişinin yüzünü, sesini, adını izinsiz kullanma
 - Şeffaflık: bir işte yapay zeka videosu kullandıysan bunu söylemek mesleki bir alışkanlık olmalı
 - Üretim günlüğü burada da şeffaflığın kanıtıdır: hangi model, hangi yönerge, hangi görselden
@@ -167,4 +167,4 @@ Ayrıntılar: `odevler/odev10.md`. Puan yok; Konu 11'in başında sıradaki arka
 4. **Uzun iş: başlat, numarayı sakla, aralıklarla sor, indir.** Zaman aşımı beklemeni bitirir, işi değil
 5. **Sınır ve kayıt.** İşi bir kez başlat; maliyeti günlüğe yaz
 
-Sıradaki konu: **Konu 11 — Zincirleme: üretim hattı.** Metin modeli, görsel modeli ve video tek bir programda birbirine bağlanıyor: bir adımın çıktısı ötekinin girdisi.
+Sıradaki konu: **Konu 11 — Zincirleme: üretim hattı.** Metin, görsel ve video modelleri tek bir programda birbirine bağlanıyor: bir adımın çıktısı ötekinin girdisi.

@@ -20,7 +20,7 @@ netleştirilmiş bir araç tarifiyle.
 çalıştır.
 
 **Anahtar:** Isınma anahtarsız. Adım 1'den sonrası `anahtar.txt` ister (Konu 2'deki dosya, `gita3111` klasöründe).
-Defterin tamamı metin modeline yaklaşık 33 istek gönderir ve en fazla 5 görsel üretir (biri düzenleme); günlük
+Defterin tamamı metin modeline yaklaşık 33 istek gönderir ve en fazla 5 görsel üretir ya da düzenler; günlük
 ücretsiz kotanın %10'undan az. Ölçüm adımları (Adım 6–7) görsel üretmez, yalnızca karar sorar.
 
 > **Bu nottaki çıktılar hakkında.** Isınma'nın çıktısı her bilgisayarda aynıdır. Modelin kararları, sloganları ve
@@ -50,8 +50,8 @@ print(len(istekler), len(etiketlerim))
 
 Çıktı: `6 6`. Her isteğin bir etiketi var.
 
-- `etiketlerim` listesinde hocanın etiketleri duruyor; katılmadığın yeri değiştir. Sıra önemli: listenin 1. elemanı
-  1. isteğin etiketi.
+- `etiketlerim` listesinde hocanın etiketleri duruyor; katılmadığın yeri değiştir. Sıra önemli: listenin ilk elemanı
+  ilk isteğin etiketi.
 - Etiketler yalnızca `"uret"` ya da `"duzenle"` olmalı; Türkçe karakter yok, model de bu adları kullanacak.
 
 İki listeyi yan yana yazdırıyoruz:
@@ -86,9 +86,11 @@ from gorsel_araclari import ciz, duzenle, adres, basliklar
 
 - `gorsel_araclari.py` bu klasördeki yardımcı dosya. İçindeki iki fonksiyon modelin seçeceği **araçlar**:
   - `ciz(yonerge, tohum)`: Konu 8'de yazdığın, Konu 9'da kullandığın fonksiyon. Yeni bir görsel üretir.
-  - `duzenle(dosya, yonerge, tohum)`: Konu 8 Adım 9'daki düzenleme isteğinin fonksiyon hâli. Görseli 512 pikselin
-    altına küçültür, form olarak (`data=` ve `files=`) gönderir.
+  - `duzenle(dosya, yonerge, tohum)`: Konu 8 Adım 9'daki düzenleme isteğinin fonksiyon hâli. Görseli en fazla 512
+    piksele küçültür, form olarak (`data=` ve `files=`) gönderir.
 - İkisi de görselin baytlarını verir; başarısızsa `None`.
+- Model bu fonksiyonları değil, araçların **adlarını** görecek: yeni görsel için `uret`, düzenleme için `duzenle`.
+  Hangi adın hangi fonksiyonu çalıştıracağını Adım 5'te biz yazacağız.
 - `adres` ve `basliklar` metin modeline istek göndermek için. Anahtarı `../anahtar.txt`'den yardımcı dosya kendisi
   okur; bu hücre ilk çalıştığında, bir kez. `anahtar.txt`'yi sonradan düzeltirsen çekirdeği yeniden başlat (**Restart**).
 
@@ -141,14 +143,14 @@ print(kart)
 print(kart["ton"])
 ```
 
-Çıktı (senin sloganın farklı olur):
+Çıktı (senin cevabın farklı olur):
 
 ```
 {'slogan': '...', 'ton': 'samimi', 'hedef_kitle': '...'}
 samimi
 ```
 
-- Cevabı Konu 2'deki gibi iki katmanda açıyoruz. Fark son satırda: `sonuc["response"]` bu kez bir paragraf değil,
+- Cevabı Konu 2'deki gibi iki katmanda açıyoruz. Fark `sonuc["response"]`'ta: bu kez bir paragraf değil,
   bir **sözlük**. Konu 9'daki kartlar gibi; alanına adıyla erişiyoruz: `kart["ton"]`.
 
 | Konu 2 | Konu 12 |
@@ -173,7 +175,7 @@ def json_sor(soru, sicaklik):
 
 - Konu 5'teki `modele_sor` gibi sıcaklığı da alıyor: `sicaklik` gövdedeki `"temperature"` alanına gidiyor.
 - Durum kodu 200 değilse `None` verir ve kodu yazar.
-- `timeout=60`: cevap 60 saniyede gelmezse istek bırakılır (Konu 9).
+- `timeout=60`: cevap 60 saniyede gelmezse istek bırakılır (Konu 10).
 
 ---
 
@@ -224,7 +226,8 @@ for kart in kartlar:
 ```
 
 - Tek fark sorudaki parantez: `ton (yalnızca samimi, resmi ya da esprili)`.
-- Değerler artık üç seçenekten biri mi? Senin çıktına bak. Model kurala uymazsa süzgeç onu kaçırır; çıktıya her zaman bak.
+- Değerler artık üç seçenekten biri mi? Senin çıktına bak. Model kurala uymazsa süzgeç o kartı yine
+  kaçırır; bu yüzden çıktıyı gözle de kontrol et.
 - Bir sonraki adımda aynısını yapacağız: alanın değerini sınırlı bir listeden seçtireceğiz. Liste bu kez tonlar değil,
   **araçlar**.
 
@@ -562,7 +565,7 @@ Derste kendi başına çalışacağın defter: `alistirma.ipynb`. Önce aynı kl
 | `NameError: name 'karar_ver' is not defined` | Adım 4'ün fonksiyon hücresi çalıştırılmadı | Adım 4'ü çalıştır |
 | `NameError: name 'klasor' is not defined` | Adım 5'in ilk hücresi çalıştırılmadı | O hücreyi çalıştır |
 | `IndexError: list index out of range` (Adım 6) | Etiket listesi istek listesinden kısa | Her isteğe bir etiket: `print(len(istekler), len(etiketlerim))` aynı sayıyı yazmalı |
-| `Doğru` sayısı tuhaf (hep aynı ya da hep 1) | `sira = sira + 1` döngünün dışında ya da `dogru = 0` döngünün içinde | Alıştırmanın 4. ve 5. bozuk kodu |
+| `Doğru` sayısı beklenmedik (ör. 0 ya da 1) | `sira = sira + 1` döngünün dışında ya da `dogru = 0` döngünün içinde | Alıştırmanın 4. ve 5. bozuk kodu |
 | Etiketin `"üret"` (ü ile) | Etiketler model adlarıyla birebir aynı olmalı | `"uret"`, `"duzenle"`: Türkçe karakter yok |
 | Adım 8'de hücre bitmiyor | `input` kutusu senin cevabını bekliyor | Kutuya yaz ya da boş bırakıp Enter |
 | `Bağlanamadım` ya da `ReadTimeout` | İnternet yok ya da sunucu cevap vermedi | İnternete bak; hücreyi yeniden çalıştır |

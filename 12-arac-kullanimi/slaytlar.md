@@ -13,7 +13,7 @@ Ahmet Emre Aladağ
 - Bugün bir karar noktasını modele bırakıyoruz: kullanıcı serbest bir cümle yazıyor, model hangi aracın gerektiğine karar veriyor
 - Program o kararı okuyup uyguluyor; çizen yine bizim fonksiyonumuz
 - Bu, "yapay zeka ajanı" denen şeyin çekirdeği; bugün içini açıp bakacağız
-- Dönemin en ileri konusu, ama yeni kod azı: bir sözlük, bir `if` ve iyi yazılmış bir tarif
+- Dönemin en ileri konusu, ama yeni kod az: bir sözlük, bir `if` ve iyi yazılmış bir tarif
 
 -----
 
@@ -43,7 +43,7 @@ Ahmet Emre Aladağ
 ## Araç nedir?
 
 - **Araç** (tool): modele tanıttığımız, adı ve ne yaptığı belli bir fonksiyon
-- Benzetme: Konu 11'deki mutfağın önünde bir garson ve bir menü. Her yemeğin bir adı ve kısa bir açıklaması var; garson siparişi dinler, menüden seçer, mutfağa iletir
+- Benzetme: Konu 11'deki mutfağa bir garson ve bir menü ekleyelim. Her yemeğin bir adı ve kısa bir açıklaması var; garson siparişi dinler, menüden seçer, mutfağa iletir
 - Garson yemeği pişirmez; pişiren mutfak. Model de aracı çalıştırmaz; çalıştıran program
 - Bir aracın üç parçası var: adı, tarifi (ne yapar, ne zaman seçilir), aldığı bilgiler
 - Tasarım dünyasında örnek: bir görsel üretme aracı, bir düzenleme aracı, bir metin yazma aracı
@@ -102,7 +102,7 @@ Ahmet Emre Aladağ
 - Önce sen karar verirsin (etiketlersin), sonra modelin kararlarını seninkilerle karşılaştırırsın
 - **Doğruluk** = aynı fikirde olduğunuz karar sayısı / toplam karar
 - Sayıdan çok ayrıştığınız örnekler öğretir: model mi yanıldı, yoksa istek mi iki türlü okunabiliyor?
-- Bazen "doğru cevap" diye bir şey yoktur; o zaman sorun modelde değil, kuralın eksik olmasındadır
+- Bazen tek bir "doğru cevap" yoktur; o zaman sorun modelde değil, eksik kalan kuraldadır
 
 -----
 
@@ -125,7 +125,7 @@ Ahmet Emre Aladağ
 - Ama aynı örneklerle yeniden ölçersen yalnızca o örnekleri ezberleyen bir kural yazmış olabilirsin
 - Konu 3'teki tuzak: test sonucuna bakıp ayar yapmak, sonra aynı testte ölçmek
 - Çözüm: tarifi düzelttikten sonra modelin hiç görmediği **yeni** isteklerle de ölç
-- Kural fazla dar da olabilir: bir durumu düzeltirken başka bir durumu bozmak
+- Yeni kural fazla dar da çıkabilir: bir durumu düzeltirken başka bir durumu dışarıda bırakır
 - Döngü: yaz, ölç, ayrışana bak, düzelt, yeni örneklerle yeniden ölç
 
 -----
@@ -147,9 +147,9 @@ Ahmet Emre Aladağ
 
 **Üçüncü araç.**
 
-1. Kendi projene üçüncü bir araç ekle: `metin_yaz` (ör. afiş için slogan ya da açıklama metni)
+1. Dersteki programa üçüncü bir araç ekle: `metin_yaz` (ör. afiş için slogan ya da açıklama metni)
 2. Üç aracın tarifini yaz; kararı uygulayan koda üçüncü dalı ekle
-3. En az 6 istek yaz ve önce kendin etiketle; modelin seçimini ölç
+3. Kendi projene göre en az 6 istek yaz ve önce kendin etiketle; modelin seçimini ölç
 4. Bir tarifi düzelt ve en az 3 **yeni** istekle yeniden ölç
 5. **İki cümle:** model en çok hangi istekte ayrıştı, tarifte neyi değiştirdin?
 

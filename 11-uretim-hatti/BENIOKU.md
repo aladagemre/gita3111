@@ -39,8 +39,8 @@ Defterin kopyası `halkalar.py` ve `ayarlar.json` ile **aynı klasörde** durmal
 ## Anahtar gerekiyor mu?
 
 Isınma, Adım 1 ve Adım 2 anahtarsız; alıştırma defteri de. Adım 3'ten sonrası `anahtar.txt` ister
-(bütün konular için tek dosya, `gita3111` klasöründe). Defterin tamamı 4 metin isteği ve 3 görsel (Bonus 1 ile 4) gönderir
-(Adım 6'da bilerek reddettirilen 3 istek daha). Video (Bonus 2) varsayılan olarak kapalı; açarsan `anahtar.txt`'deki
+(bütün konular için tek dosya, `gita3111` klasöründe). Defterin tamamı 4 metin ve 3 görsel isteği gönderir
+(Bonus 1 ile 4 görsel); Adım 6'da bilerek reddettirilen 3 istek de buna eklenir. Video (Bonus 2) varsayılan olarak kapalı; açarsan `anahtar.txt`'deki
 Konu 10 satırları (`VIDEO_ADRES`, `VIDEO_KOD`) da gerekir. Anahtarın yoksa yanındakiyle birlikte, onun ekranında izle.
 
 ## Güncel kalmak

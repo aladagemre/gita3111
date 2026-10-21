@@ -11,7 +11,7 @@ tarifini netleştirip yeniden ölçeceksin. Sonunda serbest cümleyle çalışan
 | `slaytlar.md` | Kavram slaytları; dersin başında gösterilir |
 | `ders.ipynb` | Derste birlikte çalıştıracağımız defter: Isınma, Adım 1–8 ve Bonus |
 | `alistirma.ipynb` | Derste kendi başına çözeceğin defter: bozuk kodlar ve boşluklu sorular (anahtar istemez, internete çıkmaz) |
-| `gorsel_araclari.py` | Yardımcı dosya: modelin seçeceği araçlar `ciz` (yeni görsel) ve `duzenle` (görsel düzenleme); ödev için `metin_yaz` |
+| `gorsel_araclari.py` | Yardımcı dosya: modelin seçeceği iki aracın fonksiyonları, `ciz` (yeni görsel; modelin gördüğü adı `uret`) ve `duzenle` (görsel düzenleme); ödev için `metin_yaz` |
 | `veri/fincan.jpg` | Elimizdeki görsel: `duzenle` bunu değiştirir (Konu 8'deki fincan) |
 | `veri/kararlar.json` | Alıştırmanın el yapımı örnek kararları |
 | `odevler/odev12.md` | Bu konunun ödevi |

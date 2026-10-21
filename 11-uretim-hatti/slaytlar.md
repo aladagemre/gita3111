@@ -48,7 +48,7 @@ Ahmet Emre Aladağ
 - Ara çıktı bir dosyada durursa üç şey kazanırsın: **bakabilirsin**, **düzeltebilirsin**, **yeniden kullanabilirsin**
 - Hattın ortasına girmek mümkün olur: makinenin yazdığı sloganı beğenmezsen dosyada kendin değiştirirsin, hat oradan devam eder
 - Ara çıktı yalnızca bellekte (programın içinde) kalırsa program kapanınca kaybolur
-- Bu yüzden iyi bir hatta her halkanın sonucu, bir sonraki halkaya gitmeden önce bir dosyaya yazılır
+- Bu yüzden iyi bir hatta saklanmaya değer ara çıktılar, sıradaki halkaya gitmeden önce bir dosyaya yazılır
 
 -----
 
@@ -69,7 +69,7 @@ Ahmet Emre Aladağ
 - Programda bunun adı **yapılandırma dosyası** (config): ayarlar koddan ayrı bir dosyada durur
 - Konu, stil, kaç slogan, sıcaklık, tohum, video açık mı kapalı mı: hepsi bu dosyada
 - Yeni bir müşteri geldiğinde kodu değil fişi değiştirirsin; kodu açmadan, bozmadan
-- Dosya JSON biçiminde: Konu 2'den ve Konu 9'dan tanıdığın sözlük yapısı, yalnızca bu kez sen yazıyorsun
+- Dosya JSON biçiminde: Konu 2'den ve Konu 9'dan tanıdığın sözlük yapısı; bu kez onu sen yazıp değiştiriyorsun
 - JSON titizdir: metinler çift tırnakta, doğru/yanlış küçük harfle (`true`, `false`), son satırdan sonra virgül yok
 - Bir ayarı kodun ortasına gömmek, sipariş fişini makinenin içine vidalamak gibidir: her değişiklikte makineyi sökersin
 
@@ -88,12 +88,12 @@ Ahmet Emre Aladağ
 
 ## Bir halka koparsa: zincir benzetmesi
 
-- Bir zincir en zayıf halkasından kopar; uzun bir hatta da bir halka er geç kopar
+- Bir zincir en zayıf halkasından kopar; uzun bir hatta da halkalardan biri er geç kopar
 - Sebepler tanıdık: internet gider, kota biter, model bir yönergeyi reddeder, bir cevap boş gelir
 - Kötü bir hat orada durur; sıradaki işler hiç yapılmaz ve neyin eksik kaldığını tek tek aramak gerekir
 - İyi bir hat kopuk halkayı **kayda geçirir** ve sıradaki işle **devam eder**
 - Sonraki çalıştırmada yalnızca eksik olan denenir; bitenler yerinde durur
-- Bir halkanın çıktısını sıradakine vermeden bakmak gerekir: boş ya da bozuk bir sonuç, hata vermeden bir sonraki halkayı da bozar
+- Bir halkanın çıktısına sıradakine vermeden önce bakmak gerekir: boş ya da bozuk bir sonuç, hata vermeden sonraki halkayı da bozar
 - **Yanılgı:** "hata çıkmadıysa her şey yolunda." Hat bazen hata vermeden yanlış bir şey üretir; bunu yalnızca kayıt gösterir
 
 -----
@@ -103,7 +103,7 @@ Ahmet Emre Aladağ
 - Gemilerde seyir defteri tutulur: ne zaman, nereden, hangi rotayla; bir şey ters gidince geriye bakılır
 - Hattın kaydı da öyle: hangi ayarlarla çalıştı, hangi ara çıktılar oluştu, her işin sonucu ne oldu
 - Her kaydın aynı biçimi var: hangi halka, ne girdi, ne çıktı, durum (oldu / olmadı)
-- Bir halkanın çıktısı sıradakinin girdisi olduğu için kayıtta zincir görünür: bu video şu görselden, o görsel şu sloganından
+- Bir halkanın çıktısı sıradakinin girdisi olduğu için kayıtta zincir görünür: bu video şu görselden, o görsel şu slogandan
 - Final projesinde teslim edilen **üretim günlüğü** budur; hangi model, hangi parametre, ne çıktı, ne düzeltildi
 - Şeffaflık için de gerekli: bir müşteriye ya da hocana hangi işin nasıl üretildiğini gösterebilirsin (Konu 7: etik ve telif)
 
@@ -113,7 +113,7 @@ Ahmet Emre Aladağ
 
 - Bir modelin çıktısı başka bir modelin girdisi olunca küçük kusurlar büyür
 - Metin modeline "yalnızca sloganı yaz" dersin; çoğu zaman uyar, bazen tırnak, "Slogan:" ya da bir açıklama ekler
-- Model bir talimatı "kesin kural" olarak değil, "olası devam" olarak okur (Konu 5); uymaması bir arıza değil, doğası
+- Model bir talimatı "kesin kural" olarak değil, "olası devam" olarak okur (Konu 5); uymaması bir arıza değil, çalışma biçiminin sonucu
 - O yüzden iki halka arasına küçük bir **temizlik** konur: boşlukları ve tırnakları silmek (Konu 1'in araçları)
 - Görsel modeller harfleri çoğu zaman bozar: sloganı görselin içine yazdırmak yerine "görselde yazı olmasın" denir
 - Tipografi tasarımcının işi: slogan afişe, görselin üstüne, bir tasarım programında dizilir
@@ -125,7 +125,7 @@ Ahmet Emre Aladağ
 - Bir afişte slogan ile görsel iki ayrı ses; aralarındaki ilişki tasarımın kendisidir
 - Görsel ne gösteriyorsa slogan onu tekrar ederse (kahve fincanı + "Kahve burada") mesaj güvenli ama düz kalır
 - Slogan görsele yeni bir anlam eklerse (boş bir masa + "Burada zaman yavaşlar") izleyici iki parçayı kendi kafasında birleştirir
-- Roland Barthes, metnin görselin olası anlamlarından birini seçip sabitlemesine **demirleme**, metinle görselin birbirini tamamlayıp anlamı birlikte kurmasına **aktarma** der
+- Roland Barthes bu iki ilişkiye ad verir: metin görselin olası anlamlarından birini seçip sabitlerse **demirleme**, metin ile görsel anlamı birlikte kurarsa **aktarma**
 - Bir hat her slogana bir görsel üretebilir, ama hangi eşleşmenin işe yaradığını bilemez
 - Hat seçenekleri yan yana koyar; ilişkiyi kuran ve seçen tasarımcıdır
 
@@ -138,7 +138,7 @@ Ahmet Emre Aladağ
 - Hat yorulmaz ve unutmaz: dosya adını, kaydı, "zaten var mı?" sorusunu her seferinde aynı yapar
 - Hattın yapamadığı: brifi yazmak, iyi sloganı seçmek, yazıyı yerleştirmek, "bu marka bu değil" demek
 - İyi bir hatta insanın araya girdiği yerler bellidir: ara çıktılara bakılır, beğenilmeyen değiştirilir, hat oradan devam eder
-- Buna **insan döngüde** (human in the loop) denir; profesyonel üretim araçlarının çoğu böyle çalışır
+- Buna **insan döngüde** (human in the loop) denir; profesyonel üretimde yaygın bir düzendir
 - Her şeyi otomatik yapan bir hat hızlıdır ama kör; her şeyi elle yapan bir süreç dikkatlidir ama yavaş
 - Kod tekrar eden işi üstlenir; karar ve zevk tasarımcıda kalır
 
