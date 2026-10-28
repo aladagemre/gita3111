@@ -96,7 +96,7 @@ Bir brif yazar gibi düşün: modele neyi, nasıl, hangi duyguyla istediğini an
 - Bilimdeki deneyin aynısı: diğer her şeyi sabit tut, tek şeyi değiştir
 - Görselde: tohum sabit, özne sabit, ışık sabit; yalnızca **stil** değişsin
 - Sonra stil sabit, yalnızca **ışık** değişsin
-- Sonuçları **yan yana** koy: bir karşılaştırma panosu
+- Sonuçları **yan yana** koy: bir stil panosu
 - Müşteriye seçenek sunarken de işe yarar: farkın nereden geldiği görünür
 
 -----
@@ -171,7 +171,7 @@ Bir brif yazar gibi düşün: modele neyi, nasıl, hangi duyguyla istediğini an
 Seçtiğin bir marka ya da etkinlik için **üç farklı görsel dil** dene.
 
 1. Dersteki defteri kopyala; yönergenin beş parçasını (özne, ortam, stil, ışık, kompozisyon) kendi brifine göre yaz
-2. Tohumu sabit tutup yalnızca **stili** üç kez değiştir; karşılaştırma panosunu kaydet
+2. Tohumu sabit tutup yalnızca **stili** üç kez değiştir; stil panosunu kaydet
 3. **İki cümle:** hangi görsel dil bu marka için işe yaradı, neden?
 4. Üretim günlüğüne her görselin dosya adını, model adını, tohumu ve yönergesini yaz
 

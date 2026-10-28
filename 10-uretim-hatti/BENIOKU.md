@@ -45,7 +45,7 @@ Isınma, Adım 1 ve Adım 2 anahtarsız; alıştırma defteri de. Adım 3 ve son
 (bütün konular için tek dosya, `gita3111` klasöründe). Defterin tamamı 4 metin ve 3 görsel isteği gönderir
 (Bonus 2 ile 4 görsel). Adım 6'da bilerek reddedilen 3 görsel isteği de var. Hepsi ücretsiz günlük kotanın küçük bir
 kısmını tutar.
-Anahtarın yoksa yanındakiyle birlikte, onun ekranında izle.
+Anahtarın yoksa Adım 3 ve sonrasını hocanın paylaştığı ekrandan izle.
 
 ## Güncel kalmak
 

@@ -1,4 +1,4 @@
-# Konu 9 — Video Üretimi
+# Konu 9 — Video, Arayüzden
 
 Bu not konunun özetidir; derste çalıştırdığımız `ders.ipynb` defteriyle **aynı sırada**
 ilerler: Isınma, sonra Adım 1–6 ve kısa bir Bonus. Derste kaçırdığın bir yer olursa
@@ -32,8 +32,9 @@ bir kez `uv sync` çalıştır.
 
 Derste **Google Flow** kullanıyoruz (Google'ın video ve görsel üretme aracı, tarayıcıda çalışır).
 
-- **Ücretsiz:** Google'ın kredi sayfasına göre aboneliği olmayan kullanıcıya da her gün **50 kredi** veriliyor. Kullanmadığın
-  kredi ertesi güne geçmez. Kalan kredini görmek için Flow'da sağ üstteki profil resmine tıkla.
+- **Ücretsiz:** Google'ın kredi sayfasına göre aboneliği olmayan kullanıcıya da her gün **50 kredi** veriliyor. Kredi, Flow'un
+  günlük kotası: Konu 8'deki neuron gibi, her üretim ondan düşer. Kullanmadığın kredi ertesi güne geçmez. Kalan kredini görmek
+  için Flow'da sağ üstteki profil resmine tıkla.
 - **Harcanan kredi süreye ve çözünürlüğe göre değişir.** Aynı sayfaya göre (28 Ekim 2026) Gemini Omni Flash modeliyle 720p bir
   klip 4 saniyede 7, 6 saniyede 10, 8 saniyede 12, 10 saniyede 15 kredi tutuyor. Derste iki klip üretiyoruz (8 + 6 saniye):
   22 kredi. Ödeve de kredi kalır; istersen ödevi ertesi gün yaparsın. Üretim başarısız olursa kredi düşmez.
@@ -285,7 +286,8 @@ kırpacak mı, kenarlara yeni bir şey mi ekleyecek? Cevap birazdan senin klibin
 
 1. Aynı projede yönerge kutusundaki model adına tıkla, **Video**'yu, sonra **Frames**'i (kareler) seç.
 2. Bilgisayarının dosya gezgininde görselini bul ve **+ Add start frame** (başlangıç karesi ekle) kutusuna sürükle. Konu 8'in
-   görselleri `gita3111` içindeki `08-koddan-toplu-uretim` klasöründe: `izgara/`, `ciktilar/` ya da ödevinin `odev8/` klasörü.
+   görselleri `gita3111` içindeki `08-koddan-toplu-uretim` klasöründe: ızgaran `izgara/` içinde (`suluboya_gece.jpg` gibi,
+   stil_renk adıyla), tek görsellerin `ciktilar/` içinde, ödevinki `odev8/` içinde.
    Yanındaki **+ Add end frame** videonun son karesi içindir; onu boş bırak. Kutuya tıklayınca dosya seçme penceresi de açılabilir;
    derste ilk denemede bakacağız.
 3. Yönerge kutusuna **ne olacağını** yaz; sahne görselde zaten var. Örnek:
@@ -308,8 +310,8 @@ kırpacak mı, kenarlara yeni bir şey mi ekleyecek? Cevap birazdan senin klibin
 
 ## Adım 6 — Video günlüğü
 
-Konu 8'de her görselin nasıl üretildiğini bir JSON günlüğüne yazmıştık. Arayüzde de bu alışkanlığı sürdürüyoruz: aylar sonra biri
-"şunun bir benzerini yapalım" derse yönerge ve ayarlar elinde olmalı. Arayüzün geçmişi senin dosyan değil; kredi biter, araç
+Konu 8'de her görselin nasıl üretildiğini bir üretim günlüğüne (`uretim_gunlugu.json`) yazmıştık. Arayüzde de bu alışkanlığı
+sürdürüyoruz: aylar sonra biri "şunun bir benzerini yapalım" derse yönerge ve ayarlar elinde olmalı. Arayüzün geçmişi senin dosyan değil; kredi biter, araç
 değişir, hesap kapanır.
 
 `input` (Konu 8'de de kullandın) ekranın üstünde bir kutu açar; yazdığını **metin** olarak verir, Enter'a basınca hücre devam
@@ -322,6 +324,7 @@ begendim = input("Beğendin mi? (evet / kısmen / hayır): ")
 metin_kaydi = {
     "tur": "metinden",
     "arac": "Google Flow",
+    "model": "Gemini Omni Flash",
     "yonerge": yonerge,
     "gorsel": "yok",
     "sure": 8,
@@ -333,12 +336,18 @@ metin_kaydi = {
 print(metin_kaydi)
 ```
 
-Süreyi, çözünürlüğü ve oranı arayüzde seçtiklerinle aynı yap. Süre **sayı** (tırnaksız): Adım 6'nın son hücresinde onunla
-çarpma yapacağız. Çözünürlük fiyat sözlüğündeki gibi yazılır (`"720p"`): sözlükte anahtar olarak aranacak. Oran arayüzdeki gibi
+Modeli, süreyi, çözünürlüğü ve oranı arayüzde seçtiklerinle aynı yap. Model ayarlardaki adıyla yazılır: Flow modeli
+kendiliğinden değiştirebiliyor (Adım 5), kayıt hangisinin çalıştığını söylemeli. Süre **sayı** (tırnaksız): Adım 6'nın son
+hücresinde onunla çarpma yapacağız. Çözünürlük fiyat sözlüğündeki gibi yazılır (`"720p"`): sözlükte anahtar olarak aranacak. Oran arayüzdeki gibi
 (`"16:9"`); hesaba girmiyor ama klibin nasıl göründüğünü belirliyor. Başka bir arayüz kullandıysan `"arac"` değerini değiştir.
 
-Görselden klibin kaydı aynı kalıpta. `"gorsel"` alanına kullandığın görselin yolunu yaz. Konu 8'deki bir görselse yol
-klasörün adıyla başlasın, ör. `"08-koddan-toplu-uretim/izgara/suluboya_gece.jpg"`.
+Kayıtta tohum yok. Konu 7'den beri günlüğe model, tohum ve yönerge yazıyoruz; ama Flow'un video ayarlarında (oran, çıktı
+sayısı, model, süre) tohum yok. Konu 7'de gördüğün gibi arayüzler tohumu çoğu zaman gizler. Bu yüzden aynı yönerge bir daha
+aynı klibi vermeyebilir; günlük klibin kendisini değil, nasıl üretildiğini saklar.
+
+Görselden klibin kaydı aynı kalıpta. `"gorsel"` alanına kullandığın görselin yolunu yaz. Yol bu defterin klasöründen başlar:
+`veri/yedek_fincan.jpg` bu klasörde. Konu 8'deki bir görselse önce bir üst klasöre çık (`..`, Konu 2'deki `../anahtar.txt`
+gibi), ör. `"../08-koddan-toplu-uretim/izgara/suluboya_gece.jpg"`.
 
 ```python
 yonerge = input("Görselden klibin yönergesi: ")
@@ -347,6 +356,7 @@ begendim = input("Beğendin mi? (evet / kısmen / hayır): ")
 gorsel_kaydi = {
     "tur": "gorselden",
     "arac": "Google Flow",
+    "model": "Gemini Omni Flash",
     "yonerge": yonerge,
     "gorsel": "veri/yedek_fincan.jpg",
     "sure": 6,
@@ -358,8 +368,10 @@ gorsel_kaydi = {
 print(gorsel_kaydi)
 ```
 
-İki kaydı bir listeye koyup dosyaya yazıyoruz. `ensure_ascii=False` Türkçe harfleri olduğu gibi yazar, `indent=2` dosyayı
-okunur kılar.
+İki kaydı bir listeye koyup dosyaya yazıyoruz. Hücre, Konu 8'deki üretim günlüğü hücresiyle aynı kalıpta:
+
+- `json.dump(kayitlar, dosya, ...)`: önce yazılacak şey, sonra dosya.
+- `ensure_ascii=False`: Türkçe harfler olduğu gibi yazılır; `indent=2`: dosya okunur olur.
 
 ```python
 import json
@@ -374,9 +386,15 @@ print(sayi, "kayıt video_gunlugu.json dosyasına yazıldı")
 
 `video_gunlugu.json`'u VS Code'da aç: her klip bir sözlük, ikisi bir listede.
 
-Son olarak günlüğü geri okuyup soruyoruz: bu klipler ücretli bir API'yle koddan üretilseydi kaça mal olurdu? Her kaydın
-çözünürlüğü, fiyat sözlüğünde bir anahtar olarak duruyor. Çözünürlüğü önce bir değişkene alıyoruz, sonra fiyatı onunla
-buluyoruz; böylece her satır tek bir iş yapıyor.
+Son olarak günlüğü dosyadan **geri okuyup** soruyoruz: bu klipler ücretli bir API'yle koddan üretilseydi kaça mal olurdu?
+
+- `open(...)` bu kez `"w"` olmadan: dosyayı yalnızca okumak için açar.
+- `json.load(dosya)`, `json.dump`'ın tersi: dosyadaki JSON'u yeniden Python listesine çevirir (Konu 8'in alıştırmasında
+  karşılaşmıştın). `okunan`, yazdığımız `kayitlar` listesinin aynısı: iki sözlük.
+- Neden `kayitlar`'ı değil de dosyayı kullanıyoruz? Defteri kapatıp açınca değişkenler gider, dosya kalır. Günlüğü yarın
+  okuyacak program da dosyayı okur.
+- Her kaydın çözünürlüğü fiyat sözlüğünde bir anahtar. Çözünürlüğü önce bir değişkene alıyoruz, sonra fiyatı onunla
+  buluyoruz; böylece her satır tek bir iş yapıyor.
 
 ```python
 with open("video_gunlugu.json", encoding="utf-8") as dosya:
@@ -400,8 +418,8 @@ Bu klipler ücretli bir API'yle: 1.41 USD
 ```
 
 Kendi süre ve çözünürlüğünü yazdıysan senin sayın farklı olabilir. Az bir para gibi görünüyor, ama bu yalnızca **iki klip**:
-her biri tek denemede, tek bir kişi için. Bugün sıfır bütçeyle video yapabiliyoruz, çünkü arayüzün ücretsiz günlük kredisi var.
-Kredi bitince ya ertesi günü beklersin ya da ödersin.
+her biri tek denemede, tek bir kişi için. 12 kişilik bir sınıfta herkes birkaç deneme yapsa fatura hızla büyür. Bugün sıfır
+bütçeyle video yapabiliyoruz, çünkü arayüzün ücretsiz günlük kredisi var. Kredi bitince ya ertesi günü beklersin ya da ödersin.
 
 ---
 
@@ -516,16 +534,17 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 | **Başlangıç karesi (start frame)** | Görselden videoda videonun ilk karesi olan görsel |
 | **Kamera dili** | Kameranın hareketini anlatan terimler: push in (yaklaşma), pull out (uzaklaşma), pan (yana dönüş), tilt up (yukarı dönüş), static shot (sabit çekim) |
 | **Çözünürlük** | Görüntünün piksel boyutu: 720p (1280 × 720), 1080p (1920 × 1080), 4K (3840 × 2160) |
-| **Oran** | Genişlik : yükseklik; 16:9 yatay, 9:16 dikey, 1:1 kare |
-| **Kredi** | Ücretsiz arayüzün günlük hakkı; bir klibin harcadığı kredi süre ve çözünürlükle artar |
+| **Oran (en-boy oranı)** | Genişlik : yükseklik; 16:9 yatay, 9:16 dikey, 1:1 kare (Konu 7) |
+| **Kredi** | Ücretsiz arayüzün günlük hakkı, Konu 8'deki neuron kotasının karşılığı; bir klibin harcadığı kredi süre ve çözünürlükle artar |
 | **Uzun süren iş (asenkron iş)** | Sonucu istekle aynı anda gelmeyen iş; başlatılır, hazır olunca alınır |
 | **Filigran** | Videoya eklenen "yapay zekayla üretildi" işareti: köşede görünen bir logo ya da gözle görülmeyen, yazılımla okunan gömülü bir iz |
 | **`input`** | Kullanıcıdan metin alan fonksiyon; yazılanı her zaman metin olarak verir |
-| **Video günlüğü** | Her klibin yönergesini, ayarlarını (süre, çözünürlük, oran) ve dosyasını tutan JSON dosyası |
+| **Video günlüğü** | Konu 7–8'deki üretim günlüğünün video için olanı: her klibin yönergesini, modelini, ayarlarını (süre, çözünürlük, oran) ve dosyasını tutan JSON dosyası |
 
 ## Ödev
 
-`odevler/odev9.md` (puansız): Konu 8'deki görsellerinden birini arayüzde videoya çevir, video günlüğüne kaydet.
+`odevler/odev9.md` (puansız; Konu 11'in başında gösterilecek): Konu 8'deki görsellerinden birini arayüzde videoya çevir,
+video günlüğüne kaydet.
 Görsel hareket edince ne korundu, ne bozuldu? Bu klip ücretli bir API'yle 1080p'de üretilseydi kaça mal olurdu?
 
 ## Sonraki konu

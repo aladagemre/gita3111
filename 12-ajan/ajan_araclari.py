@@ -3,7 +3,7 @@
 #
 # ciz: Konu 8'deki fonksiyon. Yönerge, tohum ve dosya yolu alır; görseli o yola kaydeder (klasör yoksa açar).
 #   Başarılıysa yolu, başarısızsa None verir.
-# duzenle: var olan bir görseli yönergeye göre değiştirir (Konu 7'deki duzenle; bu kez tohum ve kayıt yolu da var).
+# duzenle: var olan bir görseli yönergeye göre değiştirir (Konu 7'deki duzenle; bu kez tohumu ve kayıt yolunu da sen veriyorsun).
 #   Girdi dosyasının yolu, yönerge, tohum ve çıktı yolu alır; sonucu ciz gibi kaydeder, yolu ya da None verir.
 #   Girdi dosyası yoksa istek göndermez.
 # en_yakin_paragraflar: Konu 11'deki kilavuzda_ara'nın içindeki iş, aynı kodla. Kılavuzun paragraflarını bir kez

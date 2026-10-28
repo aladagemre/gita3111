@@ -43,7 +43,7 @@ Defterin kopyası `uretim.py` ile **aynı klasörde** durmalı; yoksa
 
 Isınma anahtarsız; alıştırma defteri de. Adım 1'den itibaren ders defteri `anahtar.txt` ister (bütün konular için tek
 dosya, `gita3111` klasöründe). Defterin ana akışı 15 görsel üretir; Bonus ile en fazla 21 görsel ve görsel anlayan
-modele 13 soru. Hepsi ücretsiz günlük kotaya sığar. Anahtarın yoksa yanındakiyle birlikte, onun ekranında izle.
+modele 13 soru. Hepsi ücretsiz günlük kotaya sığar. Anahtarın yoksa hocanın paylaştığı ekrandan izle.
 
 ## Güncel kalmak
 

@@ -594,7 +594,7 @@ Konu 1'de ne yapmıştık? `sayac` sözlüğü her kelimenin **kaç kez** geçti
 `most_common` en büyüklerini sıralıyordu. Burada `skorlar` her kelimenin kafeye **ne
 kadar benzediğini** tutacak. Kalıp aynı, sayılar farklı. Bu döngü Konu 11'de geri dönecek:
 orada kelimeler yerine bir marka kılavuzunun paragraflarını karşılaştırıp bir soruya en
-yakın paragrafı bulacağız.
+yakın paragrafları bulacağız.
 
 Bir çözüm:
 

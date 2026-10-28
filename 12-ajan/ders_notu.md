@@ -23,9 +23,9 @@ tarifi. Bonus'ta bir ajan çalıştırmasının modele kaç istek gönderdiğini
 yeni kütüphanesi böylece kurulur: `agno` (ajan çerçevesi) ve `openai`. Adı yanıltmasın: `openai` yalnızca isteğin
 biçimini kuran paket; istekler Cloudflare'e gider, OpenAI hesabı da ödemesi de gerekmez (Adım 5).
 
-**Anahtar:** Isınma anahtarsız. Adım 1 ve sonrası `anahtar.txt` ister (Konu 2'deki dosya, `gita3111` klasöründe).
-Defterin tamamı (Bonus dahil) metin ve arama modellerine yaklaşık 30 istek gönderir ve 10 kadar görsel üretir ya da
-düzenler; günlük ücretsiz kotanın %10'undan az.
+**Anahtar:** Isınma anahtarsız. Adım 1 ve sonrası `anahtar.txt` ister (Konu 2'deki dosya, `gita3111` klasöründe);
+anahtarın yoksa sonrasını hocanın paylaştığı ekrandan izle. Defterin tamamı (Bonus dahil) metin ve arama modellerine yaklaşık 30 istek gönderir ve 10 kadar görsel üretir ya da
+düzenler; günlük ücretsiz kotanın beşte birinden az.
 
 > **Bu nottaki çıktılar hakkında.** Isınma'nın çıktısı her bilgisayarda aynıdır. Modelin kararları, yazdığı yönergeler,
 > son cevapları ve görseller gerçek modelden gelir; senin ekranında farklı olur. Notta "senin çıktına bak" dediğimiz
@@ -50,7 +50,8 @@ for ad in tarifler:
 
 Çıktı: üç satır, her biri `ad : tarif` (ör. `afis_ciz : Sıfırdan yeni bir görsel çizer: afiş, menü kapağı, ilan.`).
 
-- Sözlüğü `for ad in tarifler` ile geziyoruz: `ad` sırayla her anahtar, `tarifler[ad]` onun değeri (Konu 1).
+- Sözlüğü `for ad in tarifler` ile geziyoruz: `ad` sırayla her anahtar, `tarifler[ad]` onun değeri (Konu 4'te `harita`'yı
+  da böyle gezmiştik).
 
 Sonra beş istek ve her biri için bir plan:
 
@@ -340,8 +341,8 @@ def kilavuzda_ara(soru: str) -> str:
 - Görsel çizilemezse `ciz` `None` verir; araç bunu modele bir cümleyle söylüyor (`Görsel çizilemedi.`).
 - Araçların adı fonksiyonların adı: `afis_ciz`, `fotograf_duzenle`, `kilavuzda_ara`. `ciz` ve `duzenle` adlarını
   yardımcı dosya zaten kullanıyor; aynı adı verseydik yardımcı fonksiyonun üzerine yazardık.
-- Üçüncü araç Konu 11'deki `kilavuzda_ara`: aynı ad, aynı iş. Soruyu alır, kılavuzun en ilgili üç paragrafını tek bir
-  metin olarak verir. Farkı, artık bir araç olması: tür ipuçları ve tarifi var; içinde `en_yakin_paragraflar` çalışıyor.
+- Üçüncü araç Konu 11'deki `kilavuzda_ara`: aynı ad, aynı iş. Soruyu alır, kılavuzun soruya en yakın üç paragrafını tek
+  bir metin olarak verir. Farkı, artık bir araç olması: tür ipuçları ve tarifi var; içinde `en_yakin_paragraflar` çalışıyor.
 
 ```python
 tarifi_goster(fotograf_duzenle)
@@ -652,7 +653,8 @@ print("Modele giden istek:", istek_sayisi)
 
 Çıktı: `Modele giden istek: ...`, senin ekranında (Adım 9'daki çalıştırma için).
 
-- Konu 1'deki sayaç: Adım 7'de gördüğün gibi her `assistant` mesajı modele giden ayrı bir isteğin cevabı.
+- Konu 3'te kör tahmin için `enerjik` etiketlerini saydığımız sayacın aynısı. Adım 7'de gördüğün gibi her `assistant`
+  mesajı modele giden ayrı bir isteğin cevabı.
 - Bir cümle yazdın; modele birden çok istek gitti. Model her turda bir araç çağırdıysa istek sayısı, araç çağrısı
   sayısından bir fazladır: son cevap için de bir istek gider.
 
@@ -674,8 +676,8 @@ print("Model istekleri için yaklaşık neuron:", yuvarlak)
   neuron; belirteç başına 0,009091 ve 0,027273 (kodda ondalık ayırıcı nokta: `0.009091`).
 - Girdi neden büyük? Her istekte bütün konuşma ve bütün araç tarifleri yeniden gidiyor; kılavuz paragrafları da
   konuşmaya eklendikçe istek büyüyor.
-- Bunun üstüne her `afis_ciz` çağrısı bir görsel: görsel başına yaklaşık 58 neuron (Konu 8'deki hesap). Günlük ücretsiz kota
-  10.000 neuron; bütün modeller aynı kotadan yer.
+- Bunun üstüne her `afis_ciz` çağrısı bir görsel: görsel başına, fiyat sayfasına göre yaklaşık 58 neuron (Konu 8'deki
+  hesap). Günlük ücretsiz kota 10.000 neuron; bütün modeller aynı kotadan yer.
 - `tool_call_limit` olmasaydı ve model her turda "bir düzenleme daha" deseydi her tur bir istek ve bir görsel daha
   harcardı.
 
@@ -855,9 +857,9 @@ arkadaşlar gösterecek. Ajan final projesi için zorunlu değil.
 
 ## Sonraki konu
 
-**Konu 13 — Final atölyesi.** Yeni kavram yok: dönem boyunca öğrendiklerini (koddan görsel, hat, RAG, ajan) kendi
-projende birleştirip projenin çalışan ilk hâlini kuruyorsun. Ajan, projen sırası belirsiz bir iş içeriyorsa bir seçenek;
-sırası belliyse Konu 10'daki hat daha ucuz ve daha öngörülebilir.
+**Konu 13 — Final atölyesi.** Yeni kavram yok: dönem boyunca öğrendiklerini kendi projende birleştirip projenin çalışan
+ilk hâlini kuruyorsun. RAG ve ajan finalde zorunlu değil, isteğe bağlı birer ekstra: projen bir belgeye dayanıyorsa RAG,
+sırası belirsiz bir iş içeriyorsa ajan işine yarar. Sırası belliyse Konu 10'daki hat daha ucuz ve daha öngörülebilir.
 
 ---
 

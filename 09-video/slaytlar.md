@@ -1,4 +1,4 @@
-# Konu 9 — Video Üretimi
+# Konu 9 — Video, Arayüzden
 
 GİTA3111 · Üretken Yapay Zeka ve Programlama
 Ahmet Emre Aladağ
@@ -67,7 +67,7 @@ Ahmet Emre Aladağ
 
 - **Süre:** model tek seferde birkaç saniyelik kısa bir klip üretir; uzun video, birkaç klibin kurguda birleşmesidir
 - **Çözünürlük:** görüntünün piksel boyutu (720p, 1080p, 4K); büyüdükçe modelin yaptığı hesap da artar
-- **Oran:** 16:9 yatay (ekran, sunum), 9:16 dikey (telefon, hikâye, kısa video), 1:1 kare (sosyal medya akışı)
+- **Oran (Konu 7'deki en-boy oranı):** 16:9 yatay (ekran, sunum), 9:16 dikey (telefon, hikâye, kısa video), 1:1 kare (sosyal medya akışı)
 - Metinden videoda oran değişince model sahneyi o çerçeveye göre yeniden kurar; dikey klip, yatayın kırpılmış hâli değildir
 - Kararı yayın yeri verir: telefonda izlenecek birkaç saniyelik bir hikâyede en yüksek çözünürlüğün farkı çoğu zaman görülmez
 - Her ayar bir bütçe kararıdır; "en yüksek kalite" her zaman doğru cevap değildir
@@ -87,7 +87,7 @@ Ahmet Emre Aladağ
 
 ## Ücretsiz arayüz, görünmeyen fatura
 
-- Ücretsiz arayüzler videoyu bir **kredi** ya da günlük hak karşılığında üretir; kredi bitince ertesi günü beklersin
+- Ücretsiz arayüzler videoyu bir **kredi** karşılığında üretir: Konu 8'deki günlük neuron kotası gibi, kredi bitince ertesi günü beklersin
 - Harcanan kredi de tıpkı para gibi süre ve çözünürlükle artar: uzun ve büyük klip daha çok kredi yer
 - Ücretsiz katmanlar yoğun saatlerde yavaşlayabilir ya da üretimi durdurabilir; öncelik ücretli kullanıcıdadır
 - Ücretsiz katmanın da bir amacı var: sağlayıcı seni ücretli pakete alıştırmak ister
@@ -127,7 +127,7 @@ Ahmet Emre Aladağ
 - Google gibi büyük sağlayıcılar ürettikleri videolara gözle görülmeyen bir **filigran** gömüyor; içeriğin yapay zekayla üretildiği sonradan bir yazılımla tespit edilebiliyor
 - Konu 7'de yaşayan bir sanatçının adını stil olarak yazmadık; videoda kural genişliyor: yaşayan bir kişinin yüzünü, sesini, adını izinsiz kullanma
 - Şeffaflık: bir işte yapay zeka videosu kullandıysan bunu söylemek mesleki bir alışkanlık olmalı
-- Üretim günlüğü burada da şeffaflığın kanıtıdır: hangi araç, hangi yönerge, hangi görselden
+- Üretim günlüğü burada da şeffaflığın kanıtıdır: hangi araç ve model, hangi yönerge, hangi görselden
 
 -----
 
@@ -138,7 +138,7 @@ Ahmet Emre Aladağ
 1. Konu 8'de ürettiğin görsellerden birini seç: harekete en uygun olanı
 2. Bir hareket yönergesi yaz: kameranın ve öznenin hareketini ayrı ayrı anlat
 3. Arayüzde görselden bir klip üret, indir
-4. Klibi video günlüğüne kaydet: yönerge, süre, çözünürlük, oran, araç ve beğenip beğenmediğin
+4. Klibi video günlüğüne kaydet: yönerge, araç ve model, süre, çözünürlük, oran ve beğenip beğenmediğin
 5. **İki cümle:** görsel hareket edince ne korundu, ne bozuldu? Bu görsel harekete uygun muydu?
 6. **Bir cümle:** bu klip ücretli bir API'yle 1080p'de koddan üretilseydi kaça mal olurdu; daha ucuz hangi ayar işini görürdü?
 

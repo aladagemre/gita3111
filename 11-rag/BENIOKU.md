@@ -43,8 +43,8 @@ Defterin kopyası `rag_araclari.py` ve `veri/` klasörüyle **aynı klasörde** 
 Isınma anahtarsız; alıştırma defteri de. Adım 1'den sonrası `anahtar.txt` ister (bütün konular için tek dosya, `gita3111`
 klasöründe). Defterin tamamı (Bonus hariç) 5 vektör isteği, 4 metin isteği ve 1 görsel isteği gönderir; Bonus'un üç
 maddesi birer kez çalıştırılınca 3 vektör, 3 metin ve 1 görsel isteği daha gider. Kılavuzun vektörleri ilk çalıştırmada kaydedilir;
-defteri yeniden çalıştırdığında o istek gitmez. Hepsi ücretsiz günlük kotanın küçük bir kısmı. Anahtarın yoksa yanındakiyle
-birlikte, onun ekranında izle.
+defteri yeniden çalıştırdığında o istek gitmez. Hepsi ücretsiz günlük kotanın küçük bir kısmı. Anahtarın yoksa Adım 1'den
+sonrasını hocanın paylaştığı ekrandan izle.
 
 ## Güncel kalmak
 

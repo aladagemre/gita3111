@@ -1,4 +1,4 @@
-# Konu 9 — Video Üretimi
+# Konu 9 — Video, Arayüzden
 
 Bu konuda görsele zaman ekliyoruz: kısa video klipler. Videoyu **arayüzde** üreteceksin (Google Flow, ücretsiz günlük kredi):
 önce bir yönergeden, sonra Konu 8'de ürettiğin bir görselden. Defterde iki iş var: **maliyet** (aynı klip ücretli bir API'yle

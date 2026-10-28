@@ -52,7 +52,7 @@ Ahmet Emre Aladağ
 ## RAG nedir?
 
 - **RAG** (İngilizce *retrieval-augmented generation*: "bulup getirerek üretmek"): ad, bu üç sözcüğün baş harflerinden gelir
-- Fikir basit: modele sormadan önce belgede soruyla ilgili parçaları bul, onları da yönergeye ekle; bağlamı sen yazmazsın, belgeden gelir
+- Fikir basit: modele sormadan önce belgede soruya en yakın parçaları bul, onları da yönergeye ekle; bağlamı sen yazmazsın, belgeden gelir
 - Model yeniden eğitilmez; belge değişince modele değil, belgeye dokunursun
 - Model cevabı kendi hafızasından değil, önüne konan metinden kurar
 - Belge senin elinde kalır: hangi parçanın modele gittiğini görebilir, denetleyebilirsin

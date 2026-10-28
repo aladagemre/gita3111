@@ -141,7 +141,8 @@ from rag_araclari import modele_sor, vektor_al, vektorleri_al, ciz
 
 `anahtar.txt` yoksa bu satır `FileNotFoundError` verir; Adım 2 yine çalışır.
 
-Önce kılavuz olmadan soruyoruz. Sıcaklık 0.2, yani düşük: yaratıcılık değil, bilgi istiyoruz (Konu 5).
+Önce kılavuz olmadan soruyoruz. Sıcaklık 0.2, yani düşük (Konu 5): bilgi soruyoruz, cevap her çalıştırmada başka bir şey
+söylemesin.
 
 ```python
 soru = "Sayfa Kahve'nin afişinde hangi renkleri kullanmalıyım?"
@@ -450,8 +451,8 @@ print(kurallar)
 olanı getirir: brifin kendisini arasaydın başka paragraflar gelirdi.
 
 Görsel model İngilizce yönergeyle daha iyi çalışır (Konu 7); bu yüzden yönerge İngilizce olacak. Görselde yazı da
-olmayacak: harfleri görsel model bozar, başlığı tasarımcı dizer (Konu 10). Sıcaklık bu kez 0.7, çünkü burada biraz
-yaratıcılık gerekiyor. Uzun isteği üç satırda kuruyoruz; her satır öncekinin sonuna yeni bir kısım ekliyor.
+olmayacak: harfleri görsel model bozar, başlığı tasarımcı dizer (Konu 10). Sıcaklık bu kez 0.7: bir görsel tarifinde
+biraz çeşitlilik işe yarar. Uzun isteği üç satırda kuruyoruz; her satır öncekinin sonuna yeni bir kısım ekliyor.
 
 ```python
 istek = "Şu kurallara uyan bir afiş görseli için İngilizce, tek paragraflık bir görsel yönergesi yaz. "

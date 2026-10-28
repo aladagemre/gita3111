@@ -881,7 +881,7 @@ Alıştırma defteri internete çıkmaz, anahtar istemez.
 | Ne görüyorsun | Sebebi | Ne yapmalı |
 |---|---|---|
 | `NameError: name '...' is not defined` | Bir hücreyi atladın ya da defteri yeni açtın | Hücreleri baştan, sırayla çalıştır |
-| `FileNotFoundError: ... '../anahtar.txt'` | Hesap açılmamış, dosya yanlış klasörde ya da adı `anahtar.txt.txt` | Dosyayı `gita3111` klasörüne (konu klasörlerinin bir üstüne) koy, uzantıyı kontrol et; defterin kopyası konu klasöründe dursun. Anahtarın yoksa derste yanındakiyle çalış |
+| `FileNotFoundError: ... '../anahtar.txt'` | Hesap açılmamış, dosya yanlış klasörde ya da adı `anahtar.txt.txt` | Dosyayı `gita3111` klasörüne (konu klasörlerinin bir üstüne) koy, uzantıyı kontrol et; defterin kopyası konu klasöründe dursun. Anahtarın yoksa derste hocanın paylaştığı ekrandan izle |
 | `IndexError: list index out of range` (Adım 1) | `anahtar.txt`'de boş ya da `=` içermeyen bir satır var | O satırı sil |
 | `KeyError: 'ACCOUNT_ID'` ya da `KeyError: 'API_TOKEN'` | Dosyada o satır yok ya da adı farklı yazılmış (küçük harf, boşluk) | Dosyayı Adım 1'deki biçime göre düzelt |
 | `ModuleNotFoundError: No module named 'requests'` | Defter `.venv` dışındaki bir çekirdekle çalışıyor | Sağ üstten çekirdek olarak `.venv`'i seç; yoksa `gita3111` klasöründe `uv sync` |

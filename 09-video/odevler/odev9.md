@@ -24,8 +24,8 @@ videoya çevireceksin.
 5. **Günlüğe yaz.** `ders.ipynb`'yi aynı klasörde yeni bir adla kopyala (ör. `odev9-ayse.ipynb`). Kopyada:
    - Adım 2'nin ilk hücresini çalıştır (fiyat sözlüğü).
    - Adım 6'nın **ikinci** hücresinde (görselden klibin kaydı) değerleri kendi klibine göre değiştir: `"gorsel"` kendi
-     görselinin yolu (ör. `"08-koddan-toplu-uretim/odev8/kolaj_mavi.jpg"`), `"sure"`, `"cozunurluk"` ve `"oran"` arayüzde
-     seçtiklerin, `"dosya"` `"videolar/odev9.mp4"`. Hücreyi çalıştır; `input` kutularına yönergeni ve beğenip
+     görselinin yolu (ör. `"../08-koddan-toplu-uretim/odev8/kolaj_mavi.jpg"`), `"model"`, `"sure"`, `"cozunurluk"` ve `"oran"`
+     arayüzde seçtiklerin, `"dosya"` `"videolar/odev9.mp4"`. Hücreyi çalıştır; `input` kutularına yönergeni ve beğenip
      beğenmediğini yaz.
    - Adım 6'nın üçüncü hücresinde `kayitlar = [metin_kaydi, gorsel_kaydi]` satırını `kayitlar = [gorsel_kaydi]` yap
      (ödevde metinden video yok) ve dosya adını iki yerde `"odev9_gunlugu.json"` yap. Çalıştır.

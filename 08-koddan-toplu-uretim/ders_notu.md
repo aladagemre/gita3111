@@ -229,9 +229,10 @@ iki eksenli hâli.
 ## Adım 3 — Önce hesap: kota ve sınır
 
 Konu 2'den hatırla: Cloudflare kotayı **neuron** ile sayar ve günde 10.000 neuron ücretsiz. Bütün modeller (görsel,
-metin, görsel okuma) aynı kotadan yer. Bir görsel (1024 × 1024, 4 adım) yaklaşık 58 neuron tutar. Hesap şöyle:
-Cloudflare 1024 × 1024'lük görseli 512 × 512'lik 4 parça sayar; her parça 4,8, her adım 9,6 neuron:
-4 × 4,8 + 4 × 9,6 ≈ 58. Günde kabaca 170 görsel eder.
+metin, görsel okuma) aynı kotadan yer. Cloudflare'in fiyat sayfasına göre bir görsel (1024 × 1024, 4 adım) yaklaşık
+58 neuron tutar. Sayfadaki sayılarla: görsel 512 × 512'lik 4 parça sayılıyor; parça başına 4,8, adım başına 9,6 neuron:
+4 × 4,8 + 4 × 9,6 ≈ 58. Günde kabaca 170 görsel eder. Bu bir tahmin; gerçekte ne kadar harcadığını Cloudflare panelinde
+görebilirsin.
 
 ```python
 MAKS_URETIM = 12
@@ -366,8 +367,9 @@ modeli burada.
 
 ## Adım 6 — Kontak sayfası: bütün ızgara tek sayfada
 
-Fotoğrafçılar filmdeki bütün kareleri tek kâğıda basıp en iyisini seçerdi: **kontak sayfası**. Bizimki bir
-ızgara: satır sayısı stil sayısı, sütun sayısı renk sayısı.
+Fotoğrafçılar filmdeki bütün kareleri tek kâğıda basıp en iyisini seçerdi: **kontak sayfası**. Konu 7'deki stil
+panosu tek satırdı, yalnızca stil değişiyordu; bizimki iki eksenli bir ızgara: satır sayısı stil sayısı, sütun sayısı
+renk sayısı.
 
 ```python
 satir = len(stiller)
@@ -496,8 +498,8 @@ Derste kendi başına çalışacağın defter: `alistirma.ipynb`. Önce aynı kl
 kopyada çalış. **Anahtar istemez ve görsel üretmez:** `veri/ornek_izgara/` klasöründeki hazır görsellerle çalışır
 (altı kartın dördünün görseli var, ikisi "üretilememiş"). Üç bölümü var:
 
-- **Kendin yaz:** toplu üretim döngüsünü (görsel üretmeden, `print` ile) ve 2 × 3'lük bir kontak sayfasını kendi elinle
-  yazıyorsun. Kontak sayfasında kart listesi yok: yolları Isınma'daki iç içe döngüyle, Adım 2'deki kalıba göre
+- **Kendin yaz:** toplu üretim döngüsünü (görsel üretmeden, `print` ile) ve 2 × 3'lük bir kontak sayfasını kendi elinle,
+  hücredeki boş satıra yazıyorsun. Kontak sayfasında kart listesi yok: yolları Isınma'daki iç içe döngüyle, Adım 2'deki kalıba göre
   kendin kuruyorsun. Derste önce bunlar.
 - **Bozuk kodlar:** altı kısa hücre, birbirinden bağımsız. Üçü hata mesajı veriyor, üçü sessizce yanlış sonuç yazıyor.
 - **Kendi başına:** `BOSLUK` yazan yerleri doldurduğun yedi soru.
@@ -587,7 +589,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 | **`continue` / `break`** | Döngüde sıradakine geç / döngüyü bitir |
 | **`os.path.exists(yol)`** | Bu yolda bir dosya var mı? `True` ya da `False` |
 | **Sabit (`MAKS_URETIM`)** | Değişmemesi gereken değer; büyük harfle yazılır |
-| **Neuron** | Cloudflare'in kota birimi; günde 10.000 ücretsiz, bir görsel ~58 |
+| **Neuron** | Cloudflare'in kota birimi; günde 10.000 ücretsiz, fiyat sayfasına göre bir görsel ~58 |
 | **Kaldığı yerden devam** | Var olan çıktıları atlayıp yalnızca eksikleri üretmek |
 | **`json.dump` / `json.load`** | Python listelerini ve sözlüklerini JSON dosyasına yazmak / dosyadan okumak |
 | **Kontak sayfası** | Bütün kombinasyonları tek görselde ızgara hâlinde gösteren sayfa |
@@ -601,9 +603,9 @@ Görsellerini sakla: Konu 9'da birini videoya çevireceğiz.
 
 ## Sonraki konu
 
-**Konu 9 — Video, arayüzden.** Bugün bir şablonla bir ızgara ürettik. Konu 9'da hareket ekliyoruz: bu kez kod
-yazmadan, bir arayüzde. Bugünkü görsellerinden birini kısa bir videoya çevireceğiz. Video yavaş ve pahalı bir üretim;
-bugünkü "önce hesap" alışkanlığı orada da işe yarayacak.
+**Konu 9 — Video, arayüzden.** Bugün bir şablonla bir ızgara ürettik. Konu 9'da görsele zaman ekliyoruz: videoyu
+bu kez kod yazmadan, bir arayüzde üreteceğiz. Bugünkü görsellerinden birini kısa bir videoya çevireceğiz. Video yavaş ve
+pahalı bir üretim; bugünkü "önce hesap" ve "her üretimi kayda geçir" alışkanlıkları orada da işe yarayacak.
 
 ---
 

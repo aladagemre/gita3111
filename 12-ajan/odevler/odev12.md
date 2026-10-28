@@ -4,8 +4,8 @@
 projende kullanmak istersen elinde çalışan bir örnek olsun diye.
 
 Bu ödev kendi `anahtar.txt` dosyanı ister (Konu 2). Bir ajan çalıştırması modele yaklaşık 2–4 istek gönderir; görsel
-çizen her araç çağrısı ayrıca bir görsel demek (yaklaşık 58 neuron). Aşağıdaki adımların tamamı yaklaşık 20 model isteği ve en
-fazla 6 görsel; günlük ücretsiz kotanın %10'undan az.
+çizen her araç çağrısı ayrıca bir görsel demek (fiyat sayfasına göre yaklaşık 58 neuron, Konu 8'deki hesap). Aşağıdaki
+adımların tamamı yaklaşık 20 model isteği ve en fazla 6 görsel; günlük ücretsiz kotanın beşte birinden az.
 
 ---
 

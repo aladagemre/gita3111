@@ -505,7 +505,7 @@ metindir, çünkü eğitim verisinde doğrular daha sık geçer. Ama verinin az 
 (seyrek bir konu, yerel bir bilgi, bir kişinin özgeçmişi) model yine akıcı, kendinden emin,
 ama **uydurma** bir metin yazar. Buna uydurma (İngilizcesi *hallucination*) denir.
 "Model gerçeği biliyor" sanmak bu konunun en önemli tuzağı. Konu 11'de bunun bir çaresini
-deneyeceğiz: modele önce bir belgeden ilgili paragrafları verip yalnızca onlara dayanarak
+deneyeceğiz: modele önce bir belgeden soruya en yakın paragrafları verip yalnızca onlara dayanarak
 cevap vermesini isteyeceğiz.
 
 ---

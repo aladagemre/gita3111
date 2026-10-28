@@ -1,5 +1,6 @@
 # Konu 11'in yardımcı dosyası: kılavuzda aramak ve modele sormak için hazır fonksiyonlar.
-# Bunları birbirine bağlamak (paragrafları vektöre çevirmek, en ilgilileri bulmak, yönergeyi kurmak) defterde senin işin.
+# Bunları birbirine bağlamak (paragrafları vektöre çevirmek, soruya en yakın paragrafları bulmak, yönergeyi kurmak)
+# defterde senin işin.
 # vektor_al: Konu 4'te yazdığın fonksiyon (bir metin alır, gömme vektörünü verir).
 # vektorleri_al: aynı işin liste hâli. Bir metin listesini TEK istekte gönderir, aynı sırayla bir vektör listesi verir.
 #   İkisi de istek başarısız olursa durum koduyla birlikte açık bir hata verip durur: vektör gelmeden devam etmenin anlamı yok.

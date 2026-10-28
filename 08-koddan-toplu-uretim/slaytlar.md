@@ -169,6 +169,7 @@ Ahmet Emre Aladağ
 - Film fotoğrafçılığında bir rulodaki bütün kareler tek bir kâğıda küçük küçük basılırdı: **kontak baskı** ya da kontak sayfası
 - Fotoğrafçı en iyi kareyi bu sayfada seçip işaretlerdi; yalnızca o kare büyütülürdü
 - Toplu üretimde aynı ihtiyaç: onlarca görseli tek tek açmak yerine hepsini tek bakışta görmek
+- Konu 7'deki stil panosu tek satırdı, yalnızca stil değişiyordu; kontak sayfası satırları ve sütunlarıyla iki değişkeni birden gösterir
 - Düzen anlamlı olmalı: satırlar bir değişken, sütunlar öbürü; her kutunun üstünde ne olduğu yazar
 - Sayfa bir **karar aracı**: onunla karşılaştırır, eler, kazananı seçersin
 - Müşteriye sunumda da işe yarar: seçeneklerin tamamı ve aralarındaki düzen bir arada
@@ -219,4 +220,4 @@ Ayrıntılar: `odevler/odev8.md`. Görsellerini sakla: Konu 9'da birini videoya 
 4. **Kararlı ad, kaldığı yerden devam.** Aynı iş aynı ad; var olanı atla
 5. **Kayıt, sayfa, seçim.** Günlük her şeyi kaydeder, kontak sayfası karşılaştırır, son kararı tasarımcı verir
 
-Sıradaki konu: **Konu 9 — Video, arayüzden.** Hareket ekliyoruz; videoyu bu kez kod yazmadan, arayüzden üreteceğiz. Bugünkü görsellerinden birini videoya çevireceğiz; video hem yavaş hem pahalı bir üretim olduğu için "önce hesap" alışkanlığı orada da işe yarayacak.
+Sıradaki konu: **Konu 9 — Video, arayüzden.** Görsele zaman ekliyoruz; videoyu bu kez kod yazmadan, arayüzden üreteceğiz. Bugünkü görsellerinden birini videoya çevireceğiz; video hem yavaş hem pahalı bir üretim olduğu için "önce hesap" ve "her üretimi kayda geçir" alışkanlıkları orada da işe yarayacak.

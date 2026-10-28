@@ -6,7 +6,7 @@ Bu ödev kendi `anahtar.txt` dosyanı ister (Konu 2). Yaklaşık 7 vektör iste�
 afişi yeniden ürettiğin her seferde bir görsel daha. Hepsi günlük kotanın küçük bir kısmı.
 
 Bu ödevde Sayfa Kahve'nin yerine **kendi** markanı koyuyorsun: kısa bir kılavuz yazıp modele ona bakarak cevap verdiriyorsun.
-Final projen için bir marka ya da kampanya düşünüyorsan onu seç; kılavuz final projesinde de işine yarar.
+Final projen için bir marka ya da kampanya düşünüyorsan onu seç; kılavuz final projesinde de işine yarar. (Final projesinde RAG kullanmak zorunlu değil; isteyen için isteğe bağlı bir ekstra.)
 
 ---
 

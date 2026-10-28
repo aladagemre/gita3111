@@ -165,7 +165,7 @@ def acilis_saati(gun: str) -> str:
 - Kararı basit bir kuralla verebiliyorsan (dosya yüklendiyse düzenle, yoksa çiz) bir `if` yeter
 - Ajan, isteklerin serbest cümleyle geldiği, araçların çok ve sıranın belirsiz olduğu işlerde anlamlıdır
 - Her model kararı bir maliyettir: kota, süre ve yanlış seçim ihtimali
-- Final projesinde ajan zorunlu değil; projen sırası belli bir hatsa ajan kullanmaman doğru karar olabilir
+- Final projesinde ajan (RAG gibi) isteğe bağlı bir ekstra; projen sırası belli bir hatsa ajan kullanmaman doğru karar olabilir
 
 **Sohbete yaz:** final projende sırası baştan belli olmayan bir iş var mı?
 
@@ -203,4 +203,4 @@ Ayrıntılar: `odevler/odev12.md`. Puan yok; Konu 13'ün başında sıradaki ark
 4. **Her araç bir yetki, her çağrı bir istek.** Sınır koy; geri alınamayan işe insan onayı
 5. **Sıra belliyse hat yeter.** Ajan, sırası belirsiz işler için
 
-Sıradaki konu: **Konu 13 — Final atölyesi.** Yeni kavram yok: dönem boyunca öğrendiklerini kendi projende birleştirip projenin çalışan ilk hâlini kuruyorsun.
+Sıradaki konu: **Konu 13 — Final atölyesi.** Yeni kavram yok: dönem boyunca öğrendiklerini kendi projende birleştirip projenin çalışan ilk hâlini kuruyorsun. RAG ve ajan zorunlu değil, isteğe bağlı birer ekstra.
