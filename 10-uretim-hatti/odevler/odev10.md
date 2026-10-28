@@ -3,10 +3,11 @@
 **Puan yok.** Konu 11'in başında sıradaki arkadaşlar gösterecek.
 
 Bu ödev kendi `anahtar.txt` dosyanı ister (Konu 2). En fazla 5 metin isteği (bir deneme + en fazla 4 slogan) gönderir ve
-en fazla 4 görsel üretir; bir sloganı değiştirip görselini yeniden ürettiğinde her biri için bir görsel daha. Günlük kotanın küçük bir kısmı.
+en fazla 4 görsel üretir. Bir sloganı değiştirip görselini yeniden ürettiğinde her değişiklik bir görsel isteği daha
+demek. Hepsi günlük kotanın küçük bir kısmını tutar.
 
 Bu ödev final projesinin ilk taslağı: kendi konunda, kendi brifinle çalışan bir hat. **Güzel olması gerekmiyor**;
-halkaların birbirine bağlı ve kayıtlı çalışması yeter. Final projesinde bu iskeletin üstüne kuracaksın.
+halkaların birbirine bağlı ve kayıtlı çalışması yeter. Final projeni bu iskeletin üstüne kuracaksın.
 
 ---
 

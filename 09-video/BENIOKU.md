@@ -1,9 +1,9 @@
 # Konu 9 — Video Üretimi
 
 Bu konuda görsele zaman ekliyoruz: kısa video klipler. Videoyu **arayüzde** üreteceksin (Google Flow, ücretsiz günlük kredi):
-önce bir yönergeden, sonra Konu 8'de ürettiğin bir görselden. Defterde iki iş yapacaksın: aynı klip ücretli bir API'yle
-koddan üretilseydi kaça mal olurdu, süre ve çözünürlük bedeli nasıl değiştirirdi; ve ürettiğin her klibin yönergesini ve
-ayarlarını bir JSON günlüğüne yazmak.
+önce bir yönergeden, sonra Konu 8'de ürettiğin bir görselden. Defterde iki iş var: **maliyet** (aynı klip ücretli bir API'yle
+koddan üretilseydi kaça mal olurdu, süre ve çözünürlük bedeli nasıl değiştirirdi) ve **kayıt** (her klibin yönergesi ve
+ayarları bir JSON günlüğünde).
 
 Konu yarım oturum sürüyor: aynı oturumun ikinci yarısı Konu 10 (üretim hattı).
 
@@ -35,14 +35,13 @@ Sonra:
 3. Hücreleri yukarıdan aşağı, **Shift + Enter** ile sırayla çalıştır.
 
 Arayüz için bilgisayarda Chrome ya da Edge ile `labs.google/fx/tools/flow` adresini aç ve kişisel Google hesabınla gir
-(18 yaş ve üstü). Adımlar
-`ders_notu.md`'de.
+(18 yaş ve üstü). Adımlar `ders_notu.md`'de.
 
 ## Anahtar gerekiyor mu?
 
 Hayır. İki defter de anahtar istemez, internete çıkmaz. Video arayüzde, kendi Google hesabının ücretsiz günlük kredisiyle
-üretilir (abonelik almamış her kullanıcıya her gün 50 kredi; derste iki klip 22 kredi). Hesap açarken ya da üretirken kart bilgisi
-istenirse ya da abone olman istenirse girme, abone olma, hocaya yaz.
+üretilir (Google'ın kredi sayfasına göre aboneliği olmayan kullanıcıya da her gün 50 kredi; derste iki klip 22 kredi). Kart
+bilgisi istenirse girme, abone olman istenirse abone olma; iki durumda da hocaya yaz.
 
 ## Güncel kalmak
 
@@ -57,7 +56,7 @@ değiştirmek istersen önce aynı klasörde **yeni bir adla kopyala**, kopyada 
 | Isınma | Bir klip kaç kare | defter |
 | Adım 1 | Metinden ilk klibi başlatmak; uzun süren iş | arayüz |
 | Adım 2 | Fiyat sözlüğü; 4K ile 1080p | defter |
-| Adım 3 | 20 saniyelik tanıtım: hangi ayar yarısına indirir | defter |
+| Adım 3 | 20 saniyelik tanıtım: hangi ayar bedeli yarıya indirir | defter |
 | Adım 4 | Klibi izlemek, indirmek, değerlendirmek | arayüz |
 | Adım 5 | Görselden klip | arayüz |
 | Adım 6 | Video günlüğü ve "API'yle olsaydı" hesabı | defter |

@@ -41,8 +41,8 @@ oradan devam edebilirsin.
 
 Isınma ve Adım 1–5 **anahtarsız** çalışır. Adım 6 ve 7 gerçek modele soru sorar ve
 `anahtar.txt` ister. Bu dosya bütün konular için tek dosya: konu klasöründe değil, bir üstte,
-`gita3111` klasörünün içinde durur (Konu 2). Anahtarın yoksa Adım 6–7'yi yanındakiyle
-birlikte, onun ekranında izle.
+`gita3111` klasörünün içinde durur (Konu 2). Anahtarın yoksa Adım 6–7'yi hocanın
+paylaştığı ekrandan izle.
 
 ## Güncel kalmak
 

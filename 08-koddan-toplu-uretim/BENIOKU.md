@@ -2,7 +2,7 @@
 
 Bu konuda önce Konu 7'deki işi koddan yapıyoruz: hazır `ciz` fonksiyonuyla bir görsel üretip dosyanın adını ve yerini
 kendin seçiyorsun, yönergeyi kullanıcıya sorduruyorsun. Sonra arayüzün yapamadığı işe geçiyoruz: bir şablon ve iki
-listeyle (3 stil × 4 renk) 12 görseli tek seferde üretmek. Döngüden önce kota hesabı yapacak, küçük bir denemeyle (3 görsel)
+listeyle (3 stil × 4 renk) 12 görseli tek seferde üretmek. Döngüden önce kota hesabı yapacaksın; küçük bir denemeyle (3 görsel)
 sınırın çalıştığını göreceksin. Yazdığın kod var olan görselleri atlayıp kaldığı yerden devam edecek, her görselin nasıl
 üretildiğini bir JSON günlüğüne yazacak ve hepsini tek bir kontak sayfasında yan yana koyacak. Alıştırmada aynı döngüyü
 ve kontak sayfasını kendi elinle yazacaksın.
@@ -41,9 +41,9 @@ Defterin kopyası `uretim.py` ile **aynı klasörde** durmalı; yoksa
 
 ## Anahtar gerekiyor mu?
 
-Isınma anahtarsız; alıştırma defteri de. Adım 1'den sonrası `anahtar.txt` ister (bütün konular için tek dosya,
-`gita3111` klasöründe). Defterin ana akışı 15 görsel üretir; Bonus ile en fazla 21 görsel ve görsel anlayan modele
-13 soru. Hepsi ücretsiz günlük kotanın küçük bir kısmı. Anahtarın yoksa yanındakiyle birlikte, onun ekranında izle.
+Isınma anahtarsız; alıştırma defteri de. Adım 1'den itibaren ders defteri `anahtar.txt` ister (bütün konular için tek
+dosya, `gita3111` klasöründe). Defterin ana akışı 15 görsel üretir; Bonus ile en fazla 21 görsel ve görsel anlayan
+modele 13 soru. Hepsi ücretsiz günlük kotaya sığar. Anahtarın yoksa yanındakiyle birlikte, onun ekranında izle.
 
 ## Güncel kalmak
 

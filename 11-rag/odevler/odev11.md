@@ -3,7 +3,7 @@
 **Puan yok.** Konu 12'nin başında sıradaki arkadaşlar gösterecek.
 
 Bu ödev kendi `anahtar.txt` dosyanı ister (Konu 2). Yaklaşık 7 vektör isteği, 5 metin isteği ve 1 görsel isteği gönderir;
-afişi yeniden ürettiğin her seferde bir görsel daha. Günlük kotanın küçük bir kısmı.
+afişi yeniden ürettiğin her seferde bir görsel daha. Hepsi günlük kotanın küçük bir kısmı.
 
 Bu ödevde Sayfa Kahve'nin yerine **kendi** markanı koyuyorsun: kısa bir kılavuz yazıp modele ona bakarak cevap verdiriyorsun.
 Final projen için bir marka ya da kampanya düşünüyorsan onu seç; kılavuz final projesinde de işine yarar.

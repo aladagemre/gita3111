@@ -40,8 +40,8 @@ Defterin kopyası `gorsel_araci.py` ile **aynı klasörde** durmalı; yoksa
 
 Isınma anahtarsız. Adım 1'den sonrası `anahtar.txt` ister: bütün konular için tek dosya,
 `gita3111` klasöründe (Konu 2). Defterin tamamı yaklaşık 25 görsel üretir; Cloudflare'in
-ücretsiz günlük kotasının küçük bir kısmı. Anahtarın yoksa yanındakiyle birlikte, onun
-ekranında izle.
+ücretsiz günlük kotasının küçük bir kısmı. Anahtarın yoksa hocanın paylaştığı
+ekrandan izle.
 
 ## Güncel kalmak
 

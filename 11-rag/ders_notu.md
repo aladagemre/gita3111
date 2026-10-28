@@ -11,7 +11,7 @@ kılavuzu (`veri/kilavuz.txt`, her satır bir paragraf, 14 paragraf).
 
 > Kılavuzu paragraflara böl ve her paragrafı vektöre çevir → sorunun vektörüne en yakın paragrafları bul →
 > "yalnızca şu bilgilere dayanarak cevap ver" + paragraflar + soru → metin modeli.
-> Bu yöntemin adı **RAG** (İngilizce *retrieval-augmented generation*, "bulup getirerek üretmek"). Bağlamı biz yazmıyoruz;
+> Bu yöntemin adı **RAG** (İngilizce *retrieval-augmented generation*: "bulup getirerek üretmek"). Bağlamı biz yazmıyoruz;
 > kod onu belgeden bulup getiriyor.
 
 **Konunun sonunda elinde:** kılavuzun vektörleri (`ciktilar/kilavuz_vektorleri.json`), aynı soruya kılavuzsuz ve kılavuzlu
@@ -31,8 +31,8 @@ paragrafı tek istekte vektöre çevrilir ve dosyaya kaydedilir; defteri ikinci 
 
 ## Isınma: kitaba bakarak cevap, kâğıt üstünde
 
-Önce internetsiz, Konu 4'teki gibi elle verilmiş vektörlerle. Dört kısa paragraflık küçük bir kılavuz kuruyoruz. Her
-paragrafa üç sayı verdik; her sayı paragrafın bir konudan ne kadar söz ettiğini söylüyor (0 hiç, 1 tamamen):
+Önce internete çıkmadan, Konu 4'teki gibi elle verilmiş vektörlerle çalışıyoruz. Dört kısa paragraflık küçük bir kılavuz
+kuruyoruz. Her paragrafa üç sayı verdik; her sayı paragrafın bir konudan ne kadar söz ettiğini söylüyor (0 hiç, 1 tamamen):
 **renk**, **yazı tipi**, **açılış saati**. Sözlüğün anahtarı paragrafın kendisi, değeri onun üç sayısı.
 
 ```python
@@ -73,7 +73,7 @@ for paragraf in ornek_kilavuz:
 print(len(skorlar))
 ```
 
-Çıktı: `4`, her paragraf için bir puan. En büyükleri Konu 4'teki gibi `Counter` sıralar:
+Çıktı: `4`, her paragraf için bir puan. En büyükleri yine `Counter` sıralar:
 
 ```python
 from collections import Counter
@@ -119,14 +119,14 @@ RAG'in üç adımının üçü de burada:
 2. **Bul:** sorunun vektörüne en yakın paragraflar (`skorlar`, `most_common`).
 3. **Yönergeye koy ve sor:** paragraflar + soru. Bu yönergeyi henüz kimseye göndermedik.
 
-Gerçekte sayıları model verir (Konu 4'teki gibi yüzlerce sayı), yönergeyi de metin modeli okur.
+Gerçekte sayıları gömme modeli verir, üç değil yüzlerce sayı; yönergeyi de metin modeli okur.
 
 ---
 
 ## Adım 1 — Model Sayfa Kahve'yi tanıyor mu?
 
-`rag_araclari.py` bu klasördeki yardımcı dosya; anahtarı `../anahtar.txt`'den kendisi okur. İçindeki dört fonksiyonu
-eski konulardan tanıyorsun:
+`rag_araclari.py` bu klasördeki yardımcı dosya; anahtarı `../anahtar.txt`'den kendisi okur. İçindeki dört fonksiyondan
+üçünü eski konulardan tanıyorsun:
 
 | Fonksiyon | Ne yapar | Nereden |
 |---|---|---|
@@ -164,8 +164,8 @@ yazdığı kılavuz orada olmazdı. Model bilmediği yerde boşluğu en olası g
 
 ## Adım 2 — Kılavuzu parçala
 
-`veri/kilavuz.txt` Sayfa Kahve'nin marka kılavuzu. Her satır bir paragraf, her paragraf tek bir konu: renkler, yasak
-renkler, yazı tipi, logo, insan yüzü, fotoğraf ışığı, çizim tarzı, ses tonu, yasak sözcükler, sosyal medya biçimi, mevsim
+`veri/kilavuz.txt` Sayfa Kahve'nin marka kılavuzu. Her satır bir paragraf, her paragraf tek bir konu: kafenin tanıtımı, renkler,
+yasak renkler, yazı tipi, logo, insan yüzü, fotoğraf ışığı, çizim tarzı, ses tonu, yasak sözcükler, sosyal medya biçimi, mevsim
 vurgusu, menü kartı, açılış saatleri.
 
 RAG'in ilk işi belgeyi **parçalara** bölmek. Bizim kılavuzda bir parça bir satır. Adı Konu 5'tekiyle aynı ama anlamı başka:
@@ -196,7 +196,7 @@ Kırmızı ve turuncu Sayfa Kahve'nin hiçbir tasarımında kullanılmaz. Bu ren
 Sıra numarası `2` üçüncü paragraf demek: Python saymaya 0'dan başlar. Adım 1'deki cevapta kırmızı ya da turuncu var mıydı?
 
 **Neden paragraf?** Bir parça tek bir konuyu kendi başına anlatmalı. Parça bütün bir sayfa olsaydı, renk sorusuna açılış
-saatleri de gelirdi; tek bir cümle olsaydı, "kırmızı kullanılmaz" gelir ama gerekçesi ("aceleyi ve indirimi çağrıştırır")
+saatleri de gelirdi; tek bir cümle olsaydı, "kırmızı kullanılmaz" gelirdi ama gerekçesi ("aceleyi ve indirimi çağrıştırır")
 gelmeyebilirdi.
 
 ---
@@ -211,8 +211,8 @@ Kılavuz değişmedikçe vektörleri de değişmez; her çalıştırmada yeniden
 **ara çıktıyı sakla.** Önce dosyanın yerini belirliyoruz. Yol, Konu 10'daki gibi düz bir metin: klasör + dosya adı.
 
 - `"ciktilar/"` sonundaki `/` sayesinde dosya adını doğrudan ekleyebiliriz: `klasor + "kilavuz_vektorleri.json"`.
-- `os.makedirs(klasor, exist_ok=True)` klasörü açar; `exist_ok=True`: klasör zaten varsa hata verme. `os` Python'un
-  içinde gelir, kurulum istemez.
+- `os.makedirs(klasor, exist_ok=True)` klasörü açar; klasör zaten varsa `exist_ok=True` sayesinde hata vermez. `os`
+  Python'un içinde gelir, kurulum istemez.
 
 ```python
 import json
@@ -268,7 +268,7 @@ modelin gözündeki hâli.
 
 ---
 
-## Adım 4 — Soruya en ilgili paragraflar
+## Adım 4 — Soruya en yakın paragraflar
 
 Sorunun (Adım 1'deki renk sorusu) vektörü:
 
@@ -360,8 +360,8 @@ print("KILAVUZLU:", kilavuzlu)
 
 - Kılavuzlu cevapta mürekkep mavisi ve kâğıt beyazı var mı? Renk kodları (`#1F3A5F`, `#F4F1EA`) kılavuzdakilerle aynı mı?
 - Kılavuzsuz cevapta bu kodlardan biri var mı? Model onları nereden bilebilirdi?
-- Kırmızı–turuncu yasağından söz ediyor mu? Kılavuzlu cevap "Bilmiyorum" mu dedi? İkisinde de Adım 4'e dön: hangi
-  paragraflar ilk üçe girmişti?
+- Kırmızı–turuncu yasağından söz ediyor mu? Söz etmiyorsa ya da "Bilmiyorum" dediyse Adım 4'e dön: hangi paragraflar
+  ilk üçe girmişti?
 - Kılavuzlu cevap, bilgilerde olmayan bir şey ekledi mi?
 
 Renk kodu iyi bir sınama: "lacivert" gibi makul bir rengi model tahmin edebilir, ama kılavuzdaki kodun aynısını kılavuzu
@@ -376,7 +376,7 @@ iyi olamaz.**
 
 Adım 4 ve 5'te yazdıklarını iki fonksiyona koyuyoruz. Yeni bir soru sormak artık tek satır.
 
-`kilavuzda_ara(soru)` soruyu alır ve kılavuzun en ilgili üç paragrafını **tek bir metin** olarak verir. Konu 12'de bu
+`kilavuzda_ara(soru)` soruyu alır ve kılavuzun soruya en yakın üç paragrafını **tek bir metin** olarak verir. Konu 12'de bu
 fonksiyon ajanın araçlarından biri olacak; adı ve işi aynı kalacak.
 
 ```python
@@ -405,7 +405,7 @@ def kilavuza_sor(soru):
     return modele_sor(yonerge, 0.2)
 ```
 
-Bu kez kılavuzda **olmayan** bir soru. Kılavuz menü kartında fiyatların nereye yazılacağını söylüyor (sağa hizalı), ama
+Bu kez cevabı kılavuzda **olmayan** bir soru soruyoruz. Kılavuz menü kartında fiyatların nereye yazılacağını söylüyor (sağa hizalı), ama
 fiyatların kendisini söylemiyor.
 
 ```python
@@ -449,9 +449,9 @@ print(kurallar)
 (kafe gece yarısına kadar açık); arama sorusu ise görselin **nasıl görüneceğini** soruyor. Arama, ne sorduysan ona yakın
 olanı getirir: brifin kendisini arasaydın başka paragraflar gelirdi.
 
-Görsel model İngilizce yönergeyle daha iyi çalışır (Konu 7). Görselde yazı istemiyoruz: harfleri görsel model bozar,
-başlığı tasarımcı dizer (Konu 10). Sıcaklık 0.7: burada biraz yaratıcılık istiyoruz. Uzun isteği üç satırda kuruyoruz;
-her satır öncekinin sonuna yeni bir kısım ekliyor.
+Görsel model İngilizce yönergeyle daha iyi çalışır (Konu 7); bu yüzden yönerge İngilizce olacak. Görselde yazı da
+olmayacak: harfleri görsel model bozar, başlığı tasarımcı dizer (Konu 10). Sıcaklık bu kez 0.7, çünkü burada biraz
+yaratıcılık gerekiyor. Uzun isteği üç satırda kuruyoruz; her satır öncekinin sonuna yeni bir kısım ekliyor.
 
 ```python
 istek = "Şu kurallara uyan bir afiş görseli için İngilizce, tek paragraflık bir görsel yönergesi yaz. "
@@ -513,7 +513,7 @@ print(renk_cevabi)
 
 `kilavuza_sor`'u yeniden çalıştırman gerekmez: o, `kilavuzda_ara`'yı adıyla çağırıyor; yeni hâlini kullanır. Cevap Adım
 5'tekine göre ne kadar eksik? Sonra `most_common(14)` dene: her soruda kılavuzun tamamı gider. On dört paragraflık bir
-kılavuz için bu olur; iki yüz sayfalık bir kılavuz modelin bağlam penceresine sığmaz (Konu 5), istek pahalılaşır ve küçük
+kılavuzda bu işe yarar; iki yüz sayfalık bir kılavuz modelin bağlam penceresine sığmaz (Konu 5), istek pahalılaşır ve küçük
 bir kural kalabalıkta kaybolur. Bitince 3'e geri döndür.
 
 **3. Yarım bilgi.** Kılavuz başlık yazı tipini tarif ediyor (serifli, eski kitap baskısını andıran) ama adını vermiyor.
@@ -547,9 +547,9 @@ olanla tamamlar.
 | Adım 1 | Hazır araçlar; kılavuzsuz soru | gerekir |
 | Adım 2 | Kılavuzu satır satır okuyup paragraflara bölmek | gerekmez |
 | Adım 3 | 14 paragrafı tek istekte vektöre çevirmek; JSON'a kaydetmek | gerekir (ilk çalıştırmada) |
-| Adım 4 | Sorunun vektörü; en ilgili üç paragraf (sen yazarsın) | gerekir |
+| Adım 4 | Sorunun vektörü; soruya en yakın üç paragraf (sen yazarsın) | gerekir |
 | Adım 5 | Yönerge şablonu (sen yazarsın); kılavuzlu cevap | gerekir |
-| Adım 6 | `kilavuzda_ara` ve `kilavuza_sor`; kılavuzda olmayan soru | gerekir |
+| Adım 6 | `kilavuzda_ara` ve `kilavuza_sor`; cevabı kılavuzda olmayan bir soru | gerekir |
 | Adım 7 | Görsel kurallarını aramak; görsel yönergesi; afiş | gerekir |
 | Bonus | Kılavuzsuz afiş; kaç paragraf; yarım bilgi | gerekir |
 
@@ -566,10 +566,10 @@ olanla tamamlar.
 | `NameError: name 'benzerlik' is not defined` (ya da `'Counter'`) | Isınmayı atladın | Isınmanın `benzerlik` ve `Counter` hücrelerini çalıştır |
 | `NameError: name 'kilavuz_vektorleri' is not defined` | Adım 3 çalışmadı | Adım 2'den itibaren sırayla çalıştır |
 | `ValueError: Incompatible dimension for X and Y matrices: X.shape[1] == 3 while Y.shape[1] == ...` | `soru_vektoru` hâlâ ısınmadaki üç sayılık vektör | Adım 4'ün ilk hücresini (`soru_vektoru = vektor_al(soru)`) çalıştır |
-| `KILAVUZLU: None` ve üstünde `İstek başarısız, durum kodu: ...` | Metin isteği olmadı; `modele_sor` çökmek yerine `None` verdi | Durum koduna bak (Konu 2, Adım 5), hücreyi yeniden çalıştır |
+| `KILAVUZLU: None` ve üstünde `İstek başarısız, durum kodu: ...` | Metin isteği başarısız oldu; `modele_sor` çökmek yerine `None` verdi | Durum koduna bak (Konu 2, Adım 5), hücreyi yeniden çalıştır |
 | Kılavuzu değiştirdim ama sonuçlar değişmedi | Adım 3 eski vektör dosyasını okudu | `ciktilar/kilavuz_vektorleri.json`'u sil, Adım 2'den yeniden çalıştır |
 | `TypeError: can only concatenate str (not "numpy.float64") to str` | Bir puanı metne `+` ile eklemeye çalıştın | Önce metne çevir: `str(round(skor, 2))` |
-| Adım 7'de `İstek başarısız, durum kodu: 400` | Görsel yönergesi boş ya da `None` (metin isteği olmamış) | Önceki hücreyi yeniden çalıştır, `gorsel_yonergesi`'ni yazdırıp bak |
+| Adım 7'de `İstek başarısız, durum kodu: 400` | Görsel yönergesi boş ya da `None` (metin isteği başarısız olmuş) | Önceki hücreyi yeniden çalıştır, `gorsel_yonergesi`'ni yazdırıp bak |
 
 ---
 
@@ -597,8 +597,8 @@ Cevaplar notun sonunda.
 
 ## Bu konunun tek cümlesi
 
-Model senin belgeni bilmez; RAG soruya en yakın parçaları bulup soruyla birlikte gönderir, böylece model cevabı belgeye
-bakarak verir: ama yalnızca ona gönderilen parçalara bakabilir.
+Model senin belgeni bilmez: RAG soruya en yakın parçaları bulup soruyla birlikte gönderir, model de cevabı bu parçalara
+bakarak verir; gönderilmeyen parçayı göremez.
 
 ---
 
@@ -606,12 +606,12 @@ bakarak verir: ama yalnızca ona gönderilen parçalara bakabilir.
 
 | Terim | Anlamı |
 |---|---|
-| **RAG** (*retrieval-augmented generation*) | "Bulup getirerek üretmek": modele soru sormadan önce belgeden ilgili parçaları bulup soruyla birlikte göndermek |
+| **RAG** (İngilizce *retrieval-augmented generation*) | "Bulup getirerek üretmek": modele soru sormadan önce belgede soruya en yakın parçaları bulup soruyla birlikte göndermek |
 | **Bağlam** | Soruyla birlikte modele verilen arka plan bilgisi (Konu 2). RAG'de bağlam, belgeden bulunan parçalardır |
 | **Parça** (*chunk*) | Belgenin bölündüğü, kendi başına okunabilen birim; bu konuda bir paragraf. Konu 5'teki parçayla (belirteç) karıştırma |
 | **Bulma** (*retrieval*) | Sorunun vektörüne en yakın parçaları seçmek |
 | **Uydurma** (halüsinasyon) | Modelin doğru olmayan bir bilgiyi akıcı ve kendinden emin biçimde yazması (Konu 5) |
-| **Talimat** | Yönergenin modelin nasıl davranacağını söyleyen kısmı: "yalnızca bu bilgilere dayan; yoksa bilmiyorum de" |
+| **Talimat** | Yönergenin, modelin nasıl davranacağını söyleyen kısmı: "yalnızca bu bilgilere dayan; yoksa bilmiyorum de" |
 | **Yönerge şablonu** | Sabit kısımları ve değişen yerleri olan yönerge kalıbı: talimat + bilgiler + soru |
 | **Gömme vektörü** | Bir metnin anlamını temsil eden sayı listesi (Konu 4) |
 | **Ara çıktı** | Bir adımın sonucu; sıradaki adıma gider, saklanırsa yeniden üretilmez (Konu 10) |
@@ -621,7 +621,7 @@ bakarak verir: ama yalnızca ona gönderilen parçalara bakabilir.
 
 ## Ödev
 
-Kendi markan ya da final projen için kısa bir kılavuz yazıp RAG'le soruyorsun. Ayrıntılar: `odevler/odev11.md`.
+Kendi markan ya da final projen için kısa bir kılavuz yazıyor, sonra ona RAG'le soru soruyorsun. Ayrıntılar: `odevler/odev11.md`.
 
 ## Sonraki konu
 

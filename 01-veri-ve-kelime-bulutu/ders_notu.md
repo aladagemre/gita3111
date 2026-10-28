@@ -1126,5 +1126,5 @@ elenmeden ve elendikten sonra) ve aradaki farkı tek cümleyle yaz.
 Konu 2'de (`02-api-ile-konusmak`) kodla internete bağlanıp bir yapay zeka modeline soru
 soracağız. Bunun için **Cloudflare hesabın ve anahtarın hazır olmalı**. Kurulum
 yönergesinin 6. adımı (`../00-hazirlik/kurulum-yonergesi.md`). Hesabın yoksa
-derste yanındaki arkadaşınla birlikte takip edersin; ama ödev için kendi hesabın
+derste hocanın paylaştığı ekrandan takip edersin; ama ödev için kendi hesabın
 gerekiyor. Takıldıysan şimdiden söyle.

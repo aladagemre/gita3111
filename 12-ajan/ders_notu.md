@@ -9,15 +9,15 @@ defterdeki hücrelerin birebir aynısı.
 gideceğini senin programın seçti. **Bu konuda:** sırayı modele bırakıyoruz:
 
 > Modelin elinde üç araç var: görsel çizmek, fotoğraf düzenlemek, Sayfa Kahve'nin marka kılavuzunda aramak. Kullanıcı bir
-> cümle yazar; hangi araçların, hangi bilgilerle, hangi sırayla çalışacağına model karar verir. Araçları çalıştıran yine
-> bizim programımız. Bunun adı **ajan**.
+> cümle yazar; hangi araçların, hangi bilgilerle, hangi sırayla çalışacağını model seçer. Araçları çalıştıran yine
+> bizim programımız. Bu düzene **ajan** denir.
 
 Önce bu işin bir turunu **elle**, çerçevesiz yapıyoruz (Adım 2–4): araç tarifi, istekte `tools`, cevapta `tool_calls`,
 aracı çalıştıran program. Sonra aynı işi **Agno** adlı bir ajan çerçevesiyle kuruyoruz (Adım 5–9) ve çerçevenin bizim
 yerimize ne yaptığını görüyoruz.
 
 **Konunun sonunda elinde:** üç (sonra dört) araçlı bir ajan; kılavuza bakarak çizdiği afişler; kendi yazdığın bir aracın
-tarifi. Bonus'ta bir ajan çalıştırmasının kaç istek ve ne kadar kota harcadığını da hesaplıyorsun.
+tarifi. Bonus'ta bir ajan çalıştırmasının modele kaç istek gönderdiğini ve ne kadar kota harcadığını da hesaplıyorsun.
 
 **Kurulum:** `git pull` ile konu klasörü geldikten sonra `gita3111` klasöründe bir kez `uv sync` çalıştır. Bu konunun iki
 yeni kütüphanesi böylece kurulur: `agno` (ajan çerçevesi) ve `openai`. Adı yanıltmasın: `openai` yalnızca isteğin
@@ -82,8 +82,8 @@ for istek in istekler:
 - İki listeyi aynı anda gezmek için bir **sıra sayacı** tutuyoruz: `sira` 0'dan başlar, her turda bir artar;
   `planim[sira]` o sıradaki istek için plan.
 - Dördüncü istekte sıra önemli: kılavuza bakmadan çizilen afiş kılavuza ancak şans eseri uyar.
-- Beşinci istek ("afişi Instagram'da paylaş") için elimizde araç yok. İyi bir ajan bunu yapamayacağını söyler; ajan,
-  verdiğin araçlar kadar iş yapabilir. Modelin gerçekte ne yaptığına Bonus 2'de bakıyorsun.
+- Beşinci istek ("afişi Instagram'da paylaş") için elimizde araç yok. Doğru davranış, bunu yapamayacağını söylemek:
+  ajan, verdiğin araçlar kadar iş yapabilir. Modelin gerçekte ne yaptığına Bonus 2'de bakıyorsun.
 - Ajana derste birinci ve dördüncü isteği veriyoruz (Adım 6 ve 7); öbürleri Bonus 2'de.
 
 ---
@@ -102,9 +102,10 @@ from ajan_araclari import ciz, duzenle, en_yakin_paragraflar, modele_sor, tarifi
   - `duzenle(girdi_yolu, yonerge, tohum, yol)`: var olan bir görseli yönergeye göre değiştirir. Konu 7'deki `duzenle`;
     bu kez tohumu ve kayıt yolunu da sen veriyorsun. `ciz` gibi kaydeder. Girdi dosyası yoksa istek göndermez,
     `Böyle bir dosya yok` yazar.
-  - `en_yakin_paragraflar(soru, kac)`: Konu 11'deki `kilavuzda_ara`'nın içindeki iş (paragrafların vektörleri, sorunun
-    vektörü, benzerlik puanları, soruya en yakın paragraflar), tek bir metin olarak. Tek fark: kaç paragraf geleceğini
-    `kac` ile sen söylüyorsun. `kilavuzda_ara`'nın kendisini Adım 5'te araç olarak, aynı adla yeniden yazıyoruz.
+  - `en_yakin_paragraflar(soru, kac)`: Konu 11'deki `kilavuzda_ara`'nın içindeki iş. Sorunun vektörünü kılavuz
+    paragraflarının vektörleriyle karşılaştırır, soruya en yakın paragrafları tek bir metin olarak verir. Tek fark: kaç
+    paragraf geleceğini `kac` ile sen söylüyorsun. `kilavuzda_ara`'nın kendisini Adım 5'te araç olarak, aynı adla
+    yeniden yazıyoruz.
   - `modele_sor(soru, sicaklik)`: Konu 5'te yazdığın fonksiyon.
   - `tarifi_goster(fonksiyon)`: Agno'nun bir fonksiyondan kuracağı araç tarifini yazdırır (Adım 5).
 - Anahtarı `../anahtar.txt`'den yardımcı dosya kendisi okur; bu hücre ilk çalıştığında, bir kez. `anahtar.txt`'yi
@@ -135,7 +136,7 @@ print(bulunan)
 - `2`: en yakın iki paragraf. İlk çalıştırmada kılavuzun 14 paragrafı vektöre çevrilir ve Konu 11'deki gibi
   `ciktilar/kilavuz_vektorleri.json` dosyasına saklanır (Konu 10'daki "ara çıktıyı sakla" fikri); sonraki aramalarda
   yalnızca sorunun vektörü istenir.
-- Bu fonksiyon birazdan bir aracın içinde çalışacak: model kılavuza bakmak isteyince bu metni o alacak.
+- Bu fonksiyon birazdan bir aracın içinde çalışacak: model kılavuz aracını seçince bu metin ona gidecek.
 
 ---
 
@@ -159,13 +160,15 @@ print(duzenle_tarifi)
 
 - Her aracın üç parçası var:
   - `name`: aracın adı. Model kararını bu adla bildirecek.
-  - `description`: aracın **tarifi**. Model aracı yalnızca bu cümleden tanır.
+  - `description`: aracın ne yaptığını anlatan cümle, kısaca **tarifi**. Model aracın ne işe yaradığını yalnızca bu
+    cümleden öğrenir.
   - `parameters`: aracın aldığı bilgiler. `"type": "string"` bilginin **metin** olduğunu, `"required"` zorunlu olduğunu
     söyler. Tek bilgi var: `yonerge`. Bilginin kendi kısa tarifi de var (`yonerge_alani`'ndaki `description`): modele bu
-    alana ne yazacağını söyler. Dıştaki `"type": "object"` ve `"properties"` her araçta aynı kalan kalıp:
+    alana ne yazacağını anlatır. Dıştaki `"type": "object"` ve `"properties"` her araçta aynı kalan kalıp:
     "bilgiler bir sözlük olarak gelecek, işte alanları".
+- Üç parçanın bütününe **araç tarifi** diyoruz (`ciz_tarifi`, `duzenle_tarifi`).
 - İç içe sözlükleri en içten başlayarak, her katmanı ayrı satırda kuruyoruz: önce bir bilginin tarifi
-  (`yonerge_alani`), sonra bilgiler (`alanlar`), sonra bilgilerin çerçevesi (`parametreler`), en son araç.
+  (`yonerge_alani`), sonra bilgiler (`alanlar`), sonra bilgilerin kalıbı (`parametreler`), en son araç.
 - İki aracın adı yardımcı dosyadaki fonksiyonların adıyla aynı: `ciz` ve `duzenle`. Model fonksiyonları görmez; yalnızca
   bu tarifleri görür.
 - İki araç aynı `parametreler` sözlüğünü kullanıyor: ikisi de yalnızca bir yönerge alıyor. Düzenlenecek dosyayı
@@ -189,7 +192,7 @@ print(cevap.status_code)
 
 - Soru bu kez `prompt` ile değil, sohbet biçiminde (`messages`) gidiyor: bir mesaj listesi; her mesajın bir rolü
   (`user`: kullanıcı) ve içeriği (`content`) var.
-- Araç tarifleri `tools` alanında, bir liste olarak. Model Konu 2'den beri kullandığımız llama.
+- Araç tarifleri `tools` alanında, bir liste olarak. Model, Konu 2'den beri kullandığımız llama.
 - `adres(MODEL)` Konu 2'deki adresi kurar; ayrı bir satırda, çünkü `requests.post`'un içine ikinci bir fonksiyon
   çağrısı koymuyoruz.
 
@@ -279,11 +282,11 @@ model = OpenAILike(id="@cf/google/gemma-4-26b-a4b-it", api_key=anahtar, base_url
 
 Çıktı yok.
 
-- `Agent` ajanın kendisi; `OpenAILike` ajanın konuşacağı model.
+- `Agent` ajanın kendisi; `OpenAILike` ajanın istek göndereceği model.
 - Adı yanıltmasın: `openai` paketi ve `OpenAILike` ("OpenAI'ye benzeyen") yalnızca isteğin **biçiminin** adı. Birçok
-  sağlayıcı bu biçimi konuşur. İstek Cloudflare'e gidiyor, model Cloudflare'in ücretsiz modeli; OpenAI hesabı da ödemesi
-  de gerekmiyor.
-- `base_url` Cloudflare'deki hesabının bu biçimi konuşan adresi: Konu 2'deki adresin `ai/run/...` yerine `ai/v1` ile
+  sağlayıcı bu biçimi kullanır. İstek Cloudflare'e gidiyor, model Cloudflare'in ücretsiz modeli; OpenAI hesabı da
+  ödemesi de gerekmiyor.
+- `base_url` Cloudflare'deki hesabının bu biçimi kabul eden adresi: Konu 2'deki adresin `ai/run/...` yerine `ai/v1` ile
   biten hâli. Model adı adreste değil, `id`'de.
 - Model de değişiyor: llama yerine Google'ın `gemma-4` modeli (Konu 8'in Bonus'unda görselleri okuyan model). Adım 3'te
   llama yeterliydi: tek bir istekti ve cevabını Konu 2'deki `result` biçiminde kendimiz okuduk. Ajanda ise model bir
@@ -335,8 +338,8 @@ def kilavuzda_ara(soru: str) -> str:
 - `return` ettiğimiz metin modele geri gider; model sonraki kararını ona bakarak verir. `print` yalnızca bize: aracın ne
   zaman, hangi bilgiyle çalıştığını ekranda görelim diye.
 - Görsel çizilemezse `ciz` `None` verir; araç bunu modele bir cümleyle söylüyor (`Görsel çizilemedi.`).
-- Araçların adı fonksiyonların adı: `afis_ciz`, `fotograf_duzenle`, `kilavuzda_ara`. `ciz` ve `duzenle` adları yardımcı
-  dosyada dolu; aynı adı verseydik yardımcı fonksiyonun üzerine yazardık.
+- Araçların adı fonksiyonların adı: `afis_ciz`, `fotograf_duzenle`, `kilavuzda_ara`. `ciz` ve `duzenle` adlarını
+  yardımcı dosya zaten kullanıyor; aynı adı verseydik yardımcı fonksiyonun üzerine yazardık.
 - Üçüncü araç Konu 11'deki `kilavuzda_ara`: aynı ad, aynı iş. Soruyu alır, kılavuzun en ilgili üç paragrafını tek bir
   metin olarak verir. Farkı, artık bir araç olması: tür ipuçları ve tarifi var; içinde `en_yakin_paragraflar` çalışıyor.
 
@@ -387,7 +390,7 @@ ajan = Agent(model=model, tools=araclar, tool_call_limit=3, telemetry=False)
 
 - Ajan = model + araç listesi + iki ayar.
 - Araçları listeye **adlarıyla**, parantezsiz yazıyoruz: fonksiyonu çalıştırmıyoruz, ajana teslim ediyoruz.
-  `afis_ciz()` yazsaydın fonksiyon hemen, bilgisiz çalışmaya çalışırdı ve hata verirdi.
+  `afis_ciz()` yazsaydın fonksiyon o anda, yönergesiz çalışırdı ve hata verirdi.
 - `tool_call_limit=3`: bir çalıştırmada **en fazla 3 araç** çalışır. Sınır dolunca Agno aracı çalıştırmaz, modele
   "sınır doldu" der. Görsel kotan böyle korunur.
 - `telemetry=False`: yazmazsan Agno her çalıştırmada kendi sunucusuna kullanım bilgisi gönderir. Biz göndermiyoruz;
@@ -399,9 +402,11 @@ print(cevap.content)
 ```
 
 Çıktı: modelin son cevabı, senin ekranında (ör. afişi çizdiğini ve nereye kaydettiğini söyleyen bir cümle). Hücre
-çalışırken `afis_ciz çalıştı: ...` satırı da görünür: o satırı aracın içindeki `print` yazıyor.
+çalışırken `afis_ciz çalıştı: ...` satırı da görünür: o satırı aracın içindeki `print` yazıyor. Bir çalıştırma birkaç
+saniye, bazen yarım dakika sürer.
 
-- `ajan.run` bütün döngüyü çalıştırır: istek, araç çağrısı, aracı çalıştırmak, sonucu geri göndermek, son cevap.
+- `ajan.run` bütün döngüyü çalıştırır: isteği modele gönderir, seçilen aracı çalıştırır, sonucu modele geri gönderir,
+  son cevabı alır.
 - Ekranda renkli bir yazı çıkarsa Agno bir sorunu haber veriyor; hücre yine de biter. Kırmızı `ERROR`: Agno modele
   ulaşamadı ya da istek reddedildi; durum kodu bu satırda yazar (`401` anahtar, `429` kota ya da hız sınırı). Sarı
   `WARNING Could not run function ...` ve altında uzun, kırmızı bir yazı: hata **aracın içinde** (ör. yanlış yazılmış
@@ -425,7 +430,7 @@ kararlari_goster(cevap)
 
 - `cevap.tools`: bu çalıştırmada çağrılan araçların listesi. Her çağrının adı `tool_name`, bilgileri `tool_args`.
   Konu 2'deki `cevap.status_code` gibi **noktayla** okunuyorlar: bunlar sözlük değil, Agno'nun kendi kayıtları.
-- İlk üç satır bir güvenlik ağı: kırmızı `ERROR` çıktıysa (anahtar yanlış, kota doldu, bağlantı koptu) Agno araç
+- Fonksiyonun ilk üç satırı bir güvenlik ağı: kırmızı `ERROR` çıktıysa (anahtar yanlış, kota doldu, bağlantı koptu) Agno araç
   listesini hiç kurmaz (`None`) ve `cevap.content`'e kısa bir hata metni koyar.
 - Yanında değer olmayan `return` "fonksiyondan burada çık" demek: liste yoksa gezecek bir şey de yok.
 - Model hiç araç çağırmadıysa liste boştur: `Çağrılan araç sayısı: 0`.
@@ -451,7 +456,8 @@ kararlari_goster(cevap)
 
 Çıktı: kararlar, senin ekranında. Kaç araç, hangi sırayla? Isınmadaki planınla karşılaştır.
 
-- Bu istek iki araç istiyor: önce kılavuz, sonra çizim. Bu sırayı kimse yazmadı; model seçti.
+- Isınmada bu istek için iki araçlık bir plan yazdın: önce kılavuz, sonra çizim. Ajanın kodunda bu sıra hiçbir yerde
+  yazmıyor; sırayı model seçiyor.
 - Model `kilavuzda_ara`'ya ne sordu? `afis_ciz`'e giden yönergede kılavuzdan gelen bir şey var mı: mürekkep mavisi ve
   kâğıt beyazı, insan yüzü olmaması, risograf baskı tarzı?
 
@@ -468,7 +474,7 @@ for mesaj in cevap.messages:
     print()
 ```
 
-Çıktı: bütün konuşma, mesaj mesaj. Aşağı yukarı şöyle:
+Çıktı: bütün konuşma, mesaj mesaj. Model önce kılavuza bakıp sonra çizdiyse aşağı yukarı şöyle:
 
 ```
 user | Sayfa Kahve için kılavuza uygun bir afiş yap
@@ -488,17 +494,17 @@ assistant | (modelin son cevabı)
 - `user`: senin isteğin; `assistant`: modelin cevabı; `tool`: aracın modele geri giden sonucu.
 - Araç isteyen `assistant` mesajının çoğu zaman metni olmaz (`None`): asıl içeriği araç çağrısıdır. Hangi aracı,
   hangi bilgiyle istediğini `kararlari_goster` gösterdi; burada konuşmanın sırasını görüyorsun.
-- Her `assistant` mesajı modele giden ayrı bir istek; her istekte o ana kadarki bütün konuşma yeniden gider.
-- Model kılavuza baktıysa paragraflar `tool` mesajında; afişin yönergesini yazarken onları okudu. Bu, Konu 11'deki
-  "yalnızca şu bilgilere dayanarak" fikrinin ajan hâli; tek fark, bilgiyi ne zaman getireceğine modelin kendisinin
-  karar vermesi.
+- Her `assistant` mesajı modele giden ayrı bir isteğin cevabı; her istekte o ana kadarki bütün konuşma yeniden gider.
+- Model kılavuza baktıysa paragraflar `tool` mesajında; afişin yönergesini yazarken bu paragraflar da modele giden
+  konuşmanın içindeydi. Bu, Konu 11'deki "yalnızca şu bilgilere dayanarak" fikrinin ajan hâli; tek fark, bilgiyi ne
+  zaman getireceğini modelin seçmesi.
 
 ---
 
 ## Adım 8 — Tarifi boz, düzelt
 
-Model araçları yalnızca tariflerinden tanıyor; tarif kötüyse karar da kötü olur. `kilavuzda_ara`'nın tarifini bilerek
-tek, tembel bir cümleye indiriyoruz:
+Model araçları adlarından ve tariflerinden tanıyor. Tarif kötüyse karar da kötüleşir mi? `kilavuzda_ara`'nın tarifini
+bilerek tek, tembel bir cümleye indiriyoruz:
 
 ```python
 def kilavuzda_ara(soru: str) -> str:
@@ -552,11 +558,12 @@ goster("ciktilar/afis.jpg")
 
 - İyi bir tarif iki şey söyler: araç **ne yapar** (içinde ne var) ve **ne zaman** seçilmeli. Yeni tarifin son cümlesi
   ikincisi: "Sayfa Kahve için görsel ya da metin üretmeden önce ... mutlaka bunu kullan."
-- Aynı model, aynı istek, aynı fonksiyon; değişen yalnızca bir cümlelik tarif.
+- Aynı model, aynı istek, aynı fonksiyon; değişen yalnızca tarif.
 - Model yanlış aracı seçtiğinde ya da gereken bir aracı atladığında ilk bakılacak yer çoğu zaman model değil, **tariftir**.
   Muğlak bir brif, ister insana ister modele verilsin, yanlış işi getirir.
-- Bozuk tarifle de kılavuza baktıysa bu da bir bulgu: model aracın adından (`kilavuzda_ara`) tahmin yürütmüş olabilir.
-  Ama tek denemeden emin olamayız; aynı isteği birkaç kez, birkaç farklı istekle denemek gerekir.
+- Bozuk tarifle de kılavuza baktıysa bu da bir bulgu: model aracı adına (`kilavuzda_ara`) bakarak seçmiş olabilir; ad
+  da tarifin bir parçası. Ama tek denemeden emin olamayız: aynı isteği birkaç kez denemek, başka isteklerle de bakmak
+  gerekir.
 
 ---
 
@@ -579,7 +586,7 @@ def slogan_yaz(konu: str) -> str:
 - Tırnakların arasındaki `BURAYA TARİFİ SEN YAZ.` metnini sil, kendi tarifini yaz:
   - Araç ne yapar, ne verir?
   - Ne zaman seçilmeli? (Ör. afiş için metin gerektiğinde.)
-  - `konu` bilgisine ne yazılmalı? Model kılavuzdan öğrendiği kuralları (ses tonu, yasak sözcükler) `konu`'ya
+  - `konu` bilgisine ne yazılmalı? Model kılavuzdan gelen kuralları (ses tonu, yasak sözcükler) `konu`'ya
     ekleyebilir; tarifinde bunu iste.
 - Baştaki ve sondaki üç tırnak kalsın; birini silersen `SyntaxError` alırsın. Tarif tek satıra sığmazsa üç tırnak
   arasında birkaç satıra yayılabilir.
@@ -610,7 +617,7 @@ kararlari_goster(cevap)
 print(cevap.content)
 ```
 
-Çıktı: kararlar ve son cevap, senin ekranında. Model senin aracını çağırdı mı, hangi sırayla, `konu`'ya ne yazdı?
+Çıktı: kararlar ve son cevap. Model senin aracını çağırdı mı, hangi sırayla, `konu`'ya ne yazdı?
 
 - Dört araç, sınır 4: bu iş üç adım istiyor (kılavuz, slogan, afiş). Sınır işin büyüklüğüne göre seçilir: beklenen araç
   sayısı artı biraz pay.
@@ -623,14 +630,14 @@ goster("ciktilar/afis.jpg")
 Çıktı: afiş. Slogan afişin yönergesine taşınmış mı, afişte yazı doğru çıkmış mı? Slogan kılavuzun ses tonuna uyuyor mu
 (ünlem yok; "indirim", "hemen" yok)?
 
-Bu afiş bugünün çıktısı: kılavuza bakan, sloganını kendi yazan, sırasını kendi seçen bir programın işi.
+Bu afiş bugünün çıktısı: araçlarını bizim kurduğumuz, sırasını modelin seçtiği bir programın işi.
 
 ---
 
 ## Bonus
 
-Üç küçük deneme, derste vakit kalırsa ya da evde. **1**'i Adım 9'dan hemen sonra çalıştır: Adım 9'daki çalıştırmayı
-sayıyor.
+Üç küçük deneme, derste vakit kalırsa ya da evde. Birinciyi Adım 9'dan hemen sonra çalıştır: Adım 9'daki çalıştırmanın
+isteklerini sayıyor.
 
 ### Bonus 1 — Bir çalıştırma kaç istek?
 
@@ -645,7 +652,7 @@ print("Modele giden istek:", istek_sayisi)
 
 Çıktı: `Modele giden istek: ...`, senin ekranında (Adım 9'daki çalıştırma için).
 
-- Konu 1'deki sayaç: Adım 7'de gördüğün gibi her `assistant` mesajı modele giden ayrı bir istek.
+- Konu 1'deki sayaç: Adım 7'de gördüğün gibi her `assistant` mesajı modele giden ayrı bir isteğin cevabı.
 - Bir cümle yazdın; modele birden çok istek gitti. Model her turda bir araç çağırdıysa istek sayısı, araç çağrısı
   sayısından bir fazladır: son cevap için de bir istek gider.
 
@@ -667,7 +674,7 @@ print("Model istekleri için yaklaşık neuron:", yuvarlak)
   neuron; belirteç başına 0,009091 ve 0,027273 (kodda ondalık ayırıcı nokta: `0.009091`).
 - Girdi neden büyük? Her istekte bütün konuşma ve bütün araç tarifleri yeniden gidiyor; kılavuz paragrafları da
   konuşmaya eklendikçe istek büyüyor.
-- Bunun üstüne her `afis_ciz` bir görsel: görsel başına yaklaşık 58 neuron (Konu 8'deki hesap). Günlük ücretsiz kota
+- Bunun üstüne her `afis_ciz` çağrısı bir görsel: görsel başına yaklaşık 58 neuron (Konu 8'deki hesap). Günlük ücretsiz kota
   10.000 neuron; bütün modeller aynı kotadan yer.
 - `tool_call_limit` olmasaydı ve model her turda "bir düzenleme daha" deseydi her tur bir istek ve bir görsel daha
   harcardı.
@@ -680,8 +687,8 @@ kararlari_goster(cevap)
 goster("ciktilar/duzenlenmis.jpg")
 ```
 
-Çıktı: `fotograf_duzenle çalıştı: ...`, kararlar ve düzenlenmiş fotoğraf. Model doğru aracı seçti mi, `dosya` bilgisine
-ne yazdı? Senin çıktına bak.
+Çıktı: `fotograf_duzenle çalıştı: ...`, kararlar ve düzenlenmiş fotoğraf. Doğru araç seçildi mi, model `dosya`
+bilgisine ne yazdı? Senin çıktına bak.
 
 - Adım 4'te dosya yolunu biz yazmıştık; şimdi o da modelin kararı. Model var olmayan bir yol yazarsa (`fincan.jpg`)
   `duzenle` `Böyle bir dosya yok` der, araç modele `Fotoğraf düzenlenemedi.` cevabını verir; model başka bir yol
@@ -695,10 +702,10 @@ print(cevap.content)
 
 Çıktı: kararlar ve son cevap, senin ekranında.
 
-- Üçüncü istek bir soru; çizilecek ya da düzenlenecek bir şey yok. Model kılavuza baktı mı? Cevaptaki saatler
-  kılavuzdakiyle (`veri/kilavuz.txt`, son paragraf) aynı mı?
-- Model kılavuza baktıysa ajan bu kez yalnızca bilgi getirip cevap yazdı: Konu 11'deki "önce kılavuzda ara, sonra cevapla" işi, ama kılavuza
-  bakma kararı modelin.
+- Üçüncü istek bir soru; çizilecek ya da düzenlenecek bir şey yok. Kılavuza bakıldı mı, yoksa model saatleri kendisi mi
+  yazdı? Cevaptaki saatler kılavuzdakiyle (`veri/kilavuz.txt`, son paragraf) aynı mı?
+- Model kılavuza baktıysa ajan bu kez yalnızca bilgi getirip cevap yazdı: Konu 11'deki "önce kılavuzda ara, sonra
+  cevapla" işi, ama kılavuza bakma kararı modelin.
 
 ```python
 cevap = ajan.run("afişi Instagram'da paylaş")
@@ -706,7 +713,7 @@ kararlari_goster(cevap)
 print(cevap.content)
 ```
 
-Çıktı: kararlar ve son cevap, senin ekranında.
+Çıktı: kararlar ve son cevap; ikisini birlikte oku.
 
 - Beşinci isteği hiçbir araç karşılamıyor. Model yapamayacağını söyledi mi, yoksa bir araç mı çağırdı?
 - Son cevabında yapmadığı bir şeyi ("paylaştım") yapmış gibi anlatıyor mu? Son cevap da bir model cümlesi; ajanın ne
@@ -730,12 +737,13 @@ print(ilk_mesaj.role, "|", ilk_mesaj.content)
 
 Çıktı: kararlar ve `system | Sayfa Kahve için çalışan bir tasarım asistanısın. ...`.
 
-- Docstring tek bir aracı tarif eder; `instructions` bütün işi. Agno onu konuşmanın başına bir **sistem mesajı**
-  (`system`) olarak koyar; model her kararında onu da okur.
-- İstekte bilerek "indirim" var; kılavuz bu sözcüğü yasaklıyor. Model kılavuza baktı mı? Kullanıcıya itiraz etti mi,
+- Docstring tek bir aracı tarif eder; `instructions` ise bütün işi anlatan **genel brif**. Agno onu konuşmanın başına
+  bir **sistem mesajı** (`system`) olarak koyar; her istekte modele o da gider.
+- İstekte bilerek "indirim" var; kılavuz bu sözcüğü yasaklıyor. Bu kez kılavuza bakıldı mı? Model isteğe itiraz etti mi,
   yoksa yine de çizdi mi? Senin çıktına bak.
-- Bir kural ya aracın tarifinde ("ne zaman kullan") ya da ajanın genel brifinde durur. Bir araca özgü kural tarifte,
-  bütün işi ilgilendiren kural genel brifte daha kolay bulunur.
+- Bir kural ya aracın tarifinde ("ne zaman kullan") ya da ajanın genel brifinde durur. Kural tek bir aracı
+  ilgilendiriyorsa o aracın tarifine, bütün işi ilgilendiriyorsa genel brife yaz; düzeltmen gerektiğinde nerede
+  olduğunu bilirsin.
 
 ---
 
@@ -798,7 +806,7 @@ print(ilk_mesaj.role, "|", ilk_mesaj.content)
 
 - **Ajan:** kararı veren bir dil modeli, modelin kullanabileceği araçlar ve ikisini bağlayan bir döngü.
 - **Araç tarifi:** ad, tarif ve bilgiler. Elle iç içe sözlüklerle (`tools`), Agno'da bir fonksiyonla: ad fonksiyonun adı,
-  tarif docstring, bilgiler tür ipuçlu parametreler.
+  tarif docstring, bilgiler `def` satırındaki tür ipuçlu adlar (`yonerge: str`).
 - **Araç çağrısı:** model "şu aracı, şu bilgiyle çalıştır" der (`tool_calls`); çalıştıran programdır.
 - **Döngü:** aracın sonucu modele geri gider, model yeniden karar verir; son cevaba ya da sınıra kadar.
 - **Kararı görünür kılmak:** `cevap.tools` (hangi araç, hangi bilgi), `cevap.messages` (bütün konuşma).
@@ -810,7 +818,8 @@ print(ilk_mesaj.role, "|", ilk_mesaj.content)
 ## Bu konunun tek cümlesi
 
 Ajan, kararı modele bırakan bir döngüdür: model hangi aracın, hangi bilgiyle çalışacağını seçer, aracı program
-çalıştırır; kararın kalitesi araçları ne kadar net tarif ettiğine, güvenliği de koyduğun sınıra bağlıdır.
+çalıştırır; kararın kalitesi araçları ne kadar net tarif ettiğine, güvenliği de hangi araçları verdiğine ve koyduğun
+sınıra bağlıdır.
 
 ---
 
@@ -818,19 +827,20 @@ Ajan, kararı modele bırakan bir döngüdür: model hangi aracın, hangi bilgiy
 
 | Terim | Anlamı |
 |---|---|
-| Ajan (agent) | Bir isteğe hangi araçların, hangi sırayla gerektiğine kendisi karar veren program: model + araçlar + döngü |
+| Ajan (agent) | Bir isteğe hangi araçların, hangi sırayla kullanılacağını bir dil modelinin seçtiği program: model + araçlar + döngü |
 | Araç (tool) | Modele tanıtılan, adı, tarifi ve aldığı bilgileri belli bir fonksiyon |
-| Araç tarifi | Aracın ne yaptığını anlatan cümle (`description`); model aracı yalnızca bundan tanır |
+| Tarif (description) | Aracın ne yaptığını ve ne zaman seçileceğini anlatan cümle; model aracın ne işe yaradığını yalnızca bundan öğrenir |
+| Araç tarifi | Modele giden üç parçanın bütünü: ad, tarif, bilgiler (`tools` içindeki her sözlük; `tarifi_goster` bunu yazdırır) |
 | Araç çağrısı (tool call) | Modelin "şu aracı, şu bilgiyle çalıştır" diyen cevabı (`tool_calls`) |
 | Yapılandırılmış çıktı | Serbest bir cümle yerine alanları belli bir cevap; burada `tool_calls`'taki `name` ve `arguments` (Konu 5'te adı geçti) |
 | Ajan çerçevesi (agent framework) | Araç tariflerini kuran, döngüyü çalıştıran, sınırı sayan kütüphane; bu derste Agno |
 | `messages` | Sohbet biçimindeki istek: rolü (`user`, `assistant`, `tool`, `system`) ve içeriği olan mesajların listesi |
 | Tür ipucu (type hint) | `yonerge: str` gibi, bir bilginin türünü söyleyen not; `-> str` fonksiyonun verdiği türü söyler |
-| Docstring | Fonksiyonun ilk satırındaki üç tırnaklı açıklama; Agno araç tarifini buradan okur |
+| Docstring | `def` satırının hemen altındaki üç tırnaklı metin; Agno aracın tarifini buradan okur |
 | `tool_call_limit` | Bir ajan çalıştırmasında en fazla kaç aracın çalışacağı; döngünün durma koşulu |
 | Telemetri | Bir programın kullanım bilgisini kendi geliştiricisine göndermesi; Agno'da `telemetry=False` ile kapanır |
-| `OpenAILike` | Agno'da "OpenAI biçimini konuşan" bir modeli tanıtan sınıf; istek Cloudflare'e gider |
-| Sistem mesajı (`instructions`) | Ajanın bütün işi için genel yönergesi; konuşmanın başına konur |
+| `OpenAILike` | Agno'da OpenAI'nin istek biçimini kullanan bir modeli tanıtmanın yolu; istek Cloudflare'e gider, OpenAI hesabı gerekmez |
+| Genel brif (`instructions`) | Ajanın bütün işi için yazılan brif; Agno onu konuşmanın başına bir sistem mesajı (`system`) olarak koyar |
 | Belirteç (token) | Modelin metni böldüğü parçalar; kota girdi ve çıktı belirteçlerine göre harcanır |
 
 ---
@@ -846,7 +856,7 @@ arkadaşlar gösterecek. Ajan final projesi için zorunlu değil.
 ## Sonraki konu
 
 **Konu 13 — Final atölyesi.** Yeni kavram yok: dönem boyunca öğrendiklerini (koddan görsel, hat, RAG, ajan) kendi
-projende birleştirip çalışan bir çekirdeğe dönüştürüyorsun. Ajan, projen sırası belirsiz bir iş içeriyorsa bir seçenek;
+projende birleştirip projenin çalışan ilk hâlini kuruyorsun. Ajan, projen sırası belirsiz bir iş içeriyorsa bir seçenek;
 sırası belliyse Konu 10'daki hat daha ucuz ve daha öngörülebilir.
 
 ---
@@ -861,7 +871,7 @@ sırası belliyse Konu 10'daki hat daha ucuz ve daha öngörülebilir.
 3. `: str` "bu bilgi metin", `-> str` "fonksiyon metin verir". Elle yazılan tarifte `"type": "string"`.
 4. `None`. `print` yalnızca ekrana yazar; modele `return` edilen gider (alıştırmanın 3. bozuk kodu).
 5. Bir çalıştırmada üç araç çalıştıktan sonra model bir araç daha isterse. Agno o aracı çalıştırmaz, modele "sınır
-   doldu" der; ama modele sormayı sürdürür: model yine de istek göndermeye devam edebilir.
+   doldu" der; ama döngüyü durdurmaz: modele istek gitmeye devam edebilir.
 6. Üç: iki araç çağrısı için iki istek, son cevap için bir istek daha.
 7. Agno her çalıştırmada kendi sunucusuna kullanım bilgisi gönderir.
 8. Hat. Sıra belliyse kararı modele bırakmak yalnızca istek, gecikme ve yanlış seçim ihtimali ekler (Konu 10).

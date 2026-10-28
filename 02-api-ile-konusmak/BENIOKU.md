@@ -46,7 +46,7 @@ kopyala**, kopyada çalış; böylece `git pull` hiç çakışmaz.
 `FileNotFoundError: ... '../anahtar.txt'` hatasıyla durur, sonraki adımlar da çalışmaz.
 Anahtarın henüz yoksa:
 
-- Derste **yanındakiyle birlikte** çalış: istekleri onun ekranında izle, hücreleri sen de yaz.
+- Derste **hocanın paylaştığı ekrandan** izle: istekleri orada gör, hücreleri sen de yaz.
 - Isınma (defterin ilk bölümü) ve `alistirma.ipynb` anahtarsız çalışır.
 - Kurulum yönergesinin 6. adımını (Cloudflare hesabı, `../00-hazirlik/kurulum-yonergesi.md`)
   **bugün** bitir. Ödev için kendi anahtarın gerekiyor.

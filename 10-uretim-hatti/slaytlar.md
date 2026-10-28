@@ -7,12 +7,12 @@ Ahmet Emre Aladağ
 
 ## Parçaları birleştirmek
 
-- Konu 5'te slogan yazdırdık, Konu 8'de görselleri koddan ve toplu olarak ürettik, Konu 9'da arayüzden video
+- Konu 5'te slogan yazdırdın, Konu 8'de görselleri koddan ve toplu olarak ürettin, Konu 9'da arayüzden video yaptın
 - Her biri ayrı bir işti; birinin sonucunu öbürüne sen taşıdın: kopyala, yapıştır, dosyayı bul
-- Bugün bu taşıma işini programa veriyoruz: tek bir **brif** girer, bir taslak seti çıkar
+- Bugün bu taşıma işi programa geçiyor: tek bir **brif** girer, bir taslak seti çıkar
 - Yeni olan araçlar değil, aralarındaki **bağlar**: bir adımın çıktısı sıradakinin girdisi
 - Konu 8'deki kurallar (kararlı ad, kaldığı yerden devam, üretim günlüğü) hattın her adımında geçerli
-- Final projesi de böyle bir hat: konu girer; metin ve görsel çıkar, hepsi düzenli ve kayıtlı
+- Final projesi de böyle bir hat: konu girer, metin ve görsel çıkar; hepsi düzenli ve kayıtlı
 
 -----
 
@@ -34,7 +34,7 @@ Ahmet Emre Aladağ
 - Bir animasyon: senaryo → storyboard → animatik → animasyon → render
 - Her okun iki ucunda farklı bir kişi, farklı bir araç ve bir **teslim dosyası** var
 - Ajanslarda bu düzene "iş akışı" denir; dosya adlandırma ve klasör düzeni kuralları bunun için yazılır
-- Bugün kurduğumuz hat bu akışın küçük, otomatik bir taslağı: insanların yerine değil, onların önüne taslak koymak için
+- Bugün kuracağın hat bu akışın küçük, otomatik bir örneği: insanların yerini almak için değil, önlerine taslak koymak için
 
 **Sohbete yaz:** senin bildiğin bir tasarım işinde (afiş, ambalaj, sosyal medya serisi) hangi adımlar sırayla gelir? Hangi adımın çıktısı hangisine gider?
 
@@ -58,6 +58,7 @@ Ahmet Emre Aladağ
 - Farklı çıkan bir ara çıktı yeniden üretilirse sonraki halkalarla bağı kopar: dünkü görsel, bugünkü sloganla aynı kayıtta durur
 - **Ucuz ve her seferinde aynı çıkanı yeniden kur:** iki metni birleştirmek gibi; saklamak yalnızca dosya kalabalığı yapar
 - Bir halka çalışmadan önce sorar: "bu zaten var mı?" Varsa onu kullanır, yoksa üretip saklar
+- **Boşu saklama:** boş bir sonuç dosyaya yazılırsa hat onu bitmiş iş sanır ve bir daha hiç denemez
 - **Yanılgı:** "her seferinde baştan üretmek daha temiz." Daha pahalı, daha yavaş ve sonuçları birbirini tutmaz
 
 -----
@@ -76,13 +77,13 @@ Ahmet Emre Aladağ
 
 ## Bir halka koparsa: zincir benzetmesi
 
-- Bir zincir en zayıf halkasından kopar; uzun bir hatta da halkalardan biri er geç kopar
+- Bir zincir en zayıf halkasından kopar; uzun bir üretim hattında da er geç bir halka işini yapamaz
 - Sebepler tanıdık: internet gider, kota biter, model bir yönergeyi reddeder, bir cevap boş gelir
 - Kötü bir hat orada durur; sıradaki işler hiç yapılmaz ve neyin eksik kaldığını tek tek aramak gerekir
 - İyi bir hat kopan halkayı **kayda geçirir** ve sıradaki işle **devam eder**
 - Sonraki çalıştırmada yalnızca eksik olan denenir; bitenler yerinde durur
 - Bir halkanın çıktısına sıradakine vermeden önce bakmak gerekir: boş ya da bozuk bir sonuç, hata vermeden sonraki halkayı da bozar
-- Hata çıkmaması her şeyin yolunda olduğunu göstermez: hat bazen hata vermeden yanlış bir şey üretir; bunu ancak kayıtlar gösterir
+- Hata çıkmaması her şeyin yolunda olduğu anlamına gelmez: hat bazen hata vermeden yanlış bir şey üretir; bunu ancak kayıtlar ortaya çıkarır
 
 -----
 
@@ -90,10 +91,10 @@ Ahmet Emre Aladağ
 
 - Gemilerde seyir defteri tutulur: ne zaman, nereden, hangi rotayla; bir şey ters gidince geriye bakılır
 - Hattın günlüğü de öyle: hangi ayarlarla çalıştı, hangi ara çıktılar oluştu, her işin sonucu ne oldu
-- Günlükteki her kaydın aynı biçimi var: hangi halka, ne girdi, ne çıktı, durum (oldu / olmadı)
+- Günlükteki her kayıt aynı biçimde yazılır: hangi halka, ne girdi, ne çıktı, durum (oldu / olmadı)
 - Bir halkanın çıktısı sıradakinin girdisi olduğu için günlükte zincir görünür: bu görsel şu yönergeden, o yönerge şu slogandan
-- Final projesinde teslim edilen üretim günlüğü de budur: hangi model, hangi parametre, ne çıktı, ne düzeltildi
-- Şeffaflık için de gerekli: bir müşteriye ya da hocana hangi işin nasıl üretildiğini gösterebilirsin (Konu 7: etik ve telif)
+- Final projesinde teslim edeceğin üretim günlüğü de böyle bir dosya; hocan işin nasıl üretildiğini oradan okur
+- Şeffaflık için de gerekli: bir müşteriye hangi görselin hangi modelle, hangi yönergeyle üretildiğini gösterebilirsin (Konu 7: etik ve telif)
 
 -----
 
@@ -112,9 +113,9 @@ Ahmet Emre Aladağ
 
 ## Otomasyonun yeri: insan döngüde
 
-- Hat yorulmaz ve unutmaz: dosya adını, kaydı, "zaten var mı?" sorusunu her seferinde aynı yapar
+- Hat yorulmaz ve unutmaz: dosyayı hep aynı adla kaydeder, her işi kayda geçirir, "zaten var mı?" sorusunu her seferinde sorar
 - Hattın yapamadığı: brifi yazmak, iyi sloganı seçmek, yazıyı yerleştirmek, "bu marka bu değil" demek
-- İyi bir hatta insanın araya girdiği yerler bellidir: ara çıktılara bakılır, beğenilmeyen değiştirilir, hat oradan devam eder
+- İyi bir düzende insanın devreye gireceği yerler önceden bellidir: matbaada tiraj, prova baskı onaylandıktan sonra basılır
 - Buna **insan döngüde** (human in the loop) denir; profesyonel üretimde yaygın bir düzendir
 - Her şeyi otomatik yapan bir hat hızlıdır ama kör; her şeyi elle yapan bir süreç dikkatlidir ama yavaş
 - Kod tekrar eden işi üstlenir; karar ve zevk tasarımcıda kalır

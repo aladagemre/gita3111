@@ -11,7 +11,7 @@ Ahmet Emre Aladağ
 - Gerçek bir müşteri işinde brif tek başına yetmez: markanın kuralları da vardır
 - Renkler, yazı tipleri, yasak sözcükler, logonun nasıl kullanılacağı: hepsi bir belgede yazılıdır, **marka kılavuzunda**
 - Dil modeli bu belgeyi hiç görmedi; senin müşterin, senin markan onun eğitim verisinde yok
-- Konu 2'de soruya **bağlamı**, yani arka plan bilgisini, elle yazdık; bir kılavuzun tamamını her soruya elle yazamayız
+- Konu 2'de soruya **bağlamı**, yani arka plan bilgisini, elle ekledik; bir kılavuzun tamamını her soruya elle ekleyemeyiz
 - Bugünkü soru: modele **senin** belgeni nasıl okuturuz?
 
 -----
@@ -20,7 +20,7 @@ Ahmet Emre Aladağ
 
 - Model eğitildiği metinlerden öğrendi: internette sık geçen şeyleri iyi bilir (Bauhaus, Helvetica, altın oran)
 - Az geçen şeyleri zayıf bilir: küçük bir markanın geçmişi, bir şehirdeki yerel bir etkinlik
-- Hiç geçmeyenleri hiç bilmez: müşterinin geçen hafta onayladığı kılavuz, ajansın brif arşivi, dünkü toplantı notu
+- Hiç geçmeyenleri hiç bilmez: henüz yayımlanmamış bir kampanya, bir ajansın iç yazışmaları, dünkü toplantı notu
 - Eğitimin bir bitiş tarihi var; o tarihten sonra olan hiçbir şey modelde yok
 - Bilmediğini çoğu zaman söylemez; boşluğu en olası görünen cümleyle doldurur
 - **Yanılgı:** "model internete bakıyor." Bazı sohbet uygulamaları arama yapar; bizim koddan çağırdığımız model ise yalnızca eğitimde öğrendiklerini ve kendisine gönderilen metni bilir
@@ -33,8 +33,8 @@ Ahmet Emre Aladağ
 - Örnek: bir müzenin açılış saatlerini sorarsın; model makul görünen ama yanlış saatler yazabilir
 - Cevap mantıklı göründüğü için tehlikelidir: yanlış olduğu ilk bakışta anlaşılmaz
 - Tasarımda bedeli somuttur: yanlış renk kodu baskıya gider, yasak bir sözcük afişe girer, logo yanlış kullanılır
-- Uydurma bir arıza değil, modelin çalışma biçiminin sonucu: doğruyu değil, olası olanı seçer
-- Çözüm modeli "daha akıllı" yapmak değil; doğru bilgiyi soruyla birlikte ona vermek
+- Uydurma, bir arıza değil, modelin çalışma biçiminin sonucudur: model doğruyu değil, olası olanı seçer
+- Çözüm, modeli "daha akıllı" yapmak değil; doğru bilgiyi sorunun yanına koymak
 
 -----
 
@@ -43,16 +43,16 @@ Ahmet Emre Aladağ
 - İki öğrenci düşün: biri sınava ezberden girer, öbürü açık kitap sınavına
 - Ezberden giren, bilmediği soruda tahmin yürütür; bazen tutturur, bazen uydurur
 - Açık kitapla giren önce kitapta ilgili sayfayı bulur, sonra cevabı o sayfaya bakarak yazar
-- İyi bir açık kitap öğrencisi, kitapta olmayan bir soruya "kitapta yok" der
-- Bugünkü yöntem modeli ikinci öğrenciye çevirir: soruyla birlikte kitabın ilgili sayfalarını da veririz
+- İyi bir açık kitap öğrencisi, cevabı kitapta olmayan bir soruya "kitapta yok" der
+- Bugünkü yöntem, modeli ikinci öğrenciye çevirir: soruyla birlikte kitabın ilgili sayfalarını da veririz
 - Dikkat: öğrenci ancak doğru sayfayı açarsa doğru cevap verir; yanlış sayfayı açan en iyi öğrenci de yanılır
 
 -----
 
 ## RAG nedir?
 
-- **RAG**, İngilizce *retrieval-augmented generation*: Türkçesiyle "bulup getirerek üretmek"
-- Fikir basit: modele soru sormadan önce belgeden soruyla ilgili parçaları bul, soruyla birlikte gönder; bağlamı sen yazmazsın, belgeden gelir
+- **RAG** (İngilizce *retrieval-augmented generation*: "bulup getirerek üretmek"): ad, bu üç sözcüğün baş harflerinden gelir
+- Fikir basit: modele sormadan önce belgede soruyla ilgili parçaları bul, onları da yönergeye ekle; bağlamı sen yazmazsın, belgeden gelir
 - Model yeniden eğitilmez; belge değişince modele değil, belgeye dokunursun
 - Model cevabı kendi hafızasından değil, önüne konan metinden kurar
 - Belge senin elinde kalır: hangi parçanın modele gittiğini görebilir, denetleyebilirsin
@@ -66,19 +66,19 @@ Ahmet Emre Aladağ
 - **2. Bul:** sorunun vektörünü al; ona en yakın parçaları seç (Konu 4'teki benzerlik)
 - **3. Yönergeye koy ve sor:** "yalnızca şu bilgilere dayanarak cevap ver" + bulunan parçalar + soru → metin modeli
 - Birinci adım belge başına bir kez yapılır ve saklanır; ikinci ve üçüncü adım her soruda tekrarlanır
-- Kütüphane benzetmesi: kitapları rafa dizmek bir kez yapılır; her okur geldiğinde raftan doğru kitaplar çekilir; okur onları okuyup cevaplar
+- Kütüphane benzetmesi: kitaplar rafa bir kez dizilir; her soru geldiğinde raftan doğru kitaplar çekilir ve cevap onlara bakılarak yazılır
 - Üç adımın üçü de tanıdık iş: bir dosyayı bölmek, sayıları karşılaştırmak, metinleri birleştirmek
 
 -----
 
 ## Parçalamak: belgenin nasıl bölündüğü önemli
 
-- Parça çok büyükse (bütün bir sayfa) soruyla ilgisiz bilgi de gelir; model asıl kuralı kalabalıkta kaçırabilir
+- Parça çok büyükse (bütün bir sayfa) soruyla ilgisiz bilgi de gelir; model asıl kuralı gözden kaçırabilir
 - Parça çok küçükse (tek cümle) kural ile gerekçesi ayrılır: "kırmızı kullanılmaz" gelir, "neden" gelmez
 - İyi bir parça tek bir konuyu kendi başına anlatır: bir kural, bir paragraf
 - İyi yazılmış bir marka kılavuzu bu yüzden RAG'e zaten elverişlidir: her bölüm bir konu
 - Bir konu birkaç bölüme dağılmışsa (renk kuralları hem genel bölümde hem ürün bölümlerinde) hepsini birden bulmak zorlaşır
-- Tasarımcı için ders: belge yazarken de sor: "bu paragraf tek başına okununca anlaşılır mı?"
+- Tasarımcı için ders: belge yazarken de "bu paragraf tek başına okununca anlaşılır mı?" diye sor
 - **Ad karışmasın:** Konu 5'teki parça bir belirteçti, kelimenin bir kırıntısı; RAG'deki parça belgenin bir bölümüdür
 
 -----
@@ -88,7 +88,7 @@ Ahmet Emre Aladağ
 - Bulma adımı soruya **anlamca** en yakın parçaları seçer; kelimesi kelimesine eşleşme gerekmez (Konu 4)
 - "Logonun etrafında ne kadar boşluk kalmalı?" sorusu, içinde "çevresinde" yazan paragrafı da bulabilir
 - Konu 4'ü hatırla: model "benzer" derken "benzer yerlerde geçen"i kasteder; bu her zaman "aynı şeyi söyleyen" değildir
-- Kaç parça alınacağına sen karar verirsin: az alırsan gerekli bir kural dışarıda kalabilir, çok alırsan yönerge kalabalıklaşır
+- Kaç parça alınacağına sen karar verirsin: az alırsan gerekli bir kural dışarıda kalabilir, çok alırsan yönerge gereksiz yere uzar
 - Kural: model yalnızca kendisine gönderilen parçaları bilir; gönderilmeyen parça onun için yoktur
 - Bu yüzden RAG'de cevap, bulma adımından daha iyi olamaz
 
@@ -98,7 +98,7 @@ Ahmet Emre Aladağ
 
 - Modele giden metin üç kısımdan oluşur: **talimat + bulunan parçalar + soru**
 - Talimat sınırı çizer: "yalnızca aşağıdaki bilgilere dayanarak cevap ver"
-- Ve bir çıkış kapısı gösterir: "bilgilerde cevap yoksa bilmiyorum de"; bu kapı yoksa model boşluğu yine kendisi doldurur
+- Bir de çıkış kapısı gösterir: "bilgilerde cevap yoksa bilmiyorum de"; bu kapı yoksa model boşluğu yine kendisi doldurur
 - Parçaları "Bilgiler:" gibi bir başlıkla sorudan ayırmak, modelin neyin kaynak neyin soru olduğunu görmesini kolaylaştırır
 - Talimat da modelin devamını yazdığı metne dahildir (Konu 5): bir kural değil, bir yönlendirme; model çoğu zaman uyar, her zaman değil
 - Şablon bir kez yazılır, her soruda yeniden kullanılır: Konu 10'daki yönerge kalıbı gibi
@@ -122,7 +122,7 @@ Ahmet Emre Aladağ
 
 - Görsel model kılavuzu okumaz; ona yalnızca bir yönerge gider (Konu 7)
 - Bu yüzden zincir iki halkalı: önce kılavuzdan görselle ilgili kurallar bulunur, sonra metin modeli bu kurallarla bir görsel yönergesi yazar
-- Ne aradığın, ne bulacağını belirler: afişin konusunu aramak bir şey, görselin kurallarını aramak başka bir şey getirir
+- Ne aradığın, ne bulacağını belirler: afişin konusunu ararsan başka, görselin kurallarını ararsan başka parçalar gelir
 - Bir kural üç yerde kaybolabilir: **aramada** (kural metin modeline hiç gitmedi), **yönergede** (metin modeli kuralı görsel yönergesine koymadı) ya da **çizimde** (kural yönergede vardı ama görsel model uygulamadı)
 - Hangisinin olduğunu ara çıktılara bakarak bulursun: bulunan parçalar ve yazılan yönerge (Konu 10)
 - Kılavuza uygunluğu son kez denetleyen yine tasarımcıdır: model taslak üretir, onay senin
@@ -143,7 +143,7 @@ Ahmet Emre Aladağ
 ## RAG'in sınırları
 
 - Uydurmayı azaltır, sıfırlamaz: model talimata rağmen bilgilerde olmayan bir şey ekleyebilir
-- Bulma yanılırsa cevap da yanılır: yanlış parça gelirse model onu doğru sanıp kullanır
+- Yanlış parça gelirse model onu doğru bilgi sanıp kullanabilir; parçanın soruyla gerçekten ilgili olup olmadığını her zaman sorgulamaz
 - Belge yanlışsa ya da eskimişse cevap da öyle olur; RAG belgenin doğruluğunu denetlemez
 - Belge değişince vektörler yeniden hesaplanmalı; yoksa arama eski belgede yapılır
 - Gönderdiğin parçalar modelin sunucusuna gider: gizli bir müşteri belgesini göndermeden önce izin gerekir
@@ -155,7 +155,7 @@ Ahmet Emre Aladağ
 
 **Kendi kılavuzun, kendi RAG'in.**
 
-1. Kendi markan ya da final projen için kısa bir kılavuz yaz: 8–12 paragraf, her paragraf tek bir kural
+1. Kendi markan ya da final projen için kısa bir kılavuz yaz: 8–12 paragraf, her paragraf tek bir konu
 2. Ders defterinin kopyasıyla kılavuzunu parçala, vektöre çevir, sakla
 3. Üç soru sor: kılavuzda cevabı olan, cevabı yarım olan, cevabı hiç olmayan
 4. Kılavuzuna uygun bir görsel yönergesi yazdırıp bir görsel üret

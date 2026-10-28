@@ -1,7 +1,7 @@
 # Konu 8 — Koddan Görsel ve Toplu Üretim
 
 Bu not konunun özetidir; derste çalıştırdığımız `ders.ipynb` defteriyle **aynı sırada**
-ilerler: Isınma, sonra Adım 1–6 ve kısa bir Bonus. Derste kaçırdığın bir yer olursa
+ilerler: Isınma, sonra Adım 1–6 ve Bonus. Derste kaçırdığın bir yer olursa
 buradan oku, sonra defterde o adımın hücrelerini çalıştır. Nottaki kod blokları
 defterdeki hücrelerin birebir aynısı.
 
@@ -9,8 +9,8 @@ defterdeki hücrelerin birebir aynısı.
 **Bu konuda:** önce aynı işi koddan, dosyanın adını kendimiz koyarak yapıyoruz. Sonra arayüzün yapamadığına geçiyoruz:
 bir görsel **ızgarası**. "Neden kod öğreniyorum?" sorusunun cevabı bu konu:
 
-> Bir şablon ve iki liste: stiller × renkler, birkaç hücre. Önce hesap, sonra küçük bir deneme. Sınır koyar,
-> kaldığı yerden devam eder, her şeyi kayda geçiririz. Sonunda hepsi tek bir kontak sayfasında.
+> Bir şablon ve iki liste: stiller × renkler, birkaç hücre. Önce hesap, sonra küçük bir deneme. Sınır koyarız;
+> iş yarıda kalırsa kaldığı yerden sürer, her şey kayda geçer. Sonunda hepsi tek bir kontak sayfasında.
 
 **Konunun sonunda elinde:** `ciktilar/` klasöründe iki tek görsel; `izgara/` klasöründe 12 görsel, hepsini gösteren bir
 kontak sayfası (`kontak_sayfasi.png`) ve her görselin nasıl üretildiğini kaydeden bir günlük (`uretim_gunlugu.json`).
@@ -19,9 +19,9 @@ Alıştırmada toplu üretimin döngüsünü ve kontak sayfasını kendi elinle 
 **Kurulum:** yeni kütüphane yok. `git pull` ile konu klasörü geldikten sonra `gita3111` klasöründe
 bir kez `uv sync` çalıştır. `os` ve `json` Python'un içinde geliyor.
 
-**Anahtar:** Isınma anahtarsız. Adım 1'den sonrası `anahtar.txt` ister (Konu 2'deki dosya, `gita3111` klasöründe).
-Defterin ana akışı 15 görsel üretir; Bonus ile en fazla 21 görsel ve görsel anlayan bir modele 13 soru. Hepsi ücretsiz
-günlük kotanın küçük bir kısmı.
+**Anahtar:** Isınma anahtarsız. Adım 1'den itibaren defter `anahtar.txt` ister (Konu 2'deki dosya, `gita3111`
+klasöründe). Defterin ana akışı 15 görsel üretir; Bonus ile en fazla 21 görsel ve görsel anlayan bir modele 13 soru.
+Hepsi ücretsiz günlük kotaya sığar.
 
 > **Bu nottaki çıktılar hakkında.** Isınma, Adım 2 ve Adım 3'ün çıktıları her bilgisayarda aynıdır. Görseller
 > ve modelin cevapları gerçek modelden gelir; senin ekranında farklı olur.
@@ -90,7 +90,7 @@ print(sonuc)
 Çıktı: `ciktilar/ilk.jpg` (istek başarısızsa önce `İstek başarısız, durum kodu: ...`, sonra `None`).
 
 - `ozne` bütün görsellerde aynı kalacak: şablonun sabit kısmı. `stil_metni` değişecek. Yönerge İngilizce (Konu 7).
-- Dosyanın yolunu **sen** koyuyorsun: `ciktilar` klasörü, içinde `ilk.jpg`. Görseli VS Code'un sol panelinde
+- Dosyanın yolunu **sen** seçiyorsun: `ciktilar` klasörü, içinde `ilk.jpg`. Görseli VS Code'un sol panelinde
   `ciktilar` klasörünü açıp tıklayarak görebilirsin.
 
 Defterde göstermek için:
@@ -106,7 +106,7 @@ plt.show()
 böyle bir sayı tablosuna çevirir; `plt.imshow` onu çizer, `plt.axis("off")` kenardaki sayıları gizler.
 
 **Konu 7'den farkı:** Konu 7'deki `ciz` dosyaya kendisi bir sıra numarası veriyordu (`001.jpg`, `002.jpg`...).
-Bugünkü `ciz` yolu senden istiyor. Bu farkın neden önemli olduğu Adım 4'te çıkıyor.
+Bugünkü `ciz` yolu senden istiyor. Bu farkın neden önemli olduğu Adım 4'te ortaya çıkıyor.
 
 **Programı kullanıcıya açmak.** `input` (GİTA2112'den tanıdık) kullanıcıya bir soru sorar ve yazdığını metin olarak
 verir. VS Code'da ekranın üstünde bir kutu açılır; yönergeni İngilizce yazıp **Enter**'a basarsın.
@@ -156,7 +156,7 @@ print(stil_yonergeleri["linol"])
 Çıktı: `linocut print`.
 
 - Sözlüğün anahtarı kısa ad, değeri yönerge parçası. `stil_yonergeleri["linol"]` → `"linocut print"`.
-- `stiller` ve `renkler` Isınma'daki listeler; sözlükler onların yanında duruyor.
+- `stiller` ve `renkler` Isınma'daki listeler; sözlükler bu listelerdeki her kısa ada bir yönerge parçası verir.
 - Bu adım ve Adım 3 istek göndermiyor.
 
 Her kombinasyonun bütün bilgisini bir **kart** içinde tutacağız: bir sözlük. Önce tek bir kartı elle yazıyoruz:
@@ -201,7 +201,7 @@ print(len(kartlar))
 Çıktı: `12`.
 
 - `klasor` ızgaranın klasörü. Her kartın yolu klasör + stil + `_` + renk + `.jpg`: aynı kart her zaman aynı yolu alır.
-  Bu, Adım 4'teki "kaldığı yerden devam"ın anahtarı.
+  Adım 4'teki "kaldığı yerden devam" buna dayanıyor.
 - Önce iki yönerge parçasını sözlükten okuyup ayrı değişkenlere alıyoruz (`stil_metni`, `renk_metni`); sonra kartı kuruyoruz.
 - Kartta üç alan daha var: `"model"`, `"brif"` ve `"durum"`. Kart hem üretimi yönetecek hem günlük olacak (Adım 5).
   `"durum": "denenmedi"` başlangıç değeri; üretim sırasında `"uretildi"` ya da `"olmadi"` olur.
@@ -229,7 +229,7 @@ iki eksenli hâli.
 ## Adım 3 — Önce hesap: kota ve sınır
 
 Konu 2'den hatırla: Cloudflare kotayı **neuron** ile sayar ve günde 10.000 neuron ücretsiz. Bütün modeller (görsel,
-metin, görsel okuma) bu aynı kotadan yer. Bir görsel (1024 × 1024, 4 adım) yaklaşık 58 neuron tutar. Hesap şöyle:
+metin, görsel okuma) aynı kotadan yer. Bir görsel (1024 × 1024, 4 adım) yaklaşık 58 neuron tutar. Hesap şöyle:
 Cloudflare 1024 × 1024'lük görseli 512 × 512'lik 4 parça sayar; her parça 4,8, her adım 9,6 neuron:
 4 × 4,8 + 4 × 9,6 ≈ 58. Günde kabaca 170 görsel eder.
 
@@ -265,12 +265,12 @@ import os
 from uretim import sabirli_ciz
 ```
 
-- `sabirli_ciz(yonerge, tohum, yol)`, `ciz`'in sabırlı hâli: istek olmazsa 5 saniye bekleyip yeniden dener, en fazla üç
-  kez. Sunucu bir an meşgulse ya da çok hızlı istek gönderdiysek (durum kodu 429) bu çoğu zaman yeter. Üçü de olmazsa
+- `sabirli_ciz(yonerge, tohum, yol)`, `ciz`'in sabırlı hâli: istek başarısız olursa 5 saniye bekleyip yeniden dener,
+  en fazla üç kez. Sunucu bir an meşgulse ya da çok hızlı istek gönderdiysek (durum kodu 429) bu çoğu zaman yeter. Üçü de olmazsa
   `None` verir; yani başarısız her kart 3 istek ve 10 saniye bekleme demek.
 - Günlük kota bittiyse beklemek işe yaramaz ve `sabirli_ciz` bunu ayırt etmiyor. Üst üste `429` görürsen hücreyi durdur
   (hücrenin yanındaki kare düğme, **Interrupt**); kota yenilenince kaldığın yerden devam edersin.
-- `os`, Python'la birlikte gelen ve dosya, klasör işlerini yapan modül; kurulum istemez. `os.path.exists(yol)`, "bu yolda
+- `os` Python'la birlikte gelen bir modül: dosya ve klasör işlerini yapar, kurulum istemez. `os.path.exists(yol)`, "bu yolda
   bir dosya var mı?" sorusunu cevaplar: `True` ya da `False`.
 
 ```python
@@ -320,7 +320,7 @@ toplu_uret(kartlar, 3)
 toplu_uret(kartlar, MAKS_URETIM)
 ```
 
-İlk üç kart **atlanır**, kalan dokuzu üretilir: program kaldığı yerden devam etti. (İlk denemede bir kart olmadıysa
+İlk üç kart **atlanır**, kalan dokuzu üretilir: program kaldığı yerden devam eder. (İlk denemede bir kart olmadıysa
 o da yeniden denenir: dosyası yok.) Bir dosyayı silip yeniden çalıştırırsan yalnızca o kart üretilir. Kota biterse ya da
 internet koparsa, sonra aynı hücreyi çalıştırmak yeter.
 
@@ -388,7 +388,7 @@ plt.savefig(klasor + "kontak_sayfasi.png", bbox_inches="tight")
 plt.show()
 ```
 
-- Konu 6'daki `subplot` döngüsü, bu kez birden çok satırla: `plt.subplot(satir, sutun, sira)` sayfayı `satir` × `sutun`
+- Kod, Konu 6'daki `subplot` döngüsünün aynısı; bu kez birden çok satır var. `plt.subplot(satir, sutun, sira)` sayfayı `satir` × `sutun`
   kutuya böler ve `sira`ncı kutuyu seçer.
 - `subplot` kutuları soldan sağa doldurur, satır bitince alttakine geçer. Kartlar stil stil sıralı olduğu için her
   satır bir stil, her sütun bir renk olur.
@@ -407,16 +407,16 @@ hepsi kötüyse sorun stilde, bir sütunun hepsi kötüyse renkte. Kazananını 
 benim_secimim = "izgara/suluboya_adacayi.jpg"
 ```
 
-Bugünün çıktısı `izgara/` klasöründe: 12 görsel, `kontak_sayfasi.png` ve `uretim_gunlugu.json`. Arayüzde 12 yönerge,
-12 tıklama ve 12 indirme olacak iş burada birkaç hücre; üstelik kayıtlı ve yarıda kalırsa kaldığı yerden sürüyor.
+Bugünün çıktısı `izgara/` klasöründe: 12 görsel, `kontak_sayfasi.png` ve `uretim_gunlugu.json`. Arayüzde on iki kez
+tekrarlanacak iş burada birkaç hücre tuttu; üstelik her görsel kayıtlı ve iş yarıda kalırsa kaldığı yerden sürüyor.
 
 ---
 
 ## Bonus
 
-**1. Modele kendi çıktısını okutmak.** Ölçek büyüyünce ilk elemeyi bir **görsel anlayan** modele yaptırabiliriz:
-metni ve görseli birlikte anlayan, **çok kipli** (multimodal) bir model (Gemma). `gorsele_sor(yol, soru)` görseli ve
-soruyu ona gönderir, cevabı metin olarak verir.
+**1. Modele kendi çıktısını okutmak.** Ölçek büyüyünce ilk elemeyi bir **görsel anlayan** modele yaptırabiliriz.
+Böyle modellere **çok kipli** (multimodal) de denir: metni ve görseli birlikte okurlar. Bizimki Gemma.
+`gorsele_sor(yol, soru)` görseli ve soruyu ona gönderir, cevabı metin olarak verir.
 
 ```python
 from uretim import gorsele_sor
@@ -445,8 +445,8 @@ print("Benim seçimim:", benim_secimim)
   bir cümle de yazabilir; o yüzden cevabı olduğu gibi (metin) saklıyoruz. 12 istek birkaç dakika sürebilir.
 - Puanları günlüğe eklemek için Adım 5'in hücresini bir kez daha çalıştır.
 
-**Tartış:** modelin en yüksek puan verdikleri arasında senin seçimin var mı? Model brifteki kelimeleri görselde neyle
-eşliyor olabilir? Model bir **ilk eleme** aracı, karar verici değil: onun da bir zevki, bir yanlılığı var (Konu 3).
+**Tartış:** en yüksek puanı alanlar arasında senin seçimin var mı? Model brifteki kelimeleri görselde neyle eşliyor
+olabilir? Bu bir **ilk eleme** aracı, karar verici değil: onun da bir zevki, bir yanlılığı var (Konu 3); son karar senin.
 
 **2. Tohum ekseni.** Seçtiğin kazananı (`benim_secimim`) üç farklı tohumla üret:
 
@@ -474,7 +474,7 @@ palet ekle (ör. `"mono"` ve `"black and white palette"`). Isınma'yı, Adım 2'
 toplu_uret(kartlar, 2)
 ```
 
-Üç yeni kart var (her stil için bir); sınır 2 olduğu için ikisi üretilir ve `Sınıra geldim` yazılır. Aynı hücreyi bir
+Üç yeni kart var (her stil için bir); sınır 2 olduğu için ikisi üretilir ve `Sınıra geldim, duruyorum` yazılır. Aynı hücreyi bir
 kez daha çalıştırırsan kalan bir kart üretilir. Kontak sayfasını yeniden çizersen ızgara 3 × 5 olur.
 
 ---
@@ -522,7 +522,7 @@ kopyada çalış. **Anahtar istemez ve görsel üretmez:** `veri/ornek_izgara/` 
 | `KeyError: 'mono'` (Adım 2) | Listeye eklenen kısa adın yönerge sözlüğünde karşılığı yok | Her kısa adı sözlüğe de ekle, sonra kart hücresini yeniden çalıştır |
 | `NameError: name 'os' is not defined` ya da `'sabirli_ciz'` | Adım 4'ün ilk hücresi çalıştırılmadı | Adım 4'ü baştan çalıştır |
 | `NameError: name 'toplu_uret' is not defined` | Adım 4'ün fonksiyon hücresi çalıştırılmadı | O hücreyi çalıştır |
-| `Bağlanamadım ya da cevap gelmedi` | İnternet yok ya da sunucu 2 dakikada (görsel anlayan model 3 dakikada) cevap vermedi | İnternete bak; sonra aynı hücre kaldığı yerden devam eder |
+| `Bağlanamadım ya da cevap gelmedi` | İnternet yok ya da sunucu 2 dakikada (görsel anlayan model 3 dakikada) cevap vermedi | İnternet bağlantını kontrol et, sonra aynı hücreyi yeniden çalıştır; toplu üretim kaldığı yerden devam eder |
 | `İstek başarısız, durum kodu: 429` ve `Deneme ... olmadı` | Çok hızlı istek ya da günlük kota doldu | Bekle; üst üste geliyorsa hücreyi durdur. Kota 03:00'te (Türkiye saati) yenilenir; sonra aynı hücreyi çalıştır, kaldığı yerden devam eder |
 | Hücre uzun süre bitmiyor | `sabirli_ciz` bekliyor (başarısız her denemeden sonra 5 saniye) ya da 9–12 istek sürüyor | Bekle; mesajlara bak |
 | Hiçbir şey üretilmiyor, hepsi `Zaten var` | Görseller önceki bir çalıştırmadan var | Doğru davranış. `ozne`'yi değiştirdiysen `klasor`'u da değiştir; yoksa günlük eski görseli yeni yönergeyle kaydeder |
@@ -548,7 +548,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 4. Adım 1'de aynı yola iki kez çizince ilk görsel kayboldu. Adım 4'te aynı şey neden olmuyor?
 5. Kontak sayfasında `linol` satırının dördü de kötü, `pastel` sütununda yalnızca biri kötü. Ne söyleyebilirsin?
 6. Model bir görsele 5 puan verdi, sen beğenmedin. Hangisine güvenirsin? Model neden yanılmış olabilir?
-7. Üretim günlüğünü neden JSON'a yazdık; bir metin dosyasına (`print` gibi) yazsak ne kaybederdik?
+7. Üretim günlüğünü neden JSON'a yazdık; düz bir metin dosyasına (`print` gibi) yazsak ne kaybederdik?
 
 ---
 
@@ -559,7 +559,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 - **Kombinasyon.** İç içe döngü her stili her renkle eşler; sayı çarpılarak büyür.
 - **Şablon ve kart.** Kısa adlar (dosya için) ile uzun yönerge parçaları (model için) sözlükte eşlenir; her
   kombinasyon bir kart (sözlük) olur, bütün kartlar bir liste.
-- **Sınır ve kota.** Döngüden önce hesap; önce küçük bir deneme; sınırla kazara kota tüketimini önlemek.
+- **Sınır ve kota.** Döngüden önce hesap, sonra küçük bir deneme; sınır kotanın kazara tükenmesini önler.
 - **Sağlamlık ve kaldığı yerden devam.** `sabirli_ciz` bekleyip yeniden dener; kararlı yollar ve "zaten var mı?"
   sorusuyla yalnızca eksikler üretilir.
 - **Günlük.** Kartlar JSON'a yazılır: her görselin nasıl üretildiği ve durumu (`uretildi`, `olmadi`, `denenmedi`) kayıtta.
@@ -596,7 +596,7 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 ## Ödev
 
 `odevler/odev8.md` (puansız): kendi konunda bir ızgara üret (en az 2 stil × 3 renk, en fazla 12 görsel) ve `odev8/`
-klasörüne kaydet; kontak sayfasını ve üretim günlüğünü getir. Hangi kombinasyon kazandı, neden?
+klasörüne kaydet; kontak sayfasını ve üretim günlüğünü teslim et. Hangi kombinasyon kazandı, neden?
 Görsellerini sakla: Konu 9'da birini videoya çevireceğiz.
 
 ## Sonraki konu
@@ -609,13 +609,13 @@ bugünkü "önce hesap" alışkanlığı orada da işe yarayacak.
 
 ## Kendini dene — cevaplar
 
-1. 4 × 5 × 3 = 60 görsel; 60 × 58 ≈ 3.480 neuron, günlük kotanın üçte birinden fazla. Sınırsız ve her seferinde yeni
-   adlarla aynı döngüyü yanlışlıkla iki kez çalıştırmak 6.960 neuron eder: kotanın yaklaşık %70'i. Sınır ve
-   "zaten var mı?" bu yüzden var.
+1. 4 × 5 × 3 = 60 görsel; 60 × 58 ≈ 3.480 neuron, günlük kotanın üçte birinden fazla. Sınır koymadan ve her
+   çalıştırmada yeni adlar vererek aynı döngüyü yanlışlıkla iki kez çalıştırırsan 6.960 neuron harcarsın: kotanın
+   yaklaşık %70'i. Sınır ve "zaten var mı?" bu yüzden var.
 2. Her çalıştırmada numaralar değiştiği için hiçbir yol "zaten var" olmaz; bütün görseller **yeniden** üretilir ve kota
    harcanır. Kaldığı yerden devam için yol kararlı olmalı: aynı kart, aynı yol.
-3. Sınır bir istek **gönderilmeden önce** bilinmeli: istek bir kez gitti mi kota harcanmıştır. Önce bakınca `sinir`
-   0 bile olsa hiç istek gitmez. Ayrıca sayaç "zaten var" kontrolünden sonra olduğu için atlanan kartlar sayılmaz.
+3. Sınır bir istek **gönderilmeden önce** bilinmeli: istek bir kez gitti mi kota harcanmıştır. Kontrol önce yapıldığı
+   için `sinir` 0 olsa hiç istek gitmez. Ayrıca sayaç "zaten var" kontrolünden sonra olduğu için atlanan kartlar sayılmaz.
 4. Çünkü `toplu_uret` çizmeden önce soruyor: "bu yolda dosya var mı?" Varsa hiç çizmiyor, atlıyor. Adım 1'de bu soruyu
    soran yoktu; `ciz` yolu verilen yere körü körüne yazdı.
 5. Sorun büyük ihtimalle **stilde** (linol bu brif için uygun değil), renkte değil; `pastel` sütunundaki tek kötü

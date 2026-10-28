@@ -4,22 +4,23 @@ Bu konuda bir isteğe hangi araçların, hangi sırayla gerektiğine **modelin**
 **ajan**. Modelin elinde üç araç var: görsel çizmek, fotoğraf düzenlemek ve Sayfa Kahve'nin marka kılavuzunda aramak
 (Konu 11'deki arama). Önce bir turu çerçevesiz, elle yapacaksın: araç tarifi, istekte `tools`, cevapta `tool_calls`,
 aracı çalıştıran program. Sonra aynı işi **Agno** adlı ajan çerçevesiyle kuracak, ajanın kararlarını yazdıracak, bir
-tarifi bozup düzeltecek ve ajana kendi yazdığın dördüncü aracı (`slogan_yaz`) vereceksin. Sonunda kılavuza bakarak
-çizilmiş bir afiş elinde olacak; Bonus'ta bir ajan çalıştırmasının kaç istek harcadığını da hesaplayabilirsin.
+tarifi bozup düzeltecek ve tarifini senin yazdığın dördüncü bir aracı (`slogan_yaz`) ajana ekleyeceksin. Sonunda
+elinde ajanın çizdiği afişler olacak; kılavuza uyup uymadıklarına sen bakacaksın. Bonus'ta bir ajan çalıştırmasının
+modele kaç istek gönderdiğini ve ne kadar kota harcadığını da hesaplayabilirsin.
 
 | Klasör / dosya | Ne işe yarıyor |
 |---|---|
 | `slaytlar.md` | Kavram slaytları; dersin başında gösterilir |
 | `ders.ipynb` | Derste birlikte çalıştıracağımız defter: Isınma, Adım 1–9 ve Bonus |
 | `alistirma.ipynb` | Derste kendi başına çözeceğin defter: bozuk kodlar ve boşluklu sorular (anahtar istemez, internete çıkmaz) |
-| `ajan_araclari.py` | Yardımcı dosya: araçların içinde çalışan hazır fonksiyonlar: `ciz` (Konu 8), `duzenle` (Konu 7), `en_yakin_paragraflar` (Konu 11'deki `kilavuzda_ara`'nın içindeki arama), `modele_sor` (Konu 5) ve `tarifi_goster` |
+| `ajan_araclari.py` | Yardımcı dosya. Araçların içinde çalışan hazır fonksiyonlar: `ciz` (Konu 8), `duzenle` (Konu 7), `en_yakin_paragraflar` (Konu 11'deki `kilavuzda_ara`'nın içindeki arama), `modele_sor` (Konu 5) ve `tarifi_goster` |
 | `veri/fincan.jpg` | Düzenlenecek fotoğraf |
 | `veri/kilavuz.txt` | Sayfa Kahve'nin marka kılavuzu (Konu 11'deki belge): her satır bir paragraf |
 | `veri/ajan_gunlugu.json` | Alıştırmanın el yapımı ajan kayıtları |
 | `odevler/odev12.md` | Bu konunun ödevi |
 | `ders_notu.md` | Konu notu — adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
 
-Ajanın ürettiği ve düzenlediği görseller bu klasörde `ciktilar/` içine yazılır: `afis.jpg`, `duzenlenmis.jpg`,
+Defterin ürettiği ve düzenlediği görseller bu klasörde `ciktilar/` içine yazılır: `afis.jpg`, `duzenlenmis.jpg`,
 `elle_cizim.jpg` ya da `elle_duzenleme.jpg`. Kılavuzun vektörleri ilk aramada `ciktilar/kilavuz_vektorleri.json`'a
 saklanır.
 
@@ -48,8 +49,8 @@ Defterin kopyası `ajan_araclari.py` ve `veri/` klasörüyle **aynı klasörde**
 
 Isınma anahtarsız; alıştırma defteri de. Adım 1 ve sonrası `anahtar.txt` ister (bütün konular için tek dosya,
 `gita3111` klasöründe). Defterin tamamı (Bonus dahil) metin ve arama modellerine yaklaşık 30 istek gönderir ve 10 kadar
-görsel üretir ya da düzenler; günlük ücretsiz kotanın %10'undan az. Her ajanın bir araç çağrısı sınırı var (`tool_call_limit`): bir çalıştırma en fazla
-3–4 araç çalıştırır. Anahtarın yoksa yanındakiyle birlikte, onun ekranında izle.
+görsel üretir ya da düzenler; günlük ücretsiz kotanın %10'undan az. Her ajanın bir araç çağrısı sınırı var
+(`tool_call_limit`): bir çalıştırma en fazla 3–4 araç çalıştırır. Anahtarın yoksa yanındakiyle birlikte, onun ekranında izle.
 
 ## Güncel kalmak
 

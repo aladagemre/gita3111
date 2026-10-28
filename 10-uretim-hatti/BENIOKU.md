@@ -1,9 +1,9 @@
 # Konu 10 — Zincirleme: Üretim Hattı
 
-Bu konuda önceki konularda ayrı ayrı öğrendiğin adımları tek bir programda birleştiriyoruz. Bir ayarlar dosyası
-(`ayarlar.json`) hattın brifini ve bütün ayarlarını taşıyor. Metin modeli konuya üç slogan yazıyor, görsel modeli her slogana
-bir görsel üretiyor. Yazdığın hat biten işi yeniden üretmiyor ve kopan bir halkayı kayda geçirip devam ediyor; hattın üretim
-günlüğü `uretim.json`'a yazılıyor. Bonus'ta sloganları ve görselleri yan yana gösteren bir pano çıkıyor.
+Önceki konularda ayrı ayrı öğrendiğin adımları bu konuda tek bir programda, bir **hatta** birleştireceksin. Hattın brifi ve
+bütün ayarları bir dosyada durur: `ayarlar.json`. Metin modeli konuya üç slogan yazar, görsel modeli her slogana bir görsel
+üretir. Hat biten işi yeniden üretmez, kopan bir halkayı kayda geçirip devam eder ve her şeyi üretim günlüğüne
+(`uretim.json`) yazar. Bonus'ta sloganlarla görselleri yan yana gösteren bir pano var.
 
 Konu yarım oturum sürüyor: aynı oturumun ilk yarısı Konu 9 (video).
 
@@ -17,7 +17,7 @@ Konu yarım oturum sürüyor: aynı oturumun ilk yarısı Konu 9 (video).
 | `odevler/odev10.md` | Bu konunun ödevi |
 | `ders_notu.md` | Konu notu — adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
 
-Hattın bütün çıktıları `ciktilar/` içinde, adı `ayarlar.json`'daki `calisma` alanından gelen bir klasöre yazılır
+Hattın bütün çıktıları `ciktilar/` içinde, adını `ayarlar.json`'daki `calisma` alanından alan bir klasöre yazılır
 (derste `ciktilar/kafe_afisi_1/`): `sloganlar.json`, `gorsel_1.jpg` ..., `uretim.json` ve Bonus'ta `pano.png`.
 Alıştırma defteri `alistirma_ciktilari/` klasörünü kullanır.
 
@@ -41,9 +41,10 @@ Defterin kopyası `halkalar.py` ve `ayarlar.json` ile **aynı klasörde** durmal
 
 ## Anahtar gerekiyor mu?
 
-Isınma, Adım 1 ve Adım 2 anahtarsız; alıştırma defteri de. Adım 3'ten sonrası `anahtar.txt` ister
+Isınma, Adım 1 ve Adım 2 anahtarsız; alıştırma defteri de. Adım 3 ve sonrası `anahtar.txt` ister
 (bütün konular için tek dosya, `gita3111` klasöründe). Defterin tamamı 4 metin ve 3 görsel isteği gönderir
-(Bonus 2 ile 4 görsel); Adım 6'da bilerek reddedilen 3 görsel isteği de var. Hepsi ücretsiz günlük kotanın küçük bir kısmı.
+(Bonus 2 ile 4 görsel). Adım 6'da bilerek reddedilen 3 görsel isteği de var. Hepsi ücretsiz günlük kotanın küçük bir
+kısmını tutar.
 Anahtarın yoksa yanındakiyle birlikte, onun ekranında izle.
 
 ## Güncel kalmak

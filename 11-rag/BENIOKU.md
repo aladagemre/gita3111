@@ -1,10 +1,11 @@
 # Konu 11 — RAG: Belgeye Dayalı Cevap
 
 Dil modeli senin belgeni bilmez: müşterinin marka kılavuzu, ajansın brif arşivi onun eğitim verisinde yok. Bu konuda
-modele soru sormadan önce belgeden soruya en ilgili paragrafları bulup soruyla birlikte gönderiyoruz; model cevabı
-belgeye bakarak veriyor. Bu yöntemin adı **RAG** (*retrieval-augmented generation*: bulup getirerek üretmek). Örnek belge, sessiz çalışma kafemiz **Sayfa Kahve**'nin marka kılavuzu.
-Aynı soruyu kılavuzsuz ve kılavuzlu soruyor, kılavuzda olmayan bir soruda modelin "bilmiyorum" deyip demediğine bakıyor ve
-sonunda kılavuza göre bir afiş çizdiriyoruz.
+modele soru sormadan önce belgede soruya en yakın paragrafları bulup soruyla birlikte gönderiyoruz; model cevabı
+belgeye bakarak veriyor. Bu yöntemin adı **RAG** (İngilizce *retrieval-augmented generation*: "bulup getirerek üretmek").
+Örnek belge, sessiz çalışma kafemiz **Sayfa Kahve**'nin marka kılavuzu. Aynı soruyu kılavuzsuz ve kılavuzlu soruyor,
+cevabı kılavuzda olmayan bir soruda modelin "bilmiyorum" deyip demediğine bakıyor ve sonunda kılavuza göre bir afiş
+çizdiriyoruz.
 
 | Klasör / dosya | Ne işe yarıyor |
 |---|---|
@@ -14,7 +15,7 @@ sonunda kılavuza göre bir afiş çizdiriyoruz.
 | `veri/kilavuz.txt` | Sayfa Kahve'nin marka kılavuzu: her satır bir paragraf, 14 paragraf |
 | `rag_araclari.py` | Yardımcı dosya: `vektor_al` (Konu 4), `vektorleri_al` (yeni), `modele_sor` (Konu 5) ve `ciz` (Konu 8) hazır |
 | `odevler/odev11.md` | Bu konunun ödevi |
-| `ders_notu.md` | Konu notu — adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
+| `ders_notu.md` | Konu notu: adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
 
 Defterin çıktıları `ciktilar/` klasörüne yazılır: kılavuzun vektörleri (`kilavuz_vektorleri.json`) ve afişler
 (`afis_kilavuzlu.jpg`, Bonus'ta `afis_kilavuzsuz.jpg`). `ciktilar/` depoya girmez.
@@ -59,8 +60,8 @@ istersen önce aynı klasörde **yeni bir adla kopyala**, kopyada çalış; böy
 | Adım 1 | Hazır araçlar; kılavuzsuz soru: model Sayfa Kahve'yi tanıyor mu? | gerekir |
 | Adım 2 | Kılavuzu paragraflara bölmek | gerekmez |
 | Adım 3 | 14 paragrafı tek istekte vektöre çevirmek; vektörleri saklamak | gerekir (ilk çalıştırmada) |
-| Adım 4 | Soruya en ilgili üç paragraf (sen yazarsın) | gerekir |
+| Adım 4 | Soruya en yakın üç paragraf (sen yazarsın) | gerekir |
 | Adım 5 | Yönerge şablonu (sen yazarsın); kılavuzsuz ve kılavuzlu cevap | gerekir |
-| Adım 6 | `kilavuzda_ara` fonksiyonu; kılavuzda olmayan bir soru | gerekir |
+| Adım 6 | `kilavuzda_ara` fonksiyonu; cevabı kılavuzda olmayan bir soru | gerekir |
 | Adım 7 | Kılavuzun görsel kuralları; görsel yönergesi; afiş | gerekir |
 | Bonus | Kılavuzsuz afiş; kaç paragraf alınmalı; yarım bilgi | gerekir |

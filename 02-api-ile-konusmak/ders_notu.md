@@ -169,7 +169,7 @@ FileNotFoundError: [Errno 2] No such file or directory: '../anahtar.txt'
 Adım 1'den sonraki bütün hücreler bu dosyadan okunan bilgiye dayanır. Anahtarın henüz
 yoksa:
 
-- Ders boyunca **yanındakiyle birlikte** çalış: istekleri onun ekranında izle, hücreleri
+- Ders boyunca **hocanın paylaştığı ekrandan** izle: istekleri orada gör, hücreleri
   sen de kendi defterine yaz.
 - Isınma ve alıştırma defteri (`alistirma.ipynb`) internet istemez.
 - Hesabı **bugün** aç: kurulum yönergesinin 6. adımı (`../00-hazirlik/kurulum-yonergesi.md`).
@@ -520,7 +520,7 @@ print(metin)
 
 - İki kat içeri giriyoruz: önce `result`, sonra `response`.
 - `yanit["response"]` yazarsan **KeyError** alırsın; bu konunun en sık hatası.
-- Ekranda gördüğün cevap yanındakinin cevabıyla aynı değil; hücreyi yeniden
+- Ekranda gördüğün cevap arkadaşının cevabıyla aynı değil; hücreyi yeniden
   çalıştırırsan (Adım 3 ile birlikte) senin cevabın da değişir. Model her seferinde
   yeni cümle kurar.
 
