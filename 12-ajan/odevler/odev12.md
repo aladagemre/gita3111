@@ -23,6 +23,10 @@ fazla 6 görsel; günlük ücretsiz kotanın %10'undan az.
    Aracın üç parçası eksiksiz olsun: **tür ipuçları** (`: str`, `-> str`), **docstring** (ne yapar, içinde ne var, ne
    zaman seçilmeli, bilgilere ne yazılmalı) ve **`return`** (modele giden sonuç). `tarifi_goster(araci_adi)` ile
    modelin göreceği tarife bak.
+
+   Aracını ajanla çalıştırırken sarı bir `WARNING Could not run function ...` ve altında uzun, kırmızı bir yazı
+   görürsen hata aracının içinde: Agno hücreyi durdurmaz, hatayı modele aracın sonucu olarak gönderir. Kırmızı yazının
+   son satırındaki hatayı oku (ör. `NameError`), `def` hücresini düzelt, sonra araç listesini ve ajanı yeniden kur.
 3. **Ajan.** Aracını listeye ekleyip ajanı kur. Sınırı işin büyüklüğüne göre seç (ör. 4):
    ```
    araclar = [afis_ciz, fotograf_duzenle, kilavuzda_ara, senin_aracin]

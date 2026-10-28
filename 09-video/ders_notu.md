@@ -31,14 +31,18 @@ bir kez `uv sync` çalıştır.
 
 Derste **Google Flow** kullanıyoruz (Google'ın video ve görsel üretme aracı, tarayıcıda çalışır).
 
-- **Ücretsiz:** abonelik almamış her kullanıcıya her gün **50 kredi** veriliyor. Kullanmadığın kredi ertesi güne geçmez.
-- **Kredi süreye ve çözünürlüğe göre düşer.** 28 Ekim 2026'da 720p bir klip: 4 saniye 7 kredi, 6 saniye 10, 8 saniye 12,
-  10 saniye 15 kredi. Derste iki klip üretiyoruz (8 + 6 saniye): 22 kredi. Ödeve de kredi kalır; ödevi ertesi gün yapabilirsin.
-- **Kimler kullanabilir:** 18 yaş ve üstü; Türkiye desteklenen ülkeler arasında. Kişisel bir Google hesabıyla gir (okulun
-  verdiği hesap kısıtlı olabilir).
+- **Ücretsiz:** Google'ın kredi sayfasına göre abonelik almamış kullanıcıya da her gün **50 kredi** veriliyor. Kullanmadığın
+  kredi ertesi güne geçmez. Kalan kredini görmek için Flow'da sağ üstteki profil resmine tıkla.
+- **Kredi süreye ve çözünürlüğe göre düşer.** 28 Ekim 2026'da Gemini Omni Flash modeliyle 720p bir klip: 4 saniye 7 kredi,
+  6 saniye 10, 8 saniye 12, 10 saniye 15 kredi. Derste iki klip üretiyoruz (8 + 6 saniye): 22 kredi. Ödeve de kredi kalır; ödevi
+  ertesi gün yapabilirsin. Üretim başarısız olursa kredi düşmez.
+- **Kimler kullanabilir:** 18 yaş ve üstü (yaşını doğrulaman istenebilir); Türkiye desteklenen ülkeler arasında. Kişisel bir
+  Google hesabıyla gir (okulun verdiği hesap kısıtlı olabilir).
+- **Tarayıcı:** bilgisayarda Chrome ya da Edge. Google bunları öneriyor; başka tarayıcıda ve telefonda sorun çıkabilir.
 - **Yoğun saat:** abonesi olmayan kullanıcılar Türkiye saatiyle yaklaşık **17.00–20.00** arasında video üretemeyebilir.
   O saatlerde "şu an üretilemiyor" gibi bir uyarı görürsen sonra dene.
-- **Kart:** hesap açarken ya da kredi kullanırken kart bilgisi istenirse **girme**, hocaya yaz.
+- **Kart:** hesap açarken ya da kredi kullanırken kart bilgisi istenirse **girme**; Flow abone olmanı isterse abone olma.
+  İki durumda da hocaya yaz.
 
 **Flow açılmazsa:** hocanın derste söyleyeceği yedek arayüzü kullan. Hangi araç olursa olsun kural aynı: kayıtta kart bilgisi
 isteyen bir "ücretsiz" araca kart girme.
@@ -73,13 +77,15 @@ görselden hem yavaş hem pahalı olmasının kökü burada.
 
 ## Adım 1 — Arayüzde ilk klip: başlat ve bırak
 
-Düğme adları aşağıda arayüzün İngilizce hâlindeki gibi yazılı; arayüz Türkçe açılırsa karşılığını ara.
+Aşağıdaki adımlar Google'ın Flow yardım sayfalarından. Düğme adları arayüzün İngilizce hâlindeki gibi yazılı; arayüz Türkçe
+açılırsa karşılığını ara. Arayüz sık değişiyor: bir düğme yerinde değilse ya da adı farklıysa derste ilk denemede birlikte
+bakacağız.
 
 **Bir kez: hesabı aç**
 
 1. Tarayıcıda `labs.google/fx/tools/flow` adresine git.
 2. Kişisel Google hesabınla giriş yap. Kullanım şartlarını onaylaman istenebilir.
-3. Yeni bir proje başlat (ya da daha önce açtığın bir projeye tıkla). Projeye `gita3111-konu9` gibi bir ad verebilirsin.
+3. **+ New project** (yeni proje) düğmesine tıkla; daha önce bir proje açtıysan ona da tıklayabilirsin.
 
 **Metinden klip**
 
@@ -87,13 +93,18 @@ Düğme adları aşağıda arayüzün İngilizce hâlindeki gibi yazılı; aray�
 
    > steam rising from a ceramic coffee cup on a wooden desk, soft morning light, slow camera push in
 
-2. Yönerge kutusunun yanındaki **model adına** tıkla. Flow açılışta bir görsel modeli seçili getirir; **Video**'ya geç.
+2. Yönerge kutusundaki **model adına** tıkla. Flow açılışta bir görsel modeli seçili getirir (adında "Nano Banana" geçer);
+   **Video**'ya geç.
 3. Video ayarlarını seç:
    - En-boy oranı (aspect ratio): **16:9**
    - Çıktı sayısı (number of outputs): **1** (her çıktı ayrı kredi yer)
-   - Model: 720p üretebilen ve **kredisi düşük** olan bir model (hoca derste hangisini seçeceğini gösterecek)
+   - Model: **Gemini Omni Flash**, çözünürlük **720p** (yardım sayfasındaki adıyla; listede yoksa derste birlikte seçeceğiz).
+     360p ("draft", taslak) seçeneği de olabilir: yarı kredi yer, derste 720p kullanıyoruz. Veo 3.1 Quality gibi modeller bir klipte 100 kredi ister; günlük 50 kredin yetmez.
    - Süre (generation length): **8 saniye**
-4. Üret düğmesine (**Generate**) bas.
+
+   Model, çözünürlük ve kredi değeri yönerge kutusunun sağ üstündeki ayarlarda (**Settings**) görünür. Üretmeden önce bir bak: 8 saniyelik
+   klip 12 kredi tutmalı.
+4. Üret düğmesine (**Generate**) bas. Bu düğme yazıyla değil, yalnızca bir simgeyle gösteriliyor olabilir.
 5. Klip hemen gelmez. Sekmeyi açık bırak ve deftere dön, **Adım 2**'ye geç. Arayüz işi arka planda sürdürüyor.
 
 **Sohbete yaz:** düğmeye bastığında ekranda ne gördün: bir yükleme çubuğu, bir yüzde, bir mesaj, hiçbir şey?
@@ -230,13 +241,19 @@ faturası üç katına çıkar. Bu yüzden önce kısa ve düşük çözünürl�
 
 ## Adım 4 — Klibe dön: izle ve değerlendir
 
-Arayüze dön. Klip hazırsa projede görünür; üstüne tıklayıp izle.
+Arayüze dön. Klip hazırsa projede bir kutucuk olarak görünür; üstüne gel ya da tıkla, izle. Kutucuk hâlâ boşsa ya da
+"Pending" (bekliyor) yazıyorsa biraz bekle; klip hiç görünmüyorsa sayfayı yenile. **Generate'e yeniden basma:** yeni bir iş
+başlar, yeniden kredi düşer.
 
 **İndir ve yerine koy**
 
-1. Videonun üstündeki ya da menüsündeki **indirme** seçeneğine tıkla (çözünürlük sorarsa 720p).
-2. Tarayıcı dosyayı **İndirilenler** klasörüne koyar. VS Code'da `09-video` klasöründe `videolar` adında yeni bir klasör aç.
-3. İndirilen dosyayı `videolar` klasörüne taşı ve adını `metinden.mp4` yap. Dosyanın yeri: `09-video/videolar/metinden.mp4`.
+1. Fareyle klibin üstüne gel, sağ üst köşedeki üç noktaya (**More**) tıkla, sonra **Download** (indir). Dosya türü sorulursa
+   videoyu seç; **270p** seçeneği hareketli bir GIF verir, onu seçme.
+2. Tarayıcı dosyayı **İndirilenler** klasörüne koyar. VS Code'un sol panelinde `09-video` klasörüne sağ tıkla, **New Folder**
+   (yeni klasör) seç, adını `videolar` yap.
+3. Bilgisayarının dosya gezgininde İndirilenler klasörünü aç, indirdiğin dosyayı VS Code'daki `videolar` klasörünün üstüne sürükle.
+   Sonra VS Code'da dosyaya sağ tıkla, **Rename** (yeniden adlandır) seç, adını `metinden.mp4` yap. Dosyanın yeri:
+   `09-video/videolar/metinden.mp4`.
 
 `videolar/` klasörü depoya girmez; `git pull` onu etkilemez.
 
@@ -245,7 +262,7 @@ Arayüze dön. Klip hazırsa projede görünür; üstüne tıklayıp izle.
 - Yönergede "slow camera push in" (kamera yavaşça yaklaşır) yazdık. Kamera bunu yaptı mı?
 - Buhar nasıl hareket ediyor? Nerede inandırıcı, nerede "yapay" duruyor?
 - Klipte ses var mı? Yönergede ses yoktu; ne duyuyorsun, sen ne isterdin?
-- Üret düğmesine bastıktan kaç saniye sonra geldi? Kredinden ne kadar düştü?
+- Üret düğmesine bastıktan kaç saniye sonra geldi? Kredinden ne kadar düştü (sağ üstte profil resmi)?
 
 Kameranın hareketi için sinemadan gelen terimler var; bunlara **kamera dili** diyoruz: yaklaşma (push in), uzaklaşma (pull out),
 yana dönüş (pan), yukarı dönüş (tilt up), sabit çekim (static shot). Konu 7'deki yönerge anatomisine yeni bir katman.
@@ -255,30 +272,33 @@ yana dönüş (pan), yukarı dönüş (tilt up), sabit çekim (static shot). Kon
 ## Adım 5 — Görselden klip
 
 Konu 8'de ürettiğin görsellerden birini videonun **ilk karesi** yapıyoruz. Görselin yoksa bu klasördeki `veri/yedek_fincan.jpg`'yi
-kullan (masada bir fincan, kare).
+kullan (masada bir fincan, kare). Görselde gerçek bir kişinin yüzü olmasın: istek reddedilebilir.
+
+Görselin kare (1:1), video yatay (16:9). **Üretmeden önce tahmin et, sohbete yaz:** model kenarları ne yapacak? Görseli
+kırpacak mı, kenarlara yeni bir şey mi ekleyecek? Cevap birazdan senin klibinde.
 
 **Arayüzde**
 
-1. Aynı projede yönerge kutusunun yanındaki model adına tıkla, **Video**'yu, sonra **Frames**'i (kareler) seç.
-2. Görselini **+ Add start frame** (başlangıç karesi ekle) kutusuna sürükle ya da kutuya tıklayıp dosyayı seç. Konu 8'in
-   görselleri `08-koddan-toplu-uretim` klasöründe: `izgara/`, `ciktilar/` ya da ödevinin `odev8/` klasörü.
+1. Aynı projede yönerge kutusundaki model adına tıkla, **Video**'yu, sonra **Frames**'i (kareler) seç.
+2. Bilgisayarının dosya gezgininde görselini bul ve **+ Add start frame** (başlangıç karesi ekle) kutusuna sürükle. Konu 8'in
+   görselleri `gita3111` içindeki `08-koddan-toplu-uretim` klasöründe: `izgara/`, `ciktilar/` ya da ödevinin `odev8/` klasörü.
+   Yanındaki **+ Add end frame** videonun son karesi içindir; onu boş bırak. Kutuya tıklayınca dosya seçme penceresi de açılabilir;
+   derste ilk denemede bakacağız.
 3. Yönerge kutusuna **ne olacağını** yaz; sahne görselde zaten var. Örnek:
 
    > slow camera push in, gentle natural motion, soft morning light
 
-4. Ayarlar: **16:9**, çıktı sayısı **1**, **720p**, süre **6 saniye.** Üret düğmesine bas.
+4. Ayarlar Adım 1'deki gibi: **16:9**, çıktı sayısı **1**, Omni Flash **720p**; yalnızca süre **6 saniye** (10 kredi). Flow,
+   seçtiğin özelliği desteklemeyen bir modelden kendiliğinden başka bir modele geçebiliyor; üretmeden önce ayarlarda model ve
+   kredi değerine bir daha bak. Sonra üret düğmesine bas.
 5. Beklerken deftere dön: Adım 6'nın ilk hücresiyle ilk klibin kaydını yaz.
 6. Klip gelince indir ve Adım 4'teki gibi `videolar/gorselden.mp4` olarak kaydet.
 
-Görselin kare (1:1), video yatay (16:9). Üretmeden önce tahmin et: model kenarları ne yapacak? Cevap senin klibinde: görsel
-kırpıldı mı, kenarlara yeni bir şey mi eklendi?
-
 **Klip gelince karşılaştır ve sohbete yaz:**
 
+- Tahminin tuttu mu: görsel kırpıldı mı, kenarlara yeni bir şey mi eklendi?
 - Kompozisyon korundu mu? Stil (suluboya, linol, düz vektör...) hareket boyunca korundu mu, yoksa video "fotoğrafa" mı kaydı?
 - Hangi görseller harekete uygun: derinliği, boşluğu, hareket edebilecek bir öğesi (buhar, yaprak, su) olanlar mı, düz bir afiş mi?
-
-Görselde gerçek bir kişinin yüzü varsa istek reddedilebilir; o zaman başka bir görsel seç.
 
 ---
 
@@ -408,8 +428,9 @@ Uzun klibin saniyesi daha ucuz; ama denemede kısa klip toplamda daha az harcar.
 
 **2. Dikey video.** Metinden klibin yönergesini arayüzde 9:16 oranında (telefon, hikâye) bir kez daha üret (8 saniye, 12 kredi).
 Kompozisyon nasıl yeniden kuruldu: fincan nerede duruyor, ne kırpıldı, ne eklendi? Günlüğe üçüncü kayıt olarak ekle: Adım 6'nın
-ilk hücresini kopyala, sözlüğün adını `dikey_kaydi`, `"oran"`ı `"9:16"`, `"dosya"`yı `"videolar/dikey.mp4"` yap; `kayitlar`
-satırını `[metin_kaydi, gorsel_kaydi, dikey_kaydi]` yap ve son iki hücreyi yeniden çalıştır.
+ilk hücresini kopyala; kopyada sözlüğün adını `dikey_kaydi`, `"oran"`ı `"9:16"`, `"dosya"`yı `"videolar/dikey.mp4"` yap ve
+kopyayı çalıştır. Sonra `kayitlar` satırını `[metin_kaydi, gorsel_kaydi, dikey_kaydi]` yap ve Adım 6'nın son iki
+hücresini yeniden çalıştır.
 
 ---
 
@@ -436,7 +457,9 @@ Defterin hiçbir hücresi anahtar istemez, internete çıkmaz.
 |---|---|---|
 | Flow'da video üretilemiyor, bir uyarı çıkıyor (akşam saatleri) | Yoğun saat: abonesi olmayan kullanıcılar Türkiye saatiyle yaklaşık 17.00–20.00 arasında video üretemeyebilir | Biraz sonra dene ya da yanındakinin ekranından izle |
 | Kredin yetmiyor | O günün 50 kredisi bitti | Ertesi günü bekle; kısa ve düşük çözünürlüklü klip daha az kredi yer |
-| Hesap kart bilgisi istiyor | Ücretli bir pakete yönlendirildin | Kart girme; hocaya yaz |
+| Hesap kart bilgisi istiyor ya da abone olmanı istiyor | Ücretli bir pakete yönlendirildin | Kart girme, abone olma; hocaya yaz |
+| Klip projede görünmüyor ya da kutucukta "Pending" yazıyor | Henüz bitmedi ya da sayfa yenilenmedi | Bekle, sayfayı yenile; Generate'e yeniden basma |
+| Ayarlarda model ya da kredi değeri birden değişti | Flow seçtiğin özelliği (ör. Frames) desteklemeyen modelden başka bir modele geçti | Üretmeden önce modele ve krediye bak; anlamadıysan hocaya sor |
 | İstek reddedildi | Yönergede ya da görselde gerçek bir kişi, ünlü biri ya da çocuk var | Başka bir görsel ya da yönerge |
 | `KeyError: '720P'` | Çözünürlük sözlükteki anahtarla birebir aynı değil (büyük P, boşluk) | Sözlükteki gibi yaz: `"720p"`, `"1080p"`, `"4K"` |
 | `TypeError: can't multiply sequence by non-int of type 'float'` | Süre metin (`"8"`); metinle ondalık sayı çarpılmaz | Tırnaksız yaz: `"sure": 8` |
@@ -518,7 +541,7 @@ Konu 10'da metin ve görsel modellerini tek bir programda birbirine bağlıyoruz
 4. İki kamera hareketi birden (yaklaşma ve sola dönme) ve öznenin hareketiyle aynı cümlede. Bir klipte tek bir kamera
    hareketi seç; öznenin hareketini ayrı bir cümleyle yaz: "leaves falling slowly. slow camera push in."
 5. Büyük olasılıkla **henüz bitmedi**: video dakikalar sürebilir. Üret düğmesine bir daha basmazsın: yeni bir iş başlar ve yeniden
-   kredi düşer. Ekrandaki ilerleme göstergesine bak, bekle; yoğun saatse sonra dene.
+   kredi düşer. Ekrandaki ilerleme göstergesine bak, bekle; klip hiç görünmüyorsa sayfayı yenile; yoğun saatse sonra dene.
 6. Tek doğru cevap yok. Ama derinliği, boşluğu, hareket edebilecek bir öğesi (buhar, yaprak, su) olan sahne kamera hareketine daha çok yer
    bırakır; düz, ortalanmış bir logo hareket edince ya hiç değişmez ya da bozulur.
 7. Arayüzün geçmişi senin dosyan değil: kredi biter, araç değişir, hesap kapanır. Günlük senin klasöründe durur; aylar sonra

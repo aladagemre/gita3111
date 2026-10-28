@@ -6,10 +6,10 @@
 # duzenle: var olan bir görseli yönergeye göre değiştirir (Konu 7'deki duzenle; bu kez tohum ve kayıt yolu da var).
 #   Girdi dosyasının yolu, yönerge, tohum ve çıktı yolu alır; sonucu ciz gibi kaydeder, yolu ya da None verir.
 #   Girdi dosyası yoksa istek göndermez.
-# en_yakin_paragraflar: Konu 11'deki kilavuzda_ara'nın içindeki iş. Kılavuzun paragraflarını bir kez vektöre çevirir
-#   ve ciktilar/kilavuz_vektorleri.json dosyasına saklar (sonraki seferlerde oradan okur); sorunun vektörünü her
-#   paragrafla karşılaştırır, soruya en yakın `kac` paragrafı tek bir metin olarak verir. Konu 11'deki kilavuzda_ara'yı
-#   defterde araç olarak sen yazıyorsun; içinde bu fonksiyon çalışıyor.
+# en_yakin_paragraflar: Konu 11'deki kilavuzda_ara'nın içindeki iş, aynı kodla. Kılavuzun paragraflarını bir kez
+#   vektöre çevirir ve Konu 11'deki gibi ciktilar/kilavuz_vektorleri.json dosyasına saklar (sonraki seferlerde oradan
+#   okur); sorunun vektörünü her paragrafla karşılaştırır, soruya en yakın `kac` paragrafı tek bir metin olarak verir.
+#   Konu 11'deki kilavuzda_ara'yı defterde araç olarak sen yazıyorsun; içinde bu fonksiyon çalışıyor.
 # modele_sor: Konu 5'te yazdığın fonksiyon (soru ve sıcaklık alır, cevabı metin olarak verir; başarısızsa None).
 # tarifi_goster: Agno'nun bir fonksiyondan kurup modele göndereceği araç tarifini ekrana yazar.
 # hesap, anahtar, basliklar, adres: anahtar.txt'den okunan bilgiler ve Konu 2'deki adres kalıbı.
@@ -18,7 +18,8 @@
 import base64
 import io
 import json
-from pathlib import Path
+import os
+from collections import Counter
 
 import requests
 from PIL import Image
@@ -27,10 +28,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 METIN_MODELI = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 GORSEL_MODELI = "@cf/black-forest-labs/flux-1-schnell"
 DUZENLEYICI = "@cf/black-forest-labs/flux-2-klein-4b"
-GOMME_MODELI = "@cf/google/embeddinggemma-300m"
+VEKTOR_MODELI = "@cf/google/embeddinggemma-300m"
 
-KILAVUZ = Path("veri/kilavuz.txt")
-VEKTOR_DOSYASI = Path("ciktilar/kilavuz_vektorleri.json")
+KILAVUZ = "veri/kilavuz.txt"
+VEKTOR_DOSYASI = "ciktilar/kilavuz_vektorleri.json"
 
 
 def anahtari_oku():
@@ -61,16 +62,20 @@ def gonder(model, **istek):
     if cevap.status_code != 200:
         print("İstek başarısız, durum kodu:", cevap.status_code)
         return None
-    return cevap.json()["result"]
+    yanit = cevap.json()
+    return yanit["result"]
 
 
 def gorseli_kaydet(sonuc, yol):
     # Üretimde de düzenlemede de görsel, metne çevrilmiş (base64) olarak "image" alanında geliyor
     if sonuc is None:
         return None
-    dosya = Path(yol)
-    dosya.parent.mkdir(parents=True, exist_ok=True)
-    dosya.write_bytes(base64.b64decode(sonuc["image"]))
+    resim = base64.b64decode(sonuc["image"])
+    klasor = os.path.dirname(yol)
+    if klasor != "":
+        os.makedirs(klasor, exist_ok=True)
+    with open(yol, "wb") as dosya:
+        dosya.write(resim)
     return yol
 
 
@@ -80,7 +85,7 @@ def ciz(yonerge, tohum, yol):
 
 
 def duzenle(girdi_yolu, yonerge, tohum, yol):
-    if not Path(girdi_yolu).exists():
+    if not os.path.exists(girdi_yolu):
         print("Böyle bir dosya yok:", girdi_yolu)
         return None
     # Düzenleyici en fazla 512 x 512 piksel kabul ediyor: en-boy oranını koruyarak küçült, belleğe yaz
@@ -103,41 +108,66 @@ def modele_sor(soru, sicaklik):
     return sonuc["response"]
 
 
-def vektorlere_cevir(metinler):
-    sonuc = gonder(GOMME_MODELI, json={"text": metinler})
+def vektorleri_al(metinler):
+    # Konu 11'deki vektorleri_al: bir metin listesini tek istekte gönderir, aynı sırayla vektörleri verir
+    sonuc = gonder(VEKTOR_MODELI, json={"text": metinler})
     if sonuc is None:
         return None
     return sonuc["data"]
 
 
+def benzerlik(a, b):
+    # Konu 4'teki fonksiyon
+    sonuc = cosine_similarity([a], [b])
+    satir = sonuc[0]
+    return satir[0]
+
+
 def kilavuzu_hazirla():
-    # Kılavuzun her satırı bir paragraf. Vektörler daha önce saklandıysa ve kılavuz değişmediyse yeniden istemiyoruz.
+    # Konu 11'in Adım 2–3'ü: kılavuzun her satırı bir paragraf; vektörler bir kez istenir, ciktilar/ içine saklanır.
+    # Saklı dosyadaki paragraflar kılavuzdakilerle aynı değilse (kılavuz değiştiyse) vektörler yeniden istenir.
     paragraflar = []
-    for satir in KILAVUZ.read_text(encoding="utf-8").splitlines():
-        if satir.strip() != "":
-            paragraflar.append(satir.strip())
-    if VEKTOR_DOSYASI.exists():
-        sakli = json.loads(VEKTOR_DOSYASI.read_text(encoding="utf-8"))
-        if sakli["paragraflar"] == paragraflar:
-            return paragraflar, sakli["vektorler"]
-    vektorler = vektorlere_cevir(paragraflar)
+    with open(KILAVUZ, encoding="utf-8") as dosya:
+        for satir in dosya:
+            paragraf = satir.strip()
+            if paragraf != "":
+                paragraflar.append(paragraf)
+    if os.path.exists(VEKTOR_DOSYASI):
+        with open(VEKTOR_DOSYASI, encoding="utf-8") as dosya:
+            kilavuz_vektorleri = json.load(dosya)
+        if list(kilavuz_vektorleri) == paragraflar:
+            return kilavuz_vektorleri
+    vektorler = vektorleri_al(paragraflar)
     if vektorler is None:
-        return paragraflar, None
-    VEKTOR_DOSYASI.parent.mkdir(parents=True, exist_ok=True)
-    kayit = {"paragraflar": paragraflar, "vektorler": vektorler}
-    VEKTOR_DOSYASI.write_text(json.dumps(kayit, ensure_ascii=False), encoding="utf-8")
-    return paragraflar, vektorler
+        return None
+    kilavuz_vektorleri = {}
+    sira = 0
+    for paragraf in paragraflar:
+        kilavuz_vektorleri[paragraf] = vektorler[sira]
+        sira = sira + 1
+    klasor = os.path.dirname(VEKTOR_DOSYASI)
+    os.makedirs(klasor, exist_ok=True)
+    with open(VEKTOR_DOSYASI, "w", encoding="utf-8") as dosya:
+        json.dump(kilavuz_vektorleri, dosya, ensure_ascii=False, indent=2)
+    return kilavuz_vektorleri
 
 
 def en_yakin_paragraflar(soru, kac):
-    paragraflar, vektorler = kilavuzu_hazirla()
-    soru_vektorleri = vektorlere_cevir([soru])
-    if vektorler is None or soru_vektorleri is None:
+    # Konu 11'deki kilavuzda_ara'nın içi; tek fark, kaç paragraf geleceğini `kac` söylüyor
+    kilavuz_vektorleri = kilavuzu_hazirla()
+    soru_vektorleri = vektorleri_al([soru])
+    if kilavuz_vektorleri is None or soru_vektorleri is None:
         return "Kılavuza şu an ulaşılamadı."
-    puanlar = cosine_similarity([soru_vektorleri[0]], vektorler)[0]       # Konu 4'teki benzerlik, her paragraf için
-    siralama = sorted(range(len(paragraflar)), key=lambda sira: puanlar[sira], reverse=True)
-    secilenler = [paragraflar[sira] for sira in siralama[:kac]]
-    return "\n".join(secilenler)
+    soru_vektoru = soru_vektorleri[0]
+    skorlar = {}
+    for paragraf in kilavuz_vektorleri:
+        vektor = kilavuz_vektorleri[paragraf]
+        skorlar[paragraf] = benzerlik(soru_vektoru, vektor)
+    sirali = Counter(skorlar)
+    bilgiler = ""
+    for paragraf, skor in sirali.most_common(kac):
+        bilgiler = bilgiler + paragraf + "\n"
+    return bilgiler
 
 
 def tarifi_goster(fonksiyon):

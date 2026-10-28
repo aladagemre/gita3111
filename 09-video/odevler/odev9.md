@@ -3,7 +3,8 @@
 **Puan yok.** Konu 11'in başında sıradaki arkadaşlar gösterecek.
 
 Bu ödev anahtar istemez. Arayüzde **bir klip** üretirsin (dersteki gibi Google Flow; ücretsiz günlük kredinden, 720p ve
-6 saniyede 10 kredi). Kredin o gün yetmezse ertesi gün yap. Kayıtta kart bilgisi isteyen bir araca kart girme.
+6 saniyede 10 kredi). Kredin o gün yetmezse ertesi gün yap. Bir araç kart bilgisi ya da abonelik isterse kart girme,
+abone olma; hocaya yaz.
 
 ---
 
@@ -17,14 +18,15 @@ videoya çevireceksin.
 2. **Hareket yönergeni yaz** (İngilizce). Kameranın hareketini ve öznenin hareketini **ayrı** cümlelerle anlat, tek bir kamera
    hareketi seç. Örnek: `leaves falling slowly from the tree. slow camera pull out.`
 3. **Arayüzde üret.** `ders_notu.md` → Adım 5'in arayüz adımları: model adı → **Video** → **Frames**, görselini
-   **+ Add start frame** kutusuna koy, yönergeni yaz. Ayar: 720p, 6 saniye, çıktı sayısı 1. Oranı sen seç: 16:9 ya da 9:16.
-4. **İndir.** Klibi `09-video/videolar/odev9.mp4` olarak kaydet.
+   **+ Add start frame** kutusuna koy, yönergeni yaz. Ayar: Omni Flash 720p, 6 saniye, çıktı sayısı 1. Oranı sen seç: 16:9 ya da
+   9:16. Üretmeden önce ayarlarda kredi değerine bak: 10 olmalı.
+4. **İndir.** Ders notunun Adım 4'ündeki gibi indir ve `09-video/videolar/odev9.mp4` olarak kaydet.
 5. **Günlüğe yaz.** `ders.ipynb`'yi aynı klasörde yeni bir adla kopyala (ör. `odev9-ayse.ipynb`). Kopyada:
    - Adım 2'nin ilk hücresini çalıştır (fiyat sözlüğü).
    - Adım 6'nın **ikinci** hücresinde (görselden klibin kaydı) değerleri kendi klibine göre değiştir: `"gorsel"` kendi
      görselinin yolu (ör. `"08-koddan-toplu-uretim/odev8/kolaj_mavi.jpg"`), `"sure"`, `"cozunurluk"` ve `"oran"` arayüzde
-     seçtiğin, `"dosya"` `"videolar/odev9.mp4"`. Hücreyi çalıştır;
-     `input` kutularına yönergeni ve beğenip beğenmediğini yaz.
+     seçtiğin, `"dosya"` `"videolar/odev9.mp4"`. Hücreyi çalıştır; `input` kutularına yönergeni ve beğenip
+     beğenmediğini yaz.
    - Adım 6'nın üçüncü hücresinde `kayitlar = [metin_kaydi, gorsel_kaydi]` satırını `kayitlar = [gorsel_kaydi]` yap
      (ödevde metinden video yok) ve dosya adını iki yerde `"odev9_gunlugu.json"` yap. Çalıştır.
    - Adım 6'nın son hücresinde de dosya adını `"odev9_gunlugu.json"` yap ve çalıştır: klibin ücretli bir API'yle kaça mal

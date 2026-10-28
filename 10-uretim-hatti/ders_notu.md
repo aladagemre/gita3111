@@ -192,7 +192,8 @@ from halkalar import modele_sor, sabirli_ciz
 | `modele_sor(soru, sicaklik)` | Konu 5 | Metin modeline (`llama-3.3-70b`) sorar, cevabı metin olarak verir | `None` (Konu 5'tekinden tek farkı: çökmez) |
 | `sabirli_ciz(yonerge, tohum, yol)` | Konu 8 | Görsel modeline (`flux-1-schnell`) en fazla üç kez dener, görseli `yol`a kaydeder ve `yol`u verir | `None` (dosya oluşmaz) |
 
-`halkalar.py` anahtarı `../anahtar.txt`'den kendisi okur: bu hücre ilk çalıştığında. `anahtar.txt`'yi sonradan düzeltirsen çekirdeği yeniden
+`halkalar.py` anahtarı `../anahtar.txt`'den kendisi okur: bu hücre ilk çalıştığında. Hücre bir şey yazmaz; dosya yoksa
+`FileNotFoundError: ... '../anahtar.txt'` verir. `anahtar.txt`'yi sonradan düzeltirsen çekirdeği yeniden
 başlat (**Restart**). Halkalar hazır; onları **birbirine bağlamak** bugün senin işin.
 
 Konu 5'teki slogan sorusunu bir kalıba çeviriyoruz: sabit kısım ve sonunda brifteki konu. Önce tek bir istek:
@@ -217,7 +218,8 @@ print(temiz)
 - `.replace('"', "")`: düz tırnakları hiçle değiştirir, yani siler (Konu 1'de metni temizlerken kullandık). Tırnak işaretinin
   kendisini tek tırnak içine yazıyoruz: `'"'`.
 - Model kıvrık tırnak (`“ ”`) ya da `Slogan:` yazdıysa aynı satırı o işaretle bir kez daha yaz:
-  `temiz = temiz.replace("Slogan: ", "")`.
+  `temiz = temiz.replace("Slogan: ", "")`. Adım 4'teki fonksiyonda aynı temizleme satırları var; eklediğin satırı oraya da
+  ekle (orada değişkenin adı `slogan`).
 - Modelin cevabı Cloudflare'de varsayılan olarak 256 belirteçle (token) sınırlı. Slogana fazlasıyla yeter; ama modelden uzun bir
   metin istersen cevap yarıda kesilir.
 - `cevap` `None` ise (istek başarısız) `.strip()` hata verir: `AttributeError: 'NoneType' object has no attribute 'strip'`.
@@ -262,6 +264,8 @@ Fonksiyon her çağrıldığında önce sorar: **zaten var mı?**
 - Bir cevap gelmezse (`None`) o turu atla (`continue`): hat durmaz, liste bir eksik olur.
 - Dosyaya yazmak Konu 8'deki günlükle aynı: `json.dump(..., ensure_ascii=False, indent=2)`. Önce yazılacak şey, sonra dosya.
 - Fonksiyon `slogan_dosyasi`, `soru`, `sicaklik` ve `slogan_sayisi`'yı yukarıdaki hücrelerden alıyor.
+- Hücre yalnızca fonksiyonu tanımlar; istekler fonksiyonu çağırınca gider. Adım 3'teki deneme sloganı listeye girmez:
+  fonksiyon üç yeni istek gönderir.
 
 ```python
 sloganlar = slogan_halkasi()
@@ -284,8 +288,9 @@ metin birbirini tutmazdı.
 > **Kural:** pahalı ya da her seferinde farklı çıkan ara çıktıyı sakla. Ucuz ve her seferinde aynı çıkanı (Adım 5'teki
 > yönergeler gibi) yeniden kur.
 
-Bir dikkat: üç istekten biri başarısız olursa dosyaya iki slogan yazılır ve sonraki çalıştırmalar o ikisiyle devam eder. Üçünü de
-istiyorsan `sloganlar.json`'u sil, hücreyi yeniden çalıştır.
+Bir dikkat: üç istekten biri başarısız olursa dosyaya iki slogan, üçü de başarısız olursa (ör. anahtar yanlış) boş bir liste
+(`[]`) yazılır; sonraki çalıştırmalar dosyadakiyle devam eder. Sorunu düzelttikten sonra `sloganlar.json`'u sil, hücreyi
+yeniden çalıştır.
 
 ---
 
@@ -400,6 +405,8 @@ Olmadı, atlıyorum: ciktilar/kafe_afisi_1/gorsel_4.jpg
   sıradaki görsele geçerdi.
 - Hat iki şeyi birlikte yapıyor: kopan halkayı **kayda geçiriyor** (hangi görsel, `durum`: `olmadi`) ve kopmayanlarla **devam ediyor**.
 - `gorsel_4.jpg` hiç oluşmadı; hattı yarın yeniden çalıştırırsan yalnızca o denenir (kaldığı yerden devam).
+- Bu hücreyi iki kez çalıştırırsan aynı kayıt listeye iki kez girer (`5 kayıt`). Adım 5'in döngü hücresinden yeniden başla:
+  liste sıfırlanır, görseller zaten var, istek gitmez.
 
 | Kopan halka hattı durdurursa | Kopan halka kayda geçerse |
 |---|---|
@@ -428,6 +435,18 @@ print("Günlük yazıldı:", len(kayitlar), "kayıt")
 - `durum`u `olmadi` olan kayıtlar eksiklerin listesi: hattı yeniden çalıştırınca denenecek olanlar. Program da günlüğü geri okuyup
   onları bulabilir; alıştırmanın 6. sorusunda sen sayacaksın.
 - Final projesinin teslimindeki **üretim günlüğü** bu dosya: hangi brif, hangi model ayarı, ne çıktı, ne eksik kaldı.
+
+**Defteri yarın baştan çalıştırırsan ne görürsün?**
+
+| Adım | İkinci çalıştırmada ekranda | İstek |
+|---|---|---|
+| 3 | Yeni bir deneme sloganı | 1 metin |
+| 4 | İki çağrıda da `Dosyadan okundu, istek gitmedi`, aynı üç slogan | 0 |
+| 5 | Üç kez `Zaten var, atlıyorum` | 0 |
+| 6 | Yine üç kez `400` ve `olmadi`: `gorsel_4.jpg` hiç oluşmadığı için her seferinde denenir | 3 (reddedilen) |
+| 7 | `Günlük yazıldı: 4 kayıt` | 0 |
+
+Hat kaldığı yerden devam ediyor: biten iş yeniden üretilmiyor, yalnızca eksik olan deneniyor.
 
 ---
 
@@ -489,7 +508,7 @@ Panoda yalnızca bir kutu değişir. Hat makinenin işini yapıyor; sen istediğ
 | 4 | 1. halka: sloganlar; ara çıktıyı sakla | `slogan_halkasi`, `sloganlar`, `sloganlar.json` | gerekir |
 | 5 | 2. halka: yönergeler ve görseller | `yonergeler`, `gorsel_halkasi`, `kayitlar`, `gorsel_1.jpg` ... | gerekir |
 | 6 | Bir halkayı bilerek kopardık | `olmadi` durumlu bir kayıt | gerekir |
-| 7 | Üretim günlüğü | `uretim.json` | gerekmez |
+| 7 | Üretim günlüğü | `uretim.json` | istek yok; Adım 4–6 gerekir |
 | Bonus | Pano; ara çıktıya elle dokunmak | `pano.png` | 2. bölüm gerekir |
 
 Derste kendi başına çalışacağın defter: `alistirma.ipynb`. Önce aynı klasörde yeni bir adla kopyala, kopyada çalış.

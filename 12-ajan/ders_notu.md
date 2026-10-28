@@ -23,7 +23,7 @@ tarifi. Bonus'ta bir ajan çalıştırmasının kaç istek ve ne kadar kota harc
 yeni kütüphanesi böylece kurulur: `agno` (ajan çerçevesi) ve `openai`. Adı yanıltmasın: `openai` yalnızca isteğin
 biçimini kuran paket; istekler Cloudflare'e gider, OpenAI hesabı da ödemesi de gerekmez (Adım 5).
 
-**Anahtar:** Isınma anahtarsız. Adım 1'den sonrası `anahtar.txt` ister (Konu 2'deki dosya, `gita3111` klasöründe).
+**Anahtar:** Isınma anahtarsız. Adım 1 ve sonrası `anahtar.txt` ister (Konu 2'deki dosya, `gita3111` klasöründe).
 Defterin tamamı (Bonus dahil) metin ve arama modellerine yaklaşık 30 istek gönderir ve 10 kadar görsel üretir ya da
 düzenler; günlük ücretsiz kotanın %10'undan az.
 
@@ -161,7 +161,8 @@ print(duzenle_tarifi)
   - `name`: aracın adı. Model kararını bu adla bildirecek.
   - `description`: aracın **tarifi**. Model aracı yalnızca bu cümleden tanır.
   - `parameters`: aracın aldığı bilgiler. `"type": "string"` bilginin **metin** olduğunu, `"required"` zorunlu olduğunu
-    söyler. Tek bilgi var: `yonerge`. Dıştaki `"type": "object"` ve `"properties"` her araçta aynı kalan kalıp:
+    söyler. Tek bilgi var: `yonerge`. Bilginin kendi kısa tarifi de var (`yonerge_alani`'ndaki `description`): modele bu
+    alana ne yazacağını söyler. Dıştaki `"type": "object"` ve `"properties"` her araçta aynı kalan kalıp:
     "bilgiler bir sözlük olarak gelecek, işte alanları".
 - İç içe sözlükleri en içten başlayarak, her katmanı ayrı satırda kuruyoruz: önce bir bilginin tarifi
   (`yonerge_alani`), sonra bilgiler (`alanlar`), sonra bilgilerin çerçevesi (`parametreler`), en son araç.
@@ -324,11 +325,13 @@ def kilavuzda_ara(soru: str) -> str:
 - Her biri yardımcı dosyadaki bir fonksiyonu saran küçük bir fonksiyon. Neden sarıyoruz? Modelin yalnızca **karar
   vermesi gereken** bilgileri doldurmasını istiyoruz: yönergeyi (ve düzenlemede dosyayı) model yazsın, tohumu ve kayıt
   yolunu biz verelim.
-- `yonerge: str` bir **tür ipucu**: "bu bilgi metin". Adım 2'de elle yazdığın `"type": "string"`'in Python'daki
-  karşılığı. `-> str` "bu fonksiyon metin verir" demek. Python tür ipucunu denetlemez; Agno okuyup modele iletir.
-- İlk satırdaki üç tırnaklı metin bir **docstring**: fonksiyonun tarifi. Agno aracın tarifini (`description`) buradan
-  okur. Docstring fonksiyonun **ilk** satırı olmalı; araya başka bir satır girerse tarif olmaktan çıkar (alıştırmanın
-  4. bozuk kodu).
+- `yonerge: str` bir **tür ipucu**: "bu bilgi metin" (`str`, Python'da metnin türü). Adım 2'de elle yazdığın
+  `"type": "string"`'in Python'daki karşılığı. `-> str` "bu fonksiyon metin verir" demek. Python tür ipucunu denetlemez;
+  Agno okuyup modele iletir.
+- `def` satırının hemen altındaki, üç tırnakla (`"""`) açılıp kapanan metin bir **docstring**: fonksiyonun tarifi.
+  Üç tırnak arasındaki metin birkaç satıra yayılabilir. Agno aracın tarifini (`description`) buradan okur. Docstring
+  `def`'in hemen altında, fonksiyonun **ilk** satırı olmalı; araya başka bir satır girerse tarif olmaktan çıkar
+  (alıştırmanın 4. bozuk kodu).
 - `return` ettiğimiz metin modele geri gider; model sonraki kararını ona bakarak verir. `print` yalnızca bize: aracın ne
   zaman, hangi bilgiyle çalıştığını ekranda görelim diye.
 - Görsel çizilemezse `ciz` `None` verir; araç bunu modele bir cümleyle söylüyor (`Görsel çizilemedi.`).
@@ -368,6 +371,9 @@ tarifi_goster(fotograf_duzenle)
 Adım 2'deki sözlüğün aynı üç parçası: `name` fonksiyonun adından, `description` docstring'den, `parameters`
 fonksiyonun bilgilerinden ve tür ipuçlarından. Elle kurduğun iç içe sözlüğü Agno senin yerine kurdu.
 
+Bir fark var: Adım 2'de `yonerge`'nin kendi tarifi vardı; burada bilgilerin yalnızca türü var. Bilgilere ne yazılacağını
+bu yüzden docstring'in içinde söyledik: `dosya: fotoğrafın yolu, ör. veri/fincan.jpg`.
+
 ---
 
 ## Adım 6 — İlk ajan
@@ -396,6 +402,11 @@ print(cevap.content)
 çalışırken `afis_ciz çalıştı: ...` satırı da görünür: o satırı aracın içindeki `print` yazıyor.
 
 - `ajan.run` bütün döngüyü çalıştırır: istek, araç çağrısı, aracı çalıştırmak, sonucu geri göndermek, son cevap.
+- Ekranda renkli bir yazı çıkarsa Agno bir sorunu haber veriyor; hücre yine de biter. Kırmızı `ERROR`: Agno modele
+  ulaşamadı ya da istek reddedildi; durum kodu bu satırda yazar (`401` anahtar, `429` kota ya da hız sınırı). Sarı
+  `WARNING Could not run function ...` ve altında uzun, kırmızı bir yazı: hata **aracın içinde** (ör. yanlış yazılmış
+  bir ad). Kırmızı yazının son satırı hatayı söyler (ör. `NameError`); aracın `def` hücresini düzelt, sonra araç
+  listesini ve ajanı yeniden kur.
 
 ```python
 def kararlari_goster(cevap):
@@ -414,8 +425,8 @@ kararlari_goster(cevap)
 
 - `cevap.tools`: bu çalıştırmada çağrılan araçların listesi. Her çağrının adı `tool_name`, bilgileri `tool_args`.
   Konu 2'deki `cevap.status_code` gibi **noktayla** okunuyorlar: bunlar sözlük değil, Agno'nun kendi kayıtları.
-- İlk üç satır bir güvenlik ağı: bir sorun çıkarsa (anahtar yanlış, kota doldu, bağlantı koptu) Agno hata vermez;
-  kırmızı bir `ERROR` satırı yazar, hatayı `cevap.content`'e koyar ve araç listesi hiç oluşmaz (`None`).
+- İlk üç satır bir güvenlik ağı: kırmızı `ERROR` çıktıysa (anahtar yanlış, kota doldu, bağlantı koptu) Agno araç
+  listesini hiç kurmaz (`None`) ve `cevap.content`'e kısa bir hata metni koyar.
 - Yanında değer olmayan `return` "fonksiyondan burada çık" demek: liste yoksa gezecek bir şey de yok.
 - Model hiç araç çağırmadıysa liste boştur: `Çağrılan araç sayısı: 0`.
 
@@ -426,7 +437,8 @@ neleri ekledi? Kararı modele bırakınca **yönergeyi de model yazıyor**; ne y
 goster("ciktilar/afis.jpg")
 ```
 
-Çıktı: modelin yönergesiyle çizilen afiş.
+Çıktı: modelin yönergesiyle çizilen afiş. (Model `afis_ciz`'i çağırmadıysa dosya yok ve hücre `FileNotFoundError`
+verir; isteği yeniden çalıştır.)
 
 ---
 
@@ -474,7 +486,8 @@ assistant | (modelin son cevabı)
 
 - Agno Adım 4'ün sonundaki döngüyü bizim yerimize çalıştırdı; bütün konuşma `cevap.messages` listesinde.
 - `user`: senin isteğin; `assistant`: modelin cevabı; `tool`: aracın modele geri giden sonucu.
-- Araç isteyen `assistant` mesajının çoğu zaman metni olmaz (`None`): asıl içeriği araç çağrısıdır.
+- Araç isteyen `assistant` mesajının çoğu zaman metni olmaz (`None`): asıl içeriği araç çağrısıdır. Hangi aracı,
+  hangi bilgiyle istediğini `kararlari_goster` gösterdi; burada konuşmanın sırasını görüyorsun.
 - Her `assistant` mesajı modele giden ayrı bir istek; her istekte o ana kadarki bütün konuşma yeniden gider.
 - Model kılavuza baktıysa paragraflar `tool` mesajında; afişin yönergesini yazarken onları okudu. Bu, Konu 11'deki
   "yalnızca şu bilgilere dayanarak" fikrinin ajan hâli; tek fark, bilgiyi ne zaman getireceğine modelin kendisinin
@@ -568,7 +581,8 @@ def slogan_yaz(konu: str) -> str:
   - Ne zaman seçilmeli? (Ör. afiş için metin gerektiğinde.)
   - `konu` bilgisine ne yazılmalı? Model kılavuzdan öğrendiği kuralları (ses tonu, yasak sözcükler) `konu`'ya
     ekleyebilir; tarifinde bunu iste.
-- Docstring tırnaklarını silme; tarif tek satıra sığmazsa üç tırnak arasında birkaç satıra yayılabilir.
+- Baştaki ve sondaki üç tırnak kalsın; birini silersen `SyntaxError` alırsın. Tarif tek satıra sığmazsa üç tırnak
+  arasında birkaç satıra yayılabilir.
 - İstersen `soru` cümlesini de değiştir: sloganın biçimini (uzunluk, dil, ton) o belirliyor.
 
 Örnek bir tarif (senin cümlelerin farklı olabilir):
@@ -583,7 +597,8 @@ tarifi_goster(slogan_yaz)
 ```
 
 Çıktı: Agno'nun kurduğu tarif. Yazdığın cümle `description`'da mı? (Hâlâ `BURAYA TARİFİ SEN YAZ.` görünüyorsa
-`def` hücresini değiştirdikten sonra çalıştırmamışsındır.)
+`def` hücresini değiştirdikten sonra çalıştırmamışsındır.) Tarifin birkaç satıra yayıldıysa satır sonları orada `\n`
+(yeni satır işareti) olarak görünür.
 
 ```python
 araclar = [afis_ciz, fotograf_duzenle, kilavuzda_ara, slogan_yaz]
@@ -647,7 +662,7 @@ print("Model istekleri için yaklaşık neuron:", yuvarlak)
 
 Çıktı: girdi ve çıktı belirteci (token) sayıları ve yaklaşık neuron, senin ekranında.
 
-- `cevap.metrics`: Agno'nun bu çalıştırmada saydığı toplam belirteçler. Girdi: modele giden; çıktı: modelin yazdığı.
+- `cevap.metrics`: Agno'nun bu çalıştırmada saydığı toplam belirteçler (Konu 5). Girdi: modele giden; çıktı: modelin yazdığı.
 - Cloudflare'in fiyat sayfasına göre gemma-4'te bir milyon girdi belirteci 9.091, bir milyon çıktı belirteci 27.273
   neuron; belirteç başına 0,009091 ve 0,027273 (kodda ondalık ayırıcı nokta: `0.009091`).
 - Girdi neden büyük? Her istekte bütün konuşma ve bütün araç tarifleri yeniden gidiyor; kılavuz paragrafları da
@@ -671,6 +686,19 @@ ne yazdı? Senin çıktına bak.
 - Adım 4'te dosya yolunu biz yazmıştık; şimdi o da modelin kararı. Model var olmayan bir yol yazarsa (`fincan.jpg`)
   `duzenle` `Böyle bir dosya yok` der, araç modele `Fotoğraf düzenlenemedi.` cevabını verir; model başka bir yol
   deneyebilir. Sınır burada da işe yarar.
+
+```python
+cevap = ajan.run("Sayfa Kahve hafta sonu kaçta açılıyor?")
+kararlari_goster(cevap)
+print(cevap.content)
+```
+
+Çıktı: kararlar ve son cevap, senin ekranında.
+
+- Üçüncü istek bir soru; çizilecek ya da düzenlenecek bir şey yok. Model kılavuza baktı mı? Cevaptaki saatler
+  kılavuzdakiyle (`veri/kilavuz.txt`, son paragraf) aynı mı?
+- Model kılavuza baktıysa ajan bu kez yalnızca bilgi getirip cevap yazdı: Konu 11'deki "önce kılavuzda ara, sonra cevapla" işi, ama kılavuza
+  bakma kararı modelin.
 
 ```python
 cevap = ajan.run("afişi Instagram'da paylaş")
@@ -726,7 +754,7 @@ print(ilk_mesaj.role, "|", ilk_mesaj.content)
 | Adım 8 | Tarifi bozmak ve düzeltmek | gerekir |
 | Adım 9 | Kendi aracın: `slogan_yaz`'ın tarifi; dört araçlı ajan | gerekir |
 | Bonus 1 | Bir çalıştırma kaç istek, ne kadar kota | istek göndermez (Adım 9'un sonucunu okur) |
-| Bonus 2 | Isınmadaki öbür istekler: fotoğraf düzenleme, aracı olmayan iş | gerekir |
+| Bonus 2 | Isınmadaki öbür istekler: fotoğraf düzenleme, kılavuzdan bir soru, aracı olmayan iş | gerekir |
 | Bonus 3 | Genel brif: `instructions` | gerekir |
 
 ---
@@ -740,12 +768,14 @@ print(ilk_mesaj.role, "|", ilk_mesaj.content)
 | `FileNotFoundError: [Errno 2] No such file or directory: '../anahtar.txt'` | Anahtar dosyası yok ya da yeri yanlış | Konu 2'deki `anahtar.txt`, `gita3111` klasöründe |
 | `KeyError: 'tool_calls'` (Adım 3) | Model araç çağırmadı, metin yazdı | Bir önceki hücrenin `print(yanit)` çıktısına bak; isteği yeniden gönder |
 | `Listede olmayan bir araç: ...` (Adım 4) | Model tarifte olmayan bir ad yazdı | Güvenlik ağı çalıştı; isteği yeniden gönder |
-| Kırmızı `ERROR` satırları, `Araç kaydı yok. Ajanın son mesajı: ...` | Agno modele ulaşamadı ya da istek reddedildi (anahtar, kota, bağlantı) | Son mesajı oku; 401 ise anahtar, 429 ise kota ya da hız sınırı |
+| Kırmızı `ERROR` satırları, `Araç kaydı yok. Ajanın son mesajı: ...` | Agno modele ulaşamadı ya da istek reddedildi (anahtar, kota, bağlantı) | `ERROR` satırındaki durum kodunu oku: 401 anahtar, 429 kota ya da hız sınırı |
 | Adım 7'de yalnızca `user` satırı; Bonus 1'de `Modele giden istek: 0` ve sıfır belirteç | Ajan hata verdi; modelden hiç cevap gelmedi | Çalıştırma hücresindeki `ERROR` satırına bak; sorunu çözüp yeniden çalıştır |
 | `TypeError: afis_ciz() missing 1 required positional argument: 'yonerge'` | Araç listesine `afis_ciz()` (parantezli) yazıldı | Listede parantez yok: `[afis_ciz, ...]` |
 | Sarı `WARNING Could not run function ...` ve uzun, kırmızı bir `ERROR`; hücre yine de biter | Aracın içinde bir hata var (ör. bir adı yanlış yazdın). Agno hücreyi durdurmaz, hatayı modele aracın sonucu olarak gönderir | Kırmızı yazının son satırındaki hatayı oku (ör. `NameError`), `def` hücresini düzelt, araç listesini ve ajanı yeniden kur |
 | Ajan eski tarifle davranıyor | `def` hücresi çalıştı ama araç listesi ve ajan yeniden kurulmadı | Aynı hücredeki `araclar = ...` ve `ajan = ...` satırlarını da çalıştır |
 | Görsel eski | Bu çalıştırmada `afis_ciz` çağrılmadı; dosya bir öncekinden kaldı | `kararlari_goster`'in çıktısına bak |
+| `FileNotFoundError: ... 'ciktilar/afis.jpg'` (Adım 6) | Model `afis_ciz`'i çağırmadı; afiş dosyası hiç oluşmadı | `kararlari_goster`'in çıktısına bak; isteği yeniden çalıştır |
+| `SyntaxError` (Adım 9) | Docstring yazılırken üç tırnaktan biri silindi | Baştaki ve sondaki üç tırnak kalmalı |
 | `Böyle bir dosya yok: ...` | Model düzenleme için olmayan bir dosya yolu yazdı | Yolu istekte açık yaz: `veri/fincan.jpg` |
 | `NameError: name 'model' / 'kararlari_goster' / 'cevap' is not defined` | Bir hücre atlandı | Adımları sırayla çalıştır |
 

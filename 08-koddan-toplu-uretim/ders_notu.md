@@ -253,7 +253,8 @@ Tahmini kota: 696 / 10000 neuron
 
 - `MAKS_URETIM` bir çalıştırmada en fazla kaç görsel üretileceği. Büyük harfle yazılmış bir değişken:
   Python'da "bunu değiştirme, sabit" demenin geleneği.
-- Kart sayısı sınırı aşarsa uyarı yazar; Adım 4'teki döngü sınırda durur.
+- Kart sayısı sınırı aşarsa uyarı yazar; Adım 4'teki döngü sınırda durur. Şimdi yazmaz: 12 kart sınırı aşmıyor
+  (Bonus 3'te listeyi büyütünce görürsün).
 
 ---
 
@@ -466,7 +467,8 @@ for tohum in [1, 2, 3]:
 - Aynı yönerge, üç tohum: fark kompozisyonda mı, renkte mi, ayrıntıda mı? Hangisini müşteriye götürürdün?
 
 **3. Sınır gerçekten çalışıyor mu?** Isınma'daki `renkler` listesine ve Adım 2'deki `renk_yonergeleri` sözlüğüne bir
-palet ekle (ör. `"mono"` ve `"black and white palette"`). Isınma'yı ve Adım 2'nin hücrelerini yeniden çalıştır, sonra:
+palet ekle (ör. `"mono"` ve `"black and white palette"`). Isınma'yı, Adım 2'nin hücrelerini ve Adım 3'ü yeniden çalıştır
+(Adım 3 bu kez `Dikkat: kart sayısı sınırı aşıyor; ...` yazar: 15 kart, sınır 12), sonra:
 
 ```python
 toplu_uret(kartlar, 2)
@@ -495,7 +497,8 @@ kopyada çalış. **Anahtar istemez ve görsel üretmez:** `veri/ornek_izgara/` 
 (altı kartın dördünün görseli var, ikisi "üretilememiş"). Üç bölümü var:
 
 - **Kendin yaz:** toplu üretim döngüsünü (görsel üretmeden, `print` ile) ve 2 × 3'lük bir kontak sayfasını kendi elinle
-  yazıyorsun. Derste önce bunlar.
+  yazıyorsun. Kontak sayfasında kart listesi yok: yolları Isınma'daki iç içe döngüyle, Adım 2'deki kalıba göre
+  kendin kuruyorsun. Derste önce bunlar.
 - **Bozuk kodlar:** altı kısa hücre, birbirinden bağımsız. Üçü hata mesajı veriyor, üçü sessizce yanlış sonuç yazıyor.
 - **Kendi başına:** `BOSLUK` yazan yerleri doldurduğun yedi soru.
 

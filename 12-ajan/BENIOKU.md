@@ -46,7 +46,7 @@ Defterin kopyası `ajan_araclari.py` ve `veri/` klasörüyle **aynı klasörde**
 
 ## Anahtar gerekiyor mu?
 
-Isınma anahtarsız; alıştırma defteri de. Adım 1'den sonrası `anahtar.txt` ister (bütün konular için tek dosya,
+Isınma anahtarsız; alıştırma defteri de. Adım 1 ve sonrası `anahtar.txt` ister (bütün konular için tek dosya,
 `gita3111` klasöründe). Defterin tamamı (Bonus dahil) metin ve arama modellerine yaklaşık 30 istek gönderir ve 10 kadar
 görsel üretir ya da düzenler; günlük ücretsiz kotanın %10'undan az. Her ajanın bir araç çağrısı sınırı var (`tool_call_limit`): bir çalıştırma en fazla
 3–4 araç çalıştırır. Anahtarın yoksa yanındakiyle birlikte, onun ekranında izle.

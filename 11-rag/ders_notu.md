@@ -203,32 +203,42 @@ gelmeyebilirdi.
 
 ## Adım 3 — Paragrafları vektöre çevir ve sakla
 
-Konu 4'te 24 kelime için 24 ayrı istek göndermiştik. O konunun yan notunda dediğimiz gibi, model tek istekte bir liste de
-alabiliyor: `vektorleri_al(paragraflar)` 14 paragrafı **tek istekte** gönderir ve aynı sırayla 14 vektör verir.
+Konu 4'te 24 kelime için 24 ayrı istek göndermiştik. Oysa aynı konunun Adım 2'sinde gördük: cevaptaki `data` bir liste,
+çünkü model tek istekte birden çok metin alabiliyor. `vektorleri_al(paragraflar)` 14 paragrafı **tek istekte** gönderir ve
+aynı sırayla 14 vektör verir.
 
 Kılavuz değişmedikçe vektörleri de değişmez; her çalıştırmada yeniden istemenin anlamı yok. Konu 10'un kuralı:
-**ara çıktıyı sakla.** Önce dosyanın yerini belirliyoruz:
+**ara çıktıyı sakla.** Önce dosyanın yerini belirliyoruz. Yol, Konu 10'daki gibi düz bir metin: klasör + dosya adı.
+
+- `"ciktilar/"` sonundaki `/` sayesinde dosya adını doğrudan ekleyebiliriz: `klasor + "kilavuz_vektorleri.json"`.
+- `os.makedirs(klasor, exist_ok=True)` klasörü açar; `exist_ok=True`: klasör zaten varsa hata verme. `os` Python'un
+  içinde gelir, kurulum istemez.
 
 ```python
 import json
-from pathlib import Path
+import os
 
-klasor = Path("ciktilar")
-klasor.mkdir(exist_ok=True)
-vektor_dosyasi = klasor / "kilavuz_vektorleri.json"
+klasor = "ciktilar/"
+os.makedirs(klasor, exist_ok=True)
+vektor_dosyasi = klasor + "kilavuz_vektorleri.json"
+print(vektor_dosyasi)
 ```
 
-Sonraki hücre Konu 10'daki slogan halkasının kalıbıyla çalışır. Önce sorar: **zaten var mı?**
+Çıktı: `ciktilar/kilavuz_vektorleri.json`.
+
+Sonraki hücre Konu 10'daki slogan halkasının kalıbıyla çalışır. Önce sorar: **zaten var mı?** Bunu `os.path.exists`
+söyler (Konu 8): yolda bir dosya varsa `True`, yoksa `False`.
 
 - Dosya varsa okur; modele hiç istek gitmez.
 - Yoksa vektörleri ister, her paragrafı kendi vektörüyle eşleştirir, sözlüğü dosyaya yazar.
 
 Eşleştirme: birinci paragrafa birinci vektör, ikinciye ikinci... `sira` sayacı hangi vektörde olduğumuzu tutar (Konu 6'da her
 A'yı türüyle böyle eşleştirmiştik: `turler[sira]`).
-Sözlüğün anahtarı paragrafın kendisi, değeri onun vektörü (Konu 4'teki `vektorler_sozlugu` gibi).
+Sözlüğün anahtarı paragrafın kendisi, değeri onun vektörü (Konu 4'teki `vektorler_sozlugu` gibi). Dosyaya yazmak Konu 10'daki
+sloganlarla aynı: `json.dump(..., ensure_ascii=False, indent=2)`.
 
 ```python
-if vektor_dosyasi.exists():
+if os.path.exists(vektor_dosyasi):
     with open(vektor_dosyasi, encoding="utf-8") as dosya:
         kilavuz_vektorleri = json.load(dosya)
     print("Dosyadan okundu, istek gitmedi")
@@ -240,17 +250,17 @@ else:
         kilavuz_vektorleri[paragraf] = vektorler[sira]
         sira = sira + 1
     with open(vektor_dosyasi, "w", encoding="utf-8") as dosya:
-        json.dump(kilavuz_vektorleri, dosya, ensure_ascii=False)
+        json.dump(kilavuz_vektorleri, dosya, ensure_ascii=False, indent=2)
     print("Vektörler alındı ve kaydedildi")
 
 print(len(kilavuz_vektorleri))
 ```
 
 İlk çalıştırmada çıktı `Vektörler alındı ve kaydedildi` ve `14`; bir istek gider. İkinci çalıştırmada
-`Dosyadan okundu, istek gitmedi` ve `14`; hiç istek gitmez.
+`Dosyadan okundu, istek gitmedi` ve `14`; hiç istek gitmez. `14` sözlükteki paragraf sayısı (vektörlerin uzunluğu değil).
 
-`ciktilar/kilavuz_vektorleri.json`'u VS Code'da açarsan her paragrafın yanında yüzlerce sayı görürsün: kılavuzun modelin
-gözündeki hâli.
+`ciktilar/kilavuz_vektorleri.json`'u VS Code'da açarsan her paragrafın altında alt alta yüzlerce sayı görürsün: kılavuzun
+modelin gözündeki hâli.
 
 > **Kılavuzu değiştirirsen** (bir kural ekler, bir paragrafı düzeltirsen) `ciktilar/kilavuz_vektorleri.json`'u sil ve Adım 2'den
 > yeniden çalıştır. Silmezsen hücre eski dosyayı okur; arama eski kılavuzda yapılır ve yeni kural hiç bulunmaz. Hata da
@@ -265,9 +275,12 @@ Sorunun (Adım 1'deki renk sorusu) vektörü:
 ```python
 soru_vektoru = vektor_al(soru)
 print(len(soru_vektoru))
+print(soru_vektoru[:5])
 ```
 
-Çıktı: `...` (Adım 3'teki paragraf vektörleriyle aynı uzunluk). İki vektör ancak aynı uzunluktaysa karşılaştırılabilir.
+Çıktı: `...` (Konu 4'teki gibi: vektörün uzunluğu ve ilk beş sayısı). Kılavuzun paragrafları da aynı modelden geçti; her
+birinin vektörü bu uzunlukta. İki vektör ancak aynı uzunluktaysa karşılaştırılabilir: ısınmadaki üç sayılık soru vektörü
+bu paragraflarla karşılaştırılamazdı (hata tablosundaki `ValueError`).
 
 Bu adımı derste **sen yazdın**. Plan ısınmadakiyle ve Konu 4'ün Adım 6'sıyla aynı: boş bir `skorlar` sözlüğü; her paragraf
 için sorunun vektörüyle paragrafın vektörünün benzerliği; `Counter` ile en büyük üçü. Bir çözüm:
@@ -346,8 +359,13 @@ print("KILAVUZLU:", kilavuzlu)
 Çıktı: `...` (iki cevap). Karşılaştırırken sor:
 
 - Kılavuzlu cevapta mürekkep mavisi ve kâğıt beyazı var mı? Renk kodları (`#1F3A5F`, `#F4F1EA`) kılavuzdakilerle aynı mı?
-- Kırmızı–turuncu yasağından söz ediyor mu? Etmiyorsa Adım 4'e dön: o paragraf ilk üçe girmiş miydi?
+- Kılavuzsuz cevapta bu kodlardan biri var mı? Model onları nereden bilebilirdi?
+- Kırmızı–turuncu yasağından söz ediyor mu? Kılavuzlu cevap "Bilmiyorum" mu dedi? İkisinde de Adım 4'e dön: hangi
+  paragraflar ilk üçe girmişti?
 - Kılavuzlu cevap, bilgilerde olmayan bir şey ekledi mi?
+
+Renk kodu iyi bir sınama: "lacivert" gibi makul bir rengi model tahmin edebilir, ama kılavuzdaki kodun aynısını kılavuzu
+görmeden tutturması şans olur.
 
 Model yalnızca yönergede gördüğünü bilir; kendisine gelmeyen bir paragrafı bilemez. **RAG'de cevap, bulma adımından daha
 iyi olamaz.**
@@ -499,10 +517,18 @@ kılavuz için bu olur; iki yüz sayfalık bir kılavuz modelin bağlam penceres
 bir kural kalabalıkta kaybolur. Bitince 3'e geri döndür.
 
 **3. Yarım bilgi.** Kılavuz başlık yazı tipini tarif ediyor (serifli, eski kitap baskısını andıran) ama adını vermiyor.
+Önce yazı tipi paragrafının ilk üçe girip girmediğine bakıyoruz:
 
 ```python
 yazi_sorusu = "Sayfa Kahve'nin başlıklarında hangi yazı tipini kullanmalıyım? Yazı tipinin adını yaz."
 
+bulunan = kilavuzda_ara(yazi_sorusu)
+print(bulunan)
+```
+
+Yazı tipi paragrafı geldiyse model tarifi görür, adı görmez; gelmediyse ikisini de görmez. Sonra soruyu soruyoruz:
+
+```python
 yazi_cevabi = kilavuza_sor(yazi_sorusu)
 print(yazi_cevabi)
 ```

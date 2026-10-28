@@ -29,9 +29,9 @@ halkaların birbirine bağlı ve kayıtlı çalışması yeter. Final projesinde
 4. Isınma'dan başlayıp **Adım 7'nin sonuna kadar** sırayla çalıştır, yalnızca **Adım 6'yı atla** (bilerek koparma). O hücre
    4 numaralı görseli boş yönergeyle ister; 4 slogan seçtiysen `gorsel_4.jpg` zaten var ve kayda yanlış bir satır girer.
    Sonra Bonus 1'in pano hücresini çalıştır.
-5. Panoya bak. Beğenmediğin bir slogan varsa Bonus 2'deki gibi `sloganlar.json`'da değiştir, o görseli sil, sonra
-   Adım 4'ün ilk çağrı hücresinden (`sloganlar = slogan_halkasi()`) Adım 5'in sonuna kadar, ardından Adım 7'nin günlük hücresini
-   ve panoyu yeniden çalıştır (Adım 6 yine hariç); böylece `uretim.json` ve pano da yenilenir.
+5. Panoya bak. Beğenmediğin bir slogan varsa Bonus 2'deki gibi kendi çalışma klasöründeki `sloganlar.json`'da değiştir,
+   o görseli sil, sonra Adım 4'ün ilk çağrı hücresinden (`sloganlar = slogan_halkasi()`) Adım 5'in sonuna kadar, ardından
+   Adım 7'nin günlük hücresini ve panoyu yeniden çalıştır (Adım 6 yine hariç); böylece `uretim.json` ve pano da yenilenir.
    Ayarlar dosyasını değiştirdiysen Adım 1'den itibaren yeniden çalıştır; brifi (konu, stil, tohum) değiştirdiysen `calisma`
    adını da değiştir.
 

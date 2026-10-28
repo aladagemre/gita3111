@@ -2,8 +2,9 @@
 
 **Puan yok.** Konu 9'un başında sıradaki arkadaşlar gösterecek.
 
-Bu ödev kendi `anahtar.txt` dosyanı ister (Konu 2). En fazla 13 görsel üretir ("İstersen" bölümüyle 16);
-ücretsiz günlük kotanın küçük bir kısmı.
+Bu ödev kendi `anahtar.txt` dosyanı ister (Konu 2). En fazla 13 görsel üretir; deneme görsellerini beğenmeyip baştan
+başlarsan her seferinde 4 görsel daha. "İstersen" bölümü 3 görsel ve görsel anlayan modele en fazla 13 soru ekler.
+Hepsi ücretsiz günlük kotanın küçük bir kısmı.
 
 ---
 

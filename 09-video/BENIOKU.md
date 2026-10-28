@@ -34,14 +34,15 @@ Sonra:
 2. Sağ üstten çekirdek (kernel) olarak **`.venv`**'i seç.
 3. Hücreleri yukarıdan aşağı, **Shift + Enter** ile sırayla çalıştır.
 
-Arayüz için tarayıcıda `labs.google/fx/tools/flow` adresini aç ve kişisel Google hesabınla gir (18 yaş ve üstü). Adımlar
+Arayüz için bilgisayarda Chrome ya da Edge ile `labs.google/fx/tools/flow` adresini aç ve kişisel Google hesabınla gir
+(18 yaş ve üstü). Adımlar
 `ders_notu.md`'de.
 
 ## Anahtar gerekiyor mu?
 
 Hayır. İki defter de anahtar istemez, internete çıkmaz. Video arayüzde, kendi Google hesabının ücretsiz günlük kredisiyle
 üretilir (abonelik almamış her kullanıcıya her gün 50 kredi; derste iki klip 22 kredi). Hesap açarken ya da üretirken kart bilgisi
-istenirse girme, hocaya yaz.
+istenirse ya da abone olman istenirse girme, abone olma, hocaya yaz.
 
 ## Güncel kalmak
 

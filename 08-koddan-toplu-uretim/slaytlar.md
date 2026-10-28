@@ -219,4 +219,4 @@ Ayrıntılar: `odevler/odev8.md`. Görsellerini sakla: Konu 9'da birini videoya 
 4. **Kararlı ad, kaldığı yerden devam.** Aynı iş aynı ad; var olanı atla
 5. **Kayıt, sayfa, seçim.** Günlük her şeyi kaydeder, kontak sayfası karşılaştırır, son kararı tasarımcı verir
 
-Sıradaki konu: **Konu 9 — Video, arayüzden.** Hareket ekliyoruz, bu kez kod yazmadan. Bugünkü görsellerinden birini videoya çevireceğiz; video hem yavaş hem pahalı bir üretim olduğu için "önce hesap" alışkanlığı orada da işe yarayacak.
+Sıradaki konu: **Konu 9 — Video, arayüzden.** Hareket ekliyoruz; videoyu bu kez kod yazmadan, arayüzden üreteceğiz. Bugünkü görsellerinden birini videoya çevireceğiz; video hem yavaş hem pahalı bir üretim olduğu için "önce hesap" alışkanlığı orada da işe yarayacak.

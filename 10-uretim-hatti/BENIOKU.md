@@ -65,5 +65,5 @@ Derste `ayarlar.json`'u doğrudan değiştirdiysen ve `git pull` bu dosya yüzü
 | Adım 4 | 1. halka: sloganlar; ara çıktıyı saklamak | gerekir |
 | Adım 5 | 2. halka: yönergeler ve görseller | gerekir |
 | Adım 6 | Bir halkayı bilerek koparmak: hat durmuyor | gerekir |
-| Adım 7 | Üretim günlüğü: `uretim.json` | gerekmez |
+| Adım 7 | Üretim günlüğü: `uretim.json` | istek yok; Adım 4–6 gerekir |
 | Bonus | Pano: slogan ve görsel yan yana; ara çıktıya elle dokunmak | 2. bölüm gerekir |

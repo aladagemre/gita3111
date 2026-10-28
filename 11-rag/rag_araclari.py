@@ -10,7 +10,7 @@
 # timeout: cevap bu kadar saniyede gelmezse istek bırakılır; hücre sonsuza kadar asılı kalmaz.
 
 import base64
-from pathlib import Path
+import os
 
 import requests
 
@@ -86,7 +86,9 @@ def ciz(yonerge, tohum, yol):
     yanit = cevap.json()
     sonuc = yanit["result"]
     baytlar = base64.b64decode(sonuc["image"])     # görsel metin olarak geliyor; dosyaya yazılacak hâline çeviriyoruz
-    dosya_yolu = Path(yol)
-    dosya_yolu.parent.mkdir(parents=True, exist_ok=True)
-    dosya_yolu.write_bytes(baytlar)
+    klasor = os.path.dirname(yol)
+    if klasor != "":
+        os.makedirs(klasor, exist_ok=True)
+    with open(yol, "wb") as dosya:
+        dosya.write(baytlar)
     return yol
