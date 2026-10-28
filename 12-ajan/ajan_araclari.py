@@ -3,12 +3,13 @@
 #
 # ciz: Konu 8'deki fonksiyon. Yönerge, tohum ve dosya yolu alır; görseli o yola kaydeder (klasör yoksa açar).
 #   Başarılıysa yolu, başarısızsa None verir.
-# duzenle: var olan bir görseli yönergeye göre değiştirir (Konu 7'de arayüzde yaptığın iş, bu kez koddan).
+# duzenle: var olan bir görseli yönergeye göre değiştirir (Konu 7'deki duzenle; bu kez tohum ve kayıt yolu da var).
 #   Girdi dosyasının yolu, yönerge, tohum ve çıktı yolu alır; sonucu ciz gibi kaydeder, yolu ya da None verir.
 #   Girdi dosyası yoksa istek göndermez.
-# en_benzer_paragraflar: Konu 11'de adım adım kurduğun arama. Kılavuzun paragraflarını bir kez vektöre çevirir ve
-#   ciktilar/kilavuz_vektorleri.json dosyasına saklar (sonraki seferlerde oradan okur); sorunun vektörünü her
-#   paragrafla karşılaştırır, en benzer `kac` paragrafı tek bir metin olarak verir.
+# en_yakin_paragraflar: Konu 11'deki kilavuzda_ara'nın içindeki iş. Kılavuzun paragraflarını bir kez vektöre çevirir
+#   ve ciktilar/kilavuz_vektorleri.json dosyasına saklar (sonraki seferlerde oradan okur); sorunun vektörünü her
+#   paragrafla karşılaştırır, soruya en yakın `kac` paragrafı tek bir metin olarak verir. Konu 11'deki kilavuzda_ara'yı
+#   defterde araç olarak sen yazıyorsun; içinde bu fonksiyon çalışıyor.
 # modele_sor: Konu 5'te yazdığın fonksiyon (soru ve sıcaklık alır, cevabı metin olarak verir; başarısızsa None).
 # tarifi_goster: Agno'nun bir fonksiyondan kurup modele göndereceği araç tarifini ekrana yazar.
 # hesap, anahtar, basliklar, adres: anahtar.txt'den okunan bilgiler ve Konu 2'deki adres kalıbı.
@@ -128,7 +129,7 @@ def kilavuzu_hazirla():
     return paragraflar, vektorler
 
 
-def en_benzer_paragraflar(soru, kac):
+def en_yakin_paragraflar(soru, kac):
     paragraflar, vektorler = kilavuzu_hazirla()
     soru_vektorleri = vektorlere_cevir([soru])
     if vektorler is None or soru_vektorleri is None:

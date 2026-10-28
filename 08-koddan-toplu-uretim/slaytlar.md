@@ -12,7 +12,7 @@ Ahmet Emre Aladağ
 - Bugün önce aynı işi koddan yapıyoruz; bu kez dosyanın adını ve yerini sen seçiyorsun
 - Sonra arayüzün yapamadığına geçiyoruz: onlarca görseli tek seferde, düzenli adlarla ve kayıtlı üretmek
 - Dönemin başından beri sorulan "neden kod öğreniyorum?" sorusunun cevabı bu konu
-- Yeni olanlar: kombinasyon, şablon, kart, güvenlik sınırı, kaldığı yerden devam, üretim günlüğü, kontak sayfası
+- Yeni olanlar: kombinasyon, şablon, kart, güvenlik sınırı, kaldığı yerden devam, programın kendi yazdığı üretim günlüğü, kontak sayfası
 - Görseli üretip dosyaya yazan kısım hazır bir yardımcı dosyada; senin işin onu yönetmek
 
 -----

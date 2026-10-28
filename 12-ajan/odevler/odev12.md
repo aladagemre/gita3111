@@ -38,7 +38,7 @@ fazla 6 görsel; günlük ücretsiz kotanın %10'undan az.
 5. **Tarifi boz, düzelt.** Senin aracını gerektiren isteği seç. Aracının docstring'ini bilerek tembel bir tek cümleye
    indir; fonksiyonu, araç listesini ve ajanı yeniden kur; isteği yeniden çalıştır. Sonra tarifi düzelt ve bir kez daha
    çalıştır. Üç sonucu (ilk, bozuk, düzeltilmiş) not et.
-6. **Kota.** Bir çalıştırma için Adım 10'daki iki hücreyi çalıştır: kaç istek, kaç belirteç, yaklaşık kaç neuron?
+6. **Kota.** Bir çalıştırma için Bonus 1'deki iki hücreyi çalıştır: kaç istek, kaç belirteç, yaklaşık kaç neuron?
 
 **İpucu (kotanı korumak için):** görsel çizdirmeden yalnızca kararları denemek istersen `afis_ciz`'in içini geçici
 olarak değiştir: `print` satırından sonra yalnızca `return "Prova: görsel çizilmedi."` kalsın, docstring aynı kalsın.

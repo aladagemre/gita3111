@@ -89,5 +89,4 @@ def ciz(yonerge, tohum, yol):
     dosya_yolu = Path(yol)
     dosya_yolu.parent.mkdir(parents=True, exist_ok=True)
     dosya_yolu.write_bytes(baytlar)
-    print("Kaydedildi:", yol)
     return yol

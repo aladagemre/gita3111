@@ -10,7 +10,7 @@ Ahmet Emre Aladağ
 - Konu 8'de görselleri koddan ürettik, bir döngüyle birçoğunu birden; her biri birkaç saniyede geldi
 - Bugün görsele **zaman** ekliyoruz: birkaç saniyelik kısa video klipler
 - Videoyu arayüzden üreteceğiz; kod yalnızca hesap ve kayıt için
-- Neden arayüz? Video modellerinin ücretsiz bir API'si yok: koddan üretmek her saniye için para ödemek demek
+- Neden arayüz? Görselde kullandığımız Cloudflare'de video modeli yok; Google'ın video API'si ise saniye başına ücretli
 - Arayüzlerin ücretsiz katmanı var ama sınırlı; her denemeyi düşünerek yapmak gerekiyor
 - Konu 8'den gelen alışkanlıklar burada da geçerli: sınır koymak ve her üretimi kayda geçirmek
 
@@ -23,7 +23,7 @@ Ahmet Emre Aladağ
 - Video modeli tek bir görsel değil, birbirini **tutan** bir kare dizisi üretir
 - Zor olan kareleri çizmek değil, aralarındaki **tutarlılık**: fincan kare kare şekil değiştirmemeli, ışık bir anda zıplamamalı
 - Bu yüzden video modelleri görsel modellerinden çok daha fazla hesap yapar; hem yavaş hem pahalıdır
-- Yeni modellerin çoğu sesi de birlikte üretir: ortam sesi, efekt, bazen konuşma
+- Bazı yeni modeller sesi de birlikte üretir: ortam sesi, efekt, bazen konuşma
 
 -----
 
@@ -42,12 +42,12 @@ Ahmet Emre Aladağ
 
 ## İyi bir video yönergesinin parçaları
 
-- Görsel yönergesinde özne, stil ve ışık vardı (Konu 7); videoda bunlara **zaman** ekleniyor
+- Konu 7'de görsel yönergesinin parçaları özne, ortam, stil, ışık ve kompozisyondu; videoda bunlara **zaman** ekleniyor
 - **Özne:** sahnede ne var? "Ahşap masada seramik bir fincan"
 - **Hareket:** özne ne yapıyor? "Fincandan buhar yükseliyor", "yapraklar yavaşça düşüyor"
 - **Kamera:** kamera ne yapıyor? Yaklaşıyor mu, sabit mi duruyor, yana mı kayıyor?
 - **Süre ve tempo:** birkaç saniyede kaç şey olabilir? Kısa bir klipte tek bir hareket genellikle yeter
-- Öznenin hareketiyle kameranın hareketini ayrı cümlelerle yaz; karışınca model ikisinden birini atlar
+- Öznenin hareketiyle kameranın hareketini ayrı cümlelerle yaz; karışınca model çoğu zaman ikisinden birini atlar
 - Ses istiyorsan onu da yaz: "yağmur sesi", "kafe uğultusu"; yazmazsan model kendisi seçer
 
 -----
@@ -57,8 +57,8 @@ Ahmet Emre Aladağ
 - Sinematografların yüz yıldır kullandığı terimler modelin eğitim verisinde de sık geçer; İngilizce adlarıyla yazmak çoğu zaman daha iyi sonuç verir
 - **Yaklaşma (push in):** kamera özneye doğru ilerler; dikkat ve gerilim yaratır
 - **Uzaklaşma (pull out):** kamera geri çekilir; bağlam ortaya çıkar
-- **Yana kaydırma (pan):** kamera döner ya da kayar; mekânı tanıtır
-- **Yukarı kalkış (tilt up):** kamera alttan yukarı bakar; büyüklük duygusu verir
+- **Yana dönüş (pan):** kamera yerinde durur, başını sağa ya da sola çevirir; mekânı tanıtır
+- **Yukarı dönüş (tilt up):** kamera yerinde durur, başını aşağıdan yukarı kaldırır; büyüklük duygusu verir
 - **Sabit çekim (static shot):** kamera kıpırdamaz; hareketi yalnızca özne taşır, ürün tanıtımında sık kullanılır
 - Bir klipte tek bir kamera hareketi seç; üç hareketi birden isteyen yönerge çoğu zaman karmaşık bir sonuç verir
 
@@ -80,7 +80,7 @@ Ahmet Emre Aladağ
 - Bir görsel tek bir kare; bir saniyelik video onlarca kare, üstüne ses ve kareler arası tutarlılık
 - Video modelleri büyük ve pahalı donanımda çalışır; ücretli API'ler bunu **saniye başına** ücretlendirir
 - Saniye fiyatı çözünürlüğe göre değişir; bir videonun bedeli kabaca "süre × o çözünürlüğün saniye fiyatı"
-- Görselde ücretsiz bir günlük kota vardı (Cloudflare); videonun ücretsiz bir API katmanı yok
+- Görselde Cloudflare'in ücretsiz günlük kotası vardı; Cloudflare'de video modeli yok, Google'ın video API'si ücretli
 - Fatura yalnızca beğendiğin klibi değil, **her denemeyi** sayar; video denemesi pahalı bir alışkanlıktır
 - Bu yüzden iş akışı ucuzdan pahalıya gider: önce görselle dene, sonra kısa ve düşük çözünürlüklü bir klip, en son asıl klip
 - Fiyatlar sık değişir: bir projeye başlamadan önce sağlayıcının fiyat sayfasına bakmak işin parçası
@@ -92,7 +92,7 @@ Ahmet Emre Aladağ
 - Ücretsiz arayüzler videoyu bir **kredi** ya da günlük hak karşılığında üretir; kredi bitince ertesi günü beklersin
 - Kredi de tıpkı para gibi süre ve çözünürlükle artar: uzun ve büyük klip daha çok kredi yer
 - Ücretsiz katmanlar yoğun saatlerde yavaşlayabilir ya da üretimi durdurabilir; ücretli kullanıcı önce gelir
-- Ücretsiz araç bedava değildir: sağlayıcı seni ücretli pakete alıştırmak ister; deneme süresinden sonra ücret başlayabilir
+- Ücretsiz katmanın da bir amacı var: sağlayıcı seni ücretli pakete alıştırmak ister
 - Kart bilgisi isteyen "ücretsiz" bir teklif, iptal etmeyi unutursan ücretli bir aboneliğe dönüşür
 - Tasarımcı için soru aynı kalır: bu klip kaç denemeye ve hangi ayara değer?
 
@@ -125,9 +125,9 @@ Ahmet Emre Aladağ
 ## Etik: hareket eden görüntüye güven
 
 - Gerçekçi video, sahte haber ve kişiyi taklit eden içerik (deepfake) üretmek için de kullanılabilir
-- Sağlayıcılar insan yüzü, ünlü kişi ve çocuk içeren istekleri sınırlıyor; görselden videoda istek reddedilebilir
-- Büyük sağlayıcılar ürettikleri videolara gözle görülmeyen bir **filigran** gömüyor; içeriğin yapay zekayla üretildiği sonradan tespit edilebiliyor
-- Konu 7'deki kural videoda daha da önemli: yaşayan bir kişinin yüzünü, sesini, adını izinsiz kullanma
+- Sağlayıcılar gerçek kişi, ünlü ve çocuk içeren istekleri sınırlıyor; görselden videoda istek reddedilebilir
+- Google gibi büyük sağlayıcılar ürettikleri videolara gözle görülmeyen bir **filigran** gömüyor; içeriğin yapay zekayla üretildiği sonradan bir yazılımla tespit edilebiliyor
+- Konu 7'de yaşayan bir sanatçının adını stil olarak yazmadık; videoda kural genişliyor: yaşayan bir kişinin yüzünü, sesini, adını izinsiz kullanma
 - Şeffaflık: bir işte yapay zeka videosu kullandıysan bunu söylemek mesleki bir alışkanlık olmalı
 - Üretim günlüğü burada da şeffaflığın kanıtıdır: hangi araç, hangi yönerge, hangi görselden
 
@@ -140,7 +140,7 @@ Ahmet Emre Aladağ
 1. Konu 8'de ürettiğin görsellerden birini seç: harekete en uygun olanı
 2. Bir hareket yönergesi yaz: kameranın ve öznenin hareketini ayrı ayrı anlat
 3. Arayüzde görselden bir klip üret, indir
-4. Klibi video günlüğüne kaydet: yönerge, süre, çözünürlük, araç, beğendin mi
+4. Klibi video günlüğüne kaydet: yönerge, süre, çözünürlük, oran, araç, beğendin mi
 5. **İki cümle:** görsel hareket edince ne korundu, ne bozuldu? Bu görsel harekete uygun muydu?
 6. **Bir cümle:** bu klip ücretli bir API'yle 1080p'de koddan üretilseydi kaça mal olurdu; daha ucuz hangi ayar işini görürdü?
 

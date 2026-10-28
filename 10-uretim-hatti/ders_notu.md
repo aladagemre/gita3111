@@ -108,7 +108,7 @@ Konu klasöründe `ayarlar.json` diye bir dosya var:
 ```
 
 Bu bir **yapılandırma dosyası** (config): hattın bütün ayarları koddan ayrı, tek yerde. Müşteri ya da konu değişince kodu değil
-bu dosyayı değiştiririz. Biçimi JSON: tek katman bir sözlük.
+bu dosyayı değiştiririz. Biçimi JSON: tek katmanlı bir sözlük.
 
 ```python
 import json
@@ -119,7 +119,8 @@ with open("ayarlar.json", encoding="utf-8") as dosya:
 print(ayarlar)
 ```
 
-- `json.load` dosyayı okuyup Python sözlüğüne çevirir; Konu 8'de üretim günlüğünü geri okurken de bunu kullandık.
+- `json.load`, Konu 8'deki `json.dump`'ın tersi: dosyayı okuyup Python sözlüğüne çevirir. Konu 9'da video günlüğünü geri
+  okurken de bunu kullandık.
 - JSON titizdir: metinler **çift tırnak** içinde, sayılar tırnaksız, ayarlar arasında virgül var, son satırdan sonra virgül yok.
   Bir kural bozulursa `json.load` hata verir (bkz. sık hatalar).
 
@@ -147,18 +148,22 @@ print(konu, "/", stil)
 ## Adım 2 — Çalışma klasörü
 
 ```python
-from pathlib import Path
+import os
 
-klasor = Path("ciktilar") / calisma
-klasor.mkdir(parents=True, exist_ok=True)
+klasor = "ciktilar/" + calisma + "/"
+os.makedirs(klasor, exist_ok=True)
 print(klasor)
 ```
 
-Çıktı: `ciktilar/kafe_afisi_1` (Windows'ta `ciktilar\kafe_afisi_1`).
+Çıktı: `ciktilar/kafe_afisi_1/`.
 
 - Hattın bütün çıktıları tek bir klasöre gidiyor: `ciktilar/` içinde, adı `ayarlar.json`'daki `calisma` alanından gelen bir klasör.
-- `/` iki parçayı bir yol olarak birleştirir.
-- `parents=True`: `ciktilar/` henüz yoksa onu da aç. `exist_ok=True`: klasör zaten varsa hata verme.
+- Yol düz bir metin, Konu 8'deki `klasor = "izgara/"` gibi. Sondaki `/` sayesinde dosya adını doğrudan ekleyebiliriz:
+  `klasor + "sloganlar.json"` → `ciktilar/kafe_afisi_1/sloganlar.json`.
+- `os.makedirs(klasor, exist_ok=True)`: klasörü açar; `ciktilar/` henüz yoksa onu da. `exist_ok=True`: klasör zaten varsa
+  hata verme. `os` Python'un içinde geliyor; Konu 8'deki `os.path.exists` da onun.
+- Konu 8'de klasörü `sabirli_ciz` kendisi açıyordu. Bu hatta ilk yazılan dosya bir görsel değil, sloganlar (`sloganlar.json`);
+  o yüzden klasörü baştan biz açıyoruz.
 
 **Neden klasör adında otomatik tarih yok?** Klasöre her çalıştırmada o anın tarihini ve saatini eklesek her seferinde yeni bir
 klasör açılırdı; içinde hiçbir şey "zaten var" olmazdı ve hat her şeyi baştan üretirdi. Kural Konu 8'deki gibi: **aynı iş, aynı ad**.
@@ -208,8 +213,9 @@ temiz = temiz.replace('"', "")
 print(temiz)
 ```
 
-- `.strip()`: baştaki ve sondaki boşlukları (satır sonları dahil) siler. Konu 1'de satırları temizlerken kullandık.
-- `.replace('"', "")`: düz tırnakları hiçle değiştirir, yani siler. Tırnak işaretinin kendisini tek tırnak içine yazıyoruz: `'"'`.
+- `.strip()`: baştaki ve sondaki boşlukları (satır sonları dahil) siler. Konu 2'de anahtar dosyasının satırlarını temizlerken kullandık.
+- `.replace('"', "")`: düz tırnakları hiçle değiştirir, yani siler (Konu 1'de metni temizlerken kullandık). Tırnak işaretinin
+  kendisini tek tırnak içine yazıyoruz: `'"'`.
 - Model kıvrık tırnak (`“ ”`) ya da `Slogan:` yazdıysa aynı satırı o işaretle bir kez daha yaz:
   `temiz = temiz.replace("Slogan: ", "")`.
 - Modelin cevabı Cloudflare'de varsayılan olarak 256 belirteçle (token) sınırlı. Slogana fazlasıyla yeter; ama modelden uzun bir
@@ -224,10 +230,10 @@ print(temiz)
 Bir halkanın sonucu hattın **ara çıktısı**. Sloganları bir dosyada saklıyoruz: `sloganlar.json`.
 
 ```python
-slogan_dosyasi = klasor / "sloganlar.json"
+slogan_dosyasi = klasor + "sloganlar.json"
 
 def slogan_halkasi():
-    if slogan_dosyasi.exists():
+    if os.path.exists(slogan_dosyasi):
         with open(slogan_dosyasi, encoding="utf-8") as dosya:
             sloganlar = json.load(dosya)
         print("Dosyadan okundu, istek gitmedi")
@@ -249,7 +255,8 @@ def slogan_halkasi():
 
 Fonksiyon her çağrıldığında önce sorar: **zaten var mı?**
 
-- Dosya varsa: `json.load` ile oku, ver. Modele hiç istek gitmez; `return` fonksiyonu orada bitirir.
+- Dosya varsa (`os.path.exists(slogan_dosyasi)`, Konu 8): `json.load` ile oku, ver. Modele hiç istek gitmez; `return`
+  fonksiyonu orada bitirir.
 - Yoksa: `slogan_sayisi` kez sor. `range(slogan_sayisi)` = "3 kez" (`slogan_sayisi` 3). Her cevabı temizle, listeye ekle; sonunda
   listeyi dosyaya yaz ve ver.
 - Bir cevap gelmezse (`None`) o turu atla (`continue`): hat durmaz, liste bir eksik olur.
@@ -271,8 +278,8 @@ print(sloganlar)
 Çıktı: `Dosyadan okundu, istek gitmedi` ve **aynı** üç slogan. Hiç istek gitmedi.
 
 Yalnızca kota için değil, **tutarlılık** için de saklıyoruz. Sıcaklık 0.9; her istekte başka bir slogan gelir (Konu 5). Sloganları her
-çalıştırmada yeniden üretseydik `gorsel_1.jpg` dünkü sloganla, günlük bugünkü sloganla kalırdı: görsel ile metin birbirini
-tutmazdı.
+çalıştırmada yeniden üretseydik `gorsel_1.jpg` dünkü sloganla üretilmiş olurdu, günlükte ise bugünkü slogan yazardı: görsel ile
+metin birbirini tutmazdı.
 
 > **Kural:** pahalı ya da her seferinde farklı çıkan ara çıktıyı sakla. Ucuz ve her seferinde aynı çıkanı (Adım 5'teki
 > yönergeler gibi) yeniden kur.
@@ -289,7 +296,7 @@ istiyorsan `sloganlar.json`'u sil, hücreyi yeniden çalıştır.
 ```python
 yonergeler = []
 for slogan in sloganlar:
-    yonerge = f"{stil}, a poster illustration that expresses this idea: {slogan}, no text, no letters"
+    yonerge = stil + ", a poster illustration that expresses this idea: " + slogan + ", no text, no letters"
     yonergeler.append(yonerge)
     print(yonerge)
 ```
@@ -308,9 +315,9 @@ Görsel halkası tek bir görsel için çalışan bir fonksiyon:
 
 ```python
 def gorsel_halkasi(sira, yonerge):
-    yol = klasor / f"gorsel_{sira}.jpg"
-    kayit = {"halka": "gorsel", "girdi": yonerge, "cikti": str(yol)}
-    if yol.exists():
+    yol = klasor + "gorsel_" + str(sira) + ".jpg"
+    kayit = {"halka": "gorsel", "girdi": yonerge, "cikti": yol}
+    if os.path.exists(yol):
         kayit["durum"] = "uretildi"
         print("Zaten var, atlıyorum:", yol)
         return kayit
@@ -325,16 +332,17 @@ def gorsel_halkasi(sira, yonerge):
 ```
 
 - Slogan halkasıyla **aynı kalıp**: zaten var mı? Varsa onu ver. Yoksa üret, sakla, ver.
-- `yol.exists()`: bu dosya var mı? Varsa atla. Atlanan görselin durumu da `uretildi`: dosya orada.
+- `yol = klasor + "gorsel_" + str(sira) + ".jpg"`: `str` sayıyı metne çevirir (Konu 5); metne yalnızca metin eklenebilir.
+  `sira` 1 ise yol `ciktilar/kafe_afisi_1/gorsel_1.jpg`.
+- `os.path.exists(yol)`: bu dosya var mı? Varsa atla. Atlanan görselin durumu da `uretildi`: dosya orada.
 - `sabirli_ciz(yonerge, tohum, yol)` görseli `yol`a kendisi kaydeder. Başarılıysa `yol`u, olmazsa `None` verir; halka bu dönüşe
   bakıp kaydın durumunu yazıyor.
 - Her yoldan bir **kayıt** (sözlük) çıkıyor: hangi halka (`halka`), ne girdi (`girdi`: yönerge), hangi dosya çıktı (`cikti`),
   sonuç ne (`durum`: `uretildi` ya da `olmadi`).
 - `kayit["durum"] = ...`: sözlüğe yeni bir anahtar ve değer ekler.
-- `str(yol)`: yolu metne çevirir. Kayıt sonunda JSON'a yazılacak; JSON `Path`'i yazamaz.
 - `return kayit` fonksiyonu orada bitirir; hangi yoldan çıkarsa çıksın elimize bir kayıt gelir.
 
-Şimdi zinciri kuruyoruz:
+Halkayı bir döngüyle her yönergeye uyguluyoruz:
 
 ```python
 kayitlar = []
@@ -386,7 +394,7 @@ Olmadı, atlıyorum: ciktilar/kafe_afisi_1/gorsel_4.jpg
 4 kayıt
 ```
 
-- Görsel model boş yönergeyi kabul etmez: durum kodu 400 ("isteğin hatalı", Konu 2). `sabirli_ciz` üç kez dener; kalıcı
+- Görsel model boş yönergeyi kabul etmez: durum kodu 400 ("istek bozuk", Konu 2). `sabirli_ciz` üç kez dener; kalıcı
   bir hatada beklemek işe yaramaz ama basit bir program bunu ayırt edemez.
 - Hücre **çökmedi**: `gorsel_halkasi` hata yerine `"durum": "olmadi"` yazan bir kayıt verdi. Bir döngünün içinde olsaydık döngü
   sıradaki görsele geçerdi.
@@ -406,7 +414,7 @@ Olmadı, atlıyorum: ciktilar/kafe_afisi_1/gorsel_4.jpg
 ```python
 gunluk = {"ayarlar": ayarlar, "sloganlar": sloganlar, "kayitlar": kayitlar}
 
-with open(klasor / "uretim.json", "w", encoding="utf-8") as dosya:
+with open(klasor + "uretim.json", "w", encoding="utf-8") as dosya:
     json.dump(gunluk, dosya, ensure_ascii=False, indent=2)
 
 print("Günlük yazıldı:", len(kayitlar), "kayıt")
@@ -416,7 +424,7 @@ print("Günlük yazıldı:", len(kayitlar), "kayıt")
 
 - `gunluk` bir sözlük, içinde üç bölüm: hangi ayarlarla çalıştı (`ayarlar`), hangi sloganlar çıktı (`sloganlar`), her görselin
   sonucu ne (`kayitlar`).
-- `klasor / "uretim.json"`: günlük, çıktıların yanında, aynı klasörde. Her brifin günlüğü kendi klasöründe.
+- `klasor + "uretim.json"`: günlük, çıktıların yanında, aynı klasörde. Her brifin günlüğü kendi klasöründe.
 - `durum`u `olmadi` olan kayıtlar eksiklerin listesi: hattı yeniden çalıştırınca denenecek olanlar. Program da günlüğü geri okuyup
   onları bulabilir; alıştırmanın 6. sorusunda sen sayacaksın.
 - Final projesinin teslimindeki **üretim günlüğü** bu dosya: hangi brif, hangi model ayarı, ne çıktı, ne eksik kaldı.
@@ -436,15 +444,15 @@ plt.figure(figsize=(12, 5))
 sira = 0
 for slogan in sloganlar:
     sira = sira + 1
-    yol = klasor / f"gorsel_{sira}.jpg"
+    yol = klasor + "gorsel_" + str(sira) + ".jpg"
     plt.subplot(1, sutun, sira)
-    if yol.exists():
+    if os.path.exists(yol):
         resim = plt.imread(yol)
         plt.imshow(resim)
     plt.title(slogan, fontsize=9)
     plt.axis("off")
 
-plt.savefig(klasor / "pano.png", bbox_inches="tight")
+plt.savefig(klasor + "pano.png", bbox_inches="tight")
 plt.show()
 ```
 
@@ -512,7 +520,7 @@ Derste kendi başına çalışacağın defter: `alistirma.ipynb`. Önce aynı kl
 | Hep `Dosyadan okundu`, sloganlar eski konudan | `ayarlar.json`'da konuyu değiştirdin ama `calisma` aynı kaldı | Yeni brif için `calisma` adını da değiştir |
 | `JSONDecodeError` (Adım 4, Bonus 2 sonrası) | `sloganlar.json`'u elle düzeltirken bir tırnak ya da virgül silindi | Dosyayı düzelt: `["...", "...", "..."]` biçiminde olmalı |
 | Görsel eski sloganı anlatıyor | Sloganı değiştirdin ama görseli silmedin | O görseli sil; görsel halkası yalnızca olmayanı üretir |
-| `TypeError: Object of type PosixPath is not JSON serializable` (Windows'ta `WindowsPath`) | Kayda `yol` metne çevrilmeden yazıldı | `str(yol)` |
+| `TypeError: can only concatenate str (not "int") to str` | Yolu kurarken sayı metne çevrilmedi: `"gorsel_" + sira` | `"gorsel_" + str(sira) + ".jpg"` |
 | `İstek başarısız, durum kodu: 400` (Adım 6) | Boş yönerge; bilerek | Doğru davranış: kayıtta `olmadi` |
 | `İstek başarısız, durum kodu: 429` ve `Deneme ... olmadı` | Çok hızlı istek ya da günlük kota doldu | Bekle; üst üste geliyorsa hücreyi durdur (**Interrupt**). Kota yenilenince aynı hücreyi yeniden çalıştır; kaldığı yerden devam eder |
 | `NameError: name 'klasor' is not defined` | Adım 2 çalıştırılmadı | Sırayla çalıştır |
@@ -565,8 +573,8 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 | **Kayıt** | Bir işin girdisi, çıktısı ve sonucu (bir sözlük) |
 | **Üretim günlüğü** | Hattın ayarlarını, ara çıktılarını ve bütün kayıtlarını tutan dosya (`uretim.json`) |
 | **`.strip()` / `.replace(a, b)`** | Baştaki ve sondaki boşlukları silmek / metindeki `a`'ları `b` ile değiştirmek |
-| **`str(yol)`** | Dosya yolunu metne çevirmek (JSON'a yazmak için) |
-| **`parents=True`** | Klasörü kurarken üst klasör yoksa onu da kurmak |
+| **`os.makedirs(klasor, exist_ok=True)`** | Klasörü (gerekirse üst klasörüyle birlikte) açmak; zaten varsa hata vermemek |
+| **`os.path.exists(yol)`** | "Bu yolda bir dosya var mı?" sorusu: `True` ya da `False` (Konu 8) |
 
 ## Ödev
 

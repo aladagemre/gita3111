@@ -4,13 +4,15 @@ Bu not konunun özetidir; derste çalıştırdığımız `ders.ipynb` defteriyle
 Adım 1–7 ve kısa bir Bonus. Derste kaçırdığın bir yer olursa buradan oku, sonra defterde o adımın hücrelerini çalıştır.
 Nottaki kod blokları defterdeki hücrelerin birebir aynısı.
 
-**Konu 10'a kadar:** modele ne bilmesi gerektiğini biz yazdık: brif, konu, stil. Model kendi bildiğiyle cevap verdi.
+**Konu 10'a kadar:** modele ne bilmesi gerektiğini biz yazdık: brif, konu, stil. Konu 2'de buna **bağlam** demiştik: soruya
+elle eklenen arka plan bilgisi. Gerisini model kendi bildiğiyle tamamladı.
 **Bu konuda:** modelin **bilmediği** bir belgeyi ona okutuyoruz. Belge, sessiz çalışma kafemiz **Sayfa Kahve**'nin marka
 kılavuzu (`veri/kilavuz.txt`, her satır bir paragraf, 14 paragraf).
 
 > Kılavuzu paragraflara böl ve her paragrafı vektöre çevir → sorunun vektörüne en yakın paragrafları bul →
 > "yalnızca şu bilgilere dayanarak cevap ver" + paragraflar + soru → metin modeli.
-> Bu yöntemin adı **RAG** (İngilizce *retrieval-augmented generation*, "bulup getirerek üretmek").
+> Bu yöntemin adı **RAG** (İngilizce *retrieval-augmented generation*, "bulup getirerek üretmek"). Bağlamı biz yazmıyoruz;
+> kod onu belgeden bulup getiriyor.
 
 **Konunun sonunda elinde:** kılavuzun vektörleri (`ciktilar/kilavuz_vektorleri.json`), aynı soruya kılavuzsuz ve kılavuzlu
 iki cevap, kılavuzda arama yapan `kilavuzda_ara` fonksiyonu ve kılavuza göre çizilmiş bir afiş (`ciktilar/afis_kilavuzlu.jpg`).
@@ -113,7 +115,7 @@ Soru: Afişte hangi renkleri kullanayım?
 
 RAG'in üç adımının üçü de burada:
 
-1. **Parçala ve vektöre çevir:** her paragrafa sayılar (biz elle verdik).
+1. **Parçala ve vektöre çevir:** belgeyi parçalara böl (burada her parça bir paragraf), her parçaya sayılar ver (biz elle verdik).
 2. **Bul:** sorunun vektörüne en yakın paragraflar (`skorlar`, `most_common`).
 3. **Yönergeye koy ve sor:** paragraflar + soru. Bu yönergeyi henüz kimseye göndermedik.
 
@@ -136,6 +138,8 @@ eski konulardan tanıyorsun:
 ```python
 from rag_araclari import modele_sor, vektor_al, vektorleri_al, ciz
 ```
+
+`anahtar.txt` yoksa bu satır `FileNotFoundError` verir; Adım 2 yine çalışır.
 
 Önce kılavuz olmadan soruyoruz. Sıcaklık 0.2, yani düşük: yaratıcılık değil, bilgi istiyoruz (Konu 5).
 
@@ -164,8 +168,11 @@ yazdığı kılavuz orada olmazdı. Model bilmediği yerde boşluğu en olası g
 renkler, yazı tipi, logo, insan yüzü, fotoğraf ışığı, çizim tarzı, ses tonu, yasak sözcükler, sosyal medya biçimi, mevsim
 vurgusu, menü kartı, açılış saatleri.
 
-RAG'in ilk işi belgeyi **parçalara** bölmek. Bizim kılavuzda bir parça bir satır. Dosyayı Konu 1'deki gibi satır satır
-okuyoruz: `.strip()` satır sonundaki görünmez `\n`'yi siler, `if` boş satırları dışarıda bırakır.
+RAG'in ilk işi belgeyi **parçalara** bölmek. Bizim kılavuzda bir parça bir satır. Adı Konu 5'tekiyle aynı ama anlamı başka:
+orada parça bir belirteçti (kelimenin bir kırıntısı); burada belgenin kendi başına okunabilen bir bölümü, bir paragraf.
+
+Dosyayı Konu 2'de `anahtar.txt`'yi okuduğumuz gibi satır satır okuyoruz: `.strip()` satır sonundaki görünmez `\n`'yi siler,
+`if` boş satırları dışarıda bırakır.
 
 ```python
 paragraflar = []
@@ -196,8 +203,8 @@ gelmeyebilirdi.
 
 ## Adım 3 — Paragrafları vektöre çevir ve sakla
 
-Konu 4'te 24 kelime için 24 ayrı istek göndermiştik. Model tek istekte bir liste de alabiliyor: `vektorleri_al(paragraflar)`
-14 paragrafı **tek istekte** gönderir ve aynı sırayla 14 vektör verir.
+Konu 4'te 24 kelime için 24 ayrı istek göndermiştik. O konunun yan notunda dediğimiz gibi, model tek istekte bir liste de
+alabiliyor: `vektorleri_al(paragraflar)` 14 paragrafı **tek istekte** gönderir ve aynı sırayla 14 vektör verir.
 
 Kılavuz değişmedikçe vektörleri de değişmez; her çalıştırmada yeniden istemenin anlamı yok. Konu 10'un kuralı:
 **ara çıktıyı sakla.** Önce dosyanın yerini belirliyoruz:
@@ -216,7 +223,8 @@ Sonraki hücre Konu 10'daki slogan halkasının kalıbıyla çalışır. Önce s
 - Dosya varsa okur; modele hiç istek gitmez.
 - Yoksa vektörleri ister, her paragrafı kendi vektörüyle eşleştirir, sözlüğü dosyaya yazar.
 
-Eşleştirme: birinci paragrafa birinci vektör, ikinciye ikinci... `sira` sayacı (Konu 1) hangi vektörde olduğumuzu tutar.
+Eşleştirme: birinci paragrafa birinci vektör, ikinciye ikinci... `sira` sayacı hangi vektörde olduğumuzu tutar (Konu 6'da her
+A'yı türüyle böyle eşleştirmiştik: `turler[sira]`).
 Sözlüğün anahtarı paragrafın kendisi, değeri onun vektörü (Konu 4'teki `vektorler_sozlugu` gibi).
 
 ```python
@@ -259,7 +267,7 @@ soru_vektoru = vektor_al(soru)
 print(len(soru_vektoru))
 ```
 
-Çıktı: `...` (paragraf vektörleriyle aynı uzunluk). İki vektör ancak aynı uzunluktaysa karşılaştırılabilir.
+Çıktı: `...` (Adım 3'teki paragraf vektörleriyle aynı uzunluk). İki vektör ancak aynı uzunluktaysa karşılaştırılabilir.
 
 Bu adımı derste **sen yazdın**. Plan ısınmadakiyle ve Konu 4'ün Adım 6'sıyla aynı: boş bir `skorlar` sözlüğü; her paragraf
 için sorunun vektörüyle paragrafın vektörünün benzerliği; `Counter` ile en büyük üçü. Bir çözüm:
@@ -296,7 +304,7 @@ for paragraf, skor in sirali.most_common(3):
 print(bilgiler)
 ```
 
-Yönerge üç parçadan oluşur: **talimat + bilgiler + soru**. Talimat modele iki şey söyler: yalnızca bu bilgilere dayan;
+Yönerge üç kısımdan oluşur: **talimat + bilgiler + soru**. Talimat modele iki şey söyler: yalnızca bu bilgilere dayan;
 bilgilerde cevap yoksa bunu açıkça söyle.
 
 ```python
@@ -325,7 +333,7 @@ Soru: Sayfa Kahve'nin afişinde hangi renkleri kullanmalıyım?
 ```
 
 `"Bilgiler:"` başlığı ve boş satırlar model için de işe yarar: hangi metnin kaynak, hangisinin soru olduğu görünür.
-Şimdi yönergeyi gönderip iki cevabı alt alta yazdırıyoruz (bir istek gider):
+Yönergeyi gönderip iki cevabı alt alta yazdırıyoruz (bir istek gider):
 
 ```python
 kilavuzlu = modele_sor(yonerge, 0.2)
@@ -379,7 +387,7 @@ def kilavuza_sor(soru):
     return modele_sor(yonerge, 0.2)
 ```
 
-Şimdi kılavuzda **olmayan** bir soru. Kılavuz menü kartında fiyatların nereye yazılacağını söylüyor (sağa hizalı), ama
+Bu kez kılavuzda **olmayan** bir soru. Kılavuz menü kartında fiyatların nereye yazılacağını söylüyor (sağa hizalı), ama
 fiyatların kendisini söylemiyor.
 
 ```python
@@ -398,9 +406,9 @@ print(fiyat_cevabi)
 ```
 
 Çıktı: `...`. Model "Bilmiyorum" dediyse talimat işe yaradı. Bir fiyat yazdıysa o fiyat verdiğimiz bilgilerin hiçbirinde
-yok: talimata rağmen uydurdu. Talimat modeli yönlendirir ama zorlamaz; model talimatı kesin bir kural olarak değil, olası
-bir devam olarak okur (Konu 5). **RAG uydurmayı azaltır, sıfırlamaz.** Cevaptaki her bilgiyi kılavuzla karşılaştırmak yine
-senin işin.
+yok: talimata rağmen uydurdu. Talimat modeli yönlendirir ama zorlamaz. Konu 5'i hatırla: model kendisine gelen metnin en
+olası devamını yazar; talimat da o metne dahil, uyulması zorunlu bir kural değil. **RAG uydurmayı azaltır,
+sıfırlamaz.** Cevaptaki her bilgiyi kılavuzla karşılaştırmak yine senin işin.
 
 ---
 
@@ -425,7 +433,7 @@ olanı getirir: brifin kendisini arasaydın başka paragraflar gelirdi.
 
 Görsel model İngilizce yönergeyle daha iyi çalışır (Konu 7). Görselde yazı istemiyoruz: harfleri görsel model bozar,
 başlığı tasarımcı dizer (Konu 10). Sıcaklık 0.7: burada biraz yaratıcılık istiyoruz. Uzun isteği üç satırda kuruyoruz;
-her satır öncekinin sonuna bir parça ekliyor.
+her satır öncekinin sonuna yeni bir kısım ekliyor.
 
 ```python
 istek = "Şu kurallara uyan bir afiş görseli için İngilizce, tek paragraflık bir görsel yönergesi yaz. "
@@ -443,13 +451,13 @@ yol = ciz(gorsel_yonergesi, 42, "ciktilar/afis_kilavuzlu.jpg")
 print(yol)
 ```
 
-Çıktı: `Kaydedildi: ciktilar/afis_kilavuzlu.jpg` ve aynı yol. Görseli açıp kılavuzla karşılaştır:
+Çıktı: `ciktilar/afis_kilavuzlu.jpg`; görsel üretilemediyse `None` ve üstünde durum kodu. Görseli açıp kılavuzla karşılaştır:
 
 - Renkler kılavuza uyuyor mu? Kırmızı ya da turuncu var mı?
 - İnsan yüzü var mı?
 - Çizim tarzı risografa benziyor mu?
 
-Bir kural iki yerde kaybolabilir:
+Uymayan bir kural üç yerden birinde kaybolmuştur:
 
 | Nerede kayboldu? | Nasıl anlarsın? | Ne düzeltilir? |
 |---|---|---|
@@ -472,6 +480,7 @@ istek = istek + "Görselde yazı olmasın. Yalnızca yönergeyi yaz.\n\nAfiş: "
 kilavuzsuz_yonerge = modele_sor(istek, 0.7)
 print(kilavuzsuz_yonerge)
 yol = ciz(kilavuzsuz_yonerge, 42, "ciktilar/afis_kilavuzsuz.jpg")
+print(yol)
 ```
 
 İki afişi yan yana aç: hangisi Sayfa Kahve'ye ait? Tohum aynı (42); farkı yalnızca yönerge yaratıyor.
@@ -486,8 +495,8 @@ print(renk_cevabi)
 
 `kilavuza_sor`'u yeniden çalıştırman gerekmez: o, `kilavuzda_ara`'yı adıyla çağırıyor; yeni hâlini kullanır. Cevap Adım
 5'tekine göre ne kadar eksik? Sonra `most_common(14)` dene: her soruda kılavuzun tamamı gider. On dört paragraflık bir
-kılavuz için bu olur; iki yüz sayfalık bir kılavuzda model her şeyi bir seferde okuyamaz, istek pahalılaşır ve küçük bir
-kural kalabalıkta kaybolur. Bitince 3'e geri döndür.
+kılavuz için bu olur; iki yüz sayfalık bir kılavuz modelin bağlam penceresine sığmaz (Konu 5), istek pahalılaşır ve küçük
+bir kural kalabalıkta kaybolur. Bitince 3'e geri döndür.
 
 **3. Yarım bilgi.** Kılavuz başlık yazı tipini tarif ediyor (serifli, eski kitap baskısını andıran) ama adını vermiyor.
 
@@ -499,7 +508,7 @@ print(yazi_cevabi)
 ```
 
 Model bir yazı tipi adı yazdıysa o ad kılavuzda yok. Tasarımcı için iyi bir öneri olabilir; ama müşteriye "kılavuz böyle
-diyor" diye götürülemez. Yarım bilgi, hiç bilgi olmamasından daha kolay uydurmaya yol açar: model eksik parçayı olası
+diyor" diye götürülemez. Yarım bilgi, hiç bilgi olmamasından daha kolay uydurmaya yol açar: model eksik kalanı olası
 olanla tamamlar.
 
 ---
@@ -544,7 +553,7 @@ olanla tamamlar.
 2. `kilavuzda_ara`'da `most_common(3)` yerine `most_common(1)` yazarsan renk sorusunun cevabında ne kaybolabilir?
 3. Kılavuzda olmayan bir soruda `kilavuzda_ara` kaç paragraf verir? Bu yüzden talimattaki hangi cümle önemli?
 4. Şu yönergede ne eksik? `yonerge = talimat + "\n\nBilgiler:\n" + "\nSoru: " + soru`
-5. Afişte kılavuza uymayan bir şey gördün. Kuralın aramada mı, çizimde mi kaybolduğunu nasıl anlarsın?
+5. Afişte kılavuza uymayan bir şey gördün. Kuralın aramada mı, yönergede mi, çizimde mi kaybolduğunu nasıl anlarsın?
 
 Cevaplar notun sonunda.
 
@@ -572,7 +581,8 @@ bakarak verir: ama yalnızca ona gönderilen parçalara bakabilir.
 | Terim | Anlamı |
 |---|---|
 | **RAG** (*retrieval-augmented generation*) | "Bulup getirerek üretmek": modele soru sormadan önce belgeden ilgili parçaları bulup soruyla birlikte göndermek |
-| **Parça** (*chunk*) | Belgenin bölündüğü küçük birim; bu konuda bir paragraf |
+| **Bağlam** | Soruyla birlikte modele verilen arka plan bilgisi (Konu 2). RAG'de bağlam, belgeden bulunan parçalardır |
+| **Parça** (*chunk*) | Belgenin bölündüğü, kendi başına okunabilen birim; bu konuda bir paragraf. Konu 5'teki parçayla (belirteç) karıştırma |
 | **Bulma** (*retrieval*) | Sorunun vektörüne en yakın parçaları seçmek |
 | **Uydurma** (halüsinasyon) | Modelin doğru olmayan bir bilgiyi akıcı ve kendinden emin biçimde yazması (Konu 5) |
 | **Talimat** | Yönergenin modelin nasıl davranacağını söyleyen kısmı: "yalnızca bu bilgilere dayan; yoksa bilmiyorum de" |
@@ -590,8 +600,8 @@ Kendi markan ya da final projen için kısa bir kılavuz yazıp RAG'le soruyorsu
 ## Sonraki konu
 
 **Konu 12 — Ajan.** Bugün kılavuza ne zaman bakılacağına sen karar verdin: her soruda önce `kilavuzda_ara`, sonra model.
-Konu 12'de `kilavuzda_ara` bir **araç** olacak. Ajana "kafeye kılavuza uygun bir afiş yap" dediğinde önce kılavuza bakmaya,
-sonra çizmeye model kendisi karar verecek.
+Konu 12'de `kilavuzda_ara` bir **araç** olacak. Ajana "Sayfa Kahve için kılavuza uygun bir afiş yap" dediğinde önce kılavuza
+bakmaya, sonra çizmeye model kendisi karar verecek.
 
 ---
 
@@ -605,4 +615,4 @@ sonra çizmeye model kendisi karar verecek.
    'Bilmiyorum' yaz" cümlesi önemli: modele bir çıkış kapısı gösterir.
 4. `bilgiler` eksik: model talimatı ve soruyu görür ama hiçbir bilgi görmez. Ya "Bilmiyorum" der ya da yine uydurur.
 5. Ara çıktılara sırayla bak: kural `kurallar`'da yoksa aramada kayboldu; `kurallar`'da var ama `gorsel_yonergesi`'nde yoksa
-   metin modeli koymadı; `gorsel_yonergesi`'nde de varsa görsel model uygulamadı.
+   yönergede kayboldu (metin modeli koymadı); `gorsel_yonergesi`'nde de varsa çizimde kayboldu (görsel model uygulamadı).

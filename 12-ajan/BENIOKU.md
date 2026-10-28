@@ -5,14 +5,14 @@ Bu konuda bir isteğe hangi araçların, hangi sırayla gerektiğine **modelin**
 (Konu 11'deki arama). Önce bir turu çerçevesiz, elle yapacaksın: araç tarifi, istekte `tools`, cevapta `tool_calls`,
 aracı çalıştıran program. Sonra aynı işi **Agno** adlı ajan çerçevesiyle kuracak, ajanın kararlarını yazdıracak, bir
 tarifi bozup düzeltecek ve ajana kendi yazdığın dördüncü aracı (`slogan_yaz`) vereceksin. Sonunda kılavuza bakarak
-çizilmiş bir afiş ve bir ajan çalıştırmasının kaç istek harcadığını gösteren bir hesap elinde olacak.
+çizilmiş bir afiş elinde olacak; Bonus'ta bir ajan çalıştırmasının kaç istek harcadığını da hesaplayabilirsin.
 
 | Klasör / dosya | Ne işe yarıyor |
 |---|---|
 | `slaytlar.md` | Kavram slaytları; dersin başında gösterilir |
-| `ders.ipynb` | Derste birlikte çalıştıracağımız defter: Isınma, Adım 1–10 ve Bonus |
+| `ders.ipynb` | Derste birlikte çalıştıracağımız defter: Isınma, Adım 1–9 ve Bonus |
 | `alistirma.ipynb` | Derste kendi başına çözeceğin defter: bozuk kodlar ve boşluklu sorular (anahtar istemez, internete çıkmaz) |
-| `ajan_araclari.py` | Yardımcı dosya: araçların içinde çalışan hazır fonksiyonlar: `ciz` (Konu 8), `duzenle`, `en_benzer_paragraflar` (Konu 11'deki arama), `modele_sor` (Konu 5) ve `tarifi_goster` |
+| `ajan_araclari.py` | Yardımcı dosya: araçların içinde çalışan hazır fonksiyonlar: `ciz` (Konu 8), `duzenle` (Konu 7), `en_yakin_paragraflar` (Konu 11'deki `kilavuzda_ara`'nın içindeki arama), `modele_sor` (Konu 5) ve `tarifi_goster` |
 | `veri/fincan.jpg` | Düzenlenecek fotoğraf |
 | `veri/kilavuz.txt` | Sayfa Kahve'nin marka kılavuzu (Konu 11'deki belge): her satır bir paragraf |
 | `veri/ajan_gunlugu.json` | Alıştırmanın el yapımı ajan kayıtları |
@@ -47,8 +47,8 @@ Defterin kopyası `ajan_araclari.py` ve `veri/` klasörüyle **aynı klasörde**
 ## Anahtar gerekiyor mu?
 
 Isınma anahtarsız; alıştırma defteri de. Adım 1'den sonrası `anahtar.txt` ister (bütün konular için tek dosya,
-`gita3111` klasöründe). Defterin tamamı metin ve arama modellerine yaklaşık 30 istek gönderir ve 8 kadar görsel üretir
-ya da düzenler; günlük ücretsiz kotanın %10'undan az. Her ajanın bir araç çağrısı sınırı var (`tool_call_limit`): bir çalıştırma en fazla
+`gita3111` klasöründe). Defterin tamamı (Bonus dahil) metin ve arama modellerine yaklaşık 30 istek gönderir ve 10 kadar
+görsel üretir ya da düzenler; günlük ücretsiz kotanın %10'undan az. Her ajanın bir araç çağrısı sınırı var (`tool_call_limit`): bir çalıştırma en fazla
 3–4 araç çalıştırır. Anahtarın yoksa yanındakiyle birlikte, onun ekranında izle.
 
 ## Güncel kalmak
@@ -71,5 +71,6 @@ değiştirmek istersen önce aynı klasörde **yeni bir adla kopyala**, kopyada 
 | Adım 7 | Çok adım: önce kılavuz, sonra çizim; bütün konuşma (`cevap.messages`) | gerekir |
 | Adım 8 | Tarifi boz, düzelt | gerekir |
 | Adım 9 | Kendi aracın: `slogan_yaz` | gerekir |
-| Adım 10 | Bir çalıştırma kaç istek, ne kadar kota | istek göndermez |
-| Bonus | Ajanın genel brifi (`instructions`) | gerekir |
+| Bonus 1 | Bir çalıştırma kaç istek, ne kadar kota | istek göndermez |
+| Bonus 2 | Isınmadaki öbür istekler | gerekir |
+| Bonus 3 | Ajanın genel brifi (`instructions`) | gerekir |

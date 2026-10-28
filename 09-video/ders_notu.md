@@ -11,8 +11,8 @@ defterdeki hücrelerin birebir aynısı. Arayüzde yapılacakların hepsi de bur
 > Bir videonun bedelini süre ve çözünürlük belirler. Aynı klibi ücretli bir API'yle koddan üretseydin kaç para tutardı,
 > hangi ayar onu yarıya indirirdi? Ve ürettiğin her klibin yönergesi ile ayarları nerede kayıtlı?
 
-**Neden arayüz?** Video modellerinin ücretsiz bir API'si yok: koddan video üretmek her saniye için para ödemek demek. Görselde
-kullandığımız Cloudflare'in ücretsiz kataloğunda video modeli yok. Arayüzlerin ise ücretsiz bir günlük kredisi var.
+**Neden arayüz?** Görselde kullandığımız Cloudflare'in kataloğunda video modeli yok. Google'ın video API'sinin de ücretsiz
+katmanı yok: koddan video üretmek her saniye için para ödemek demek. Bazı arayüzlerin ise ücretsiz bir günlük kredisi var.
 
 **Konunun sonunda elinde:** `videolar/` klasöründe iki kısa video (biri yalnız yönergeden, biri Konu 8'deki bir görselinden) ve
 her klibin nasıl üretildiğini kaydeden bir günlük (`video_gunlugu.json`).
@@ -43,9 +43,8 @@ Derste **Google Flow** kullanıyoruz (Google'ın video ve görsel üretme aracı
 **Flow açılmazsa:** hocanın derste söyleyeceği yedek arayüzü kullan. Hangi araç olursa olsun kural aynı: kayıtta kart bilgisi
 isteyen bir "ücretsiz" araca kart girme.
 
-**Gemini'nin öğrenci teklifi hakkında.** Google'ın üniversite öğrencilerine bir yıl ücretsiz verdiği Google AI Plus paketi Gemini
-uygulamasında video üretimini de içeriyor. Ama kayıt sırasında bir **ödeme yöntemi** istiyor ve bir yıl dolunca iptal etmezsen
-ücretli aboneliğe dönüşüyor. Bu ders için gerekmiyor.
+**Google AI Plus öğrenci teklifi:** ders bu teklife dayanmıyor. Teklif kayıt sırasında bir ödeme yöntemi istiyor ve teklif
+süresi bitince iptal edilmezse aylık ücretli aboneliğe dönüşüyor.
 
 ---
 
@@ -84,7 +83,7 @@ Düğme adları aşağıda arayüzün İngilizce hâlindeki gibi yazılı; aray�
 
 **Metinden klip**
 
-1. Projenin altındaki yönerge kutusuna şu yönergeyi yapıştır (İngilizce; Konu 7: modeller çoğunlukla İngilizce metinle eğitildi):
+1. Projedeki yönerge kutusuna (prompt box) şu yönergeyi yapıştır (İngilizce; Konu 7: modeller çoğunlukla İngilizce metinle eğitildi):
 
    > steam rising from a ceramic coffee cup on a wooden desk, soft morning light, slow camera push in
 
@@ -177,11 +176,10 @@ print(sure, "saniye,", cozunurluk, ":", ucret, "USD")
 Bu kez anahtarı bir değişkenden aldık: `fiyatlar[cozunurluk]`. Değişkenin içinde `"4K"` var; sözlük ona bakıyor.
 
 Kafenin bütçesi bunun **yarısı**: 3,04 dolar. Önce süreye dokunmadan her çözünürlükte 20 saniyenin bedeline bakıyoruz. Bir
-sözlüğün üstünde `for` döngüsü **anahtarları** sırayla verir (Konu 4'teki `skorlar` döngüsü gibi); değeri döngünün içinde
+sözlüğün üstünde `for` döngüsü **anahtarları** sırayla verir (Konu 4'teki `for kelime in harita:` gibi); değeri döngünün içinde
 anahtarla alıyoruz. `round(..., 2)` virgülden sonra iki basamak bırakır (Konu 3).
 
 ```python
-butce = 3.04
 for cozunurluk in fiyatlar:
     fiyat = fiyatlar[cozunurluk]
     ucret = round(sure * fiyat, 2)
@@ -197,9 +195,11 @@ for cozunurluk in fiyatlar:
 4K : 6.08 USD
 ```
 
-4K'dan 1080p'ye inince süre aynı kalıyor, fiyat yarıya iniyor. Tersini deneyelim: çözünürlük 4K kalsın, süre kısalsın.
+4K'dan 1080p'ye inince süre aynı kalıyor, fiyat yarıya iniyor. Tersini deneyelim: çözünürlük 4K kalsın, süre kısalsın. Bütçeyi
+(3,04 dolar) bir değişkene koyuyoruz, her sürenin bedelini onunla karşılaştırıyoruz.
 
 ```python
+butce = 3.04
 sureler = [5, 10, 15, 20]
 fiyat = fiyatlar["4K"]
 for sure in sureler:
@@ -223,8 +223,8 @@ for sure in sureler:
 4K.** Hangisi? Tanıtım nerede gösterilecek: telefonda, kafenin ekranında, sinema perdesinde? 10 saniyeye inersen hangi çekimleri
 atardın? Bu bir tasarım kararı; hesap yalnızca seçenekleri önüne koyuyor.
 
-Bu hesap kaç kez denediğini saymıyor. Videoda ilk deneme çoğu zaman tutmaz; üç denemede aynı 20 saniye üç kat tutar. Bu yüzden
-önce kısa ve düşük çözünürlükte dene, beğendiğini büyüt.
+Bu hesap kaç kez denediğini saymıyor. Videoda ilk deneme çoğu zaman istediğin gibi olmaz; üç deneme yaparsan aynı 20 saniyenin
+faturası üç katına çıkar. Bu yüzden önce kısa ve düşük çözünürlükte dene, beğendiğini büyüt.
 
 ---
 
@@ -247,8 +247,8 @@ Arayüze dön. Klip hazırsa projede görünür; üstüne tıklayıp izle.
 - Klipte ses var mı? Yönergede ses yoktu; ne duyuyorsun, sen ne isterdin?
 - Üret düğmesine bastıktan kaç saniye sonra geldi? Kredinden ne kadar düştü?
 
-Hareket yönergesi bir **kamera dili**: yaklaşma (push in), uzaklaşma (pull out), yana kaydırma (pan), yukarı kalkış (tilt up),
-sabit çekim (static shot). Konu 7'deki yönerge anatomisine yeni bir katman.
+Kameranın hareketi için sinemadan gelen terimler var; bunlara **kamera dili** diyoruz: yaklaşma (push in), uzaklaşma (pull out),
+yana dönüş (pan), yukarı dönüş (tilt up), sabit çekim (static shot). Konu 7'deki yönerge anatomisine yeni bir katman.
 
 ---
 
@@ -261,7 +261,7 @@ kullan (masada bir fincan, kare).
 
 1. Aynı projede yönerge kutusunun yanındaki model adına tıkla, **Video**'yu, sonra **Frames**'i (kareler) seç.
 2. Görselini **+ Add start frame** (başlangıç karesi ekle) kutusuna sürükle ya da kutuya tıklayıp dosyayı seç. Konu 8'in
-   görselleri `08-koddan-toplu-uretim` klasöründe.
+   görselleri `08-koddan-toplu-uretim` klasöründe: `izgara/`, `ciktilar/` ya da ödevinin `odev8/` klasörü.
 3. Yönerge kutusuna **ne olacağını** yaz; sahne görselde zaten var. Örnek:
 
    > slow camera push in, gentle natural motion, soft morning light
@@ -302,6 +302,7 @@ metin_kaydi = {
     "gorsel": "yok",
     "sure": 8,
     "cozunurluk": "720p",
+    "oran": "16:9",
     "dosya": "videolar/metinden.mp4",
     "begendim": begendim,
 }
@@ -309,11 +310,11 @@ print(metin_kaydi)
 ```
 
 Süreyi ve çözünürlüğü arayüzde seçtiğinle aynı yap. Süre **sayı** (tırnaksız): sonraki hücrede onunla çarpma yapacağız.
-Çözünürlük fiyat sözlüğündeki gibi yazılır (`"720p"`): sözlükte anahtar olarak aranacak. Başka bir arayüz kullandıysan
-`"arac"` değerini değiştir.
+Çözünürlük fiyat sözlüğündeki gibi yazılır (`"720p"`): sözlükte anahtar olarak aranacak. Oran arayüzdeki gibi (`"16:9"`);
+hesaba girmiyor ama klibin nasıl göründüğünü belirliyor. Başka bir arayüz kullandıysan `"arac"` değerini değiştir.
 
-Görselden klibin kaydı aynı kalıpta. `"gorsel"` alanına kullandığın görselin yolunu yaz (Konu 8'deki bir görselse
-`08-koddan-toplu-uretim` klasöründeki yolu).
+Görselden klibin kaydı aynı kalıpta. `"gorsel"` alanına kullandığın görselin yolunu yaz. Konu 8'deki bir görselse yol
+klasörün adıyla başlasın, ör. `"08-koddan-toplu-uretim/izgara/suluboya_gece.jpg"`.
 
 ```python
 yonerge = input("Görselden klibin yönergesi: ")
@@ -326,6 +327,7 @@ gorsel_kaydi = {
     "gorsel": "veri/yedek_fincan.jpg",
     "sure": 6,
     "cozunurluk": "720p",
+    "oran": "16:9",
     "dosya": "videolar/gorselden.mp4",
     "begendim": begendim,
 }
@@ -373,8 +375,8 @@ Defterdeki değerlerle (8 ve 6 saniye, 720p) çıktı:
 Bu klipler ücretli bir API'yle: 1.41 USD
 ```
 
-Kendi süre ve çözünürlüğünü yazdıysan senin sayın farklı olabilir. Az bir para gibi görünüyor; ama bu yalnızca **beğendiğin**
-denemeler ve tek bir kişi. Bugün sıfır bütçeyle video yapabiliyoruz, çünkü arayüzün ücretsiz günlük kredisi var. Kredi bitince ya
+Kendi süre ve çözünürlüğünü yazdıysan senin sayın farklı olabilir. Az bir para gibi görünüyor; ama bu yalnızca **iki klip**,
+her biri tek denemede, tek bir kişi için. Bugün sıfır bütçeyle video yapabiliyoruz, çünkü arayüzün ücretsiz günlük kredisi var. Kredi bitince ya
 ertesi günü beklersin ya da ödersin.
 
 ---
@@ -404,8 +406,10 @@ for sure in krediler:
 Uzun klibin saniyesi daha ucuz; ama denemede kısa klip toplamda daha az harcar. 50 krediyle 7 tane 4 saniyelik ya da 3 tane
 10 saniyelik klip çıkar. Bir günün kredisini nasıl bölerdin: kaç deneme, kaç son hâl?
 
-**2. Dikey video.** Aynı yönergeyi arayüzde 9:16 oranında (telefon, hikâye) üret. Kompozisyon nasıl yeniden kuruldu: fincan nerede
-duruyor, ne kırpıldı, ne eklendi? Günlüğe üçüncü bir kayıt olarak ekle (`kayitlar` listesine) ve son iki hücreyi yeniden çalıştır.
+**2. Dikey video.** Metinden klibin yönergesini arayüzde 9:16 oranında (telefon, hikâye) bir kez daha üret (8 saniye, 12 kredi).
+Kompozisyon nasıl yeniden kuruldu: fincan nerede duruyor, ne kırpıldı, ne eklendi? Günlüğe üçüncü kayıt olarak ekle: Adım 6'nın
+ilk hücresini kopyala, sözlüğün adını `dikey_kaydi`, `"oran"`ı `"9:16"`, `"dosya"`yı `"videolar/dikey.mp4"` yap; `kayitlar`
+satırını `[metin_kaydi, gorsel_kaydi, dikey_kaydi]` yap ve son iki hücreyi yeniden çalıştır.
 
 ---
 
@@ -440,7 +444,7 @@ Defterin hiçbir hücresi anahtar istemez, internete çıkmaz.
 | `NameError: name 'metin_kaydi' is not defined` | Adım 6'nın ilk hücresi çalıştırılmadı | O hücreyi çalıştır |
 | Hücre bitmiyor, yanında `[*]` duruyor | `input` kutusu açık ve senden bir şey bekliyor | Ekranın üstündeki kutuya yaz, Enter |
 | `FileNotFoundError: ... 'video_gunlugu.json'` | Günlüğü yazan hücre çalıştırılmadı ya da defter başka klasörde | Önce yazan hücreyi çalıştır |
-| Günlükte `ğ` gibi kodlar | `ensure_ascii=False` yazılmamış | `json.dump(..., ensure_ascii=False, indent=2)` |
+| Günlükte `\u011f` gibi kodlar | `ensure_ascii=False` yazılmamış | `json.dump(..., ensure_ascii=False, indent=2)` |
 | `0.6060000000000001` gibi bir sayı | Bilgisayarın ondalık hesabındaki küçük kalıntı | `round(..., 2)` ile iki basamağa yuvarla |
 
 ---
@@ -471,8 +475,8 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 
 ## Bu konunun tek cümlesi
 
-> Video kare kare tutarlılık istediği için yavaş ve pahalıdır; süre ve çözünürlük bedeli belirler, seçimi yayın yeri yapar, ve
-> her klibin yönergesi ile ayarları senin günlüğünde durur.
+> Video kare kare tutarlılık istediği için yavaş ve pahalıdır. Süre ve çözünürlük bedeli belirler, seçimi yayın yeri yapar;
+> her klibin yönergesi ile ayarları da senin günlüğünde durur.
 
 ## Sözlükçe
 
@@ -482,14 +486,14 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 | **Metinden video** | Sahnenin de hareketin de yönergeyle anlatıldığı video üretimi |
 | **Görselden video** | Verilen görselin ilk kare olduğu video üretimi |
 | **Başlangıç karesi (start frame)** | Görselden videoda videonun ilk karesi olan görsel |
-| **Kamera dili** | Kameranın hareketini anlatan terimler: push in, pull out, pan, tilt up, static shot |
+| **Kamera dili** | Kameranın hareketini anlatan terimler: push in (yaklaşma), pull out (uzaklaşma), pan (yana dönüş), tilt up (yukarı dönüş), static shot (sabit çekim) |
 | **Çözünürlük** | Görüntünün piksel boyutu: 720p (1280 × 720), 1080p (1920 × 1080), 4K (3840 × 2160) |
 | **Oran** | Genişlik : yükseklik; 16:9 yatay, 9:16 dikey, 1:1 kare |
 | **Kredi** | Ücretsiz arayüzün günlük hakkı; süre ve çözünürlükle artar |
 | **Uzun süren iş (asenkron iş)** | Sonucu istekle aynı anda gelmeyen iş; başlatılır, hazır olunca alınır |
-| **Filigran** | Videoya gömülen, gözle görülmeyen "yapay zekayla üretildi" işareti |
+| **Filigran** | Videoya eklenen "yapay zekayla üretildi" işareti: köşede görünen bir logo ya da gözle görülmeyen, yazılımla okunan gömülü bir iz |
 | **`input`** | Kullanıcıdan metin alan fonksiyon; yazılanı her zaman metin olarak verir |
-| **Video günlüğü** | Her klibin yönergesini, ayarlarını ve dosyasını tutan JSON dosyası |
+| **Video günlüğü** | Her klibin yönergesini, ayarlarını (süre, çözünürlük, oran) ve dosyasını tutan JSON dosyası |
 
 ## Ödev
 
@@ -515,7 +519,7 @@ Konu 10'da metin ve görsel modellerini tek bir programda birbirine bağlıyoruz
    hareketi seç; öznenin hareketini ayrı bir cümleyle yaz: "leaves falling slowly. slow camera push in."
 5. Büyük olasılıkla **henüz bitmedi**: video dakikalar sürebilir. Üret düğmesine bir daha basmazsın: yeni bir iş başlar ve yeniden
    kredi düşer. Ekrandaki ilerleme göstergesine bak, bekle; yoğun saatse sonra dene.
-6. Kendine. Derinliği, boşluğu, hareket edebilecek bir öğesi (buhar, yaprak, su) olan sahne kamera hareketine daha çok yer
+6. Tek doğru cevap yok. Ama derinliği, boşluğu, hareket edebilecek bir öğesi (buhar, yaprak, su) olan sahne kamera hareketine daha çok yer
    bırakır; düz, ortalanmış bir logo hareket edince ya hiç değişmez ya da bozulur.
 7. Arayüzün geçmişi senin dosyan değil: kredi biter, araç değişir, hesap kapanır. Günlük senin klasöründe durur; aylar sonra
    "aynısından bir tane daha" dendiğinde yönerge ve ayarlar elinde. Konu 10'daki üretim hattı da her işi böyle kaydediyor.

@@ -102,7 +102,8 @@ plt.axis("off")
 plt.show()
 ```
 
-`plt.imread` dosyayı okur, `plt.imshow` çizer, `plt.axis("off")` kenardaki sayıları gizler.
+`plt.imshow` Konu 6'dan tanıdık: orada bir sayı tablosunu resim olarak çiziyordu. `plt.imread` görsel dosyasını okuyup
+böyle bir sayı tablosuna çevirir; `plt.imshow` onu çizer, `plt.axis("off")` kenardaki sayıları gizler.
 
 **Konu 7'den farkı:** Konu 7'deki `ciz` dosyaya kendisi bir sıra numarası veriyordu (`001.jpg`, `002.jpg`...).
 Bugünkü `ciz` yolu senden istiyor. Bu farkın neden önemli olduğu Adım 4'te çıkıyor.
@@ -227,9 +228,10 @@ iki eksenli hâli.
 
 ## Adım 3 — Önce hesap: kota ve sınır
 
-Konu 2'den hatırla: Cloudflare kotayı **neuron** ile sayar; günde 10.000 neuron ücretsiz ve bütün modeller aynı
-kotadan yer. Bir görsel (1024 × 1024, 4 adım) yaklaşık 58 neuron tutar. Hesap şöyle: Cloudflare 1024'lük görseli
-512 × 512'lik 4 kare sayar; her kare 4,8, her adım 9,6 neuron: 4 × 4,8 + 4 × 9,6 ≈ 58. Günde kabaca 170 görsel eder.
+Konu 2'den hatırla: Cloudflare kotayı **neuron** ile sayar ve günde 10.000 neuron ücretsiz. Bütün modeller (görsel,
+metin, görsel okuma) bu aynı kotadan yer. Bir görsel (1024 × 1024, 4 adım) yaklaşık 58 neuron tutar. Hesap şöyle:
+Cloudflare 1024 × 1024'lük görseli 512 × 512'lik 4 parça sayar; her parça 4,8, her adım 9,6 neuron:
+4 × 4,8 + 4 × 9,6 ≈ 58. Günde kabaca 170 görsel eder.
 
 ```python
 MAKS_URETIM = 12
@@ -266,8 +268,9 @@ from uretim import sabirli_ciz
   kez. Sunucu bir an meşgulse ya da çok hızlı istek gönderdiysek (durum kodu 429) bu çoğu zaman yeter. Üçü de olmazsa
   `None` verir; yani başarısız her kart 3 istek ve 10 saniye bekleme demek.
 - Günlük kota bittiyse beklemek işe yaramaz ve `sabirli_ciz` bunu ayırt etmiyor. Üst üste `429` görürsen hücreyi durdur
-  (üstteki menüden **Interrupt**); kota yenilenince kaldığın yerden devam edersin.
-- `os.path.exists(yol)`, "bu yolda bir dosya var mı?" sorusunu cevaplar: `True` ya da `False`.
+  (hücrenin yanındaki kare düğme, **Interrupt**); kota yenilenince kaldığın yerden devam edersin.
+- `os`, Python'la birlikte gelen ve dosya, klasör işlerini yapan modül; kurulum istemez. `os.path.exists(yol)`, "bu yolda
+  bir dosya var mı?" sorusunu cevaplar: `True` ya da `False`.
 
 ```python
 def toplu_uret(liste, sinir):
@@ -299,6 +302,7 @@ def toplu_uret(liste, sinir):
 - **Sınıra geldiysen** dur: `break` döngüyü tamamen bitirir.
 - Değilse üret. Kartın içine sonucunu yaz: `kart["durum"] = "uretildi"` ya da `"olmadi"`. Sözlükteki bir değer böyle
   değiştirilir; anahtar yoksa eklenir (Bonus'taki `model_puani` gibi).
+- `sonuc is None`: "sonuç hiçbir şey mi?" `sabirli_ciz` üç denemede de başaramadıysa `None` verir; soru `True` olur.
 - `denenen` üretmeyi denediğimiz kartları sayar; atlanan kartlar sayılmaz. Sınır bu sayaca bakar.
 - Adım 1'deki üzerine yazma tehlikesi burada işe yarar bir kurala dönüşüyor: aynı kart her zaman aynı yolu aldığı için
   "zaten var mı?" sorusu **kaldığı yerden devam** demek.
@@ -349,7 +353,7 @@ print("Günlük yazıldı:", gunluk_yolu)
 Çıktı: `Günlük yazıldı: izgara/uretim_gunlugu.json`.
 
 - `json.dump(kartlar, dosya, ...)`: listeyi dosyaya JSON olarak yazar. Önce yazılacak şey, sonra dosya.
-- `ensure_ascii=False`: Türkçe harfler (`brif` alanındaki ç ve ş) `ç` gibi kodlara dönüşmesin, olduğu gibi yazılsın.
+- `ensure_ascii=False`: Türkçe harfler (`brif` alanındaki ç ve ş) `\u00e7` gibi kodlara dönüşmesin, olduğu gibi yazılsın.
 - `indent=2`: her kart ayrı satırlarda, okunur biçimde.
 - JSON, Konu 2'de API'nin cevabındaki biçim: sözlükler ve listeler, metin olarak. İnsan da okuyabilir, program da
   `json.load` ile geri okuyabilir (alıştırmada var).
@@ -389,8 +393,11 @@ plt.show()
   satır bir stil, her sütun bir renk olur.
 - Satır ve sütun sayısı listelerden geliyor: stil ya da renk ekleyince ızgara kendini ayarlar.
 - `plt.figure(figsize=(12, 9))`: sayfanın boyutu (genişlik, yükseklik; inç).
-- Dosyası olmayan (üretilemeyen) kartın kutusu boş kalır; başlığı yine yazılır.
-- `plt.savefig`: sayfayı dosyaya kaydeder; `bbox_inches="tight"` kenardaki boşluğu kırpar.
+- Görseli çizmeden önce `os.path.exists` ile soruyoruz: üretilemeyen kartın dosyası yok, `plt.imread` onu açamaz ve hata
+  verir. Böylece o kartın kutusu boş kalır; başlığı yine yazılır.
+- `fontsize=9`: başlığın yazı boyutu.
+- `plt.savefig`: sayfayı dosyaya kaydeder; `bbox_inches="tight"` kenardaki boşluğu kırpar. `plt.show()`'dan **önce**
+  gelmeli: gösterilen sayfa kapanır, sonradan kaydedilen dosya boş çıkar.
 
 Sayfaya tasarımcı gözüyle bak: hangi stil brife uyuyor? Hangi renk? Kartlar kontrollü kurulduğu için bir satırın
 hepsi kötüyse sorun stilde, bir sütunun hepsi kötüyse renkte. Kazananını yoluyla yaz:
@@ -433,8 +440,8 @@ print("Benim seçimim:", benim_secimim)
 ```
 
 - `brif_ingilizce` ayrı bir değişkende: kendi brifine göre değiştirebilirsin.
-- Her kartın içine `model_puani` diye yeni bir alan ekleniyor. Model bazen yalnızca bir sayı, bazen bir cümle yazar;
-  o yüzden cevabı olduğu gibi (metin) saklıyoruz. 12 istek birkaç dakika sürer.
+- Her kartın içine `model_puani` diye yeni bir alan ekleniyor. Model "yalnızca sayı" isteğine her zaman uymayabilir,
+  bir cümle de yazabilir; o yüzden cevabı olduğu gibi (metin) saklıyoruz. 12 istek birkaç dakika sürebilir.
 - Puanları günlüğe eklemek için Adım 5'in hücresini bir kez daha çalıştır.
 
 **Tartış:** modelin en yüksek puan verdikleri arasında senin seçimin var mı? Model brifteki kelimeleri görselde neyle
@@ -456,7 +463,7 @@ for tohum in [1, 2, 3]:
 - İlk döngü kazananın kartını listede bulur: yolu `benim_secimim`'e eşit olan kart.
 - Yola stil, renk ve tohum yazılıyor: her tohum ayrı bir dosya (`izgara/suluboya_adacayi_1.jpg` gibi). `str(tohum)`
   sayıyı metne çevirir; yoksa metinle birleştirilemez.
-- Aynı yönerge, üç farklı kompozisyon: hangisini müşteriye götürürdün?
+- Aynı yönerge, üç tohum: fark kompozisyonda mı, renkte mi, ayrıntıda mı? Hangisini müşteriye götürürdün?
 
 **3. Sınır gerçekten çalışıyor mu?** Isınma'daki `renkler` listesine ve Adım 2'deki `renk_yonergeleri` sözlüğüne bir
 palet ekle (ör. `"mono"` ve `"black and white palette"`). Isınma'yı ve Adım 2'nin hücrelerini yeniden çalıştır, sonra:
@@ -517,9 +524,10 @@ kopyada çalış. **Anahtar istemez ve görsel üretmez:** `veri/ornek_izgara/` 
 | Hücre uzun süre bitmiyor | `sabirli_ciz` bekliyor (başarısız her denemeden sonra 5 saniye) ya da 9–12 istek sürüyor | Bekle; mesajlara bak |
 | Hiçbir şey üretilmiyor, hepsi `Zaten var` | Görseller önceki bir çalıştırmadan var | Doğru davranış. `ozne`'yi değiştirdiysen `klasor`'u da değiştir; yoksa günlük eski görseli yeni yönergeyle kaydeder |
 | `TypeError: Object of type TextIOWrapper is not JSON serializable` | `json.dump`'a önce dosya, sonra liste verildi | Önce yazılacak şey: `json.dump(kartlar, dosya)` |
-| Günlükte `ç` gibi kodlar | `ensure_ascii=False` yazılmamış | Ekle |
+| Günlükte `\u00e7` gibi kodlar | `ensure_ascii=False` yazılmamış | Ekle |
 | Kontak sayfasında kutular kaymış ya da `ValueError: num must be an integer with 1 <= num <= ...` | Listeler değişti ama kartlar yeniden kurulmadı | Isınma'dan itibaren sırayla yeniden çalıştır |
 | Kontak sayfasında boş kutular | O kartlar üretilemedi (sınır, kota ya da hata) | `toplu_uret`'i yeniden çalıştır; yalnızca eksikler üretilir |
+| `kontak_sayfasi.png` bembeyaz, ekrandaki sayfa doğru | `plt.savefig` satırı `plt.show()`'dan sonra yazılmış | Önce `savefig`, sonra `show` |
 | `NameError: name 'benim_secimim' is not defined` | Adım 6'nın son hücresi atlandı | O hücreyi çalıştır (kendi kazananının yoluyla) |
 | Bonus 2'de `NameError: name 'kazanan' is not defined` | `benim_secimim`'deki yol hiçbir kartın yoluna uymuyor | Yolu kontak sayfasındaki gibi, `izgara/` ve `.jpg` ile birlikte yaz |
 | `model_puani` `None` | Görsel anlayan modelin isteği başarısız | Üstteki `İstek başarısız, durum kodu` ya da `Bağlanamadım` satırına bak |

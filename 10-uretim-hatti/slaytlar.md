@@ -47,7 +47,7 @@ Ahmet Emre Aladağ
 - Ara çıktı bir dosyada durursa üç şey kazanırsın: **bakabilirsin**, **düzeltebilirsin**, **yeniden kullanabilirsin**
 - Hattın ortasına girmek mümkün olur: makinenin yazdığı sloganı beğenmezsen dosyada kendin değiştirirsin, hat oradan devam eder
 - Ara çıktı yalnızca bellekte (programın içinde) kalırsa program kapanınca kaybolur
-- Bu yüzden iyi bir hatta saklanmaya değer ara çıktılar, sıradaki halkaya gitmeden önce bir dosyaya yazılır
+- Bu yüzden iyi bir hatta, saklanmaya değer ara çıktılar sıradaki halkaya gitmeden önce bir dosyaya yazılır
 
 -----
 

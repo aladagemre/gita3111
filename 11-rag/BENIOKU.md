@@ -2,7 +2,7 @@
 
 Dil modeli senin belgeni bilmez: müşterinin marka kılavuzu, ajansın brif arşivi onun eğitim verisinde yok. Bu konuda
 modele soru sormadan önce belgeden soruya en ilgili paragrafları bulup soruyla birlikte gönderiyoruz; model cevabı
-belgeye bakarak veriyor. Bu yöntemin adı **RAG**. Örnek belge, sessiz çalışma kafemiz **Sayfa Kahve**'nin marka kılavuzu.
+belgeye bakarak veriyor. Bu yöntemin adı **RAG** (*retrieval-augmented generation*: bulup getirerek üretmek). Örnek belge, sessiz çalışma kafemiz **Sayfa Kahve**'nin marka kılavuzu.
 Aynı soruyu kılavuzsuz ve kılavuzlu soruyor, kılavuzda olmayan bir soruda modelin "bilmiyorum" deyip demediğine bakıyor ve
 sonunda kılavuza göre bir afiş çizdiriyoruz.
 

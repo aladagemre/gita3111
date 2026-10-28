@@ -22,13 +22,14 @@ Kendi seçtiğin bir konuda (bir marka, bir etkinlik, bir kitap kapağı...) bir
      `"brif"` alanına kendi brifini Türkçe yaz.
 3. Hücreleri şu sırayla çalıştır:
    - Isınma'nın iki hücresi
-   - Adım 1'in **yalnızca ilk iki hücresi** (ikincisi öznenin tek başına nasıl göründüğünü gösterir: 1 görsel).
-     Adım 1'in kalan hücrelerini atla.
+   - Adım 1'in **yalnızca ilk iki hücresi** (ikincisi `ozne`'yi tanımlar ve onunla bir deneme görseli üretir:
+     1 görsel). Adım 1'in kalan hücrelerini atla.
    - Adım 2'den Adım 6'nın sonuna kadar bütün hücreler. Adım 4'te önce 3 görsellik deneme gelir; beğenmezsen dur,
-     şablonu düzelt, `klasor`'u değiştir (ör. `"odev8_2/"`) ve yeniden dene.
+     şablonu düzelt, `odev8/` klasöründeki üç görseli sil ve hücreleri bu sırayla baştan çalıştır (her yeni deneme 4
+     görsel daha).
 4. Adım 6'daki `benim_secimim` satırına kendi kazananının yolunu yaz (ör. `"odev8/kolaj_mavi.jpg"`).
 
-Bir listeyi ya da sözlüğü sonradan değiştirirsen yine Isınma'dan itibaren sırayla çalıştır; yoksa kartlar eski kalır.
+Bir listeyi ya da sözlüğü sonradan değiştirirsen 3. maddedeki sırayla baştan çalıştır; yoksa kartlar eski kalır.
 Kontak sayfasının ızgarası liste uzunluklarına göre kendini ayarlar.
 
 Yaşayan bir sanatçının adını stil olarak yazma.

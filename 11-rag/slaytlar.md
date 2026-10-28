@@ -11,7 +11,7 @@ Ahmet Emre Aladağ
 - Gerçek bir müşteri işinde brif tek başına yetmez: markanın kuralları da vardır
 - Renkler, yazı tipleri, yasak sözcükler, logonun nasıl kullanılacağı: hepsi bir belgede yazılıdır, **marka kılavuzunda**
 - Dil modeli bu belgeyi hiç görmedi; senin müşterin, senin markan onun eğitim verisinde yok
-- Konu 5'te gördük: model bilmediği yerde susmaz, olası olanı söyler
+- Konu 2'de soruya **bağlamı**, yani arka plan bilgisini, elle yazdık; bir kılavuzun tamamını her soruya elle yazamayız
 - Bugünkü soru: modele **senin** belgeni nasıl okuturuz?
 
 -----
@@ -44,7 +44,7 @@ Ahmet Emre Aladağ
 - Ezberden giren, bilmediği soruda tahmin yürütür; bazen tutturur, bazen uydurur
 - Açık kitapla giren önce kitapta ilgili sayfayı bulur, sonra cevabı o sayfaya bakarak yazar
 - İyi bir açık kitap öğrencisi, kitapta olmayan bir soruya "kitapta yok" der
-- RAG modeli ikinci öğrenciye çevirir: soruyla birlikte kitabın ilgili sayfalarını da veririz
+- Bugünkü yöntem modeli ikinci öğrenciye çevirir: soruyla birlikte kitabın ilgili sayfalarını da veririz
 - Dikkat: öğrenci ancak doğru sayfayı açarsa doğru cevap verir; yanlış sayfayı açan en iyi öğrenci de yanılır
 
 -----
@@ -52,8 +52,8 @@ Ahmet Emre Aladağ
 ## RAG nedir?
 
 - **RAG**, İngilizce *retrieval-augmented generation*: Türkçesiyle "bulup getirerek üretmek"
-- Fikir basit: modele soru sormadan önce belgeden soruyla ilgili parçaları bul, soruyla birlikte gönder
-- Model yeniden eğitilmez; belge değişirse yalnızca belgeyi güncellersin
+- Fikir basit: modele soru sormadan önce belgeden soruyla ilgili parçaları bul, soruyla birlikte gönder; bağlamı sen yazmazsın, belgeden gelir
+- Model yeniden eğitilmez; belge değişince modele değil, belgeye dokunursun
 - Model cevabı kendi hafızasından değil, önüne konan metinden kurar
 - Belge senin elinde kalır: hangi parçanın modele gittiğini görebilir, denetleyebilirsin
 - RAG bir model değil, bir **yöntem**: Konu 4'teki gömme vektörlerini ve Konu 5'teki metin modelini birlikte kullanır
@@ -67,7 +67,7 @@ Ahmet Emre Aladağ
 - **3. Yönergeye koy ve sor:** "yalnızca şu bilgilere dayanarak cevap ver" + bulunan parçalar + soru → metin modeli
 - Birinci adım belge başına bir kez yapılır ve saklanır; ikinci ve üçüncü adım her soruda tekrarlanır
 - Kütüphane benzetmesi: kitapları rafa dizmek bir kez yapılır; her okur geldiğinde raftan doğru kitaplar çekilir; okur onları okuyup cevaplar
-- Üç adımın hiçbiri büyü değil: biri bir dosyayı bölmek, biri sayıları karşılaştırmak, biri metinleri birleştirmek
+- Üç adımın üçü de tanıdık iş: bir dosyayı bölmek, sayıları karşılaştırmak, metinleri birleştirmek
 
 -----
 
@@ -79,6 +79,7 @@ Ahmet Emre Aladağ
 - İyi yazılmış bir marka kılavuzu bu yüzden RAG'e zaten elverişlidir: her bölüm bir konu
 - Bir konu birkaç bölüme dağılmışsa (renk kuralları hem genel bölümde hem ürün bölümlerinde) hepsini birden bulmak zorlaşır
 - Tasarımcı için ders: belge yazarken de sor: "bu paragraf tek başına okununca anlaşılır mı?"
+- **Ad karışmasın:** Konu 5'teki parça bir belirteçti, kelimenin bir kırıntısı; RAG'deki parça belgenin bir bölümüdür
 
 -----
 
@@ -95,11 +96,11 @@ Ahmet Emre Aladağ
 
 ## Yönerge: talimat, bilgiler, soru
 
-- Modele giden metin üç parçadan oluşur: **talimat + bulunan parçalar + soru**
+- Modele giden metin üç kısımdan oluşur: **talimat + bulunan parçalar + soru**
 - Talimat sınırı çizer: "yalnızca aşağıdaki bilgilere dayanarak cevap ver"
 - Ve bir çıkış kapısı gösterir: "bilgilerde cevap yoksa bilmiyorum de"; bu kapı yoksa model boşluğu yine kendisi doldurur
 - Parçaları "Bilgiler:" gibi bir başlıkla sorudan ayırmak, modelin neyin kaynak neyin soru olduğunu görmesini kolaylaştırır
-- Model talimatı kesin bir kural olarak değil, olası bir devam olarak okur (Konu 5); çoğu zaman uyar, her zaman değil
+- Talimat da modelin devamını yazdığı metne dahildir (Konu 5): bir kural değil, bir yönlendirme; model çoğu zaman uyar, her zaman değil
 - Şablon bir kez yazılır, her soruda yeniden kullanılır: Konu 10'daki yönerge kalıbı gibi
 
 -----
@@ -122,7 +123,7 @@ Ahmet Emre Aladağ
 - Görsel model kılavuzu okumaz; ona yalnızca bir yönerge gider (Konu 7)
 - Bu yüzden zincir iki halkalı: önce kılavuzdan görselle ilgili kurallar bulunur, sonra metin modeli bu kurallarla bir görsel yönergesi yazar
 - Ne aradığın, ne bulacağını belirler: afişin konusunu aramak bir şey, görselin kurallarını aramak başka bir şey getirir
-- Bir kural iki yerde kaybolabilir: **bulmada** (kural modele hiç gitmedi) ya da **çizimde** (kural yönergede vardı ama görsel model uygulamadı)
+- Bir kural üç yerde kaybolabilir: **aramada** (kural metin modeline hiç gitmedi), **yönergede** (metin modeli kuralı görsel yönergesine koymadı) ya da **çizimde** (kural yönergede vardı ama görsel model uygulamadı)
 - Hangisinin olduğunu ara çıktılara bakarak bulursun: bulunan parçalar ve yazılan yönerge (Konu 10)
 - Kılavuza uygunluğu son kez denetleyen yine tasarımcıdır: model taslak üretir, onay senin
 
@@ -132,7 +133,7 @@ Ahmet Emre Aladağ
 
 - Küçük bir belge her soruda bütünüyle gönderilebilir; o zaman bulma adımına gerek kalmaz
 - Gerçek belgeler ise büyüktür: iki yüz sayfalık bir kurumsal kimlik kılavuzu, yüzlerce brif
-- Modelin bir seferde okuyabileceği metnin bir sınırı var; sınırı aşan kısım hiç okunmaz
+- Modelin bir seferde okuyabileceği metnin bir sınırı var: Konu 5'teki **bağlam penceresi**; pencereye sığmayan kısım hiç okunmaz
 - Gönderilen her metin kotadan yer: uzun yönerge, pahalı istek
 - Uzun bir metnin ortasındaki küçük bir kural kalabalıkta kaybolabilir; kısa ve ilgili parçalar daha net cevap getirir
 - RAG bu yüzden "her şeyi ver" değil, "gerekeni ver" yaklaşımıdır

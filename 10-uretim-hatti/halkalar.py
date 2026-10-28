@@ -7,8 +7,8 @@
 # timeout: cevap bu kadar saniyede gelmezse istek bırakılır; hücre sonsuza kadar asılı kalmaz.
 
 import base64
+import os
 import time
-from pathlib import Path
 
 import requests
 
@@ -59,12 +59,14 @@ def ciz(yonerge, tohum, yol):
     if cevap.status_code != 200:
         print("İstek başarısız, durum kodu:", cevap.status_code)
         return None
-    yanit = cevap.json()
-    sonuc = yanit["result"]
-    metin = sonuc["image"]                       # görsel, metne çevrilmiş (base64) olarak geliyor
-    dosya = Path(yol)
-    dosya.parent.mkdir(parents=True, exist_ok=True)
-    dosya.write_bytes(base64.b64decode(metin))
+
+    # Görsel cevabın içinde metin (base64) olarak geliyor: metni görselin baytlarına çevirip dosyaya yazıyoruz
+    resim = base64.b64decode(cevap.json()["result"]["image"])
+    klasor = os.path.dirname(yol)
+    if klasor != "":
+        os.makedirs(klasor, exist_ok=True)
+    with open(yol, "wb") as dosya:
+        dosya.write(resim)
     return yol
 
 
