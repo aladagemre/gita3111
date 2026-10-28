@@ -592,7 +592,9 @@ Bir kelimeye en yakın kelimelere **komşu** denir (Konu 3'teki model de bir ren
 
 Konu 1'de ne yapmıştık? `sayac` sözlüğü her kelimenin **kaç kez** geçtiğini tutuyordu;
 `most_common` en büyüklerini sıralıyordu. Burada `skorlar` her kelimenin kafeye **ne
-kadar benzediğini** tutacak. Kalıp aynı, sayılar farklı.
+kadar benzediğini** tutacak. Kalıp aynı, sayılar farklı. Bu döngü Konu 11'de geri dönecek:
+orada kelimeler yerine bir marka kılavuzunun paragraflarını karşılaştırıp bir soruya en
+yakın paragrafı bulacağız.
 
 Bir çözüm:
 

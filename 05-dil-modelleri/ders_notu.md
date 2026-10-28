@@ -504,7 +504,9 @@ o sorudan sonra **en olası** görünen metni üretir. Çoğu zaman en olası me
 metindir, çünkü eğitim verisinde doğrular daha sık geçer. Ama verinin az olduğu yerde
 (seyrek bir konu, yerel bir bilgi, bir kişinin özgeçmişi) model yine akıcı, kendinden emin,
 ama **uydurma** bir metin yazar. Buna uydurma (İngilizcesi *hallucination*) denir.
-"Model gerçeği biliyor" sanmak bu konunun en önemli tuzağı.
+"Model gerçeği biliyor" sanmak bu konunun en önemli tuzağı. Konu 11'de bunun bir çaresini
+deneyeceğiz: modele önce bir belgeden ilgili paragrafları verip yalnızca onlara dayanarak
+cevap vermesini isteyeceğiz.
 
 ---
 
@@ -818,8 +820,9 @@ bu dağılımdan nasıl seçileceğini belirler.
 
 **Yapılandırılmış çıktı nerede?** Modelden serbest metin yerine belirli alanları olan bir
 cevap istemek (örneğin her slogan için `slogan`, `ton`, `hedef kitle` alanları) bu konunun
-ilk planında vardı. Konu 12'ye (araç kullanımı) taşındı: orada modelin cevabını doğrudan
-bir programın kullanacağı veri olarak işleyeceğiz ve bu fikir oraya daha iyi oturuyor.
+ilk planında vardı. Konu 12'ye (ajan) taşındı: orada model, hangi aracı hangi bilgilerle
+çalıştıracağını alanları belli bir cevapla bildirecek; programımız bu cevabı doğrudan veri
+olarak işleyecek. Bu fikir oraya daha iyi oturuyor.
 
 ---
 

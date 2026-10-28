@@ -8,10 +8,10 @@ Ahmet Emre Aladağ
 ## İkinci yarıya hoş geldin: artık üretiyoruz
 
 - Birinci yarıda kaputu açtık: veri, API, makine öğrenmesi, gömme, dil modeli, gizli uzay
-- İkinci yarıda bu modellerle **üretiyoruz**: görsel, toplu üretim, video, üretim hattı
+- İkinci yarıda bu modellerle **üretiyoruz**: görsel, toplu üretim, video, üretim hattı; sonunda belgeye dayanarak cevap veren bir program ve kendi kararını veren bir ajan
 - Bugün bir görsel üreticiyi tasarımcı gözüyle yönetmeyi öğreniyoruz
 - Hedef: "rastgele deneyip şansını beklemek"ten **kontrollü denemeye** geçmek
-- Yeni kod yazmıyoruz: hazır bir aracı arayüz gibi kullanıyor, yalnızca metinleri ve sayıları değiştiriyoruz; aracın içini Konu 8'de açacağız
+- Yeni kod yazmıyoruz: hazır bir aracı arayüz gibi kullanıyor, yalnızca metinleri ve sayıları değiştiriyoruz
 - Bu konudan itibaren yapay zeka araçlarını kullanmak serbest, hatta bekleniyor; her görselin nasıl üretildiğini bir **üretim günlüğüne** yaz (neyin yazılacağını birazdan göreceğiz)
 
 -----
@@ -140,7 +140,7 @@ Bir brif yazar gibi düşün: modele neyi, nasıl, hangi duyguyla istediğini an
 - Arayüzler bazı ayarları gizler (tohum, adım sayısı), bazılarını düğmeye çevirir (en-boy oranı, stil)
 - Bugün öğrendiğin ilkeler hepsinde geçerli: net yönerge, tek değişken, yan yana karşılaştırma
 - Biz bugün defterde hazır bir araç kullanıyoruz: bütün ayarlar elimizin altında ve her görsel bir dosya olarak kaydediliyor
-- Konu 8'de bu aracın içini açacağız; Konu 9'da aynı ilkelerle tek seferde birçok görsel üreteceğiz
+- Konu 8'de aynı ilkelerle tek seferde birçok görsel üreteceğiz; Konu 9'da video için yine bir arayüze döneceğiz
 
 -----
 
@@ -187,4 +187,4 @@ Ayrıntılar: `odevler/odev7.md`. Puan yok; Konu 8'in başında, Konu 6'nın öd
 4. **Bir seferde tek değişken.** Sonuçları yan yana koy ki farkın nereden geldiği görünsün
 5. **Model, tohum ve yönerge yazılır.** Etik ve telif belirsizliğinde şeffaflık senin sorumluluğun
 
-Sıradaki konu: **Konu 8 — Koddan görsel üretimi.** Bugün kullandığımız aracın içini açıyoruz.
+Sıradaki konu: **Konu 8 — Koddan görsel ve toplu üretim.** Bugün görselleri tek tek ürettik; Konu 8'de bir döngüyle tek seferde birçok görsel üretip hepsini yan yana koyacağız.

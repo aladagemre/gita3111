@@ -5,13 +5,14 @@ ayırmak, **tohumla** rastgeleliği sabitlemek, adım sayısının görseli nas�
 görmek, bir seferde tek bir şeyi değiştirerek **kontrollü deney** yapmak, iki modeli
 karşılaştırmak ve var olan bir görseli talimatla düzenlemek. Bu konuda yeni kod yazmıyoruz: hazır
 bir aracı (`gorsel_araci.py`) arayüz gibi kullanıyor, defterin hücrelerinde yalnızca metinleri ve sayıları
-değiştiriyoruz; aracın içini Konu 8'de açacağız.
+değiştiriyoruz. Konu 8'de benzer bir aracı kendi yazdığımız bir döngüyle çağırıp tek seferde
+birçok görsel üreteceğiz.
 
 | Klasör / dosya | Ne işe yarıyor |
 |---|---|
 | `slaytlar.md` | Kavram slaytları; dersin başında gösterilir |
 | `ders.ipynb` | Derste birlikte çalıştıracağımız defter: Isınma, Adım 1–8 ve Bonus |
-| `gorsel_araci.py` | Görsel üretim aracı: `ciz`, `duzenle`, `yan_yana`. İçini Konu 8'de açacağız |
+| `gorsel_araci.py` | Görsel üretim aracı: `ciz`, `duzenle`, `yan_yana` |
 | `odevler/odev7.md` | Bu konunun ödevi |
 | `ders_notu.md` | Konu notu — adım adım açıklamalar, etik ve telif, sık hatalar, kendini dene soruları, sözlükçe |
 
@@ -46,7 +47,7 @@ ekranında izle.
 
 Yeni materyal geldiğinde `gita3111` klasöründe `git pull` çalıştır. Depodaki bir dosyayı
 değiştirmek istersen önce aynı klasörde **yeni bir adla kopyala**, kopyada çalış; böylece
-`git pull` hiç çakışmaz. `gorsel_araci.py`'yi değiştirme: Konu 8'de birlikte açacağız.
+`git pull` hiç çakışmaz. `gorsel_araci.py`'yi değiştirme.
 
 ## Defterin bölümleri
 

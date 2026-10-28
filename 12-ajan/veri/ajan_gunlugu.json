@@ -1,0 +1,47 @@
+[
+  {
+    "istek": "kafeye bir afiş yap",
+    "cagrilar": [
+      {"tool_name": "afis_ciz", "tool_args": {"yonerge": "a calm poster for a quiet study cafe, a cup of coffee and an open notebook on a wooden table, soft morning light, minimal layout"}}
+    ],
+    "cevap": "Afişi çizdim ve ciktilar/afis.jpg dosyasına kaydettim."
+  },
+  {
+    "istek": "veri/fincan.jpg fotoğrafının arka planını sadeleştir",
+    "cagrilar": [
+      {"tool_name": "fotograf_duzenle", "tool_args": {"dosya": "veri/fincan.jpg", "yonerge": "replace the background with a plain light paper texture, keep the cup unchanged"}}
+    ],
+    "cevap": "Arka planı sadeleştirdim: ciktilar/duzenlenmis.jpg"
+  },
+  {
+    "istek": "Sayfa Kahve hafta sonu kaçta açılıyor?",
+    "cagrilar": [
+      {"tool_name": "kilavuzda_ara", "tool_args": {"soru": "hafta sonu açılış saatleri"}}
+    ],
+    "cevap": "Sayfa Kahve hafta sonu 10.00'da açılıyor ve 20.00'de kapanıyor."
+  },
+  {
+    "istek": "Sayfa Kahve için kılavuza uygun bir afiş yap",
+    "cagrilar": [
+      {"tool_name": "kilavuzda_ara", "tool_args": {"soru": "afişte kullanılacak renkler, yazı tipi ve görsel kuralları"}},
+      {"tool_name": "afis_ciz", "tool_args": {"yonerge": "two-color risograph poster in ink blue and paper white, an open book and a coffee cup on a desk, no people, soft natural morning light, calm empty space"}}
+    ],
+    "cevap": "Kılavuza baktım ve mürekkep mavisi ile kâğıt beyazından oluşan, insan yüzü olmayan bir afiş çizdim."
+  },
+  {
+    "istek": "Sayfa Kahve için bir menü kapağı çiz",
+    "cagrilar": [
+      {"tool_name": "afis_ciz", "tool_args": {"yonerge": "a vibrant cafe menu cover in red and orange tones, a smiling barista holding a cup, glossy 3d style"}}
+    ],
+    "cevap": "Menü kapağını çizdim ve ciktilar/afis.jpg dosyasına kaydettim."
+  },
+  {
+    "istek": "fincan fotoğrafını üç farklı renkte dene",
+    "cagrilar": [
+      {"tool_name": "fotograf_duzenle", "tool_args": {"dosya": "veri/fincan.jpg", "yonerge": "make the cup ink blue"}},
+      {"tool_name": "fotograf_duzenle", "tool_args": {"dosya": "veri/fincan.jpg", "yonerge": "make the cup mustard yellow"}},
+      {"tool_name": "fotograf_duzenle", "tool_args": {"dosya": "veri/fincan.jpg", "yonerge": "make the cup paper white"}}
+    ],
+    "cevap": "Fincanı üç renkte düzenledim."
+  }
+]

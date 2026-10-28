@@ -15,8 +15,9 @@ gözüyle yönetmeyi öğreniyoruz: rastgele denemekten **kontrollü denemeye**.
 
 **Bu konuda yeni kod yazmıyoruz:** hazır hücrelerde yalnızca tırnak içindeki metinleri ve
 sayıları değiştiriyoruz. `gorsel_araci.py` adlı hazır bir aracı bir arayüz gibi kullanıyoruz:
-içine yönergeyi yazıyorsun, görsel çıkıyor. Aracın içini (istek, anahtar, yanıtı dosyaya
-yazmak) **Konu 8'de** birlikte açacağız.
+içine yönergeyi yazıyorsun, görsel çıkıyor. Aracın içinde Konu 2'deki gibi bir istek var; gelen
+görseli de dosyaya kendisi kaydediyor. İçini açmamıza gerek yok: tasarımcı için önemli olan,
+onu iyi yönetmek.
 
 **Bugünün brifi:** Konu 1'deki kafe. Müşterilerin **sessiz bir çalışma yeri** diye anlattığı
 kafe için bir afiş görseli arıyoruz.
@@ -461,9 +462,10 @@ denemesi; tohum sabit, yalnızca stil değişiyor. Pano + iki cümle + üretim g
 
 ## Sonraki konu
 
-**Konu 8 — Koddan görsel üretimi.** Bugün `gorsel_araci.py`'yi bir arayüz gibi kullandık.
-Konu 8'de içini açıyoruz: isteği kendimiz kuracak, gelen görseli dosyaya
-kendimiz yazacak, dosya adlarını düzenleyecek ve hataları yakalayacağız.
+**Konu 8 — Koddan görsel ve toplu üretim.** Bugün `gorsel_araci.py`'yi bir arayüz gibi
+kullandık ve görselleri tek tek ürettik. Konu 8'de hazır bir görsel fonksiyonunu kendi
+yazdığımız bir döngüyle çağıracağız: bir listedeki her stil ve renk için bir görsel üretecek,
+hepsini tek sayfalık bir ızgarada (kontak sayfası) yan yana göreceğiz.
 
 ---
 

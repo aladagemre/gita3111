@@ -25,8 +25,8 @@ Ahmet Emre Aladağ
 
 ### İkinci yarı: onlarla ne üretiyoruz?
 
-- Arayüzden ve koddan görsel üretimi · toplu üretim · video
-- Adımları birbirine bağlayan üretim hattı · kendi kararını veren program
+- Arayüzden ve koddan görsel üretimi · toplu üretim · arayüzden video
+- Adımları birbirine bağlayan üretim hattı · belgeye dayanarak cevap veren program · kendi kararını veren ajan
 - Dönemin sonunda: kendi kurduğun üretim aracıyla final projesi
 
 -----

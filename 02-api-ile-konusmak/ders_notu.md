@@ -193,8 +193,8 @@ bilgisayar senin bilgisayarın değil. Bu yüzden internet gerekir, bu yüzden b
 söylemen gerekir.
 
 Programların birbirine soru sorabildiği bu kapıya **API** denir. Bugün Cloudflare'in
-yapay zeka API'sine soru soracağız. İleride görsel üretirken, video üretirken de aynı
-kapıdan geçeceğiz; değişen tek şey adres ve gövde olacak.
+yapay zeka API'sine soru soracağız. İleride görsel üretirken de, bir belgeden cevap ararken
+de aynı kapıdan geçeceğiz; değişen tek şey adres ve gövde olacak.
 
 ### Bir sorunun yolculuğu
 
@@ -527,9 +527,10 @@ print(metin)
 > **Kural:** Yanıtın yapısını bilmiyorsan önce bütününü bas (`print(yanit)`), sonra
 > kat kat içine gir. Dönemin geri kalanında en çok kullanacağın alışkanlık bu.
 
-Bu kural sadece bugünkü model için değil. Konu 8'de görsel üreten bir modele, Konu
-10'da video üreten bir modele istek atacağız; yanıtların yapısı farklı olacak. Her
-seferinde aynı yöntemle keşfedeceğiz: önce bütününe bakıp, sonra kat kat inerek.
+Bu kural sadece bugünkü model için değil. Konu 4'te kelimeleri sayıya çeviren bir modele,
+Konu 12'de hangi aracı kullanacağına kendisi karar veren bir modele istek atacağız; yanıtların
+yapısı farklı olacak. Her seferinde aynı yöntemle keşfedeceğiz: önce bütününe bakıp, sonra
+kat kat inerek.
 
 ### JSON — sözlüğün ağdaki hâli
 

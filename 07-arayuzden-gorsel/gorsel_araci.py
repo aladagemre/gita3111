@@ -1,6 +1,6 @@
 # Konu 7'nin görsel üretim aracı.
 # Şimdilik bir arayüz gibi kullan: ciz(...), duzenle(...), yan_yana(...).
-# İçini Konu 8'de birlikte açacağız; Konu 2'de yazdığın modele_sor'un akrabası.
+# Konu 2'de yazdığın modele_sor'un akrabası: istek atar, gelen görseli dosyaya kaydeder.
 
 import base64
 import pathlib

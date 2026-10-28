@@ -49,7 +49,7 @@ Her istek bir zarf gibi üç soruya cevap verir:
 - **Gövde — ne istiyorum?** Zarfın içindeki mektup: modele sorduğun soru
 
 - Üçünden biri eksik ya da yanlışsa istek ya hiç ulaşmaz ya da geri çevrilir
-- Bütün API'ler bu üç parçayla çalışır; bugün öğrendiğin şey ileride görsel ve video üretiminde de aynı
+- Bütün API'ler bu üç parçayla çalışır; bugün öğrendiğin şey ileride görsel üretiminde de aynı
 
 -----
 

@@ -15,8 +15,8 @@ gördük. Kurulumu **bu dersten sonra evde**, `kurulum-yonergesi.md` dosyasına 
 - **Bu ders GİTA2112'nin devamı.** Orada kodun temelini attık; burada yapay zekayı
   kendi kodumuzdan kullanacağız.
 - **Önce** "bu şeyler nasıl çalışıyor" (veri, API, makine öğrenmesi, temsil, dil modelleri,
-  üretmek ne demek), **sonra** "onlarla ne üretiyoruz" (görsel, video, toplu üretim, üretim
-  hatları, araç kullanımı). Ortada vize, sonda final projesi.
+  üretmek ne demek), **sonra** "onlarla ne üretiyoruz" (görsel, toplu üretim, video, üretim
+  hattı, belgeye dayalı cevap, ajan). Ortada vize, sonda final projesi.
 - **Değerlendirme:** %40 vize (evde yapılır, yapay zeka yasak, ardından kısa bir sözlü
   kontrol), %60 final projesi. Ödevler **puansız**; sırası gelen öğrenci sınıfta
   gösterir.
