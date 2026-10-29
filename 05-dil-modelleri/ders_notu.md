@@ -165,9 +165,12 @@ Aynı anlamda bir İngilizce cümle:
 ```python
 ingilizce = kodlayici.encode("A quiet cafe for working")
 print(len(ingilizce))
+for belirtec in ingilizce:
+    print(kodlayici.decode([belirtec]))
 ```
 
-Çıktı: `5`. Beş kelime, beş parça: her kelime tek parça.
+Çıktı: `5`, sonra parçalar: `A`, ` quiet`, ` cafe`, ` for`, ` working`. Beş kelime,
+beş parça: her kelime tek parça.
 
 Uzun bir Türkçe kelime:
 
