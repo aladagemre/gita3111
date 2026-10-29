@@ -858,7 +858,7 @@ arkadaşlar gösterecek. Ajan final projesi için zorunlu değil.
 ## Sonraki konu
 
 **Konu 13 — Final atölyesi.** Yeni kavram yok: dönem boyunca öğrendiklerini kendi projende birleştirip projenin çalışan
-ilk hâlini kuruyorsun. RAG ve ajan finalde zorunlu değil, isteğe bağlı birer ekstra: projen bir belgeye dayanıyorsa RAG,
+ilk hâlini kuruyorsun. Finalde kılavuzdan bilgi çeken küçük bir RAG adımı zorunlu; ajan isteğe bağlı bir ekstra: projen
 sırası belirsiz bir iş içeriyorsa ajan işine yarar. Sırası belliyse Konu 10'daki hat daha ucuz ve daha öngörülebilir.
 
 ---
