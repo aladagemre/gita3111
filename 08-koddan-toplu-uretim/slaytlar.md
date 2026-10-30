@@ -1,223 +1,165 @@
-# Konu 8 — Koddan Görsel ve Toplu Üretim
+# Konu 8 — Bir haftalık gönderi seti
 
 GİTA3111 · Üretken Yapay Zeka ve Programlama
 Ahmet Emre Aladağ
 
 -----
 
-## Konu 7'den Konu 8'e: arayüzden koda
+## Bir sosyal medya tasarımcısının haftası
 
-- Konu 7'de görselleri hazır bir araçla tek tek ürettik; yönergeyi ve tohumu bilerek değiştirdik
-- Tek bir görsel için bunu arayüzde de yapabilirdin: yaz, üret, indir
-- Bugün önce aynı işi koddan yapıyoruz; bu kez dosyanın adını ve yerini sen seçiyorsun
-- Sonra arayüzün yapamadığına geçiyoruz: onlarca görseli tek seferde, düzenli adlarla ve kayıtlı üretmek
-- Dönemin başından beri sorulan "neden kod öğreniyorum?" sorusunun cevabı bu konuda
-- Bugün tanışacağın kavramlar: kombinasyon, şablon, kart, güvenlik sınırı, kaldığı yerden devam, programın kendi yazdığı üretim günlüğü, kontak sayfası
-- Görseli üretip dosyaya yazan kısım hazır bir yardımcı dosyada; senin işin onu yönetmek
-
------
-
-## Arayüz ne yapıyordu, kod ne yapıyor?
-
-- Arayüzde yönergeyi bir kutuya yazar, ayarları düğmelerle seçer, "üret"e basarsın
-- Görseli beğenirsen "indir"e basarsın; tarayıcı dosyaya çoğu zaman anlamsız bir ad verir
-- Hangi tohumla, hangi ayarla ürettiğini bir yere yazmadıysan bir hafta sonra aynısını üretemezsin
-- Kodda her kutu ve düğme bir **değişken**, "üret" bir **fonksiyon çağrısı**, "indir" dosyanın **yolu**
-- Kod her şeyi kaydedebilir: ne istendi, hangi tohumla, hangi modelle
-- Üstelik aynı işi bir kez değil, istediğin kadar ve her seferinde aynı biçimde yapar
+- Cuma akşamı müşteriden bir tablo gelir: önümüzdeki haftanın beş günü, her gün için bir başlık ve görselde ne olacağı
+- Pazartesi sabahına kadar her gün için bir **gönderi** ve aynı görselden bir **hikâye** istenir: on dosya
+- On dosya da aynı markadan geldiği belli olacak kadar tutarlı olmalı: renk, teknik, yazı tipi, ses
+- Müşteri hepsini tek bakışta görmek ister; biri olmamışsa (ya müşteri söyler ya sen fark edersin) yalnızca o günü yenilersin
+- İşin yaratıcı kısmı kararlardır ve küçüktür; büyük kısmı tekrardır: üret, indir, şablona koy, başlığı yaz, ölçüye uyarla, doğru adla kaydet
+- Bugün böyle bir haftayı baştan sona yapıyoruz; örnek müşterimiz Sayfa Kahve, üniversitenin yanındaki sessiz bir çalışma kafesi
+- Ödevde aynı işi kendi seçtiğin bir müşteriyle yapacaksın: bir öğrenci kulübü, ailenin dükkânı, kendi markan; Konu 12'ye kadar onunla çalışacaksın
 
 -----
 
-## Ayarlar değişkende: tekrarlanabilirlik
+## İçerik takvimi: haftanın tablosu
 
-- Arayüzdeki bir ayar, sayfayı yenileyince ya da bir sonraki denemede kaybolabilir; koddaki ayar sen değiştirene kadar yerinde durur
-- Bir değişkeni değiştirip yeniden çalıştırırsın; geri kalan her şey aynı kalır (Konu 7'deki kontrollü deney)
-- Aynı değişkenlerle bir ay sonra çalıştırırsın, aynı görseli alırsın (model sürümü değişmediyse): iş **tekrarlanabilir** olur
-- Kodu bir ekip arkadaşına gönderirsin; o da aynı ayarlarla çalıştırır, senin ne yaptığını tahmin etmek zorunda kalmaz
-- Değişkeni kullanıcıya da sordurabilirsin (`input`): kodu bilmeyen biri de aracı kullanabilir
-- Kullanıcıya körü körüne güvenme: boş bir yönerge ya da dosya adında sorun çıkaracak işaretler gelebilir
-
------
-
-## Dosyanın adını sen koyarsın
-
-- "afis_son.jpg", "afis_son_2.jpg", "afis_SON_bu.jpg": her tasarım klasörünün hikâyesi
-- Kötü ad zamanla bilmeceye döner: hangisi hangi müşteriye, hangi ayarla, hangi seçenek?
-- İyi bir ad kendini anlatır: görselin hangi seçenek olduğu adında yazar (`kahve_afisi_lacivert.jpg`)
-- Dosya adında boşluk, Türkçe karakter, `/` ve `:` gibi işaretler sorun çıkarabilir; tire ve alt çizgi güvenlidir
-- Çıktıları kendi klasöründe toplarsan neyin nerede olduğunu bilirsin; başka işlerin dosyalarıyla karışmaz
-- Kod adı her seferinde aynı kurala göre kurar; insan unutur, kod unutmaz
+- **İçerik takvimi**, bir markanın ne zaman neyi paylaşacağını gösteren plandır; bir derginin yayın planı ya da bir ders programı gibi
+- Çoğu zaman bir tablodur: her satır bir gün; sütunlarda gün, başlık ve görselin tarifi; bazen saat, platform ve not
+- Takvimi bazen müşteri, bazen ajansın içerik ekibi yazar; küçük işlerde tasarımcının kendisi
+- Tablo, müşteriyle tasarımcının aynı şeye baktığı bir anlaşmadır: hangi gün ne çıkacak, ikisi de bilir
+- Tasarımcı için iyi haber: tablo bir yapıdır ve yapıyı bilgisayar okuyabilir
+- Bir tabloyu satır satır okuyup her satıra aynı işi yapmak sıradan bir betiğin en iyi yaptığı iştir; yapay zekâ gerekmez
+- Yapay zekânın girdiği tek yer, satırdaki tarifi görsele çevirmektir
 
 -----
 
-## Arayüzün yapamadığı: ölçek
+## Sektörde bu iş
 
-- Bir e-ticaret sitesi 200 ürün için aynı tarzda arka plan görseli istiyor
-- Bir festival afişi 6 dilde, 3 ölçüde, 2 renk temasında hazırlanacak: 36 dosya
-- Bir ajans, yeni bir marka kimliği için müşterisine 4 stil × 5 renk paleti göstermek istiyor
-- Arayüzde her biri ayrı bir yönerge, ayrı bir tıklama, ayrı bir "indir" demek: saatler süren, hataya açık bir iş
-- Kodda bir şablon ve birkaç liste yeter; döngü çalışırken sen başka işe bakarsın, her dosya düzenli adla ve kayıtlı gelir
-- Brifi yazmak ve seçmek yine tasarımcının işi; kod yalnızca tekrar eden kısmı üstleniyor
-
------
-
-## Kombinasyon: gardırop benzetmesi
-
-- 2 tişört ve 5 pantolonun var: kaç farklı kombin? Her tişört her pantolonla: 2 × 5 = 10
-- Bir de 3 ayakkabı eklersen 2 × 5 × 3 = 30; her yeni liste sayıyı **çarpar**
-- Görselde de aynısı: stiller × renkler × tohumlar
-- Bu çarpma hızla büyür: 4 stil × 7 renk × 3 tohum = 84 görsel
-- Buna **kombinatoryal patlama** denir; kotayı ve zamanı yiyen şey budur
-- **Yanılgı:** "bir renk daha eklemek bir görsel daha demek." Yeni renk her stille ayrı ayrı eşleşir: 4 stilde 4 görsel daha
-
-**Sohbete yaz:** senin bir projende hangi iki şeyi her biri öbürüyle eşleşecek biçimde denemek isterdin? (Ör. 3 yazı tipi × 4 renk: 12 deneme)
+- Türkiye'deki sosyal medya ve grafik tasarım ilanları görseli, kısa dikey videoyu (Reels, Shorts) ve platform ölçülerini birlikte istiyor
+- İlanlarda adı geçen araçlar: Midjourney, Adobe Firefly, Photoshop'un üretken dolgusu, Runway, Kling, Gemini, ChatGPT
+- Bazı ilanlar "yapay zekâ kullanıyorum" demeyi yeterli bulmuyor; onunla gerçekten üretilmiş iş görmek istiyor: portfolyo
+- Adobe'nin 2025'te 16.000'den fazla içerik üreticisiyle yaptığı ankette yapay zekâ en çok düzenleme ve büyütmede (%55), sonra görsel üretiminde (%52) kullanılıyor
+- Bir yazılım satıcısının anketine göre görsel yeniden boyutlandıran tasarımcıların %85'i bu işte zorlanıyor
+- Bir marka ajansı en büyük darboğazının tasarım değil, tekrar eden idari işler olduğunu anlatıyor
+- Kod yazan tasarımcılar da var: bir ajansta bir tasarımcı tekrar eden işler için dokuz Figma eklentisi yazmış; kontrast denetleyen eklentisinin günlerce süren bir işi dakikalara indirdiğini söylüyor
 
 -----
 
-## Şablon: sabit kısım ve boşluklar
+## Arayüzde on kez, kodda bir döngü
 
-- Bir **şablon**, sabit bir kısım ve doldurulacak boşluklardan oluşur
-- Yönergede: "ahşap masada bir fincan, ___ stilinde, ___ paletiyle"
-- Ofis programlarındaki "adres mektup birleştirme" de böyle: tek mektup, yüz farklı isim
-- Tasarım sistemlerindeki bileşenler aynı mantıkla çalışır: aynı düğme, farklı metin ve renk
-- Şablonun gücü tutarlılık: değişmesini istemediğin her şey sabit kalır
-- Her boşluğun iki hâli olur: dosya adına giren kısa bir ad (`mercan`) ve modele giden uzun bir açıklama (`coral and cream palette`)
-
------
-
-## İç içe döngü: saat ve dakika
-
-- Bir saati düşün: akrep bir saat ilerlerken yelkovan bir tam tur atar
-- **İç içe döngü** de aynı mantıkla çalışır: dıştaki döngü bir adım atar, içteki döngü baştan sona döner
-- Dıştaki her stil için içteki döngü bütün renkleri gezer; sonra dıştaki bir sonraki stile geçer
-- Girinti hangi satırın hangi döngünün içinde olduğunu söyler
-- **Yanılgı:** "hata çıkmadıysa kod doğrudur." İçteki işi yapan satır dıştaki döngünün hizasına kayarsa genellikle hata çıkmaz; bazı kombinasyonlar sessizce kaybolur
-- İki liste için iki döngü, üç liste için üç döngü: her yeni liste bir girinti daha demek
+- Arayüzde her gün için aynı hareketler: yönergeyi yaz, üret, indir, şablona koy, başlığı yaz, dikey ölçüye uyarla, doğru adla kaydet
+- Beş günde bu otuzu aşkın hareket eder, revizyonla daha fazlası; her biri bir dalgınlık fırsatı: yanlış başlık, yanlış dosya adı, unutulmuş hikâye
+- Kodda bu hareketler bir kez yazılır ve tablonun her satırına aynen uygulanır
+- **Yapay zekâ** yalnızca bir betiğin yapamadığı işi yapar: "pencere kenarında bir fincan" tarifini görsele çevirmek
+- **Python** geri kalanını yapar: tabloyu okumak, başlığı yazmak, ölçüye uyarlamak, dosyayı adlandırmak, onay sayfasını kurmak, kaydı tutmak
+- Python bu işleri her seferinde aynı ve hatasız yapar, kota da harcamaz; model ise başlığın harflerini bile güvenilir çizemez
+- Kural: bir işi sıradan bir betik yapabiliyorsa onu yapay zekâya verme
 
 -----
 
-## Kart: bir görselin bütün bilgisi tek yerde
+## Marka dili: set bir aile gibi durmalı
 
-- Toplu üretimde her görselin bir **kartı** olur: stil, renk, dosya yolu, yönergenin tamamı, tohum, model
-- Kütüphanedeki katalog fişi ya da matbaadaki iş emri gibi: bir işin bütün bilgisi tek bir kâğıtta
-- Python'da kart bir **sözlük**, bütün kartlar bir **liste**: sözlüklerden oluşan bir liste
-- Kart hem üretimi yönetir (ne üretilecek, nereye kaydedilecek) hem kaydı tutar (sonunda ne oldu)
-- Karta sonradan yeni bilgi eklenebilir: üretildi mi, olmadı mı, kim seçti
-- Kartları elle yazmazsın, döngü kurar: listeler değişince kartlar aynı kurala göre yeniden oluşur
-
------
-
-## Kontrollü varyasyon: iki eksenli ızgara
-
-- Konu 7'de bir seferde tek değişken değiştirdik; bugün geri kalan her şey sabitken iki değişkeni **düzenli** değiştiriyoruz
-- Her stil her renkle bir kez: satırları stil, sütunları renk olan bir **ızgara** (tablo) düşün
-- Bir satırın tamamı kötüyse sorun stilde; bir sütunun tamamı kötüyse renkte
-- Yalnızca bir kutu kötüyse o eşleşmeye özgü bir sorun var
-- Rastgele denemede bu ayrımı yapamazsın; düzenli ızgarada göz hemen görür
-- Tohum sabit kalmalı: yoksa fark stilden mi renkten mi gürültüden mi, bilemezsin
+- **Marka dili**, bir markanın her işinde tekrar eden renk, teknik, doku, yazı tipi ve sestir; logoyu görmeden markayı tanıtan şey
+- Haftalık set müşterinin sayfasında yan yana durur; biri kopuksa hemen göze batar
+- Müşterinin kılavuzu marka dilini yazıya döker: Sayfa Kahve için mürekkep mavisi ve kâğıt beyazı, kırmızı ve turuncu asla, iki renkli risograf baskı, insan yüzü yok, fısıltı gibi bir ses
+- D&AD'nin 2026 raporu uyarıyor: kendi hâline bırakılan yapay zekâ ortalamaya kayar; sana "herhangi bir kafe" görseli verir
+- Kuralı yönergeye yazmak da garanti değil: model kendi alışkanlığına kayıp kılavuzun yasakladığı bir rengi ya da bir yüzü yine ekleyebilir
+- Seti tutarlı yapan model değil, senin kararların: hangi kural yönergeye girer, hangi görsel elenir, hangisi yenilenir
+- Tasarımcıların şüphesi de gerçek: İngiltere'de yapılan bir ankette tasarımcıların %81'i yapay zekânın yaratıcılığı körelttiğini düşünüyor
+- Bu derste yapay zekâ yaratıcılığın yerine değil angaryanın yerine giriyor; fikir ve seçim sende kalıyor
 
 -----
 
-## Önce hesap, sonra üretim: kota ve sınır
+## Stil cümlesi: stil referansının koddaki hâli
 
-- Ücretsiz kota günlüktür ve sınırlıdır; görsel, metin ve görsel okuma aynı kotayı paylaşır
-- Döngüyü başlatmadan önce sor: kaç görsel, toplam ne kadar kota?
-- Bir **güvenlik sınırı** koy: "bir çalıştırmada en fazla şu kadar üret" (kredi kartındaki harcama sınırı gibi)
-- Listeyi yanlışlıkla fazla büyütürsen sınır kotanın bir anda bitmesini önler
-- Ücretli hizmetlerde aynı hata doğrudan para demek; bu yüzden birçok bulut hizmetinde harcama sınırı ya da uyarısı ayarlanabilir
-- İyi alışkanlık: önce birkaç görsellik küçük bir deneme, beğenirsen hepsi
-
------
-
-## Sağlamlık: bir hata bütün işi durdurmamalı
-
-- Elli isteğin birinde internet kopabilir, sunucu meşgul olabilir, bir istek reddedilebilir
-- Kötü bir program orada durur; sıradaki işler hiç yapılmaz
-- İyi bir program geçici hatada biraz **bekleyip yeniden dener** ve deneme sayısına bir sınır koyar
-- Birkaç denemede de olmazsa o işi "olmadı" diye not eder ve sıradakine geçer
-- Kalıcı hatada (yanlış anahtar, kota bitti) beklemek işe yaramaz; basit bir program bunu ayırt edemez, programı sen durdurursun
-- Matbaa benzetmesi: kâğıt sıkışınca deneyimli bir operatör sıkışanı çıkarır, işi kaldığı yerden sürdürür
-- Bekleyip yeniden deneyen kod hazır yardımcı dosyada; senin işin onun ne yaptığını bilmek
+- Arayüzlerde tutarlılık için bir **stil referansı** görseli yüklersin; model her yeni görselde ona benzemeye çalışır
+- Kodda karşılığı **stil cümlesi**: kılavuzu görsel modelinin anlayacağı dile çevirdiğin, her yönergenin sonuna eklenen sabit bir cümle
+- Yönerge = günün sahnesi + stil cümlesi; sahne her gün değişir, stil cümlesi hiç değişmez
+- Kurarken önce Türkçe üç-dört öbek yaz (renk ve teknik; biçim ve doku; boşluk; ne olmayacak), sonra her öbeği İngilizceye çevir
+- "Ne olmayacak" da kılavuzdan gelir: yazı yok, insan yüzü yok, parlak yüzey yok
+- Yaşayan bir sanatçının adını stil olarak yazma; sevdiğin üslubun özelliklerini yaz (Konu 7)
+- Stil cümlesi bütün sete aynı uygulanır; sonradan değiştirirsen bütün haftayı yeniden üretirsin, o yüzden karar baştan verilir
 
 -----
 
-## Kaldığı yerden devam
+## Aynı yönerge, başka görsel: neden dosyayı saklarız
 
-- Uzun bir indirme yarıda kesilince indirme yöneticisi baştan başlamaz, kaldığı yerden devam eder
-- Animasyon stüdyolarında saatler süren kare hesaplamaları (render) da böyle: biten kare yeniden hesaplanmaz
-- Bunun için her çıktının **kararlı bir adı** olmalı: aynı iş, her zaman aynı ad
-- Program her işten önce sorar: "bu dosya zaten var mı?" Varsa atlar
-- Kota biterse ya da bağlantı koparsa, ertesi gün aynı programı çalıştırmak yeter
-- Adda tarih ya da sıra numarası olsaydı her çalıştırma yeni bir iş sanılırdı; hepsi baştan üretilirdi
-- **Dikkat:** adda olmayan bir şeyi (özne, tohum) değiştirirsen program bunun yeni bir iş olduğunu bilemez; eski görseller yerinde kalır, yenileri üretilmez. Öyle bir değişiklikte yeni klasör aç
-
------
-
-## Üretim günlüğü: makinenin okuyabileceği kayıt
-
-- Konu 7'de günlüğü elle tuttuk; bugün program kendisi yazıyor
-- Ayrı bir kayıt tutmana gerek yok: kartların kendisi günlük olur, her kartta sonucu da (üretildi mi?) yazar
-- Kayıt **JSON** biçiminde: insan okuyabilir, program geri okuyabilir (Konu 2'deki API cevaplarının biçimi)
-- Bir müşteri aylar sonra "geçen seferki şu görselin aynısı" dediğinde bütün bilgi elinde
-- Şeffaflık için de gerekli: hangi görselin nasıl üretildiğini gösterebilmek (Konu 7: etik ve telif)
-- Kayıt üretimin bir parçası olmalı; sonradan hatırlanarak yazılan kayıt eksik olur
+- Görsel modeli her üretimde rastgele bir gürültüden başlar (Konu 7); gürültü her seferinde başka olduğu için aynı yönerge başka bir görsel verir
+- Bazı modeller **tohum** kabul eder: gürültüyü belirleyen sayıyı sabitlersen aynı görsel geri gelir; Konu 7'de böyle yaptık
+- Bu konuda kullandığımız model şu anki hâliyle tohum kabul etmiyor (30 Ekim 2026): her istek yeni bir görsel demek
+- Sonuç: tutarlılığı tohum değil stil cümlesi sağlar; her seferinde başka ama aynı aileden bir görsel gelir
+- Beğendiğin bir görseli yeniden üreterek geri alamazsın; bir fotoğraf karesi gibi, o an bir kez olur
+- Bu yüzden dosyayı saklarsın: yeni denemeyi eskisinin üstüne değil, yeni bir adla kaydedersin ("Çarşamba_gonderi_2.jpg")
+- Araçlar değişir; bugün tohum alan bir model yarın almayabilir. İş akışını buna dayanıklı kur: dosya ve kayıt senin elinde kalsın
 
 -----
 
-## Kontak sayfası
+## Yazıyı yapay zekâ değil, tasarımcı koyar
 
-- Film fotoğrafçılığında bir rulodaki bütün kareler tek bir kâğıda küçük küçük basılırdı: **kontak baskı** ya da kontak sayfası
-- Fotoğrafçı en iyi kareyi bu sayfada seçip işaretlerdi; yalnızca o kare büyütülürdü
-- Toplu üretimde aynı ihtiyaç: onlarca görseli tek tek açmak yerine hepsini tek bakışta görmek
-- Konu 7'deki stil panosu tek satırdı, yalnızca stil değişiyordu; kontak sayfası satırları ve sütunlarıyla iki değişkeni birden gösterir
-- Düzen anlamlı olmalı: satırlar bir değişken, sütunlar öbürü; her kutunun üstünde ne olduğu yazar
-- Sayfa bir **karar aracı**: onunla karşılaştırır, eler, kazananı seçersin
-- Müşteriye sunumda da işe yarar: seçeneklerin tamamı ve aralarındaki düzen bir arada
-
------
-
-## Modele kendi çıktısını okutmak
-
-- Bazı modeller hem metni hem görseli anlar: bunlara **çok kipli** (multimodal) ya da kısaca **görsel anlayan** modeller denir
-- Bir görseli ve bir soruyu gönderirsin: "bu görsel brife ne kadar uyuyor?" Model cevap yazar
-- Ölçekte işe yarar: 120 görseli gözle tek tek tartmak yerine model ilk elemeyi yapar
-- Model brifteki kelimeleri senin gibi değil, eğitim verisindeki örneklere göre yorumlar; onun da bir zevki ve yanlılığı var (Konu 3)
-- **Yanılgı:** "modelin verdiği puan nesneldir." Aynı soruyu yeniden sorsan başka bir puan gelebilir; sorunun kelimelerini değiştirmek de sonucu değiştirir
-- Kural: model bir **eleme aracı**; listeyi kısaltır, son kararı tasarımcı verir
+- Görsel modelleri harfleri de resim gibi çizer: kelimeler bozulur; ş, ğ, ı, İ gibi harfler sık sık yanlış çıkar
+- Fontu, puntoyu, rengi ve hizayı sen seçemezsin; kılavuzun yazı kuralları uygulanamaz
+- Başlık değişince görseli baştan üretmen gerekir: hem kota hem tutarlılık gider
+- Çözüm, tasarım programlarındaki **şablon** mantığı: görsel bir katman, yazı ayrı bir katman
+- Kodda model yazısız görsel üretir (yönergede "no text"), başlığı Python seçtiğin fontla, kılavuzdaki renkle, ölçülü bir şeride yazar
+- Böylece başlık değişikliği sıfır istekle biter; yazımdan ve dilden yine sen sorumlusun
+- Serbest lisanslı ve Türkçe harfleri olan bir font seç; teslim ettiğin işte fontun lisansı da hesaba girer
 
 -----
 
-## Ölçeğin bir bedeli var
+## Bir kez üret, çok kez uyarla
 
-- Her görsel elektrik ve işlem gücü harcar; binlercesini üretip çoğunu silmek bir maliyettir
-- "Ne olursa olsun yüz tane üret" demek kolay; yüz seçeneğe bakıp karar vermek zor
-- Toplu üretim tasarımcıyı bir **küratöre** dönüştürür: üretmekten çok seçmek
-- Seçmek için ölçüt gerekir: brif, hedef kitle, marka; bunlar kodda yazılı değil, onları sen bilirsin
-- Az ama düzenli bir tablo, çok ama rastgele bir yığından daha çok şey öğretir
+- Aynı içerik farklı yerlerde farklı ölçü ister: akışta dikey gönderi (4:5, 1080 × 1350), hikâyede tam ekran (9:16, 1080 × 1920), bazen kare kapak ya da yatay afiş
+- Her ölçü için yeniden üretmek kota harcar ve görselin kendisini değiştirir; set dağılır
+- Doğrusu görseli bir kez üretip ölçülere yerleştirmek; bu, bilgisayarın hesapla yaptığı bir iş
+- Her ölçünün kendi kuralı var: hikâyede ekranın üst şeridinde profil adı, alt şeridinde yanıt kutusu durur; başlık oraya girmemeli
+- Kılavuzun kuralları da hesaba girer: Sayfa Kahve'de yazı görselin en fazla beşte birini kaplar
+- Yeniden boyutlandırma tasarımcıların en sevmediği işlerden; kodda bir kez yazılınca her gün ve her ölçü için aynı çalışır
+- "Kare de istiyorum" diyen müşteriye cevap yeni bir üretim değil, aynı görselin yeni bir yerleşimidir
 
-**Sohbete yaz:** bir müşteri senden 300 seçenek göstermeni isterse ne cevap verirsin?
+-----
+
+## Kota bir bütçedir
+
+- Ücretsiz katmanın günlük bir hakkı var: **kota**; her görsel üretimi ondan harcar, yazı ve ölçü harcamaz
+- Matbaadaki kâğıt gibi düşün: baskıya girmeden önce kaç tabaka gideceğini hesaplarsın
+- Hesap basit: kaç gün, o kadar üretim; hikâye ve kapak eklemek sayıyı değiştirmez
+- Revizyon da bütçeden yer: bütün haftayı yeniden üretmek beş istek, tek günü yenilemek bir istek
+- Bağlantı kopabilir ya da sunucu yoğun olabilir; sabırlı bir betik bekleyip yeniden dener, set yarım kalmaz
+- Ücretli bir serviste kota paradır; bu alışkanlık müşterinin bütçesiyle çalışırken de geçerli
+- Çalıştırmadan önce sayıyı söyle: "bu döngü beş görsel üretecek"
+
+-----
+
+## Onay sayfası ve üretim günlüğü
+
+- **Onay sayfası**: setin küçük hâlleri, adlarıyla, tek sayfada; fotoğrafçıların kontak baskısı, ajansların sunum panosu gibi
+- Müşteri tutarlılığı ancak yan yana görünce değerlendirebilir
+- Dosya adı yazılıysa geri bildirim netleşir: "Çarşamba_gonderi.jpg olmamış"; hangi dosyayı değiştireceğin karışmaz
+- **Üretim günlüğü**: her üretimin zamanı, günü, yönergesi ve dosyası, bir tabloda
+- Günlük revizyonların hafızasıdır: "ilki daha iyiymiş" denirse hangi dosyanın ilk deneme olduğu ve hangi yönergeyle üretildiği oradadır
+- Günlükten satır silinmez, eklenir; yeniden üretimler de kayda girer
+- Aynı zamanda şeffaflığın kanıtı: hangi görselin nasıl üretildiğini müşteriye ve portfolyonda gösterebilirsin
+
+-----
+
+## Şeffaflık ve telif
+
+- Müşteriye görsellerin yapay zekâyla üretildiğini söyle; teklifte ya da sözleşmede yaz
+- Müşteriler sınır koyabiliyor: Adobe'nin 2026 araştırmasında, yapay zekâyla üretilmiş insan görselini taslakta serbest bırakıp son reklamda yasaklayan müşteriler anlatılıyor
+- Yapay zekâ çıktısının kime ait olduğu birçok ülkede tartışmalı; insan katkısı olmayan bir görselin telifle korunmadığı yerler var
+- Senin katkın görünür olsun: stil cümlesi, seçim, yerleşim, yazı, revizyon
+- Başka markaların logolarını ve ürünlerini, yaşayan sanatçıların adlarını yönergeye koyma
+- Adobe'nin 2025 araştırmasında yaratıcı profesyonellerin %45'i nihai işte yapay zekâya asla tam güvenmeyeceğini söylüyor; teslimden önce her görseli sen kontrol et: eller, nesneler, yazıya benzeyen lekeler
+- Üretim günlüğü şeffaflığın kaydıdır
 
 -----
 
 ## Bu konunun ödevi
 
-**Kendi ızgaran.**
+Kendi müşterini seç: bir öğrenci kulübü, ailenin dükkânı, kendi markan ya da bir arkadaşının işletmesi. Konu 12'ye kadar onunla çalışacaksın.
 
-1. Kendi konunda bir şablon kur: sabit bir özne, en az 2 stil, en az 3 renk (en fazla 12 görsel)
-2. Dersteki defterin adımlarıyla ızgarayı ayrı bir klasöre üret; kontak sayfasını ve üretim günlüğünü kaydet
-3. **İki cümle:** hangi kombinasyon kazandı, neden? Satır ya da sütun olarak bir eğilim var mı?
-4. **Bir cümle:** ızgaranda seni en çok şaşırtan kutu hangisiydi?
+1. Müşterin için **5 günlük** bir içerik takvimi yaz: gün, başlık, sahne (sahne İngilizce ve yazısız)
+2. Müşterinin görsel dilinden bir **stil cümlesi** kur
+3. Haftanın gönderilerini ve hikâyelerini üret; teslim: **onay sayfası, takvim, üretim günlüğü**
+4. **Üç cümle:** stil cümleni nasıl kurdun, ilk denemede ne tutmadı, nasıl düzelttin?
+5. İstersen bunun yerine **logo teslim paketi**: logonu müşterinin istediği ölçülere ve açık/koyu zemine yerleştiren bir döngü (anahtar istemez)
 
-Ayrıntılar: `odevler/odev8.md`. Görsellerini sakla: Konu 9'da birini videoya çevireceğiz. Puan yok; Konu 9'un başında sıradaki arkadaşlar gösterecek.
+Ayrıntılar: `odevler/odev8.md`. Puan yok; Konu 9'un başında sıradaki arkadaşlar gösterecek.
 
------
-
-## Beş cümlede koddan toplu üretim
-
-1. **Aynı iş koddan.** Ayarlar değişkende, dosyanın adı ve yeri senin elinde; iş tekrarlanabilir
-2. **Kombinasyon çarpılarak büyür.** Şablon ve listelerden kartlar kurulur; toplu üretim bir hesapla başlar
-3. **Sınır koy, sağlam yaz.** Güvenlik sınırı, önce küçük deneme; bir hata bütün işi durdurmaz
-4. **Kararlı ad, kaldığı yerden devam.** Aynı iş aynı ad; var olanı atla
-5. **Kayıt, sayfa, seçim.** Günlük her şeyi kaydeder, kontak sayfası karşılaştırır, son kararı tasarımcı verir
-
-Sıradaki konu: **Konu 9 — Video, arayüzden.** Görsele zaman ekliyoruz; videoyu bu kez kod yazmadan, arayüzden üreteceğiz. Bugünkü görsellerinden birini videoya çevireceğiz; video hem yavaş hem pahalı bir üretim olduğu için "önce hesap" ve "her üretimi kayda geçir" alışkanlıkları orada da işe yarayacak.
+Sıradaki konu: **Konu 9 — Gönderini hareketlendir.** Bu haftanın yazısız görsellerinden birini kısa bir videoya çevireceğiz; yazıyı ve logoyu yine sonradan biz koyacağız.

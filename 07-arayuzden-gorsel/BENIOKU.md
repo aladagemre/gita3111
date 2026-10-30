@@ -5,8 +5,8 @@ ayırmak, **tohumla** rastgeleliği sabitlemek, adım sayısının görseli nas�
 görmek, bir seferde tek bir şeyi değiştirerek **kontrollü deney** yapmak, iki modeli
 karşılaştırmak ve var olan bir görseli talimatla düzenlemek. Bu konuda yeni kod yazmıyoruz: hazır
 bir aracı (`gorsel_araci.py`) arayüz gibi kullanıyor, defterin hücrelerinde yalnızca metinleri ve sayıları
-değiştiriyoruz. Konu 8'de benzer bir aracı kendi yazdığımız bir döngüyle çağırıp tek seferde
-birçok görsel üreteceğiz.
+değiştiriyoruz. Konu 8'de benzer bir aracı kendi yazdığımız bir döngüyle çağırıp bir müşterinin
+haftalık sosyal medya setini tek seferde hazırlayacağız.
 
 | Klasör / dosya | Ne işe yarıyor |
 |---|---|

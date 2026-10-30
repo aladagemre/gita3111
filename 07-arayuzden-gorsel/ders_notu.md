@@ -462,10 +462,10 @@ denemesi; tohum sabit, yalnızca stil değişiyor. Pano + iki cümle + üretim g
 
 ## Sonraki konu
 
-**Konu 8 — Koddan görsel ve toplu üretim.** Bugün `gorsel_araci.py`'yi bir arayüz gibi
-kullandık ve görselleri tek tek ürettik. Konu 8'de hazır bir görsel fonksiyonunu kendi
-yazdığımız bir döngüyle çağıracağız: bir listedeki her stil ve renk için bir görsel üretecek,
-hepsini tek sayfalık bir ızgarada (kontak sayfası) yan yana göreceğiz.
+**Konu 8 — Bir haftalık gönderi seti.** Bugün `gorsel_araci.py`'yi bir arayüz gibi
+kullandık ve görselleri tek tek ürettik. Konu 8'de bir müşterinin haftalık içerik takvimini
+okuyup her gün için bir gönderi ve bir hikâye hazırlayan kısa bir döngü yazacağız; hepsini
+müşteriye tek bir onay sayfasıyla göndereceğiz.
 
 ---
 

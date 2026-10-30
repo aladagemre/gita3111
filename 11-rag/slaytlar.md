@@ -1,176 +1,145 @@
-# Konu 11 — RAG: Belgeye Dayalı Cevap
+# Konu 11 — Müşterinin söylediklerini unutmayan bir hafıza
 
 GİTA3111 · Üretken Yapay Zeka ve Programlama
 Ahmet Emre Aladağ
 
 -----
 
-## Konu 10'dan Konu 11'e: modelin bilmediği şey
+## "Bunu söylemiştim": dağınık istekler, unutulan revizyonlar
 
-- Konu 10'da bir hat kurduk: brif girer, sloganlar ve görseller çıkar; brifi sen yazdın
-- Gerçek bir müşteri işinde brif tek başına yetmez: markanın kuralları da vardır
-- Renkler, yazı tipleri, yasak sözcükler, logonun nasıl kullanılacağı: hepsi bir belgede yazılıdır, **marka kılavuzunda**
-- Dil modeli bu belgeyi hiç görmedi; senin müşterin, senin markan onun eğitim verisinde yok
-- Konu 2'de soruya **bağlamı**, yani arka plan bilgisini, elle ekledik; bir kılavuzun tamamını her soruya elle ekleyemeyiz
-- Bugünkü soru: modele **senin** belgeni nasıl okuturuz?
-
------
-
-## Model neyi bilir, neyi bilemez?
-
-- Model eğitildiği metinlerden öğrendi: internette sık geçen şeyleri iyi bilir (Bauhaus, Helvetica, altın oran)
-- Az geçen şeyleri zayıf bilir: küçük bir markanın geçmişi, bir şehirdeki yerel bir etkinlik
-- Hiç geçmeyenleri hiç bilmez: henüz yayımlanmamış bir kampanya, bir ajansın iç yazışmaları, dünkü toplantı notu
-- Eğitimin bir bitiş tarihi var; o tarihten sonra olan hiçbir şey modelde yok
-- Bilmediğini çoğu zaman söylemez; boşluğu en olası görünen cümleyle doldurur
-- **Yanılgı:** "model internete bakıyor." Bazı sohbet uygulamaları arama yapar; bizim koddan çağırdığımız model ise yalnızca eğitimde öğrendiklerini ve kendisine gönderilen metni bilir
+- Müşteri bir isteğini WhatsApp'tan yazar, bir başkasını e-postada söyler, üçüncüsünü toplantıda geçerken anar
+- Jüride hocalar aynı eleştiriyi iki hafta arayla tekrar eder: "kenarlarda nefes yok"
+- Üç hafta sonra yeni afişi yaparken bunların yarısı akılda değildir
+- Sonuç: bir revizyon turu daha, müşteride "beni dinlemiyor" duygusu, kaybolan saatler
+- Bilgi aslında var; ama dağınık, ve kimse onu aramıyor
+- Bugünün işi: bir müşterinin kurallarını ve notlarını tek yerde tutan, soru sorulabilen bir hafıza
 
 -----
 
-## Uydurma: kendinden emin ama yanlış
+## Sektörde de zor kısım hatırlamak
 
-- Modelin doğru olmayan bir bilgiyi akıcı ve kendinden emin bir dille yazmasına **uydurma** (halüsinasyon) denir (Konu 5)
-- Örnek: bir müzenin açılış saatlerini sorarsın; model makul görünen ama yanlış saatler yazabilir
-- Cevap mantıklı göründüğü için tehlikelidir: yanlış olduğu ilk bakışta anlaşılmaz
-- Tasarımda bedeli somuttur: yanlış renk kodu baskıya gider, yasak bir sözcük afişe girer, logo yanlış kullanılır
-- Uydurma, bir arıza değil, modelin çalışma biçiminin sonucudur: model doğruyu değil, olası olanı seçer
-- Çözüm, modeli "daha akıllı" yapmak değil; doğru bilgiyi sorunun yanına koymak
-
------
-
-## Kitaba bakarak cevap veren öğrenci
-
-- İki öğrenci düşün: biri sınava ezberden girer, öbürü açık kitap sınavına
-- Ezberden giren, bilmediği soruda tahmin yürütür; bazen tutturur, bazen uydurur
-- Açık kitapla giren önce kitapta ilgili sayfayı bulur, sonra cevabı o sayfaya bakarak yazar
-- İyi bir açık kitap öğrencisi, cevabı kitapta olmayan bir soruya "kitapta yok" der
-- Bugünkü yöntem, modeli ikinci öğrenciye çevirir: soruyla birlikte kitabın ilgili sayfalarını da veririz
-- Dikkat: öğrenci ancak doğru sayfayı açarsa doğru cevap verir; yanlış sayfayı açan en iyi öğrenci de yanılır
+- Adobe'nin 2026 araştırmasında bir yönetmen, birkaç günlük sunum hazırlığının zor kısmını "şirketi ve önceki kampanyalarını anlamak için kazmak" diye anlatıyor
+- Bir marka ajansı: "En büyük darboğazımız tasarım değil, tekrar eden idari işti"; müşteri kabulünü ve teslimi otomatikleştirerek çözmüşler
+- Tasarımcılar yapay zekâ çıktısına az güveniyor: Figma'nın 2025 raporunda çıktıya güvenebildiğini söyleyenler yaklaşık üçte bir
+- Bu yüzden bugünkü araç yaratıcı kararı vermiyor; unuttuğunu hatırlatıyor ve nereden hatırladığını gösteriyor
+- Fikir ve seçim sende kalıyor, angarya araca geçiyor
 
 -----
 
-## RAG nedir?
+## RAG: açık kitap sınavı
 
-- **RAG** (İngilizce *retrieval-augmented generation*: "bulup getirerek üretmek"): ad, bu üç sözcüğün baş harflerinden gelir
-- Fikir basit: modele sormadan önce belgede soruya en yakın parçaları bul, onları da yönergeye ekle; bağlamı sen yazmazsın, belgeden gelir
-- Model yeniden eğitilmez; belge değişince modele değil, belgeye dokunursun
-- Model cevabı kendi hafızasından değil, önüne konan metinden kurar
-- Belge senin elinde kalır: hangi parçanın modele gittiğini görebilir, denetleyebilirsin
-- RAG bir model değil, bir **yöntem**: Konu 4'teki gömme vektörlerini ve Konu 5'teki metin modelini birlikte kullanır
-
------
-
-## RAG'in üç adımı
-
-- **1. Parçala ve vektöre çevir:** belgeyi kısa parçalara böl (paragraf, madde); her parçayı gömme vektörüne çevir (Konu 4)
-- **2. Bul:** sorunun vektörünü al; ona en yakın parçaları seç (Konu 4'teki benzerlik)
-- **3. Yönergeye koy ve sor:** "yalnızca şu bilgilere dayanarak cevap ver" + bulunan parçalar + soru → metin modeli
-- Birinci adım belge başına bir kez yapılır ve saklanır; ikinci ve üçüncü adım her soruda tekrarlanır
-- Kütüphane benzetmesi: kitaplar rafa bir kez dizilir; her soru geldiğinde raftan doğru kitaplar çekilir ve cevap onlara bakılarak yazılır
-- Üç adımın üçü de tanıdık iş: bir dosyayı bölmek, sayıları karşılaştırmak, metinleri birleştirmek
+- **RAG** (*retrieval-augmented generation*): "bulup getirerek üretmek"
+- Açık kitap sınavında öğrenci cevabı ezberinden değil, önündeki kitaptan verir; doğru sayfayı açmak da onun işidir
+- Model de senin müşterini tanımaz; onun kurallarını eğitiminde hiç görmemiştir
+- Biz soruya uygun notları bulup modelin önüne koyarız; model cevabı o notlara bakarak yazar
+- Başka bir benzetme: yeni stajyere müşteriyi sorduğunda önce müşteri dosyasını açar, sonra cevap verir
+- Model notlarını "öğrenmez"; her soruda notlar yeniden önüne konur
 
 -----
 
-## Parçalamak: belgenin nasıl bölündüğü önemli
+## İki yarı: bulmak ve önüne koymak
 
-- Parça çok büyükse (bütün bir sayfa) soruyla ilgisiz bilgi de gelir; model asıl kuralı gözden kaçırabilir
-- Parça çok küçükse (tek cümle) kural ile gerekçesi ayrılır: "kırmızı kullanılmaz" gelir, "neden" gelmez
-- İyi bir parça tek bir konuyu kendi başına anlatır: bir kural, bir paragraf
-- İyi yazılmış bir marka kılavuzu bu yüzden RAG'e zaten elverişlidir: her bölüm bir konu
-- Bir konu birkaç bölüme dağılmışsa (renk kuralları hem genel bölümde hem ürün bölümlerinde) hepsini birden bulmak zorlaşır
-- Tasarımcı için ders: belge yazarken de "bu paragraf tek başına okununca anlaşılır mı?" diye sor
-- **Ad karışmasın:** Konu 5'teki parça bir belirteçti, kelimenin bir kırıntısı; RAG'deki parça belgenin bir bölümüdür
-
------
-
-## Bulmak: anlamca en yakın parçalar
-
-- Bulma adımı soruya **anlamca** en yakın parçaları seçer; kelimesi kelimesine eşleşme gerekmez (Konu 4)
-- "Logonun etrafında ne kadar boşluk kalmalı?" sorusu, içinde "çevresinde" yazan paragrafı da bulabilir
-- Konu 4'ü hatırla: model "benzer" derken "benzer yerlerde geçen"i kasteder; bu her zaman "aynı şeyi söyleyen" değildir
-- Kaç parça alınacağına sen karar verirsin: az alırsan gerekli bir kural dışarıda kalabilir, çok alırsan yönerge gereksiz yere uzar
-- Kural: model yalnızca kendisine gönderilen parçaları bilir; gönderilmeyen parça onun için yoktur
-- Bu yüzden RAG'de cevap, bulma adımından daha iyi olamaz
+- **Bulmak:** sorunun anlamına en yakın notları seçmek (Konu 4'teki vektörler ve benzerlik)
+- **Önüne koymak:** seçilen notları bir kural ve soruyla birlikte tek bir yönergede modele vermek
+- Yapay zekâ iki yerde çalışır: metni vektöre çevirmek ve notları okuyup cevap yazmak
+- Kalanı sıradan bir Python betiği yapar: dosyayı okumak, not eklemek, puanları sıralamak, yönergeyi birleştirmek
+- Cevap, bulunan notlardan iyi olamaz: önüne konmayan notu model göremez
+- Hafızaya bilgi eklemek için modeli yeniden eğitmek gerekmez; dosyaya bir satır eklemek yeter
 
 -----
 
-## Yönerge: talimat, bilgiler, soru
+## Kelimeyle aramak, anlamla aramak
 
-- Modele giden metin üç kısımdan oluşur: **talimat + bulunan parçalar + soru**
-- Talimat sınırı çizer: "yalnızca aşağıdaki bilgilere dayanarak cevap ver"
-- Bir de çıkış kapısı gösterir: "bilgilerde cevap yoksa bilmiyorum de"; bu kapı yoksa model boşluğu yine kendisi doldurur
-- Parçaları "Bilgiler:" gibi bir başlıkla sorudan ayırmak, modelin neyin kaynak neyin soru olduğunu görmesini kolaylaştırır
-- Talimat da modelin devamını yazdığı metne dahildir (Konu 5): bir kural değil, bir yönlendirme; model çoğu zaman uyar, her zaman değil
-- Şablon bir kez yazılır, her soruda yeniden kullanılır: Konu 10'daki yönerge kalıbı gibi
-
------
-
-## Tasarımda nerede işe yarar?
-
-- **Marka kılavuzu:** "Bu afişte hangi renkler olmalı?", "Logoyu fotoğrafın üstüne koyabilir miyim?"
-- **Brif arşivi:** ajansın geçmiş brifleri; "bu müşteri daha önce hangi tonu reddetmişti?"
-- **Stil rehberi:** bir derginin ya da yayınevinin yazım ve dizgi kuralları; "başlıkta tarih nasıl yazılır?"
-- **Ürün bilgisi:** ambalaj metni yazarken ürünün gerçek içeriği ve uyarıları
-- **Kendi notların:** moodboard açıklamaları, müşteri toplantısı notları, araştırma özetleri
-- Ortak nokta: bilgi bir belgede yazılı, model onu bilmiyor ve yanlış bilgi pahalıya patlıyor
-
-**Sohbete yaz:** sen hangi belgeyi bir modele okutmak isterdin? Ondan ne sorardın?
+- Ctrl + F kelimenin şeklini arar: "font" diye ararsan "yazı tipi" yazan notu bulamazsın
+- Ortak kelime olunca da yanılabilir: aynı kelime iki ayrı konuda geçebilir
+- Türkçenin ekleri işi zorlaştırır: "fotoğrafta" diye ararsan "fotoğraflarda" geçen not çıkmaz
+- Anlamca arama metni bir vektöre çevirir; anlamı yakın iki metnin vektörleri aynı yöne bakar (Konu 4)
+- Böylece soru ile not ortak bir kelime taşımasa da birbirini bulur
+- Kelime araması notta hangi kelimenin geçtiğini bilmeni ister; bunu biliyorsan notu zaten hatırlıyorsundur
 
 -----
 
-## Belgeden görsele: kılavuza uygun bir yönerge
+## Anlamca arama da yanılır
 
-- Görsel model kılavuzu okumaz; ona yalnızca bir yönerge gider (Konu 7)
-- Bu yüzden zincir iki halkalı: önce kılavuzdan görselle ilgili kurallar bulunur, sonra metin modeli bu kurallarla bir görsel yönergesi yazar
-- Ne aradığın, ne bulacağını belirler: afişin konusunu ararsan başka, görselin kurallarını ararsan başka parçalar gelir
-- Bir kural üç yerde kaybolabilir: **aramada** (kural metin modeline hiç gitmedi), **yönergede** (metin modeli kuralı görsel yönergesine koymadı) ya da **çizimde** (kural yönergede vardı ama görsel model uygulamadı)
-- Hangisinin olduğunu ara çıktılara bakarak bulursun: bulunan parçalar ve yazılan yönerge (Konu 10)
-- Kılavuza uygunluğu son kez denetleyen yine tasarımcıdır: model taslak üretir, onay senin
-
------
-
-## Neden bütün belgeyi göndermiyoruz?
-
-- Küçük bir belge her soruda bütünüyle gönderilebilir; o zaman bulma adımına gerek kalmaz
-- Gerçek belgeler ise büyüktür: iki yüz sayfalık bir kurumsal kimlik kılavuzu, yüzlerce brif
-- Modelin bir seferde okuyabileceği metnin bir sınırı var: Konu 5'teki **bağlam penceresi**; pencereye sığmayan kısım hiç okunmaz
-- Gönderilen her metin kotadan yer: uzun yönerge, pahalı istek
-- Uzun bir metnin ortasındaki küçük bir kural kalabalıkta kaybolabilir; kısa ve ilgili parçalar daha net cevap getirir
-- RAG bu yüzden "her şeyi ver" değil, "gerekeni ver" yaklaşımıdır
+- "Gönderiye gülen yüz koyabilir miyim?" sorusu emoji notu yerine "fotoğrafta insan yüzü olmasın" notunu getirebilir: "yüz" iki anlamda
+- Arama her zaman istediğin sayıda not getirir; cevabı hiçbir notta olmayan bir soruda da "en yakın üç" gelir
+- Kısa, tek konulu notlar daha iyi bulunur; bir satıra üç ayrı istek yazarsan hiçbiri tam eşleşmez
+- Arama bir notu kaçırırsa model de kaçırır; cevabı okumadan önce hangi notların geldiğine bak
+- Çözüm çoğu zaman aramanın sorusunu değiştirmek ya da biraz daha fazla not getirmek
 
 -----
 
-## RAG'in sınırları
+## "Yalnız notlara dayan" neden önemli?
 
-- Uydurmayı azaltır, sıfırlamaz: model talimata rağmen bilgilerde olmayan bir şey ekleyebilir
-- Yanlış parça gelirse model onu doğru bilgi sanıp kullanabilir; parçanın soruyla gerçekten ilgili olup olmadığını her zaman sorgulamaz
-- Belge yanlışsa ya da eskimişse cevap da öyle olur; RAG belgenin doğruluğunu denetlemez
-- Belge değişince vektörler yeniden hesaplanmalı; yoksa arama eski belgede yapılır
-- Gönderdiğin parçalar modelin sunucusuna gider: gizli bir müşteri belgesini göndermeden önce izin gerekir
-- **Yanılgı:** "RAG kullandım, cevap kesin doğru." Cevaptaki her önemli bilgiyi kaynağıyla karşılaştırmak hâlâ senin işin
-
------
-
-## Bu konunun ödevi
-
-**Kendi kılavuzun, kendi RAG'in.**
-
-1. Kendi markan ya da final projen için kısa bir kılavuz yaz: 8–12 paragraf, her paragraf tek bir konu
-2. Ders defterinin kopyasıyla kılavuzunu parçala, vektöre çevir, sakla
-3. Üç soru sor: kılavuzda cevabı olan, cevabı yarım olan, cevabı hiç olmayan
-4. Kılavuzuna uygun bir görsel yönergesi yazdırıp bir görsel üret
-5. **Üç cümle:** model nerede kılavuza uydu, nerede uydurdu? Kılavuzunda neyi değiştirirdin?
-
-Ayrıntılar: `odevler/odev11.md`. Puan yok; Konu 12'nin başında sıradaki arkadaşlar gösterecek.
+- Konu 5'te gördük: model bilmediği yerde çoğu zaman "bilmiyorum" demez, olası görünen bir cevap uydurur
+- Müşteri hafızasında uydurma pahalıdır: müşterinin hiç söylemediği bir kural afişe girer
+- Yönergenin başındaki kural: "Yalnız bu notlara dayan; notlarda yoksa 'notlarda yok' de"
+- "Notlarda yok" da bir cevaptır: müşteriye sorman gereken soruyu gösterir
+- Kaynak istemek cevabı kontrol edilebilir yapar: "saat eksik (14 Ekim e-postası)"
+- Kural uydurmayı azaltır ama sıfırlamaz; son okuma her zaman tasarımcının
 
 -----
 
-## Hatırlanacaklar
+## Hafıza büyür
 
-1. **Model senin belgeni bilmez;** bilmediği yerde uydurur
-2. **RAG'in üç adımı:** parçala ve vektöre çevir → soruya en yakın parçaları bul → talimatla birlikte yönergeye koy ve sor
-3. **Cevap, bulmadan daha iyi olamaz:** modele gitmeyen parçayı model bilemez
-4. **Talimat "bilmiyorum" kapısını açar;** ama o kapıdan geçip geçmemek modelin elinde
-5. **Belge değişince vektörler de yenilenir;** son kontrol her zaman tasarımcıda
+- Her yeni mesaj, her jüri notu dosyaya bir satır olarak eklenir; hafıza dönem boyunca büyür
+- Yeni bir not eklenince aynı soru farklı bir cevap alabilir: kod değişmez, hafıza değişir
+- Revizyon geçmişi kendiliğinden birikir: kim, ne zaman, hangi kanaldan ne istedi
+- Jüri notları da hafızada: aynı eleştiriyi üçüncü kez duymadan önce sen görürsün
+- Bir dosya, bir müşteri: iki müşterinin kuralları birbirine karışmasın
+- Final projende bu hafızadan bilgi çeken küçük bir adım zorunlu
 
-Sıradaki konu: **Konu 12 — Ajan.** Bugün kılavuza ne zaman bakılacağına sen karar verdin. Konu 12'de kılavuzda aramak bir araç olacak; ne zaman bakılacağına model karar verecek.
+-----
+
+## Hafızanın bakımı
+
+- Eski kural geçersiz olabilir: kılavuz "kışın hardal sarısı vurgu" der, müşteri bir gün "hardalı bırakalım" der
+- Çelişen iki metin birlikte gelirse model hangisine uyacağını bilemeyebilir
+- Her notun başına kaynağı ve tarihi yaz; yeni olanın eskiyi geçtiğini modele ayrıca söylemek gerekir
+- Geçersiz kuralı sil ya da yanına "geçersiz" ve tarihi yaz
+- Neredeyse aynı iki not arama sonuçlarında iki yer kaplar, başka bir notu dışarıda bırakır
+- Arada bir dosyayı baştan sona oku: hafıza, bakımı yapılan bir defter kadar iyidir
+
+-----
+
+## Gizlilik: müşteri bilgisi nereye gidiyor?
+
+- Hafızayı kurarken bütün notlar, her soruda da bulunan notlar modelin sunucusuna gider (bu derste Cloudflare)
+- Telefon numarası, adres, fatura ve ödeme bilgisi, başkalarının kişisel bilgileri notlara girmez
+- Türkiye'de kişisel verileri KVKK korur; müşterinin bilgisini bir yapay zekâ servisine koymak bir sorumluluktur
+- Gerçek bir müşteriyle çalışıyorsan notlarını böyle bir araca koyduğunu ona söyle
+- Henüz duyurulmamış bir ürün ya da gizli bir proje varsa o notları hafızaya hiç koyma
+- Bu dersteki örnekler uydurma; ödevde de uydurma ya da izinli bilgi kullan
+
+-----
+
+## Ne zaman arama gerekir, ne zaman gerekmez?
+
+- Az not varsa hepsini yönergeye koymak da olur; bir müşterinin birkaç düzine notu modelin önüne sığar
+- Arama, notlar bir dönem boyunca ve birkaç müşteriyle yüzlere çıkınca gerekir
+- Çok sayıda ilgisiz not, modelin asıl kuralı gözden kaçırmasına yol açabilir
+- Daha kısa yönerge daha az kota harcar
+- Not sayısı ne olursa olsun kaynak göstermek işe yarar: hangi notun cevabı belirlediğini görürsün
+- Önce basit olanı dene; yetmediği yerde arama ekle
+
+-----
+
+## Sık yanılgılar
+
+- **"Model notlarımı öğrendi."** Hayır; her soruda notlar yeniden önüne konur. Dosyayı silersen hiçbir şey hatırlamaz
+- **"Anlamca arama hiç yanılmaz."** Yanılır; gelen notlara bakmadan cevaba güvenme
+- **"Ne kadar çok not getirirsem o kadar iyi."** İlgisiz notlar asıl kuralı gölgeleyebilir
+- **"Kural yazdım, artık uydurmaz."** Kural uydurmayı azaltır, sıfırlamaz
+- **"Dosyaya yazdım, artık aranır."** Vektörü alınmamış bir not aranamaz
+- **"Hafıza kendini günceller."** Eski kuralı silmek ya da işaretlemek senin işin
+
+-----
+
+## Ödev ve sıradaki konu
+
+- **Ödev 11:** kendi müşterin için en az 8 notluk bir hafıza (müşterinin istekleri ve aldığın eleştiriler)
+- Hafızana 3 soru sor; her sorunun cevabını ve gelen notları kaydet
+- Bir not ekle ve cevabı değişen bir soru göster
+- Bu hafıza, final projendeki zorunlu küçük RAG adımının temeli
+- **Sıradaki: Konu 12 — Stüdyo asistanı.** Bu hafızanın bir kopyası asistanın olacak: kurallara kendisi bakacak, "unutma" dediğini o kopyaya yazacak
+- Bugün hafızaya ne zaman bakılacağına sen karar verdin; Konu 12'de ne zaman bakacağına asistan karar verecek

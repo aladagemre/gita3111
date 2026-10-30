@@ -20,6 +20,9 @@ marka olabilir (bir kahve dükkânı, bir festival, bir kitabevi) ya da hayalî.
 4. Adım 4'ün ilk hücresinde `stiller` listesine **kendi seçtiğin üç stili** yaz ve `kaydet`
    adını değiştir: `kaydet="odev7_pano.png"`. Hücreyi çalıştır. Hücre her yönergeyi ekrana da yazar.
 5. Tohumu (`tohum=42`) değiştirme: üç görsel arasındaki fark yalnızca stilden gelsin.
+   **30 Ekim notu:** Cloudflare'in flux modeli şu an tohum kabul etmiyor; araç tohumu yok sayıp bir
+   not yazar. Fark yine büyük ölçüde stilden gelir, ama aynı yönerge her çalıştırmada biraz farklı
+   bir görsel verir. Bunu ödev notuna bir cümleyle yazman yeterli.
 
 İstersen Adım 4'ün ikinci hücresiyle (ışık) aynısını dene.
 

@@ -140,7 +140,7 @@ Bir brif yazar gibi düşün: modele neyi, nasıl, hangi duyguyla istediğini an
 - Arayüzler bazı ayarları gizler (tohum, adım sayısı), bazılarını düğmeye çevirir (en-boy oranı, stil)
 - Bugün öğrendiğin ilkeler hepsinde geçerli: net yönerge, tek değişken, yan yana karşılaştırma
 - Biz bugün defterde hazır bir araç kullanıyoruz: bütün ayarlar elimizin altında ve her görsel bir dosya olarak kaydediliyor
-- Konu 8'de aynı ilkelerle tek seferde birçok görsel üreteceğiz; Konu 9'da video için yine bir arayüze döneceğiz
+- Konu 8'de aynı ilkelerle bir haftalık sosyal medya setini tek seferde hazırlayacağız; Konu 9'da o setten bir gönderiyi arayüzde hareketlendireceğiz
 
 -----
 
@@ -187,4 +187,4 @@ Ayrıntılar: `odevler/odev7.md`. Puan yok; Konu 8'in başında, Konu 6'nın öd
 4. **Bir seferde tek değişken.** Sonuçları yan yana koy ki farkın nereden geldiği görünsün
 5. **Model, tohum ve yönerge yazılır.** Etik ve telif belirsizliğinde şeffaflık senin sorumluluğun
 
-Sıradaki konu: **Konu 8 — Koddan görsel ve toplu üretim.** Bugün görselleri tek tek ürettik; Konu 8'de bir döngüyle tek seferde birçok görsel üretip hepsini yan yana koyacağız.
+Sıradaki konu: **Konu 8 — Bir haftalık gönderi seti.** Bugün görselleri tek tek ürettik; Konu 8'de bir müşterinin haftalık içerik takviminden bütün gönderileri ve hikâyeleri tek seferde hazırlayıp müşteriye tek bir onay sayfasıyla göndereceğiz.

@@ -59,7 +59,10 @@ def resmi_goster(yol, baslik=""):
 def ciz(yonerge, tohum=None, adim=None, model="flux", negatif=None, en=None, boy=None, goster=True):
     adres, basliklar = adres_ve_baslik(MODELLER[model])
     govde = {"prompt": yonerge}
-    if tohum is not None:
+    if tohum is not None and model == "flux":
+        # 30 Ekim 2026: Cloudflare'in flux modeli artık tohum (seed) kabul etmiyor; gönderirsek istek reddedilir
+        print("Not: flux şu an tohum kabul etmiyor; tohum yok sayıldı, görsel her seferinde farklı çıkabilir.")
+    elif tohum is not None:
         govde["seed"] = tohum
 
     if model == "flux":

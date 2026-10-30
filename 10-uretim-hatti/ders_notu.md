@@ -1,634 +1,252 @@
-# Konu 10 — Zincirleme: Üretim Hattı
+# Konu 10 — Afiş yarın matbaada: son kontrol
 
-Bu not konunun özetidir; derste çalıştırdığımız `ders.ipynb` defteriyle **aynı sırada**
-ilerler: Isınma, sonra Adım 1–7 ve kısa bir Bonus. Derste kaçırdığın bir yer olursa
-buradan oku, sonra defterde o adımın hücrelerini çalıştır. Nottaki kod blokları
-defterdeki hücrelerin birebir aynısı.
+Bu not `ders.ipynb` ile aynı sırada ilerler. Derste kaçırdığın bir yeri buradan oku, sonra defterde o hücreyi çalıştır.
 
-**Şimdiye kadar:** her iş ayrı bir defterdeydi (Konu 5'te slogan, Konu 8'de koddan ve toplu olarak görsel).
-**Bu konuda:** ikisini tek bir **hatta** bağlıyorsun:
+## Bu konuda ne yapıyoruz?
 
-> `ayarlar.json`'daki brif → metin modeliyle sloganlar → görsel modeliyle her slogana bir görsel.
-> Hattın her adımı bir halka; bir halkanın çıktısı sıradakinin girdisi. Biten iş yeniden üretilmez, kopan halka hattı
-> durdurmaz, her şey kayda geçer.
+Sayfa Kahve'nin "Sessiz Okuma Gecesi" afişi bitti; yarın matbaaya ve Instagram'a gidecek. Basılmış bir afişteki hata
+geri alınamaz: "yalnız" yerine "yanlız" yazmışsan, tarihin yanına yanlış günü koymuşsan, saati unutmuşsan ya da bir
+satırı açık renkle yazıp okunmaz bırakmışsan, düzeltmenin tek yolu yeniden bastırmaktır. Bu konuda o son kontrolü yapan
+küçük bir program kuruyorsun: afişi okuyan, dört ayrı kontrolden geçiren ve bulguları tek bir rapora yazan bir
+**üretim hattı**. Sonunda elinde `ciktilar/sayfa_kahve/rapor.md` olur; raporu okuyup son kararı veren yine sensin.
+Aynı hattı kendi müşterinin afişiyle de çalıştırırsın.
 
-**Konunun sonunda elinde:** `ciktilar/kafe_afisi_1/` klasöründe üç slogan (`sloganlar.json`), her slogana bir görsel
-(`gorsel_1.jpg` ...) ve hattın üretim günlüğü (`uretim.json`). Bonus'u da yaparsan ikisini yan yana gösteren bir pano (`pano.png`).
+## Üretim hattı nedir?
 
-**Kurulum:** yeni kütüphane yok. `git pull` ile konu klasörü geldikten sonra `gita3111` klasöründe bir kez `uv sync` çalıştır.
+Bir matbaadaki prova masasını düşün: afiş masadan masaya geçer, her masada biri tek bir şeye bakar (yazıya, tarihe,
+renge) ve notunu yazar; sonunda notlar tek bir raporda toplanır. Programdaki karşılığı: **üretim hattı**, birkaç adımın
+(bazısı model, bazısı Python) arka arkaya çalıştığı, her adımın sonucunu bir dosyaya sakladığı ve bir adım bozulunca
+kaldığı yerden devam edebilen bir programdır.
 
-**Anahtar:** Isınma, Adım 1 ve Adım 2 anahtarsız; Adım 3 ve sonrası `anahtar.txt` ister (Konu 2'deki dosya, `gita3111`
-klasöründe). Defterin tamamı 4 metin ve 3 görsel isteği gönderir (Bonus 2 ile 4 görsel). Adım 6'da bilerek
-reddedilen 3 görsel isteği de var. Hepsi ücretsiz günlük kotanın küçük bir kısmını tutar.
+## Hangi iş modele, hangisi Python'a?
 
-> **Bu nottaki çıktılar hakkında.** Isınma, Adım 1 ve 2'nin çıktıları her bilgisayarda aynıdır. Sloganlar ve görseller gerçek
-> modellerden gelir; senin ekranında farklı olur. Notta onların yerinde `...` var.
+| Adım | İş | Kim | Neden |
+|---|---|---|---|
+| 1 | Afişteki yazıları okumak | Görseli okuyan model (`gemma-4`) | Python görseldeki harfleri okuyamaz |
+| 2 | Yazım hatası ve eksik bilgi | Metin modeli (llama, Konu 5) | Türkçe bilgisi gerekir |
+| 3 | Tarih ile gün tutuyor mu | Python | Takvim hesabı |
+| 4 | Yazılar okunuyor mu | Python | Renk ölçümü bir formül |
+| 5 | Rapor | Python ve sen | Notları bir araya koymak |
 
----
+Kural: **Python'un yapabildiğini Python yapar.** Dil modeli "14 Kasım 2026 hangi gün?" sorusunu hesaplamaz,
+kelimelerden tahmin eder; Python'un takvim hesabı ise her seferinde aynıdır.
 
-## Isınma: hat kâğıt üstünde
+## Isınma — Python'un tek başına yakaladıkları
 
-Önce sahte halkalarla dene: üç küçük fonksiyon, hiçbiri internete çıkmıyor.
+`from halkalar import *` satırı, bu konunun yardımcı dosyası `halkalar.py` içindeki bütün fonksiyonları deftere alır.
+İlk hücrede `gun_adi("14 Kasım 2026")` takvimden günü hesaplar. Afişte "Cuma" yazıyor; Python ne diyor? `benim`
+satırına kendi doğum gününü, ayın adı yazıyla ("3 Mart 2005"), yazıp dene.
 
-```python
-def slogan_yaz(konu):
-    return konu + ": burada zaman yavaşlar"
-
-def yonerge_kur(slogan, stil):
-    return stil + " poster, idea: " + slogan
-
-def gorsel_ciz(yonerge):
-    return "[görsel] " + yonerge
-```
-
-Bu hücre ekrana bir şey yazmaz, yalnızca fonksiyonları tanımlar. Sıradaki hücre zinciri kurar:
+İkinci hücre renk ölçer. **Kontrast**, iki renkten biri ötekinden ne kadar açık, onu söyleyen bir sayıdır: 1 ise iki
+renk aynıdır, 21 ise beyaz üstüne siyahtır. Web için yazılmış okunurluk kurallarına (WCAG) göre küçük yazıyla zemini
+arasında en az **4,5** olmalı; büyük başlıklarda en az 3.
 
 ```python
-konu = "sessiz bir çalışma kafesi"
-slogan = slogan_yaz(konu)
-yonerge = yonerge_kur(slogan, "risograph")
-gorsel = gorsel_ciz(yonerge)
+mavi = "#1F3A5F"
+hardal = "#D9A441"
+beyaz = "#F4F1EA"
 
-print(slogan)
-print(yonerge)
-print(gorsel)
+mavi_oran = kontrast(mavi, beyaz)
+hardal_oran = kontrast(hardal, beyaz)
+print("Mavi yazı:", mavi_oran)
+print("Hardal yazı:", hardal_oran)
 ```
 
-Çıktı:
+Python sayıyı yazdırırken ondalık ayırıcı olarak nokta kullanır: `4.5`, "dört virgül beş" diye okunur.
+Çıktına bak: iki renkten hangisi eşiği geçiyor?
 
-```
-sessiz bir çalışma kafesi: burada zaman yavaşlar
-risograph poster, idea: sessiz bir çalışma kafesi: burada zaman yavaşlar
-[görsel] risograph poster, idea: sessiz bir çalışma kafesi: burada zaman yavaşlar
-```
+## Adım 1 — Afişi oku ve okuduğunu sakla
 
-Her satır bir öncekinin sonucunu alıyor: `slogan_yaz`'ın çıktısı `yonerge_kur`'un girdisi, onun çıktısı `gorsel_ciz`'in girdisi.
-**Hat** (pipeline) budur.
+İlk hücrede iki ayar var: `afis` (hangi afiş) ve `klasor` (notların gideceği yer). `goster(afis)` afişi defterde gösterir.
+Kodu çalıştırmadan önce afişe kendin bak ve kaç sorun gördüğünü not et.
 
-**Tahmin et:** ilk satırdaki konuyu `"gece açık bir kitapçı"` yapıp yeniden çalıştırırsan çıktının üç satırından kaçı
-değişir? Defterde sıradaki hücre üsttekinin kopyası, yalnızca ilk satırı farklı:
-
-```python
-konu = "gece açık bir kitapçı"
-slogan = slogan_yaz(konu)
-yonerge = yonerge_kur(slogan, "risograph")
-gorsel = gorsel_ciz(yonerge)
-
-print(slogan)
-print(yonerge)
-print(gorsel)
-```
-
-Çıktı:
-
-```
-gece açık bir kitapçı: burada zaman yavaşlar
-risograph poster, idea: gece açık bir kitapçı: burada zaman yavaşlar
-[görsel] risograph poster, idea: gece açık bir kitapçı: burada zaman yavaşlar
-```
-
-- Üç satırın üçü de değişti. Hattın başındaki tek girdi sonuna kadar taşınır: başta yanlış bir kelime, sonda yanlış bir görsel.
-  Bu yüzden hattın en önemli satırı brif.
-- Gerçek bir hatta her halka modele giden bir istektir. Aşağıda sahte halkaların yerini gerçek modeller alıyor.
-
----
-
-## Adım 1 — Ayarlar dosyası: `ayarlar.json`
-
-Konu klasöründe `ayarlar.json` diye bir dosya var:
-
-```json
-{
-  "calisma": "kafe_afisi_1",
-  "konu": "sessiz bir çalışma kafesi",
-  "stil": "risograph print poster, two colors",
-  "slogan_sayisi": 3,
-  "sicaklik": 0.9,
-  "tohum": 42
-}
-```
-
-Böyle bir dosyaya **yapılandırma dosyası** (config) denir: hattın bütün ayarları koddan ayrı, tek yerde durur. Müşteri ya da
-konu değişince kodu değil, bu dosyayı değiştirirsin. Biçimi JSON, içeriği tek katmanlı bir sözlük.
-
-```python
-import json
-
-with open("ayarlar.json", encoding="utf-8") as dosya:
-    ayarlar = json.load(dosya)
-
-print(ayarlar)
-```
-
-- `json.load`, Konu 8'deki `json.dump`'ın tersini yapar: dosyayı okuyup Python sözlüğüne çevirir. Konu 9'da video
-  günlüğünü geri okurken de bunu kullandın.
-- JSON titizdir: metinler **çift tırnak** içinde, sayılar tırnaksız, ayarlar arasında virgül var, son satırdan sonra virgül yok.
-  Bir kural bozulursa `json.load` hata verir (bkz. sık hatalar).
-
-Sonra her ayarı kısa adlı bir değişkene al:
-
-```python
-calisma = ayarlar["calisma"]
-konu = ayarlar["konu"]
-stil = ayarlar["stil"]
-slogan_sayisi = ayarlar["slogan_sayisi"]
-sicaklik = ayarlar["sicaklik"]
-tohum = ayarlar["tohum"]
-
-print(konu, "/", stil)
-```
-
-Çıktı: `sessiz bir çalışma kafesi / risograph print poster, two colors`.
-
-- Aşağıdaki hücreler bu kısa adları kullanıyor (`konu`, `stil`, `tohum`...).
-- `konu` Türkçe, çünkü Türkçe slogan sorusuna gidecek. `stil` İngilizce, çünkü görsel yönergesine gidecek (Konu 7).
-- `ayarlar.json`'u değiştirirsen bu iki hücreyi yeniden çalıştır; yoksa değişkenler eski değerleri taşır.
-
----
-
-## Adım 2 — Çalışma klasörü
+Metni tasarım dosyasından kopyalayabilirdin, ama matbaaya giden şey dışa aktardığın görseldir; müşterinin gönderdiği
+afişte kaynak dosya da elinde olmaz. `afisi_oku` afişi görsel okuyan modele gönderir ve "bütün yazıları, düzeltmeden,
+satır satır yaz" der. Okunan metin bir dosyaya kaydedilir. Bir adımın dosyaya kaydedilen sonucuna **ara çıktı** denir.
 
 ```python
 import os
 
-klasor = "ciktilar/" + calisma + "/"
-os.makedirs(klasor, exist_ok=True)
-print(klasor)
+yol = f"{klasor}/okunan.txt"
+if os.path.exists(yol):
+    print("Afiş daha önce okunmuş; dosyadan alıyorum.")
+    okunan = dosyadan_oku(yol)
+else:
+    okunan = afisi_oku(afis)
+    dosyaya_yaz(okunan, yol)
+print(okunan)
 ```
 
-Çıktı: `ciktilar/kafe_afisi_1/`.
+Satır satır:
 
-- Hattın bütün çıktıları tek bir klasöre gidiyor: `ciktilar/` içinde, adını `ayarlar.json`'daki `calisma` alanından alan
-  bir klasöre.
-- Yol düz bir metin, Konu 8'deki `klasor = "izgara/"` gibi. Sondaki `/` sayesinde dosya adını doğrudan ekleyebilirsin:
-  `klasor + "sloganlar.json"` → `ciktilar/kafe_afisi_1/sloganlar.json`.
-- `os.makedirs(klasor, exist_ok=True)`: klasörü açar; `ciktilar/` henüz yoksa onu da. `exist_ok=True` "klasör zaten varsa
-  hata verme" demek. `os` Python'la birlikte geliyor; Konu 8'deki `os.path.exists` da bu modülden.
-- Konu 8'de klasörü `sabirli_ciz` kendisi açıyordu. Bu hatta ilk yazılan dosya bir görsel değil, sloganlar (`sloganlar.json`);
-  o yüzden klasörü baştan sen açıyorsun.
+- `yol` ara çıktının adı: `ciktilar/sayfa_kahve/okunan.txt`. `f"..."` süslü parantezin içindeki değişkeni metne koyar.
+- `os.path.exists(yol)` "bu dosya var mı?" diye sorar. Varsa afiş daha önce okunmuştur: modele gitmeden dosyadan alırız.
+- Yoksa (`else`) modele sorar, cevabı dosyaya yazarız.
 
-**Neden klasör adında otomatik tarih yok?** Klasörün adına her çalıştırmada o anın tarihini ve saatini ekleseydin her seferinde
-yeni bir klasör açılırdı; içinde hiçbir şey "zaten var" olmazdı, hat her şeyi baştan üretirdi. Kural Konu 8'deki gibi:
-**aynı iş, aynı ad**.
+Ara çıktının üç yararı var: afiş bir kez okunur (kota korunur); sonraki bir adım bozulursa bu adımın işi kaybolmaz;
+modelin ne okuduğunu dosyayı açıp gözünle denetleyebilirsin. Dosyayı aç ve afişle karşılaştır: model "Herkez"i olduğu
+gibi mi yazmış, düzeltmiş mi? Okurken düzelten bir model hatayı gizler. Bir satır yanlış okunduysa dosyada düzelt,
+kaydet ve hücreyi yeniden çalıştır; hat senin metninle devam eder.
 
-| Klasör adı | Ne olur |
-|---|---|
-| Kodda otomatik tarih (`2026-11-04_18-57-25`) | Her çalıştırma yeni klasör; her şey yeniden üretilir, kota gider |
-| `ayarlar.json`'da senin verdiğin ad (`kafe_afisi_1`) | Aynı brif aynı klasör; biten atlanır, kaldığı yerden devam |
+## Adım 2 — Yazım hatası ve eksik bilgi
 
-Tarihli bir arşiv istiyorsan tarihi adın içine **sen** yaz: `"calisma": "2026-11-04_kafe"`. Brifi değiştirdiğinde (konu, stil,
-tohum) `calisma` adını da değiştir: yeni brif yeni klasörde başlar, eskisi olduğu gibi kalır. Program yalnızca klasörün adına
-bakar; adda olmayan bir şeyi değiştirirsen bunun yeni bir iş olduğunu bilemez.
-
----
-
-## Adım 3 — Hazır halkalar
+Okunan metin bir sorunun sonuna eklenir ve metin modeline gider: Türkçe yazım hataları ve afişte tarih, saat, yerden
+hangisinin eksik olduğu. Üç tırnak (`"""`) birkaç satırlık metin yazmayı sağlar. Gün adını modele sormuyoruz; onu
+Adım 3'te Python denetler. Sonra Adım 1'deki kalıbın aynısı gelir:
 
 ```python
-from halkalar import modele_sor, sabirli_ciz
+yol = f"{klasor}/yazim.txt"
+if os.path.exists(yol):
+    print("Yazım denetimi daha önce yapılmış; dosyadan alıyorum.")
+    yazim = dosyadan_oku(yol)
+else:
+    yazim = modele_sor(soru, 0.2)
+    dosyaya_yaz(yazim, yol)
+print(yazim)
 ```
 
-`halkalar.py` bu klasördeki yardımcı dosya. İçinde önceki konulardan iki fonksiyon hazır duruyor:
+Sıcaklık 0.2, çünkü denetimde yaratıcılık istemiyoruz (Konu 5).
 
-| Fonksiyon | Nereden | Ne yapar | Başarısızsa |
-|---|---|---|---|
-| `modele_sor(soru, sicaklik)` | Konu 5 | Metin modeline (`llama-3.3-70b`) sorar, cevabı metin olarak verir | `None` (Konu 5'tekinden tek farkı: çökmez) |
-| `sabirli_ciz(yonerge, tohum, yol)` | Konu 8 | Görsel modeline (`flux-1-schnell`) en fazla üç kez dener, görseli `yol`a kaydeder ve `yol`u verir | `None` (dosya oluşmaz) |
+### Hangi öneri doğru? Son karar senin
 
-`halkalar.py` anahtarı `../anahtar.txt`'den kendisi okur, bu hücre ilk çalıştığında bir kez. Hücrenin çıktısı yok; anahtar
-dosyası yoksa `FileNotFoundError: ... '../anahtar.txt'` verir. `anahtar.txt`'yi sonradan düzeltirsen çekirdeği yeniden
-başlat (**Restart**). Halkalar hazır; onları **birbirine bağlamak** bugün senin işin.
+Modelin cevabını madde madde oku ve her öneriye "kabul" ya da "ret" de. Model hata kaçırabilir; ama doğru bir şeyi
+"düzeltmeye" de kalkabilir. Hocanın 30 Ekim 2026'daki denemesinde cevapta şu öneriler vardı:
 
-Konu 5'teki slogan sorusu burada bir kalıba dönüşüyor: sabit bir kısım, sonunda brifteki konu. Önce tek bir istek:
+- "Herkez" yerine "Herkes": **kabul**, gerçek bir yazım hatası.
+- Saat eksik: **kabul**, afişte saat yok.
+- "kafemizde" yerine "kafemize": **ret**. "Kitabını getir, kafemizde sessizliğe katıl." doğru bir cümle; öneri onu bozar.
+  (Bu kelimede asıl sorun başka: Sayfa Kahve kendine "kafe" demiyor. Bunu model bilemez; Konu 11'in konusu.)
+- "Moda Caddesi 12" yerine "Moda Caddesi No: 12": **ret**. Bu bir yazım hatası değil; afişte "No:" yazmak zorunlu değil.
+
+Model her çalıştırmada başka bir cevap verebilir; senin çıktın farklı olabilir. Senin çıktında kaç yanlış öneri var?
+Ders değişmez: model önerir, afişe neyin gireceğine tasarımcı karar verir.
+
+### Model cevap vermezse?
+
+İnternet kesilebilir, sunucu meşgul olabilir. `afisi_oku` ve `modele_sor` o zaman 5 saniye bekleyip yeniden sorar, en
+fazla 3 kez; olmazsa "model cevap vermedi" notu döndürür ve `dosyaya_yaz` bu notu kaydetmez. Defterde bunu sunucu
+adresini bilerek bozarak görürsün (`os.listdir` klasördeki dosyaların adlarını verir):
 
 ```python
-soru = "Şu konu için tek bir kısa slogan yaz. Yalnızca sloganı yaz, açıklama ekleme: " + konu
+import halkalar
 
-cevap = modele_sor(soru, sicaklik)
-print(cevap)
+halkalar.SUNUCU = "https://api.cloudflare.invalid"
+bozuk = modele_sor(soru, 0.2)
+dosyaya_yaz(bozuk, f"{klasor}/deneme.txt")
+halkalar.SUNUCU = "https://api.cloudflare.com"
+
+dosyalar = os.listdir(klasor)
+print(bozuk)
+print(dosyalar)
 ```
 
-Çıktı: modelin cevabı (`...`). Model talimata her zaman uymaz: sloganı tırnak içine alabilir, başına `Slogan:` yazabilir,
-sonuna bir açıklama ekleyebilir. Bu cevap sıradaki halkaya, görsel yönergesine gidecek; o yüzden önce temizlenmeli:
+`.invalid` ile biten adresler hiçbir yerde yoktur; istek hiçbir sunucuya ulaşmaz. Klasörde `okunan.txt` ve `yazim.txt`
+durur, `deneme.txt` oluşmaz. **Hat kaldığı yerden devam eder:** bağlantı gelince yalnızca eksik adım yeniden sorulur.
+
+## Adım 3 — Tarih ile gün tutuyor mu?
+
+Baştan sona Python. `tarihi_bul(okunan)` metindeki tarihi ("14 Kasım 2026"), `gunu_bul(okunan)` metinde yazan gün adını
+("Cuma") bulur; `gun_adi(tarih)` gerçek günü hesaplar. Sonra karşılaştırırız:
 
 ```python
-temiz = cevap.strip()
-temiz = temiz.replace('"', "")
-print(temiz)
+if yazan == dogru:
+    gun_bulgusu = "Tarih ve gün tutarlı: " + tarih + ", " + dogru + "."
+else:
+    gun_bulgusu = "Gün yanlış: " + tarih + " bir " + dogru + "; afişte " + yazan + " yazıyor."
+print(gun_bulgusu)
 ```
 
-- `.strip()`: baştaki ve sondaki boşlukları (satır sonları dâhil) siler. Konu 2'de anahtar dosyasının satırlarını temizlerken
-  kullandın.
-- `.replace('"', "")`: düz tırnakları boş metinle değiştirir, yani siler (Konu 1'de metni temizlerken kullandın). Tırnak
-  işaretinin kendisi tek tırnak içine yazılır: `'"'`.
-- Model kıvrık tırnak (`“ ”`) ya da `Slogan:` yazdıysa aynı satırı o işaretle bir kez daha yaz:
-  `temiz = temiz.replace("Slogan: ", "")`. Adım 4'teki fonksiyonda aynı temizleme satırları var; eklediğin satırı oraya da
-  yaz (orada değişkenin adı `slogan`).
-- Modelin cevabı Cloudflare'de varsayılan olarak 256 belirteçle (token) sınırlı. Slogana fazlasıyla yeter; ama modelden uzun bir
-  metin istersen cevap yarıda kesilir.
-- `cevap` `None` ise (istek başarısız) `.strip()` hata verir: `AttributeError: 'NoneType' object has no attribute 'strip'`.
-  Üstteki `İstek başarısız` satırına bak.
+`gun_bulgusu` rapora girecek cümle. Afişinde tarih ya da gün adı yoksa `tarihi_bul` ve `gunu_bul` `yok` verir. Bu
+adımda modele hiç sorulmaz; sorulsaydı ne olurdu, Bonus'ta.
 
----
+## Adım 4 — Yazılar okunuyor mu?
 
-## Adım 4 — 1. halka: sloganlar (ara çıktıyı sakla)
-
-Bir halkanın sonucu hattın **ara çıktısıdır**. Sloganlar bir dosyada saklanacak: `sloganlar.json`.
+`renkleri_cikar(afis, 5)` afişteki en yaygın 5 rengi, en yaygından başlayarak verir; ilki zemindir. JPEG sıkıştırması
+renkleri biraz oynatır; bu yüzden Isınma'daki 10.18 burada 10.25 gibi görünebilir.
 
 ```python
-slogan_dosyasi = klasor + "sloganlar.json"
-
-def slogan_halkasi():
-    if os.path.exists(slogan_dosyasi):
-        with open(slogan_dosyasi, encoding="utf-8") as dosya:
-            sloganlar = json.load(dosya)
-        print("Dosyadan okundu, istek gitmedi")
-        return sloganlar
-    sloganlar = []
-    for tur in range(slogan_sayisi):
-        cevap = modele_sor(soru, sicaklik)
-        if cevap is None:
-            print("Slogan gelmedi, atlıyorum")
-            continue
-        slogan = cevap.strip()
-        slogan = slogan.replace('"', "")
-        sloganlar.append(slogan)
-    if len(sloganlar) == 0:
-        print("Hiç slogan gelmedi, dosyaya yazmadım")
-        return sloganlar
-    with open(slogan_dosyasi, "w", encoding="utf-8") as dosya:
-        json.dump(sloganlar, dosya, ensure_ascii=False, indent=2)
-    print("Üretildi ve kaydedildi")
-    return sloganlar
+renk_bulgulari = []
+for renk in renkler[1:]:
+    oran = kontrast(renk, zemin)
+    if oran < 4.5:
+        bulgu = renk + " zeminde zor okunur (kontrast " + str(oran) + ")"
+        renk_bulgulari.append(bulgu)
+print(renk_bulgulari)
 ```
 
-Fonksiyon her çağrıldığında önce sorar: **zaten var mı?**
+- `renkler[1:]` listenin ikinci elemanından sonrası: zemini kendisiyle karşılaştırmıyoruz.
+- `oran < 4.5`: eşiğin **altında** kalan renk zor okunur.
+- `str(oran)` sayıyı metne çevirir; metinle sayı `+` ile birleşmez.
 
-- Dosya varsa (`os.path.exists(slogan_dosyasi)`, Konu 8): `json.load` ile oku, ver. Modele hiç istek gitmez; `return`
-  fonksiyonu orada bitirir.
-- Yoksa: `slogan_sayisi` kez sor. `range(slogan_sayisi)` = "3 kez" (`slogan_sayisi` 3). Her cevabı temizle, listeye ekle; sonunda
-  listeyi dosyaya yaz ve ver.
-- Bir cevap gelmezse (`None`) o turu atla (`continue`): hat durmaz, liste bir eksik olur.
-- Hiç slogan gelmediyse dosyaya yazma, boş listeyi ver ve çık. `len(sloganlar) == 0` "liste boş mu?" demek (Konu 5).
-  Boş liste dosyaya girseydi sonraki her çağrı onu okur, modele bir daha hiç sormazdı.
-- Dosyaya yazmak Konu 8'deki günlükle aynı: `json.dump(..., ensure_ascii=False, indent=2)`. Önce yazılacak şey, sonra dosya.
-- Fonksiyon `slogan_dosyasi`, `soru`, `sicaklik` ve `slogan_sayisi`'yı yukarıdaki hücrelerden alıyor.
-- Hücre yalnızca fonksiyonu tanımlar; istekler fonksiyonu çağırınca gider. Adım 3'teki deneme sloganı listeye girmez:
-  fonksiyon üç yeni istek gönderir.
+Python ölçer ama hangi rengin yazı, hangisinin süs olduğunu bilmez. Listeye giren her rengi afişte bul: yazıysa sorun,
+yalnızca bir daire ya da çizgiyse sorun olmayabilir. Bu ölçüm her rengi **ana zemine** göre yapar; mavi bandın üstündeki
+beyaz yazının zemini mavidir, onu ayrı denetlemelisin:
+
+```py
+print(kontrast("#F4F1EA", "#1F3A5F"))
+```
+
+## Adım 5 — Rapor
+
+Notlar tek bir metinde toplanır: `rapor = rapor + ...` her satırda rapora bir parça ekler. `\n` yeni satırdır, `#` ve
+`-` Markdown'da başlık ve madde işaretidir. VS Code'da `rapor.md`'yi açıp sağ üstteki önizleme düğmesine basarsan
+başlıklı, düzgün bir sayfa görürsün.
+
+Hattın en kolay büyüyen yeri burası. Örnek kontrol:
 
 ```python
-sloganlar = slogan_halkasi()
-print(sloganlar)
+if "@" in okunan:
+    kendi = "Instagram adresi yazıyor."
+else:
+    kendi = "Instagram adresi yok."
+rapor = rapor + "\n## Benim kontrolüm\n" + kendi + "\n"
 ```
 
-Çıktı: `Üretildi ve kaydedildi` ve üç slogan (`[...]`). Üç istek gitti. Aynı çağrı bir kez daha:
+`"@" in okunan`, "okunan metinde @ işareti geçiyor mu?" demek. Altındaki boş hücreye kendi kontrolünü yaz: semtin adı
+geçiyor mu, "ücretsiz" sözü var mı, müşterinin bir kuralına uyuyor mu ("ünlem kullanmayalım" dediyse `"!" in okunan`).
+Raporu kaydettikten sonra dosyayı aç; Adım 2'de reddettiğin önerileri sil ya da yanına "ret" yaz.
 
-```python
-sloganlar = slogan_halkasi()
-print(sloganlar)
-```
+**Kendi afişinle:** afişi `veri/` içine `.jpg` olarak koy, Adım 1'deki iki satırı değiştir (ör.
+`afis = "veri/benim_afisim.jpg"`, `klasor = "ciktilar/benim_afisim"`), menüden Restart'a bas, baştan çalıştır.
 
-Çıktı: `Dosyadan okundu, istek gitmedi` ve **aynı** üç slogan. Hiç istek gitmedi.
+## Bonus — Gün sorusunu modele sorsaydık?
 
-Sloganları saklamanın sebebi yalnızca kota değil, **tutarlılık** da. Sıcaklık 0.9 olduğu için her istekte başka bir slogan
-gelir (Konu 5). Sloganlar her çalıştırmada yeniden üretilseydi `gorsel_1.jpg` dünkü sloganla çizilmiş olurdu, günlükte ise
-bugünkü slogan yazardı: görsel ile metin birbirini tutmazdı.
+Aynı "14 Kasım 2026 hangi gün?" sorusu metin modeline gider (1 istek). Model doğru bilmiş de olabilir; ders değişmez:
+modelin cevabını her seferinde denetlemen gerekir, Python'un hesabını gerekmez. Temiz afişin (`veri/afis_temiz.jpg`)
+renklerini alıştırmanın 3. maddesinde ölçersin.
 
-> **Kural:** pahalı ya da her seferinde farklı çıkan ara çıktıyı sakla. Ucuz ve her seferinde aynı çıkanı (Adım 5'teki
-> yönergeler gibi) yeniden kur.
+## Sık hatalar
 
-**İstekler başarısız olursa.** Üç istekten biri başarısız olursa dosyaya iki slogan yazılır ve sonraki çalıştırmalar bu ikisiyle
-devam eder; üçüncüyü istiyorsan `sloganlar.json`'u sil. Üçü de başarısız olursa (ör. anahtar yanlış) ekranda
-`Hiç slogan gelmedi, dosyaya yazmadım` görürsün ve dosya hiç oluşmaz. Silinecek bir şey yok: anahtarı düzelt, çekirdeği
-yeniden başlat (**Restart**), yukarıdan yeniden çalıştır; sloganlar bu kez gerçekten istenir.
-
----
-
-## Adım 5 — 2. halka: her slogana bir görsel
-
-Her slogan için önce bir görsel yönergesi kurulur:
-
-```python
-yonergeler = []
-for slogan in sloganlar:
-    yonerge = stil + ", a poster illustration that expresses this idea: " + slogan + ", no text, no letters"
-    yonergeler.append(yonerge)
-    print(yonerge)
-```
-
-Çıktı: üç yönerge, her biri `risograph print poster, two colors, a poster illustration that expresses this idea: ...,
-no text, no letters` biçiminde.
-
-- Bu bir kalıp: sabit kısım ve iki değişen yer (`stil`, `slogan`).
-- Yönergeler saklanmıyor, çünkü sloganlardan ve ayarlardan her seferinde aynı biçimde, bedavaya kurulur.
-- Sloganlar Türkçe, yönergenin geri kalanı İngilizce. Görsel model çoğunlukla İngilizce metinle eğitildi (Konu 7); Türkçe
-  sloganın fikrini ne kadar anladığı görsellerde görülür.
-- **"no text, no letters"** bilerek orada: tipografiyi modele bırakmıyoruz. Görsel modeller harfleri çoğu zaman bozar; sloganı
-  afişe tasarımcı dizer. Hat **taslak** üretir; son biçim tasarımcının.
-
-Görsel halkası tek bir görsel için çalışan bir fonksiyon:
-
-```python
-def gorsel_halkasi(sira, yonerge):
-    yol = klasor + "gorsel_" + str(sira) + ".jpg"
-    kayit = {"halka": "gorsel", "girdi": yonerge, "cikti": yol}
-    if os.path.exists(yol):
-        kayit["durum"] = "uretildi"
-        print("Zaten var, atlıyorum:", yol)
-        return kayit
-    sonuc = sabirli_ciz(yonerge, tohum, yol)
-    if sonuc is None:
-        kayit["durum"] = "olmadi"
-        print("Olmadı, atlıyorum:", yol)
-        return kayit
-    kayit["durum"] = "uretildi"
-    print("Kaydedildi:", yol)
-    return kayit
-```
-
-- Slogan halkasıyla **aynı kalıp**: zaten var mı? Varsa onu ver. Yoksa üret, sakla, ver.
-- `yol = klasor + "gorsel_" + str(sira) + ".jpg"`: `str` sayıyı metne çevirir (Konu 5); metne yalnızca metin eklenebilir.
-  `sira` 1 ise yol `ciktilar/kafe_afisi_1/gorsel_1.jpg`.
-- `os.path.exists(yol)`: bu dosya var mı? Varsa atla. Atlanan görselin durumu da `uretildi`: dosya orada.
-- `sabirli_ciz(yonerge, tohum, yol)` görseli `yol`a kendisi kaydeder. Başarılıysa `yol`u, olmazsa `None` verir; halka bu dönüşe
-  bakıp kaydın durumunu yazıyor.
-- Her yoldan bir **kayıt** (sözlük) çıkıyor: hangi halka (`halka`), ne girdi (`girdi`: yönerge), hangi dosya çıktı (`cikti`),
-  sonuç ne (`durum`: `uretildi` ya da `olmadi`).
-- `kayit["durum"] = ...`: sözlüğe yeni bir anahtar ve değer ekler.
-- `return kayit` fonksiyonu orada bitirir; hangi yoldan çıkarsa çıksın elimize bir kayıt gelir.
-
-Sonra halka bir döngüyle her yönergeye uygulanır:
-
-```python
-kayitlar = []
-sira = 0
-for yonerge in yonergeler:
-    sira = sira + 1
-    kayit = gorsel_halkasi(sira, yonerge)
-    kayitlar.append(kayit)
-
-print(len(kayitlar), "kayıt")
-```
-
-Çıktı: üç kez `Kaydedildi: ciktilar/kafe_afisi_1/gorsel_1.jpg` (... `_2`, `_3`) ve `3 kayıt`.
-
-- Her yönerge görsel halkasına gidiyor; gelen kayıt `kayitlar` listesine ekleniyor.
-- `sira` her turun **başında** bir artıyor: ilk görsel `gorsel_1.jpg`. Sayaç başta arttığı için turun ortasında bir şey
-  atlansa bile sıra kaymaz.
-- Hücreyi yeniden çalıştırırsan üçü de `Zaten var, atlıyorum` der; istek gitmez.
-- Üç görsel bir dakika kadar sürer.
-
-Görsellere bak: görselde yine de yazı çıktı mı, harfler okunuyor mu? Görseller sloganların **fikrini** mi taşıyor, yoksa yalnızca
-stili mi?
-
----
-
-## Adım 6 — Bir halka koparsa hat durmasın
-
-Gerçek bir hatta halkalardan biri er geç kopar: internet gider, kota biter, bir yönerge reddedilir. Derste bunu beklemek
-yerine halkayı bilerek koparırsın: dördüncü görseli **boş bir yönergeyle** istersin.
-
-```python
-kayit = gorsel_halkasi(4, "")
-kayitlar.append(kayit)
-
-print(kayit)
-print(len(kayitlar), "kayıt")
-```
-
-Çıktı:
-
-```
-İstek başarısız, durum kodu: 400
-Deneme 1 olmadı, 5 saniye bekliyorum
-İstek başarısız, durum kodu: 400
-Deneme 2 olmadı, 5 saniye bekliyorum
-İstek başarısız, durum kodu: 400
-Olmadı, atlıyorum: ciktilar/kafe_afisi_1/gorsel_4.jpg
-{'halka': 'gorsel', 'girdi': '', 'cikti': 'ciktilar/kafe_afisi_1/gorsel_4.jpg', 'durum': 'olmadi'}
-4 kayıt
-```
-
-- Görsel model boş yönergeyi kabul etmez: durum kodu 400 ("istek bozuk", Konu 2). `sabirli_ciz` üç kez dener; kalıcı
-  bir hatada beklemek işe yaramaz ama basit bir program bunu ayırt edemez.
-- Hücre **çökmedi**: `gorsel_halkasi` hata yerine `"durum": "olmadi"` yazan bir kayıt verdi. Bu çağrı bir döngünün içinde
-  olsaydı döngü sıradaki görsele geçerdi.
-- Hat iki şeyi birlikte yapıyor: kopan halkayı **kayda geçiriyor** (hangi görsel, `durum`: `olmadi`) ve kopmayanlarla **devam ediyor**.
-- `gorsel_4.jpg` hiç oluşmadı; hattı yarın yeniden çalıştırırsan yalnızca o denenir (kaldığı yerden devam).
-- Bu hücreyi iki kez çalıştırırsan aynı kayıt listeye iki kez girer (`5 kayıt`). Adım 5'in döngü hücresinden yeniden başla:
-  liste sıfırlanır, görseller zaten var, istek gitmez.
-
-| Kopan halka hattı durdurursa | Kopan halka kayda geçerse |
-|---|---|
-| Üçüncü görselde internet gitti: dördüncü ve beşinci hiç denenmedi | Üçüncü `olmadi` diye kaydedildi; dördüncü ve beşinci üretildi |
-| Neyin eksik olduğunu bulmak için klasöre tek tek bakarsın | Eksikler günlükte yazıyor |
-| Baştan çalıştırırsın | Yeniden çalıştırınca yalnızca eksik olan denenir |
-
----
-
-## Adım 7 — Üretim günlüğü: `uretim.json`
-
-```python
-gunluk = {"ayarlar": ayarlar, "sloganlar": sloganlar, "kayitlar": kayitlar}
-
-with open(klasor + "uretim.json", "w", encoding="utf-8") as dosya:
-    json.dump(gunluk, dosya, ensure_ascii=False, indent=2)
-
-print("Günlük yazıldı:", len(kayitlar), "kayıt")
-```
-
-Çıktı: `Günlük yazıldı: 4 kayıt`.
-
-- `gunluk` bir sözlük, içinde üç bölüm: hangi ayarlarla çalıştı (`ayarlar`), hangi sloganlar çıktı (`sloganlar`), her görselin
-  sonucu ne (`kayitlar`).
-- `klasor + "uretim.json"`: günlük, çıktıların yanında, aynı klasörde. Her brifin günlüğü kendi klasöründe.
-- `durum`u `olmadi` olan kayıtlar eksiklerin listesi: hattı yeniden çalıştırınca denenecek olanlar. Program da günlüğü geri okuyup
-  onları bulabilir; alıştırmanın 6. sorusunda sen sayacaksın.
-- Final projesinin teslimindeki **üretim günlüğü** bu dosya: hangi brif, hangi model ayarı, ne çıktı, ne eksik kaldı.
-
-**Defteri yarın baştan çalıştırırsan ne görürsün?**
-
-| Adım | İkinci çalıştırmada ekranda | İstek |
+| Ne görüyorsun | Neden | Ne yap |
 |---|---|---|
-| 3 | Yeni bir deneme sloganı | 1 metin |
-| 4 | İki çağrıda da `Dosyadan okundu, istek gitmedi`, aynı üç slogan | 0 |
-| 5 | Üç kez `Zaten var, atlıyorum` | 0 |
-| 6 | Yine üç kez `400` ve `olmadi`: `gorsel_4.jpg` hiç oluşmadığı için her seferinde denenir | 3 (reddedilen) |
-| 7 | `Günlük yazıldı: 4 kayıt` | 0 |
-
-Hat kaldığı yerden devam ediyor: biten iş yeniden üretilmiyor, yalnızca eksik olan deneniyor.
-
----
-
-## Bonus
-
-**1. Pano: slogan ve görsel yan yana.** Konu 8'deki kontak sayfası, bu kez tek satır:
-
-```python
-import matplotlib.pyplot as plt
-
-sutun = len(sloganlar)
-
-plt.figure(figsize=(12, 5))
-sira = 0
-for slogan in sloganlar:
-    sira = sira + 1
-    yol = klasor + "gorsel_" + str(sira) + ".jpg"
-    plt.subplot(1, sutun, sira)
-    if os.path.exists(yol):
-        resim = plt.imread(yol)
-        plt.imshow(resim)
-    plt.title(slogan, fontsize=9)
-    plt.axis("off")
-
-plt.savefig(klasor + "pano.png", bbox_inches="tight")
-plt.show()
-```
-
-- `plt.subplot(1, sutun, sira)`: 1 satır, `sutun` sütun, `sira`'ncı kutu (Konu 6 ve 8).
-- `plt.imread` görseli dosyadan okur, `plt.imshow` kutuya koyar; dosya yoksa kutu boş kalır.
-- `plt.title(slogan, ...)`: her kutunun üstünde onu doğuran slogan.
-- Pano da çalışma klasörüne kaydediliyor: `pano.png`.
-- Döngü sloganları geziyor; Adım 6'daki dördüncü kayıt panoda yok (sloganı yoktu).
-
-**Tartış:** hangi slogan hangi görselle güçlü? Slogan ile görselin **aynı şeyi söylediği** kutu mu daha iyi, yoksa birbirini
-**tamamladığı** kutu mu (görsel bir şey gösteriyor, slogan ona yeni bir anlam ekliyor)? Afişte metin ile görselin ilişkisi
-tasarımcının asıl işi; hat bunu senin yerine düşünmez.
-
-**2. Ara çıktıya elle dokun.** Ara çıktıyı saklamanın bir faydası daha var: hattın ortasına girip elle düzeltme yapabilirsin.
-
-1. `ciktilar/kafe_afisi_1/sloganlar.json`'u VS Code'da aç, ikinci sloganı kendi yazdığın bir sloganla değiştir, kaydet.
-   Tırnakları ve virgülleri bırak; JSON biçimi bozulmasın.
-2. Aynı klasördeki `gorsel_2.jpg`'yi sil.
-3. Adım 4'ün ilk çağrı hücresinden Adım 5'in sonuna kadar sırayla yeniden çalıştır, sonra Adım 7'nin günlük hücresini ve panoyu.
-
-Slogan halkası dosyadan okur (senin sloganınla, istek gitmez). Görsel halkası 1 ve 3'ü atlar, yalnızca 2'yi üretir: tek istek.
-Panoda yalnızca bir kutu değişir. Hat makinenin işini yapıyor; sen istediğin yerde araya girip yönünü değiştiriyorsun.
-
----
-
-## Defterin bölümleri
-
-| Adım | Ne yaptık | Elimizde ne oluştu | Anahtar |
-|---|---|---|---|
-| Isınma | Sahte halkalarla zincir; konuyu değiştirmek | — | gerekmez |
-| 1 | Ayarlar dosyasını okuduk | `ayarlar`, `konu`, `stil`, `tohum` ... | gerekmez |
-| 2 | Çalışma klasörü | `klasor` (`ciktilar/kafe_afisi_1/`) | gerekmez |
-| 3 | Hazır halkalar; bir deneme sloganı, temizleme | `modele_sor`, `sabirli_ciz`, `soru` | gerekir |
-| 4 | 1. halka: sloganlar; ara çıktıyı sakla | `slogan_halkasi`, `sloganlar`, `sloganlar.json` | gerekir |
-| 5 | 2. halka: yönergeler ve görseller | `yonergeler`, `gorsel_halkasi`, `kayitlar`, `gorsel_1.jpg` ... | gerekir |
-| 6 | Bir halkayı bilerek kopardık | `olmadi` durumlu bir kayıt | gerekir |
-| 7 | Üretim günlüğü | `uretim.json` | istek yok; Adım 4–6 gerekir |
-| Bonus | Pano; ara çıktıya elle dokunmak | `pano.png` | 2. bölüm gerekir |
-
-Derste kendi başına çalışacağın defter: `alistirma.ipynb`. Önce aynı klasörde yeni bir adla kopyala, kopyada çalış.
-**Anahtar istemez ve internete çıkmaz:** halkalar sahte ve her çağrıyı sayıyor; kaç istek gittiğini görebiliyorsun.
-
-- **Yaz** (en sonda; derste önce bunu çöz): ara çıktıyı (sloganları) kendin saklamak. Bu konuda kendi elinle yazacağın kod bu.
-- **Bozuk kodlar:** beş kısa hücre, birbirinden bağımsız. İkisi hata mesajı veriyor, üçü sessizce yanlış sonuç yazıyor.
-- **Kendi başına:** `BOSLUK` yazan yerleri doldurduğun altı soru.
-
----
-
-## Sık karşılaşılan hatalar ve mesajlarını okumak
-
-| Ne görüyorsun | Sebebi | Ne yapmalı |
-|---|---|---|
-| `FileNotFoundError: ... 'ayarlar.json'` (Adım 1) | Defterin kopyası konu klasörünün dışında ya da dosya adı farklı | Kopya `ayarlar.json`'un yanında, `10-uretim-hatti` klasöründe olmalı |
-| `JSONDecodeError: Expecting value ...` | `ayarlar.json`'da bir metin tırnaksız ya da tek tırnakla yazılmış | Metinler çift tırnak içinde: `"konu": "gece açık bir kitapçı"` |
-| `JSONDecodeError: Illegal trailing comma before end of object ...` | Son satırdan sonra virgül kalmış | Son ayarın sonundaki virgülü sil |
-| `JSONDecodeError: Expecting ',' delimiter ...` | İki satır arasında virgül eksik | Her ayarın sonuna (sonuncusu hariç) virgül |
-| `KeyError: 'Konu'` ya da `KeyError: 'tohum'` | Ayar adı dosyadakinden farklı (büyük harf, eksik satır) | Adı dosyadakiyle birebir yaz; kendi ayarlar dosyanda bütün satırlar olmalı |
-| `NameError: name 'modele_sor' is not defined` (ya da `'sabirli_ciz'`) | Adım 3'ün import hücresi hata verdi (çoğunlukla anahtar dosyası) ya da çalıştırılmadı | Önce o hücredeki hatayı düzelt, sonra sırayla devam et |
-| `ModuleNotFoundError: No module named 'halkalar'` | Defterin kopyası konu klasörünün dışında | Kopya `halkalar.py`'nin yanında olmalı |
-| `FileNotFoundError: ... '../anahtar.txt'` (Adım 3) | Anahtar dosyası yok ya da yanlış yerde | `gita3111` klasöründe durmalı; sonra Adım 3'ün ilk hücresini yeniden çalıştır |
-| `İstek başarısız, durum kodu: 401` | Anahtar yanlış | `anahtar.txt`'yi düzelt, çekirdeği yeniden başlat (**Restart**), baştan çalıştır |
-| `AttributeError: 'NoneType' object has no attribute 'strip'` (Adım 3) | Deneme isteği başarısız oldu, `cevap` `None` | Üstteki `İstek başarısız` ya da `Bağlanamadım` satırına bak |
-| `Slogan gelmedi, atlıyorum` | Bir metin isteği başarısız oldu | Hat iki sloganla devam eder. Üçünü istiyorsan `sloganlar.json`'u sil, yeniden çalıştır |
-| `Hiç slogan gelmedi, dosyaya yazmadım` ve `[]` | Bütün metin istekleri başarısız oldu; dosya yazılmadı | Sorunu düzelt (anahtarsa **Restart**), yukarıdan yeniden çalıştır; sloganlar bu kez istenir |
-| Hep `Dosyadan okundu`, sloganlar eski konudan | `ayarlar.json`'da konuyu değiştirdin ama `calisma` aynı kaldı | Yeni brif için `calisma` adını da değiştir |
-| `JSONDecodeError` (Adım 4, Bonus 2 sonrası) | `sloganlar.json`'u elle düzeltirken bir tırnak ya da virgül silindi | Dosyayı düzelt: `["...", "...", "..."]` biçiminde olmalı |
-| Görsel eski sloganı anlatıyor | Sloganı değiştirdin ama görseli silmedin | O görseli sil; görsel halkası yalnızca olmayanı üretir |
-| `TypeError: can only concatenate str (not "int") to str` | Yolu kurarken sayı metne çevrilmedi: `"gorsel_" + sira` | `"gorsel_" + str(sira) + ".jpg"` |
-| `İstek başarısız, durum kodu: 400` (Adım 6) | Boş yönerge; bilerek | Doğru davranış: kayıtta `olmadi` |
-| `İstek başarısız, durum kodu: 429` ve `Deneme ... olmadı` | Çok hızlı istek ya da günlük kota doldu | Bekle; üst üste geliyorsa hücreyi durdur (**Interrupt**). Kota yenilenince aynı hücreyi yeniden çalıştır; kaldığı yerden devam eder |
-| `NameError: name 'klasor' is not defined` | Adım 2 çalıştırılmadı | Sırayla çalıştır |
-| `NameError: name 'slogan_halkasi' is not defined` ya da `'gorsel_halkasi'` | Fonksiyonun tanımlandığı hücre atlandı | O hücreyi çalıştır |
-| Panoda boş kutu | O görsel üretilemedi | Kayıtta `olmadi` yazar; Adım 5'in döngü hücresini, sonra panoyu yeniden çalıştır |
-
----
+| `NameError: name 'okunan' is not defined` | Yukarıdaki bir hücreyi atladın ya da çekirdek yeniden başladı | Hücreleri baştan sırayla çalıştır |
+| `FileNotFoundError: ... '../anahtar.txt'` | Anahtar dosyası `gita3111` klasöründe değil | Konu 2'deki gibi `anahtar.txt` oluştur; olmazsa Adım 1–2'yi hocanın ekranından izle |
+| Kendi afişini koydun ama Sayfa Kahve'nin metni çıkıyor | `klasor`u değiştirmedin; hat eski `okunan.txt`'yi buldu | `klasor` satırını değiştir ya da eski dosyayı sil |
+| "Deneme 1 olmadı" yazıları | Bağlantı ya da sunucu sorunu; ya da adresi bozan hücreyi yarıda durdurdun | Bekle; düzelmezse Restart ve baştan çalıştır |
+| `TypeError: can only concatenate str (not "float") to str` | Sayıyı metne `str(...)` olmadan ekledin | `str(oran)` |
+| Model "Herkez"i bulmadı | Model okurken düzeltti ya da denetimde kaçırdı | `okunan.txt`'ye bak; rapora elle not düş |
+| Model doğru bir kelimeyi "düzeltmek" istedi | Model öneri yapar, kesin bilmez | Öneriyi reddet; raporda sil ya da "ret" yaz |
+| Bütün renkler "zor okunur" çıktı | Karşılaştırmayı ters yazdın (`>`) | Eşiğin altı: `oran < 4.5` |
 
 ## Kendini dene
 
-Cevaplar notun en sonunda. Önce kendin düşün.
-
-1. Bir arkadaşın çalışma klasörünü `ayarlar.json`'dan değil, o anki tarih ve saatle kurdu. Hattı üç kez çalıştırınca ne olur?
-2. Yönergeleri neden saklamadık da sloganları sakladık?
-3. `ayarlar.json`'da konuyu "gece açık bir kitapçı" yaptın, kaydettin ve bütün defteri yeniden çalıştırdın; `calisma` adını
-   değiştirmedin. Ne görürsün?
-4. Görsel halkası kopunca hata verip dursaydı (`return` yerine program çökseydi), beş görsellik bir hatta üçüncü görselde
-   internet gidince ne olurdu?
-5. Görsel yönergesinde neden "no text, no letters" yazıyoruz? Slogan afişe nasıl girecek?
-6. `gorsel_halkasi` neden `sabirli_ciz`'in verdiği sonuca (`sonuc`) bakıyor? Bakmasaydı günlükte ne yanlış olurdu?
-7. Final projende hattın kaç halkası olur? Hangi halkanın çıktısını mutlaka saklarsın?
-
----
-
-## Bu konuda öğrendiklerin
-
-- **Hat.** Bir halkanın çıktısı sıradakinin girdisi; hattın başındaki brif sonuna kadar taşınır.
-- **Yapılandırma dosyası.** Ayarlar koddan ayrı, `ayarlar.json`'da; brif değişince kod değişmez.
-- **Çalışma klasörü.** Adı ayarlardan gelir; aynı brif aynı klasör, yeni brif yeni klasör.
-- **Ara çıktıyı saklamak.** Pahalı ya da her seferinde farklı çıkanı sakla; ucuz ve aynı çıkanı yeniden kur.
-- **Her halka aynı kalıp.** Zaten var mı? Varsa onu ver. Yoksa üret, sakla, ver.
-- **Kopan halka.** Hattı durdurmaz; kayda `olmadi` diye geçer, sonraki çalıştırmada yalnızca o denenir.
-- **Üretim günlüğü.** `uretim.json`: ayarlar, ara çıktılar ve her işin sonucu bir arada.
-- **İnsan döngüde.** Hat taslak üretir; slogan seçimi, tipografi ve son karar tasarımcının.
-
-## Bu konunun tek cümlesi
-
-> Bir ayarlar dosyasıyla çalışan hat, halkaları birbirine bağlar; biteni yeniden üretmez, kopanı kayda geçirip devam eder ve
-> her şeyi tek bir klasörde, üretim günlüğüyle birlikte bırakır.
+1. Hücreyi ikinci kez çalıştırdığında Adım 1 ne yazar? Modele istek gider mi? Neden?
+2. Adım 2'de model 3 denemede de cevap vermezse klasörde hangi dosyalar olur? Ertesi gün hücreleri yeniden çalıştırınca
+   kaç istek gider?
+3. "Afişteki tarih bir hafta sonuna mı denk geliyor?" Bunu model mi yapmalı, Python mı? Neden?
+4. "Afiş metni müşterinin ses tonuna uyuyor mu?" Bunu model mi yapmalı, Python mı?
+5. Kontrastı 3,8 olan bir renk başlıkta kullanılabilir mi, küçük dipnotta?
+6. Renk kontrolü bir rengi "zor okunur" diye işaretledi ama o renk bir süs çizgisi. Raporu nasıl düzeltirsin?
 
 ## Sözlükçe
 
-| Terim | Anlamı |
-|---|---|
-| **Hat (pipeline)** | Bir adımın çıktısının bir sonrakinin girdisi olduğu adımlar dizisi |
-| **Halka** | Hattın bir adımı: slogan, görsel |
-| **Ara çıktı** | Bir halkanın ürettiği, sıradaki halkaya giden sonuç (ör. `sloganlar.json`) |
-| **Yapılandırma dosyası (config)** | Programın ayarlarını koddan ayrı tutan dosya (`ayarlar.json`) |
-| **Çalışma klasörü** | Bir brifin bütün çıktılarının toplandığı klasör |
-| **Kayıt** | Bir işin girdisi, çıktısı ve sonucu (bir sözlük) |
-| **Üretim günlüğü** | Hattın ayarlarını, ara çıktılarını ve bütün kayıtlarını tutan dosya (`uretim.json`) |
-| **`.strip()` / `.replace(a, b)`** | Baştaki ve sondaki boşlukları silmek / metindeki `a`'ları `b` ile değiştirmek |
-| **`os.makedirs(klasor, exist_ok=True)`** | Klasörü (gerekirse üst klasörüyle birlikte) açmak; zaten varsa hata vermemek |
-| **`os.path.exists(yol)`** | "Bu yolda bir dosya var mı?" sorusu: `True` ya da `False` (Konu 8) |
+- **Üretim hattı:** arka arkaya çalışan adımlardan oluşan, her adımın sonucunu saklayan ve bozulan adımdan devam edebilen program.
+- **Ara çıktı:** bir adımın dosyaya kaydedilmiş sonucu (`okunan.txt`, `yazim.txt`).
+- **Kontrast oranı:** iki rengin açıklık farkı; 1 ile 21 arası. Küçük yazıda en az 4,5, büyük başlıkta en az 3.
+- **WCAG:** web içeriğinin herkes için erişilebilir olması için yazılmış uluslararası kurallar; kontrast eşikleri buradan.
+- **HEX renk:** `#1F3A5F` gibi yazılan renk kodu; ilk iki hane kırmızı, sonraki ikisi yeşil, son ikisi mavi.
+- **Kota:** ücretsiz hesabın günlük istek hakkı; ara çıktı onu korur.
+- **`os.path.exists(yol)`:** dosya varsa `True`, yoksa `False`.
 
-## Ödev
-
-`odevler/odev10.md` (puansız): kendi projenin hat iskeleti. Kendi ayarlar dosyan, iki halka çalışıyor (metin ve görsel),
-panosu ve üretim günlüğü. Güzel olması gerekmiyor; final projesinin ilk taslağı.
-
-## Sonraki konu
-
-Bu hatta adımların sırasını sen belirledin. Konu 11'de modele bilmediği bir belgeyi okutacağız, Konu 12'de sırayı model belirleyecek.
-
----
-
-## Kendini dene — cevaplar
-
-1. Her çalıştırmada yeni bir klasör açılır; içinde hiçbir şey "zaten var" olmaz. Üç çalıştırmada 9 slogan, 9 görsel üretilir:
-   kota üç kat harcanır ve her klasörde başka sloganlar olur. Kaldığı yerden devam için klasörün adı kararlı olmalı.
-2. Yönerge sloganlardan ve ayarlardan her seferinde aynı biçimde, bedavaya kurulur. Slogan ise hem istek harcar hem her
-   seferinde farklı çıkar (sıcaklık); yeniden üretilirse görsellerle uyuşmaz.
-3. `Dosyadan okundu` ve eski (kafe) sloganlar; görseller de `Zaten var`. Program klasör adına bakıyor, konuya değil. Yeni brif için
-   `calisma` adını değiştir.
-4. Dördüncü ve beşinci görsel hiç denenmezdi; neyin eksik olduğunu klasöre bakarak bulman gerekirdi. Kopan halka kayda geçince
-   hat devam eder ve eksik günlükte yazar.
-5. Görsel modeller harfleri çoğu zaman bozar ve yazının yerine, biçimine tasarımcı karar vermeli. Slogan afişe tasarımcının
-   elinde (bir tasarım programında) dizilir; hat görseli ve sloganı taslak olarak hazırlar.
-6. `None` "görsel üretilemedi, dosya yok" demek. Halka buna bakmasaydı her kayda `uretildi` yazardı: günlük, olmayan bir dosyayı
-   var gösterirdi ve eksikleri günlükten bulamazdın. Hata çıkmaması her şeyin yolunda olduğunu göstermez.
-7. Kendine. Genellikle: metin (slogan, başlık), görsel, pano. Metin halkasının çıktısı mutlaka saklanmalı: her seferinde farklı
-   çıkar ve sonraki halkalar ona dayanır. Görseller de: kotadan yer.
+Sıradaki konu: hat afişi denetledi ama müşterinin kurallarını bilmiyor ("kafe" değil "çalışma evi" de, turuncu
+kullanma). Konu 11'de hatta bir hafıza vereceğiz: müşterinin notlarını hatırlayan bir arama.

@@ -1,74 +1,52 @@
-# Konu 11 Ödevi — Kendi kılavuzun, kendi RAG'in
+# Konu 11 Ödevi — Kendi müşterinin hafızası
 
-**Puan yok.** Konu 12'nin başında sıradaki arkadaşlar gösterecek.
+**Puan yok.** Konu 12'nin başında birkaç arkadaş gösterecek.
 
-Bu ödev kendi `anahtar.txt` dosyanı ister (Konu 2). Yaklaşık 7 vektör isteği, 5 metin isteği ve 1 görsel isteği gönderir;
-afişi yeniden ürettiğin her seferde bir görsel daha. Hepsi günlük kotanın küçük bir kısmı.
+Konu 8'de seçtiğin müşteri (öğrenci kulübü, ailenin dükkânı, kendi markan, bir arkadaşının işletmesi) için bir
+müşteri hafızası kuruyorsun. Final projende küçük bir RAG adımı zorunlu: bu hafıza o adımın temeli olacak, o yüzden
+gerçekten kullanacağın bir müşteri seç.
 
-Bu ödevde Sayfa Kahve'nin yerine **kendi** markanı koyuyorsun: kısa bir kılavuz yazıp modele ona bakarak cevap verdiriyorsun.
-Final projen için bir marka ya da kampanya düşünüyorsan onu seç; kılavuz final projesinde de işine yarar. (Final projende kılavuzdan bilgi çeken küçük bir RAG adımı zorunlu; bu ödevde yazdığın kılavuzu orada kullanabilirsin.)
+Bu ödev kendi `anahtar.txt` dosyanı ister. Yaklaşık 10 istek gönderir; günlük ücretsiz kotanın küçük bir parçası.
 
----
+## 1. Notlarını yaz
 
-## Ne yapacaksın?
+`11-rag` klasöründe yeni bir metin dosyası aç: `odev11_notlar.txt`. İçine **en az 8 not** yaz, her not tek satırda,
+Sayfa Kahve'nin notlarıyla aynı biçimde: `Kaynak, kanal, tarih: not`.
 
-### 1. Kılavuzunu yaz
+- Müşterinin istekleri (en az 4): renk, yazı, fotoğraf, yasak sözcükler, teslim biçimi...
+- Aldığın eleştiriler (en az 2): jüri, hoca, bir arkadaşın ya da müşterinin kendisi.
+- İşle doğrudan ilgisi olmayan bir not (en az 1): ödeme günü, matbaa saati, teslim yeri.
+- Her not tek bir şey söylesin. "Bu renk" yerine rengin adını yaz.
+- Gerçek bir müşteriyse telefon, adres, fatura bilgisi yazma; notlar modelin sunucusuna gider.
 
-`11-rag` klasöründe yeni bir metin dosyası aç: `odev11_kilavuz.txt` (VS Code'da **New File**). İçine kendi markanın
-kılavuzunu yaz:
+## 2. Hafızanı kur ve soru sor
 
-- **8–12 paragraf**, her paragraf **tek satırda** (paragrafın içinde Enter'a basma; satır sonu yeni paragraf demek).
-  Paragrafların arasında boş satır bırakabilirsin; kod boş satırları atlar.
-- Her paragraf **tek bir konu**: ana renkler, kullanılmayan renkler, yazı tipi, logo, ses tonu, yasak sözcükler, görsel tarzı,
-  ne gösterilir / ne gösterilmez, bir pratik bilgi (açılış saati, teslim süresi...).
-- Her paragraf kendi başına okununca anlaşılsın: "Bu renk" yerine rengin adını yaz.
-- Somut ol: "sıcak renkler" yerine "kiremit (#B5543C) ve krem (#F2E8D5)".
-- Marka uydurma olabilir. Gerçek bir müşterinin gizli belgesini, kişisel bilgileri yazma: bu metin modelin sunucusuna gider.
+`ders.ipynb`'yi aynı klasörde yeni bir adla kopyala (ör. `odev11-ayse.ipynb`). Kopyada:
 
-Örnek için `veri/kilavuz.txt`'ye bak; ama kopyalama.
+- Isınmadaki `veri/notlar.txt`'yi `odev11_notlar.txt` yap.
+- Kendi kılavuzun yoksa Adım 1'de `hafizayi_kur(kilavuz + notlar)` yerine `hafizayi_kur(notlar)` yaz.
+- Adım 2'nin ve Adım 3'ün sorularını kendi müşterinin sorularıyla değiştir.
 
-### 2. Defteri kendi kılavuzuna çevir
+**3 soru** sor: biri cevabı notlarında açıkça olan, biri iki notu birlikte gerektiren, biri cevabı notlarında
+**hiç olmayan** bir soru. Her soru için gelen notları ve modelin cevabını kaydet.
 
-`ders.ipynb`'yi aynı klasörde yeni bir adla kopyala (ör. `odev11-ayse.ipynb`). Kopyada yalnızca şu satırları değiştir:
+## 3. Bir not ekle, cevap değişsin
 
-| Adım | Satır | Yerine |
-|---|---|---|
-| 1 | `soru = "Sayfa Kahve'nin afişinde ..."` | Kendi markan hakkında, **cevabı kılavuzunda olan** bir soru |
-| 2 | `open("veri/kilavuz.txt", ...)` | `open("odev11_kilavuz.txt", ...)` |
-| 3 | `vektor_dosyasi = klasor + "kilavuz_vektorleri.json"` | `vektor_dosyasi = klasor + "odev11_vektorleri.json"` |
-| 6 | `fiyat_sorusu = "..."` | Cevabı kılavuzunda **hiç olmayan** bir soru |
-| 7 | `brif = "..."` ve `arama = "..."` | Kendi afişinin konusu; kılavuzunun görsel kurallarını arayan bir soru |
-| 7 | `ciz(..., "ciktilar/afis_kilavuzlu.jpg")` | `"ciktilar/odev11_afis.jpg"` |
-| Bonus 3 | `yazi_sorusu = "..."` | Cevabı kılavuzunda **yarım** olan bir soru (kılavuz bir şeyi tarif ediyor ama tam söylemiyor) |
-
-Vektör dosyasının adını değiştirmen önemli: değiştirmezsen Adım 3 dersteki dosyayı görür ve Sayfa Kahve'nin vektörlerini
-okur; senin kılavuzun hiç aranmaz.
-
-Isınmadan başlayıp **Adım 7'nin sonuna kadar** sırayla çalıştır, sonra yalnızca Bonus 3'ün iki hücresini. Kılavuzunda sonradan
-bir şey değiştirirsen `ciktilar/odev11_vektorleri.json`'u sil ve Adım 2'den yeniden çalıştır.
-
-### 3. Oku ve karşılaştır
-
-Her soruda iki şeye bak: hangi paragraflar geldi (Adım 4'ün, Adım 6'nın ve Bonus 3'ün ilk çıktısı), model bunlarla ne yaptı?
-
----
+Müşterinden yeni bir mesaj gelmiş gibi bir not ekle (Adım 4'teki gibi, dosya `odev11_notlar.txt`). Üç sorudan
+birini yeniden sor ve cevabın değiştiğini göster.
 
 ## Teslim edeceğin
 
-1. Kılavuzun: `odev11_kilavuz.txt`
-2. Defter kopyan, **çıktılarıyla birlikte kaydedilmiş** hâlde (anahtarın defterde görünmez; `rag_araclari.py` onu kendisi okur)
-3. Afişin: `ciktilar/odev11_afis.jpg`
-4. **Üç cümle:**
-   - Model nerede kılavuzuna sadık kaldı, nerede uydurdu? (Üç sorudan birini örnek ver.)
-   - Afişte kılavuzuna uymayan bir şey var mı? Kural aramada mı, yönergede mi, çizimde mi kayboldu?
-   - Bu sonuçlardan sonra kılavuzunda neyi değiştirirdin (bir paragrafı böler miydin, bir kuralı daha açık mı yazardın)?
+1. `odev11_notlar.txt` (eklediğin not dahil)
+2. Defter kopyan, **çıktılarıyla birlikte kaydedilmiş** hâlde
+3. **Üç cümle:**
+   - Hangi soruda arama doğru notları getirdi, hangisinde kaçırdı?
+   - Cevabı notlarında olmayan soruda model "notlarda yok" dedi mi?
+   - Not ekleyince cevap nasıl değişti?
 
-`anahtar.txt`'yi **gönderme**. Teslimden önce defter kopyanda anahtarını bir hücreye yazmadığından emin ol.
-
----
+`anahtar.txt`'yi **gönderme**; defter kopyanda anahtarını bir hücreye yazmadığından emin ol.
 
 ## İstersen (zorunlu değil)
 
-Kılavuzuna aynı konuyu iki yerde anlatan iki paragraf ekle (ör. renkler hem genel bölümde hem "ambalaj" paragrafında).
-Vektör dosyasını silip yeniden çalıştır ve renk sorusunu yeniden sor. İki paragraf birlikte geldi mi? Cevap daha mı iyi
-oldu, daha mı karışık? Bir cümle.
+Notlarına bir öncekiyle çelişen bir not ekle (ör. önce "yeşil kullanalım", sonra "yeşili bırakalım"). Aynı soruyu
+sor: model hangisine uydu, çelişkiyi fark etti mi? Bir cümle.

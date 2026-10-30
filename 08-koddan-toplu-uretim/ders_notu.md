@@ -1,628 +1,251 @@
-# Konu 8 — Koddan Görsel ve Toplu Üretim
+# Konu 8 — Bir haftalık gönderi seti
 
-Bu not konunun özetidir; derste çalıştırdığımız `ders.ipynb` defteriyle **aynı sırada**
-ilerler: Isınma, sonra Adım 1–6 ve Bonus. Derste kaçırdığın bir yer olursa
-buradan oku, sonra defterde o adımın hücrelerini çalıştır. Nottaki kod blokları
-defterdeki hücrelerin birebir aynısı.
+Bu not `ders.ipynb` defteriyle **aynı sırada** ilerler (Isınma, Adım 1–5, Bonus); kod blokları defterdeki
+hücrelerin birebir aynısı. Kaçırdığın yeri buradan oku, sonra defterde o adımın hücrelerini çalıştır.
 
-**Konu 7'de:** görselleri hazır bir araçla (`gorsel_araci.py`) tek tek ürettik; yönergeyi ve tohumu bilerek değiştirdik.
-**Bu konuda:** önce aynı işi koddan, dosyanın adını kendimiz koyarak yapıyoruz. Sonra arayüzün yapamadığına geçiyoruz:
-bir görsel **ızgarası**. "Neden kod öğreniyorum?" sorusunun cevabı bu konu:
+**Konu 7'de:** görselleri bir arayüz gibi kullandığımız hazır bir araçla tek tek ürettik; yönergenin
+parçalarını ve kontrollü deneyi gördük.
+**Bu konuda:** sosyal medya tasarımcısının en sık yaptığı işi koddan yapıyoruz. Müşteri haftalık
+içerik takvimini gönderiyor; her gün için bir gönderi (4:5) ve aynı görselden bir hikâye (9:16)
+hazırlıyor, hepsini tek bir onay sayfasıyla müşteriye yolluyoruz.
 
-> Bir şablon ve iki liste: stiller × renkler, birkaç hücre. Önce hesap, sonra küçük bir deneme. Sınır koyarız;
-> iş yarıda kalırsa kaldığı yerden sürer, her şey kayda geçer. Sonunda hepsi tek bir kontak sayfasında.
+> Görseli yapay zekâ üretir; geri kalan her şeyi (takvimi okumak, başlığı yazmak, ölçüye uyarlamak,
+> onay sayfası, günlük) Python yapar. Bir kez üret, çok kez uyarla. Her üretimi kayda geçir.
 
-**Konunun sonunda elinde:** `ciktilar/` klasöründe iki tek görsel; `izgara/` klasöründe 12 görsel, hepsini gösteren bir
-kontak sayfası (`kontak_sayfasi.png`) ve her görselin nasıl üretildiğini kaydeden bir günlük (`uretim_gunlugu.json`).
-Alıştırmada toplu üretimin döngüsünü ve kontak sayfasını kendi elinle yazacaksın.
+**Bugünün müşterisi:** Sayfa Kahve, üniversitenin yanındaki sessiz bir çalışma kafesi. Kılavuzu
+`../11-rag/veri/kilavuz.txt` dosyasında: mürekkep mavisi (#1F3A5F) ve kâğıt beyazı (#F4F1EA), kırmızı
+ve turuncu hiç yok, iki renkli risograf baskı tarzı, insan yüzü yok, serifli başlıklar, fısıltı gibi bir
+ses tonu ("indirim", "kampanya" yok; ünlem yok).
 
-**Kurulum:** yeni kütüphane yok. `git pull` ile konu klasörü geldikten sonra `gita3111` klasöründe
-bir kez `uv sync` çalıştır. `os` ve `json` Python'un içinde geliyor.
+**Konunun sonunda elinde:** `ciktilar/` klasöründe beş gönderi, beş hikâye, bir onay sayfası
+(`onay_sayfasi.jpg`) ve bir üretim günlüğü (`gunluk.csv`).
 
-**Anahtar:** Isınma anahtarsız. Adım 1'den itibaren defter `anahtar.txt` ister (Konu 2'deki dosya, `gita3111`
-klasöründe). Defterin ana akışı 15 görsel üretir; Bonus ile en fazla 21 görsel ve görsel anlayan bir modele 13 soru.
-Hepsi ücretsiz günlük kotaya sığar.
+**Kota:** ana akış 7 görsel üretir, Bonus'la 10. Her görsel ücretsiz günlük kotadan yer; yazı, ölçü ve
+onay sayfası yemez.
 
-> **Bu nottaki çıktılar hakkında.** Isınma, Adım 2 ve Adım 3'ün çıktıları her bilgisayarda aynıdır. Görseller
-> ve modelin cevapları gerçek modelden gelir; senin ekranında farklı olur.
+## Isınma — Takvimde ne var?
 
----
-
-## Isınma: kaç kombinasyon?
-
-Bir kafe afişi için üç stil ve dört renk paleti deneyeceğiz. Her stil her renkle bir kez: **kombinasyon**.
+**İçerik takvimi**, bir haftanın ya da ayın paylaşım planıdır: hangi gün, hangi başlık, hangi görsel.
+Müşteriler çoğu zaman bir tabloyla gönderir. Bizimki `veri/takvim.csv`: her satır bir gün, sütunlar
+`gun`, `baslik`, `sahne`. Sahnenin içinde virgül olduğu için tırnak içinde yazılı; `csv` bunu kendisi çözer.
 
 ```python
-stiller = ["suluboya", "vektor", "linol"]
-renkler = ["adacayi", "gece", "pastel", "toprak"]
+import csv
 
-for stil in stiller:
-    for renk in renkler:
-        print(stil, renk)
+with open("veri/takvim.csv", encoding="utf-8-sig") as dosya:
+    okuyucu = csv.DictReader(dosya)
+    takvim = list(okuyucu)
+
+for satir in takvim:
+    print(satir["gun"], "·", satir["baslik"])
 ```
 
-Çıktı: 12 satır (`suluboya adacayi`, `suluboya gece`, ... `linol toprak`).
+- `csv.DictReader` her satırı bir sözlüğe çevirir; anahtarlar sütun adları (Konu 3).
+- `utf-8-sig`: Excel'in dosyanın başına koyduğu görünmez işareti atlar. O işaret okunursa ilk sütunun
+  adı `gun` değil görünmez bir harfle başlayan başka bir ad olur ve `KeyError: 'gun'` alırsın.
+- Başlıklar Türkçe, sahneler İngilizce: sahne görsel modeline gider (modeller İngilizceyi daha iyi
+  anlıyor, Konu 7), başlığı Python yazar.
 
-- **İç içe döngü:** dıştaki döngü bir stil seçer; içteki döngü o stil için bütün renkleri gezer. Sonra
-  dıştaki döngü bir sonraki stile geçer. Her stil dört kez, her renk üç kez görünür.
-- `print` satırı **iki girinti** içeride: bir girinti `for stil`'in, ikincisi `for renk`'in içinde olduğunu
-  gösterir. Girinti kayarsa ya hata alırsın ya da bazı kombinasyonlar sessizce kaybolur (bkz. alıştırma).
+5 gönderi + 5 hikâye = 10 dosya, ama modele **5 istek** gider: hikâye için yeni görsel üretmiyoruz, aynı
+görseli Python dikey ölçüye yerleştiriyor. **Üretmek kota yer, uyarlamak yemez.**
 
-Satırları tek tek saymak yerine çarpabiliriz:
+## Adım 1 — Pazartesi'nin gönderisi
 
-```python
-print(len(stiller) * len(renkler))
-```
+`uretim.py` bu klasördeki yardımcı dosya. Defterde onun fonksiyonlarını çağırıyoruz:
 
-Çıktı: `12`. 5 stil ve 6 renk: 5 × 6 = 30. Elimizdeki 3 × 4'e bir renk eklersen 3 × 5 = 15; üstüne iki stil daha
-eklersen 5 × 5 = 25. Liste büyüdükçe görsel sayısı **çarpılarak** büyür. Arayüzde bunların her biri ayrı bir yönerge,
-ayrı bir "üret" ve ayrı bir "indir" demek.
-
----
-
-## Adım 1 — Aynı iş koddan: tek görsel
-
-```python
-from uretim import ciz
-import matplotlib.pyplot as plt
-```
-
-- `uretim.py` bu klasördeki yardımcı dosya. Görsel üretmenin bütün ayrıntısı (isteği göndermek, cevabı çözmek,
-  dosyaya yazmak) onun içinde; **içini okuman gerekmiyor**. Bize üç fonksiyon veriyor: `ciz`, `sabirli_ciz` (Adım 4)
-  ve `gorsele_sor` (Bonus).
-- `ciz(yonerge, tohum, yol)` görseli üretir ve `yol`a kaydeder. Başarılıysa `yol`u, olmazsa `None` ("hiçbir şey") verir.
-  Klasör yoksa kendisi açar.
-- `uretim.py` anahtarı `../anahtar.txt`'den bir kez, bu hücre ilk çalıştığında okur. `anahtar.txt`'yi sonradan
-  düzeltirsen çekirdeği yeniden başlat (**Restart**) ve hücreleri baştan çalıştır.
-- `matplotlib`'i görseli defterde göstermek için alıyoruz (Konu 6).
-
-Yönergeyi parçalardan kuruyoruz ve ilk görseli üretiyoruz:
-
-```python
-ozne = "a ceramic coffee cup on a wooden desk next to an open notebook, soft morning light"
-stil_metni = "watercolor illustration"
-yonerge = ozne + ", " + stil_metni
-
-sonuc = ciz(yonerge, 42, "ciktilar/ilk.jpg")
-print(sonuc)
-```
-
-Çıktı: `ciktilar/ilk.jpg` (istek başarısızsa önce `İstek başarısız, durum kodu: ...`, sonra `None`).
-
-- `ozne` bütün görsellerde aynı kalacak: şablonun sabit kısmı. `stil_metni` değişecek. Yönerge İngilizce (Konu 7).
-- Dosyanın yolunu **sen** seçiyorsun: `ciktilar` klasörü, içinde `ilk.jpg`. Görseli VS Code'un sol panelinde
-  `ciktilar` klasörünü açıp tıklayarak görebilirsin.
-
-Defterde göstermek için:
-
-```python
-resim = plt.imread("ciktilar/ilk.jpg")
-plt.imshow(resim)
-plt.axis("off")
-plt.show()
-```
-
-`plt.imshow` Konu 6'dan tanıdık: orada bir sayı tablosunu resim olarak çiziyordu. `plt.imread` görsel dosyasını okuyup
-böyle bir sayı tablosuna çevirir; `plt.imshow` onu çizer, `plt.axis("off")` kenardaki sayıları gizler.
-
-**Konu 7'den farkı:** Konu 7'deki `ciz` dosyaya kendisi bir sıra numarası veriyordu (`001.jpg`, `002.jpg`...).
-Bugünkü `ciz` yolu senden istiyor. Bu farkın neden önemli olduğu Adım 4'te ortaya çıkıyor.
-
-**Programı kullanıcıya açmak.** `input` (GİTA2112'den tanıdık) kullanıcıya bir soru sorar ve yazdığını metin olarak
-verir. VS Code'da ekranın üstünde bir kutu açılır; yönergeni İngilizce yazıp **Enter**'a basarsın.
-
-```python
-istek = input("Yönerge (İngilizce): ")
-sonuc = ciz(istek, 7, "ciktilar/benim.jpg")
-print(sonuc)
-```
-
-Kodu bilmeyen biri de bu hücreyle görsel üretebilir. Kutuyu boş bırakıp Enter'a basarsan model boş yönergeyi kabul etmez:
-`İstek başarısız, durum kodu: 400`.
-
-Defterdeki tahmin sorusu: aynı yola (`ciktilar/benim.jpg`) bu kez fincanın yönergesiyle çizersek senin görseline ne olur?
-
-```python
-sonuc = ciz(yonerge, 7, "ciktilar/benim.jpg")
-print(sonuc)
-```
-
-Senin görselin gider, yerinde fincan olur. Uyarı yok, geri dönüşüm kutusu yok: aynı yola yazılan dosya eskisinin
-**üzerine yazılır**. Tek tek üretirken her görsele ayrı bir ad vermek senin işin. Adım 4'te bu kuralı tersinden
-kullanacağız: dosya zaten varsa hiç üretme.
-
----
-
-## Adım 2 — Şablon ve kartlar
-
-Dosya adı için kısa ve Türkçe karaktersiz adlar (`suluboya`) kullanıyoruz; modele ise İngilizce açıklamalar
-(`watercolor illustration`) gidecek. İkisini **sözlükte** eşliyoruz (Konu 1):
-
-```python
-stil_yonergeleri = {
-    "suluboya": "watercolor illustration",
-    "vektor": "flat vector poster",
-    "linol": "linocut print",
-}
-renk_yonergeleri = {
-    "adacayi": "sage green and beige palette",
-    "gece": "deep navy and warm amber palette",
-    "pastel": "soft pastel palette",
-    "toprak": "terracotta and olive palette",
-}
-print(stil_yonergeleri["linol"])
-```
-
-Çıktı: `linocut print`.
-
-- Sözlüğün anahtarı kısa ad, değeri yönerge parçası. `stil_yonergeleri["linol"]` → `"linocut print"`.
-- `stiller` ve `renkler` Isınma'daki listeler; sözlükler bu listelerdeki her kısa ada bir yönerge parçası verir.
-- Bu adım ve Adım 3 istek göndermiyor.
-
-Her kombinasyonun bütün bilgisini bir **kart** içinde tutacağız: bir sözlük. Önce tek bir kartı elle yazıyoruz:
-
-```python
-kart = {
-    "stil": "suluboya",
-    "renk": "gece",
-    "yol": "izgara/suluboya_gece.jpg",
-    "yonerge": ozne + ", watercolor illustration, deep navy and warm amber palette",
-    "tohum": 42,
-}
-print(kart["yol"])
-```
-
-Çıktı: `izgara/suluboya_gece.jpg`. Kartın içinde stil, renk, dosyanın yolu, yönergenin tamamı ve tohum var.
-
-Şimdi aynı kartı her kombinasyon için döngüyle kuruyoruz:
-
-```python
-klasor = "izgara/"
-kartlar = []
-for stil in stiller:
-    for renk in renkler:
-        stil_metni = stil_yonergeleri[stil]
-        renk_metni = renk_yonergeleri[renk]
-        kart = {
-            "stil": stil,
-            "renk": renk,
-            "yol": klasor + stil + "_" + renk + ".jpg",
-            "yonerge": ozne + ", " + stil_metni + ", " + renk_metni,
-            "tohum": 42,
-            "model": "flux-1-schnell",
-            "brif": "sessiz bir çalışma kafesi için afiş",
-            "durum": "denenmedi",
-        }
-        kartlar.append(kart)
-
-print(len(kartlar))
-```
-
-Çıktı: `12`.
-
-- `klasor` ızgaranın klasörü. Her kartın yolu klasör + stil + `_` + renk + `.jpg`: aynı kart her zaman aynı yolu alır.
-  Adım 4'teki "kaldığı yerden devam" buna dayanıyor.
-- Önce iki yönerge parçasını sözlükten okuyup ayrı değişkenlere alıyoruz (`stil_metni`, `renk_metni`); sonra kartı kuruyoruz.
-- Kartta üç alan daha var: `"model"`, `"brif"` ve `"durum"`. Kart hem üretimi yönetecek hem günlük olacak (Adım 5).
-  `"durum": "denenmedi"` başlangıç değeri; üretim sırasında `"uretildi"` ya da `"olmadi"` olur.
-- Listeleri ya da sözlükleri değiştirirsen bu hücreyi yeniden çalıştır; yoksa kartlar eski kalır.
-- `kartlar.append(kart)`: kartı listeye ekler. Sonunda bir liste, içinde 12 sözlük.
-
-```python
-ilk_kart = kartlar[0]
-print(ilk_kart["yol"])
-print(ilk_kart["yonerge"])
-```
-
-Çıktı:
-
-```
-izgara/suluboya_adacayi.jpg
-a ceramic coffee cup on a wooden desk next to an open notebook, soft morning light, watercolor illustration, sage green and beige palette
-```
-
-Bu bir **şablon**: özne ve tohum sabit, stil ve renk düzenli olarak değişiyor. Konu 7'deki kontrollü deneyin
-iki eksenli hâli.
-
----
-
-## Adım 3 — Önce hesap: kota ve sınır
-
-Konu 2'den hatırla: Cloudflare kotayı **neuron** ile sayar ve günde 10.000 neuron ücretsiz. Bütün modeller (görsel,
-metin, görsel okuma) aynı kotadan yer. Cloudflare'in fiyat sayfasına göre bir görsel (1024 × 1024, 4 adım) yaklaşık
-58 neuron tutar. Sayfadaki sayılarla: görsel 512 × 512'lik 4 parça sayılıyor; parça başına 4,8, adım başına 9,6 neuron:
-4 × 4,8 + 4 × 9,6 ≈ 58. Günde kabaca 170 görsel eder. Bu bir tahmin; gerçekte ne kadar harcadığını Cloudflare panelinde
-görebilirsin.
-
-```python
-MAKS_URETIM = 12
-GORSEL_BASI_NEURON = 58
-
-tahmin = len(kartlar) * GORSEL_BASI_NEURON
-print("Kart sayısı:", len(kartlar))
-print("Tahmini kota:", tahmin, "/ 10000 neuron")
-if len(kartlar) > MAKS_URETIM:
-    print("Dikkat: kart sayısı sınırı aşıyor; bir çalıştırmada", MAKS_URETIM, "karttan sonra durulacak")
-```
-
-Çıktı:
-
-```
-Kart sayısı: 12
-Tahmini kota: 696 / 10000 neuron
-```
-
-- `MAKS_URETIM` bir çalıştırmada en fazla kaç görsel üretileceği. Büyük harfle yazılmış bir değişken:
-  Python'da "bunu değiştirme, sabit" demenin geleneği.
-- Kart sayısı sınırı aşarsa uyarı yazar; Adım 4'teki döngü sınırda durur. Şimdi yazmaz: 12 kart sınırı aşmıyor
-  (Bonus 3'te listeyi büyütünce görürsün).
-
----
-
-## Adım 4 — Toplu üretim: önce küçük bir deneme
-
-```python
-import os
-from uretim import sabirli_ciz
-```
-
-- `sabirli_ciz(yonerge, tohum, yol)`, `ciz`'in sabırlı hâli: istek başarısız olursa 5 saniye bekleyip yeniden dener,
-  en fazla üç kez. Sunucu bir an meşgulse ya da çok hızlı istek gönderdiysek (durum kodu 429) bu çoğu zaman yeter. Üçü de olmazsa
-  `None` verir; yani başarısız her kart 3 istek ve 10 saniye bekleme demek.
-- Günlük kota bittiyse beklemek işe yaramaz ve `sabirli_ciz` bunu ayırt etmiyor. Üst üste `429` görürsen hücreyi durdur
-  (hücrenin yanındaki kare düğme, **Interrupt**); kota yenilenince kaldığın yerden devam edersin.
-- `os` Python'la birlikte gelen bir modül: dosya ve klasör işlerini yapar, kurulum istemez. `os.path.exists(yol)`, "bu yolda
-  bir dosya var mı?" sorusunu cevaplar: `True` ya da `False`.
-
-```python
-def toplu_uret(liste, sinir):
-    denenen = 0
-    for kart in liste:
-        yol = kart["yol"]
-        if os.path.exists(yol):
-            kart["durum"] = "uretildi"
-            print("Zaten var, atlıyorum:", yol)
-            continue
-        if denenen >= sinir:
-            print("Sınıra geldim, duruyorum")
-            break
-        sonuc = sabirli_ciz(kart["yonerge"], kart["tohum"], yol)
-        denenen = denenen + 1
-        if sonuc is None:
-            kart["durum"] = "olmadi"
-            print("Olmadı, atlıyorum:", yol)
-        else:
-            kart["durum"] = "uretildi"
-            print("Kaydedildi:", yol)
-    print("Bu çalıştırmada denenen:", denenen)
-```
-
-- Döngü bir fonksiyonda, çünkü onu farklı sınırlarla iki kez çağıracağız: `toplu_uret(liste, sinir)` bir kart
-  listesi ve bir sınır alır. `sinir` bu çalıştırmada en fazla kaç görsel deneneceği.
-- **Zaten varsa** atla: `continue` bu kartı bırakır, döngünün başına döner, sıradakine geçer. Dosya varsa daha önce
-  üretilmiştir; o yüzden durumu `uretildi`.
-- **Sınıra geldiysen** dur: `break` döngüyü tamamen bitirir.
-- Değilse üret. Kartın içine sonucunu yaz: `kart["durum"] = "uretildi"` ya da `"olmadi"`. Sözlükteki bir değer böyle
-  değiştirilir; anahtar yoksa eklenir (Bonus'taki `model_puani` gibi).
-- `sonuc is None`: "sonuç hiçbir şey mi?" `sabirli_ciz` üç denemede de başaramadıysa `None` verir; soru `True` olur.
-- `denenen` üretmeyi denediğimiz kartları sayar; atlanan kartlar sayılmaz. Sınır bu sayaca bakar.
-- Adım 1'deki üzerine yazma tehlikesi burada işe yarar bir kurala dönüşüyor: aynı kart her zaman aynı yolu aldığı için
-  "zaten var mı?" sorusu **kaldığı yerden devam** demek.
-
-Önce küçük bir deneme:
-
-```python
-toplu_uret(kartlar, 3)
-```
-
-Üç görsel gelir ve `Sınıra geldim, duruyorum` yazılır. `izgara/` klasörüne bak; beğendiysen asıl sınırla devam:
-
-```python
-toplu_uret(kartlar, MAKS_URETIM)
-```
-
-İlk üç kart **atlanır**, kalan dokuzu üretilir: program kaldığı yerden devam eder. (İlk denemede bir kart olmadıysa
-o da yeniden denenir: dosyası yok.) Bir dosyayı silip yeniden çalıştırırsan yalnızca o kart üretilir. Kota biterse ya da
-internet koparsa, sonra aynı hücreyi çalıştırmak yeter.
-
-| Konu 7'nin dosya adı | Bugünkü dosya adı |
-|---|---|
-| `001.jpg`, `002.jpg`, ... | `suluboya_adacayi.jpg` |
-| Her kayıt yeni bir numara: hiçbir şey üzerine yazılmaz | Aynı kart aynı ad: zaten varsa atlanır, kaldığı yerden devam edilir |
-| Adına bakıp ne olduğunu bilemezsin | Adı stil ve rengi söylüyor |
-
-**Dikkat:** yolda olmayan bir şeyi (ör. `ozne`'yi ya da tohumu) değiştirip yeniden çalıştırırsan program bunun yeni
-bir iş olduğunu bilemez ve eski görselleri atlar. Öyle bir değişiklikte Adım 2'deki `klasor`'u da değiştir
-(ör. `"izgara2/"`).
-
----
-
-## Adım 5 — Üretim günlüğü: kartları JSON'a yaz
-
-Kartlar zaten günlüğün kendisi: her birinde stil, renk, yol, yönergenin tamamı, tohum, model, brif ve sonuç
-(`durum`) var. Hepsini ızgaranın klasörüne bir **JSON** dosyası olarak yazıyoruz:
-
-```python
-import json
-
-gunluk_yolu = klasor + "uretim_gunlugu.json"
-with open(gunluk_yolu, "w", encoding="utf-8") as dosya:
-    json.dump(kartlar, dosya, ensure_ascii=False, indent=2)
-
-print("Günlük yazıldı:", gunluk_yolu)
-```
-
-Çıktı: `Günlük yazıldı: izgara/uretim_gunlugu.json`.
-
-- `json.dump(kartlar, dosya, ...)`: listeyi dosyaya JSON olarak yazar. Önce yazılacak şey, sonra dosya.
-- `ensure_ascii=False`: Türkçe harfler (`brif` alanındaki ç ve ş) `\u00e7` gibi kodlara dönüşmesin, olduğu gibi yazılsın.
-- `indent=2`: her kart ayrı satırlarda, okunur biçimde.
-- JSON, Konu 2'de API'nin cevabındaki biçim: sözlükler ve listeler, metin olarak. İnsan da okuyabilir, program da
-  `json.load` ile geri okuyabilir (alıştırmada var).
-
-Dosyayı VS Code'da aç. Bir müşteri aylar sonra "şu görselin aynısı, yalnızca rengi farklı" derse yönergesi, tohumu ve
-modeli burada.
-
----
-
-## Adım 6 — Kontak sayfası: bütün ızgara tek sayfada
-
-Fotoğrafçılar filmdeki bütün kareleri tek kâğıda basıp en iyisini seçerdi: **kontak sayfası**. Konu 7'deki stil
-panosu tek satırdı, yalnızca stil değişiyordu; bizimki iki eksenli bir ızgara: satır sayısı stil sayısı, sütun sayısı
-renk sayısı.
-
-```python
-satir = len(stiller)
-sutun = len(renkler)
-
-plt.figure(figsize=(12, 9))
-sira = 1
-for kart in kartlar:
-    plt.subplot(satir, sutun, sira)
-    if os.path.exists(kart["yol"]):
-        resim = plt.imread(kart["yol"])
-        plt.imshow(resim)
-    plt.title(kart["stil"] + " / " + kart["renk"], fontsize=9)
-    plt.axis("off")
-    sira = sira + 1
-
-plt.savefig(klasor + "kontak_sayfasi.png", bbox_inches="tight")
-plt.show()
-```
-
-- Kod, Konu 6'daki `subplot` döngüsünün aynısı; bu kez birden çok satır var. `plt.subplot(satir, sutun, sira)` sayfayı `satir` × `sutun`
-  kutuya böler ve `sira`ncı kutuyu seçer.
-- `subplot` kutuları soldan sağa doldurur, satır bitince alttakine geçer. Kartlar stil stil sıralı olduğu için her
-  satır bir stil, her sütun bir renk olur.
-- Satır ve sütun sayısı listelerden geliyor: stil ya da renk ekleyince ızgara kendini ayarlar.
-- `plt.figure(figsize=(12, 9))`: sayfanın boyutu (genişlik, yükseklik; inç).
-- Görseli çizmeden önce `os.path.exists` ile soruyoruz: üretilemeyen kartın dosyası yok, `plt.imread` onu açamaz ve hata
-  verir. Böylece o kartın kutusu boş kalır; başlığı yine yazılır.
-- `fontsize=9`: başlığın yazı boyutu.
-- `plt.savefig`: sayfayı dosyaya kaydeder; `bbox_inches="tight"` kenardaki boşluğu kırpar. `plt.show()`'dan **önce**
-  gelmeli: gösterilen sayfa kapanır, sonradan kaydedilen dosya boş çıkar.
-
-Sayfaya tasarımcı gözüyle bak: hangi stil brife uyuyor? Hangi renk? Kartlar kontrollü kurulduğu için bir satırın
-hepsi kötüyse sorun stilde, bir sütunun hepsi kötüyse renkte. Kazananını yoluyla yaz:
-
-```python
-benim_secimim = "izgara/suluboya_adacayi.jpg"
-```
-
-Bugünün çıktısı `izgara/` klasöründe: 12 görsel, `kontak_sayfasi.png` ve `uretim_gunlugu.json`. Arayüzde on iki kez
-tekrarlanacak iş burada birkaç hücre tuttu; üstelik her görsel kayıtlı ve iş yarıda kalırsa kaldığı yerden sürüyor.
-
----
-
-## Bonus
-
-**1. Modele kendi çıktısını okutmak.** Ölçek büyüyünce ilk elemeyi bir **görsel anlayan** modele yaptırabiliriz.
-Böyle modellere **çok kipli** (multimodal) de denir: metni ve görseli birlikte okurlar. Bizimki Gemma.
-`gorsele_sor(yol, soru)` görseli ve soruyu ona gönderir, cevabı metin olarak verir.
-
-```python
-from uretim import gorsele_sor
-
-cevap = gorsele_sor(ilk_kart["yol"], "Describe this image in one short sentence.")
-print(cevap)
-```
-
-Soruyu İngilizce yazıyoruz (Konu 7: modeller çoğunlukla İngilizce metinle eğitildi). Sonra her görsele aynı soruyu
-soruyoruz: brife 1 ile 5 arasında ne kadar uyuyor?
-
-```python
-brif_ingilizce = "a poster for a quiet cafe where people come to study and work"
-soru = "On a scale of 1 to 5, how well does this image fit this brief: " + brif_ingilizce + "? Answer with only the number."
-
-for kart in kartlar:
-    if os.path.exists(kart["yol"]):
-        kart["model_puani"] = gorsele_sor(kart["yol"], soru)
-        print(kart["yol"], kart["model_puani"])
-
-print("Benim seçimim:", benim_secimim)
-```
-
-- `brif_ingilizce` ayrı bir değişkende: kendi brifine göre değiştirebilirsin.
-- Her kartın içine `model_puani` diye yeni bir alan ekleniyor. Model "yalnızca sayı" isteğine her zaman uymayabilir,
-  bir cümle de yazabilir; o yüzden cevabı olduğu gibi (metin) saklıyoruz. 12 istek birkaç dakika sürebilir.
-- Puanları günlüğe eklemek için Adım 5'in hücresini bir kez daha çalıştır.
-
-**Tartış:** en yüksek puanı alanlar arasında senin seçimin var mı? Model brifteki kelimeleri görselde neyle eşliyor
-olabilir? Bu bir **ilk eleme** aracı, karar verici değil: onun da bir zevki, bir yanlılığı var (Konu 3); son karar senin.
-
-**2. Tohum ekseni.** Seçtiğin kazananı (`benim_secimim`) üç farklı tohumla üret:
-
-```python
-for kart in kartlar:
-    if kart["yol"] == benim_secimim:
-        kazanan = kart
-
-for tohum in [1, 2, 3]:
-    yol = klasor + kazanan["stil"] + "_" + kazanan["renk"] + "_" + str(tohum) + ".jpg"
-    sonuc = sabirli_ciz(kazanan["yonerge"], tohum, yol)
-    print(sonuc)
-```
-
-- İlk döngü kazananın kartını listede bulur: yolu `benim_secimim`'e eşit olan kart.
-- Yola stil, renk ve tohum yazılıyor: her tohum ayrı bir dosya (`izgara/suluboya_adacayi_1.jpg` gibi). `str(tohum)`
-  sayıyı metne çevirir; yoksa metinle birleştirilemez.
-- Aynı yönerge, üç tohum: fark kompozisyonda mı, renkte mi, ayrıntıda mı? Hangisini müşteriye götürürdün?
-
-**3. Sınır gerçekten çalışıyor mu?** Isınma'daki `renkler` listesine ve Adım 2'deki `renk_yonergeleri` sözlüğüne bir
-palet ekle (ör. `"mono"` ve `"black and white palette"`). Isınma'yı, Adım 2'nin hücrelerini ve Adım 3'ü yeniden çalıştır
-(Adım 3 bu kez `Dikkat: kart sayısı sınırı aşıyor; ...` yazar: 15 kart, sınır 12), sonra:
-
-```python
-toplu_uret(kartlar, 2)
-```
-
-Üç yeni kart var (her stil için bir); sınır 2 olduğu için ikisi üretilir ve `Sınıra geldim, duruyorum` yazılır. Aynı hücreyi bir
-kez daha çalıştırırsan kalan bir kart üretilir. Kontak sayfasını yeniden çizersen ızgara 3 × 5 olur.
-
----
-
-## Defterin bölümleri
-
-| Adım | Ne yaptık | Elimizde ne oluştu | Anahtar |
-|---|---|---|---|
-| Isınma | İç içe döngüyle kombinasyonları saydık | `stiller`, `renkler` | gerekmez |
-| 1 | Tek görsel koddan; `input` ile yönerge; üzerine yazma | `ciz`, `ozne`, `yonerge`, `ciktilar/` (2 görsel) | gerekir |
-| 2 | Şablon: yönerge sözlükleri ve kartlar | `stil_yonergeleri`, `renk_yonergeleri`, `klasor`, `kartlar` | istek yok |
-| 3 | Kota hesabı ve sınır | `MAKS_URETIM` | istek yok |
-| 4 | Toplu üretim döngüsü: önce 3, sonra kalanı | `sabirli_ciz`, `toplu_uret`, `izgara/` (12 görsel) | gerekir |
-| 5 | Üretim günlüğü | `izgara/uretim_gunlugu.json` | istek yok |
-| 6 | Kontak sayfası; kendi seçimin | `izgara/kontak_sayfasi.png`, `benim_secimim` | istek yok |
-| Bonus | Görsel anlayan modelle eleme; tohum ekseni; sınırı denemek | `model_puani` alanları, tohumlu üç dosya | gerekir |
-
-Derste kendi başına çalışacağın defter: `alistirma.ipynb`. Önce aynı klasörde yeni bir adla kopyala,
-kopyada çalış. **Anahtar istemez ve görsel üretmez:** `veri/ornek_izgara/` klasöründeki hazır görsellerle çalışır
-(altı kartın dördünün görseli var, ikisi "üretilememiş"). Üç bölümü var:
-
-- **Kendin yaz:** toplu üretim döngüsünü (görsel üretmeden, `print` ile) ve 2 × 3'lük bir kontak sayfasını kendi elinle,
-  hücredeki boş satıra yazıyorsun. Kontak sayfasında kart listesi yok: yolları Isınma'daki iç içe döngüyle, Adım 2'deki kalıba göre
-  kendin kuruyorsun. Derste önce bunlar.
-- **Bozuk kodlar:** altı kısa hücre, birbirinden bağımsız. Üçü hata mesajı veriyor, üçü sessizce yanlış sonuç yazıyor.
-- **Kendi başına:** `BOSLUK` yazan yerleri doldurduğun yedi soru.
-
----
-
-## Sık karşılaşılan hatalar ve mesajlarını okumak
-
-| Ne görüyorsun | Sebebi | Ne yapmalı |
+| Fonksiyon | Ne yapar | Kim yapar |
 |---|---|---|
-| `IndentationError: expected an indented block after 'for' statement ...` | İçteki döngünün satırı yeterince içeride değil | İç döngünün satırları iki girinti içeride olmalı |
-| Kombinasyonların yalnızca bir kısmı yazılıyor | `print` (ya da `append`) iç döngünün dışına kaymış | Satırı iç döngünün hizasına al |
-| `ModuleNotFoundError: No module named 'uretim'` | Defterin kopyası konu klasörünün dışında | Kopya `uretim.py`'nin yanında, `08-koddan-toplu-uretim` klasöründe olmalı |
-| `FileNotFoundError: ... '../anahtar.txt'` (Adım 1) | Anahtar dosyası yok ya da yanlış yerde | `gita3111` klasöründe durmalı; sonra Adım 1'in ilk hücresini yeniden çalıştır |
-| `KeyError: 'ACCOUNT_ID'` (Adım 1) | `anahtar.txt`'de `=` yerine `:` ya da satır eksik | İki satır `AD = değer` biçiminde olmalı |
-| `NameError: name 'ciz' is not defined` | Adım 1'in ilk hücresi hata verdi ya da çalıştırılmadı | Önce o hücredeki hatayı düzelt |
-| `İstek başarısız, durum kodu: 401` | Anahtar yanlış | `anahtar.txt`'yi düzelt, çekirdeği yeniden başlat (**Restart**), baştan çalıştır: `uretim.py` anahtarı yalnızca ilk okumada alır |
-| `İstek başarısız, durum kodu: 400` (Adım 1, `input`) | Yönerge kutusu boş geçildi | Hücreyi yeniden çalıştır, bir yönerge yaz |
-| `FileNotFoundError: ... 'ciktilar/ilk.jpg'` (Adım 1) | `ciz` başarısız oldu, dosya yazılmadı | Üstteki hücrenin `İstek başarısız` satırına bak |
-| Görselim kayboldu, yerinde başka bir görsel var | Aynı yola ikinci kez çizildi: üzerine yazıldı | Her görsele ayrı bir ad ver (Adım 1'in dersi) |
-| `KeyError: 'suluboya '` ya da `KeyError: 2` | Sözlükte olmayan bir anahtar (fazla boşluk, sıra numarası) | Anahtar adını birebir yaz; kartlar sözlük: `kart["yol"]` |
-| `KeyError: 'mono'` (Adım 2) | Listeye eklenen kısa adın yönerge sözlüğünde karşılığı yok | Her kısa adı sözlüğe de ekle, sonra kart hücresini yeniden çalıştır |
-| `NameError: name 'os' is not defined` ya da `'sabirli_ciz'` | Adım 4'ün ilk hücresi çalıştırılmadı | Adım 4'ü baştan çalıştır |
-| `NameError: name 'toplu_uret' is not defined` | Adım 4'ün fonksiyon hücresi çalıştırılmadı | O hücreyi çalıştır |
-| `Bağlanamadım ya da cevap gelmedi` | İnternet yok ya da sunucu 2 dakikada (görsel anlayan model 3 dakikada) cevap vermedi | İnternet bağlantını kontrol et, sonra aynı hücreyi yeniden çalıştır; toplu üretim kaldığı yerden devam eder |
-| `İstek başarısız, durum kodu: 429` ve `Deneme ... olmadı` | Çok hızlı istek ya da günlük kota doldu | Bekle; üst üste geliyorsa hücreyi durdur. Kota 03:00'te (Türkiye saati) yenilenir; sonra aynı hücreyi çalıştır, kaldığı yerden devam eder |
-| Hücre uzun süre bitmiyor | `sabirli_ciz` bekliyor (başarısız her denemeden sonra 5 saniye) ya da 9–12 istek sürüyor | Bekle; mesajlara bak |
-| Hiçbir şey üretilmiyor, hepsi `Zaten var` | Görseller önceki bir çalıştırmadan var | Doğru davranış. `ozne`'yi değiştirdiysen `klasor`'u da değiştir; yoksa günlük eski görseli yeni yönergeyle kaydeder |
-| `TypeError: Object of type TextIOWrapper is not JSON serializable` | `json.dump`'a önce dosya, sonra liste verildi | Önce yazılacak şey: `json.dump(kartlar, dosya)` |
-| Günlükte `\u00e7` gibi kodlar | `ensure_ascii=False` yazılmamış | Ekle |
-| Kontak sayfasında kutular kaymış ya da `ValueError: num must be an integer with 1 <= num <= ...` | Listeler değişti ama kartlar yeniden kurulmadı | Isınma'dan itibaren sırayla yeniden çalıştır |
-| Kontak sayfasında boş kutular | O kartlar üretilemedi (sınır, kota ya da hata) | `toplu_uret`'i yeniden çalıştır; yalnızca eksikler üretilir |
-| `kontak_sayfasi.png` bembeyaz, ekrandaki sayfa doğru | `plt.savefig` satırı `plt.show()`'dan sonra yazılmış | Önce `savefig`, sonra `show` |
-| `NameError: name 'benim_secimim' is not defined` | Adım 6'nın son hücresi atlandı | O hücreyi çalıştır (kendi kazananının yoluyla) |
-| Bonus 2'de `NameError: name 'kazanan' is not defined` | `benim_secimim`'deki yol hiçbir kartın yoluna uymuyor | Yolu kontak sayfasındaki gibi, `izgara/` ve `.jpg` ile birlikte yaz |
-| `model_puani` `None` | Görsel anlayan modelin isteği başarısız | Üstteki `İstek başarısız, durum kodu` ya da `Bağlanamadım` satırına bak |
+| `ciz(yonerge, yol)` | Görseli üretir, `yol`a kaydeder; olmazsa nedenini yazar, `None` verir | yapay zekâ |
+| `sabirli_ciz(yonerge, yol)` | `ciz` gibi; olmazsa 5 sn bekleyip yeniden dener (en fazla 3 kez) | yapay zekâ |
+| `gonderi_yap(gorsel_yolu, baslik, bicim, yol)` | Görseli zemine yerleştirir, başlığı altına yazar; `bicim`: `"gonderi"` ya da `"hikaye"` | Python |
+| `onay_sayfasi(yollar, yol)` | Dosyaların küçük hâllerini adlarıyla tek sayfaya dizer | Python |
+| `gunluge_ekle(gunluk, gun, yonerge, dosya)` | Günlüğe saatiyle bir satır ekler | Python |
+| `goster(yol)` | Dosyayı defterde gösterir | Python |
 
----
+İlk denemede yönerge yalnızca sahne. `takvim[0]` listenin ilk satırı (Python saymaya 0'dan başlar).
+Konu 7'deki `ciz`'den farkı: tohum yok, çünkü bu konudaki model şu an tohum kabul etmiyor (Adım 2).
+
+**Başlığı neden modele yazdırmıyoruz?** Görsel modelleri harfleri de resim gibi çizer: kelimeyi bozar,
+ş, ğ, ı, İ gibi harfleri sık sık yanlış çizer, fontu sen seçemezsin. Müşteri başlığı değiştirirse görseli
+baştan üretmen gerekir. Tasarım programındaki **şablon** mantığı: görsel bir katman, yazı ayrı bir katman.
+Yazıyı Python koyunca harfler hep doğru; font (DejaVu Serif, `veri/DejaVuSerif.ttf`, serbest lisanslı,
+lisansı `veri/DejaVu_LISANS.txt`) ve renk hep kılavuzdaki gibi. Başlık şeridi gönderinin beşte biri
+(270 piksel): kılavuz yazının görselin en fazla beşte birini kaplamasını istiyor.
+
+## Adım 2 — Marka dili: stil cümlesi
+
+Haftalık set yan yana durduğunda bir aile gibi görünmeli: **marka dili**. Yapay zekâyı kendi hâline
+bırakırsan ortalama bir görsel verir; seti tutarlı yapan senin kararların. Arayüzlerde bunun için bir
+"stil referansı" görseli yüklersin; kodda karşılığı **stil cümlesi**: kılavuzu görsel modelinin anlayacağı
+dile çevirdiğin, her sahnenin sonuna eklenen sabit cümle. Kılavuzun "görsel modeli için özeti" gibi.
+
+```python
+STIL = "two-color risograph print illustration, deep ink blue and warm paper white"
+STIL = STIL + ", flat shapes, soft grain, plenty of empty space"
+STIL = STIL + ", no text, no letters, no faces"
+
+yonerge = pazartesi["sahne"] + ", " + STIL
+gorsel = ciz(yonerge, "ciktilar/Pazartesi_gorsel.jpg")
+gonderi = gonderi_yap(gorsel, pazartesi["baslik"], "gonderi", "ciktilar/Pazartesi_gonderi.jpg")
+gunluge_ekle("ciktilar/gunluk.csv", "Pazartesi", yonerge, gorsel)
+goster(gonderi)
+```
+
+Stil cümlesini üç satırda kuruyoruz; her satır kılavuzdan bir öbek: renk ve teknik; biçim, doku ve
+boşluk; yasaklar. `STIL + ", ..."` metnin sonuna ekler. `STIL` büyük harfle yazılmış: "defter boyunca
+değişmeyecek" demek, bir gelenek. Hangi kural tuttu, hangisi tutmadı? Tutmayanı daha açık yaz; ama bütün
+hafta bu cümleyle üretileceği için kararı şimdi ver.
+
+**Aynı yönerge, aynı görsel mi?** Hayır: tohum olmadığı için her seferinde başka görsel gelir. İki sonucu var:
+
+- Adım 1 ile 2 arasındaki farkın bir kısmı rastlantı; Konu 7'deki gibi tam bir kontrollü deney değil.
+  Ama renkler ve baskı tarzı stil cümlesinden gelir: **tutarlılığı stil cümlesi sağlar.**
+- Beğendiğin bir görseli yeniden üreterek geri alamazsın. Bu yüzden **dosyayı ve yönergeyi saklarız**:
+  `gunluge_ekle` her üretimi `ciktilar/gunluk.csv` dosyasına yazar. Bir hücreyi yeniden çalıştırırsan
+  aynı adlı dosyanın üstüne yeni bir görsel yazılır; beğendiysen dokunma.
+
+## Adım 3 — Bütün hafta
+
+```python
+for satir in takvim[1:]:
+    gun = satir["gun"]
+    yonerge = satir["sahne"] + ", " + STIL
+    gorsel = sabirli_ciz(yonerge, f"ciktilar/{gun}_gorsel.jpg")
+    gonderi_yap(gorsel, satir["baslik"], "gonderi", f"ciktilar/{gun}_gonderi.jpg")
+    gunluge_ekle("ciktilar/gunluk.csv", gun, yonerge, gorsel)
+    print(gun, "hazır")
+```
+
+Satır satır: günü al; yönergeyi kur (sahne + stil); görseli üret ve günün adıyla kaydet; gönderiyi yap; günlüğe yaz.
+
+- **`takvim[1:]`** bir dilim: 1 numaralı satırdan listenin sonuna kadar. 0 numaralı Pazartesi Adım 2'de
+  hazırlandı; döngü Salı'dan Cuma'ya gezer (4 istek). Konu 1'deki `kelimeler[:8]` de bir dilimdi: iki
+  noktanın solu başlangıç, sağı bitiş; boş bırakılan taraf "baştan" ya da "sona kadar" demek.
+- **Dosya adı günden geliyor** (`Çarşamba_gonderi.jpg`): her gün kendi dosyasına. Hepsine aynı adı
+  verseydin her tur bir öncekinin üstüne yazardı; elinde yalnızca Cuma kalırdı.
+- **`sabirli_ciz`**: isteklerden biri takılırsa set yarım kalmasın. Üç denemede de olmazsa `None` verir;
+  `gonderi_yap` o günü atlar ve söyler.
+
+**Üretim günlüğü** (`ciktilar/gunluk.csv`): her satırda zaman, gün, tam yönerge, dosya. Müşteri "şunu
+değiştir" dediğinde hangi görselin hangi yönergeyle üretildiğini ve yeni denemeye nereden başlayacağını
+buradan bilirsin. Günlükten satır silinmez, yalnızca eklenir; yeniden üretimler de kayda girer.
+
+## Adım 4 — Hikâyeler ve onay sayfası
+
+```python
+gonderiler = []
+hikayeler = []
+for satir in takvim:
+    gun = satir["gun"]
+    gorsel = f"ciktilar/{gun}_gorsel.jpg"
+    hikaye = gonderi_yap(gorsel, satir["baslik"], "hikaye", f"ciktilar/{gun}_hikaye.jpg")
+    gonderiler.append(f"ciktilar/{gun}_gonderi.jpg")
+    hikayeler.append(hikaye)
+```
+
+Bu hücrede `ciz` yok: **sıfır istek**. Hikâyede (1080 × 1920) görsel üstten 250 piksel aşağıda başlar,
+altta 320 piksel boş kalır. Telefonda hikâyenin üst şeridinde profil adı, alt şeridinde yanıt kutusu durur;
+başlık oraya düşerse okunmaz.
+
+```python
+tum_dosyalar = gonderiler + hikayeler
+onay_sayfasi(tum_dosyalar, "ciktilar/onay_sayfasi.jpg")
+goster("ciktilar/onay_sayfasi.jpg")
+```
+
+`gonderiler + hikayeler` iki listeyi uç uca ekler. Onay sayfası satır başına en fazla beş küçük resim
+dizer: üstte gönderiler, altta hikâyeler, her birinin altında dosya adı. Müşteri "Çarşamba_gonderi.jpg
+olmamış" diye adıyla söyleyebilir. Sayfanın tarihini de Python yazar.
+
+## Adım 5 — Hangi gün olmamış?
+
+Onay sayfasına müşteriden önce sen bak, kılavuzun gözüyle: yalnızca mürekkep mavisi ve kâğıt beyazı (en
+fazla küçük bir hardal vurgu), **kırmızı ve turuncu yok**, insan yüzü yok; bir de bizim kuralımız: görselde
+yazı yok. Stil cümlesi iki rengi söylese de model kendi alışkanlığına kayıp yasak bir rengi ekleyebilir:
+kendi hâline bırakılan yapay zekâ ortalamaya kayar, seçmek ve "bu olmamış" demek tasarımcının işi. Sorunlu
+gün herkeste başka; kendi onay sayfana bak. Hepsi uyuyorsa en zayıf bulduğun günü seç.
+
+Sonra yalnızca o günü yenileyen hücreyi kendin yazıyorsun. İhtiyacın olanlar:
+
+1. İlk satır seçtiğin gün: `gun = "Perşembe"` gibi, takvimdeki yazımla (Türkçe harfleriyle).
+2. O günün satırı: `takvim` içinde bir `for`, içinde `if satir["gun"] == gun:` ve `secilen = satir`.
+3. Yönerge Adım 3'teki gibi: `secilen["sahne"] + ", " + STIL`.
+4. **Yeni dosya adları**: `f"ciktilar/{gun}_gorsel_2.jpg"`, `_gonderi_2`, `_hikaye_2`. Eskisinin üstüne
+   yazma: yenisi başka bir yerden bozuk çıkabilir ve eskisini bir daha üretemezsin.
+5. Gönderi ve hikâye için iki `gonderi_yap`, günlük için bir `gunluge_ekle`, sonunda `goster`.
+
+Yasağı yönergeye de yazabilirsin (`... + STIL + ", no orange, no red"`). Bu modelde ayrı bir negatif
+yönerge alanı yok (Konu 7); yasak, yönergenin içinde bir istek: bazen işe yarar, bazen yaramaz, dene ve gör.
+Yönergeyi hiç değiştirmesen de yeni bir görsel gelir (aynı yönerge, başka görsel). Tek günü yenilemek bir
+istek; bütün hafta beş istek olurdu ve iyi olan günler de değişirdi.
+
+Sonraki hücre eskisini ve yenisini yan yana koyar. Yenisi uyduysa haftanın listelerinde o günün yerine
+yenisini yazıp (Salı için `gonderiler[1]` ve `hikayeler[1]`; Pazartesi 0) onay sayfasını yeniden kurarsın;
+uymadıysa bir deneme daha (`_3`). Eski dosya duruyor, günlükte de hangisinin nasıl üretildiği yazıyor.
+
+## Bonus — Kendi müşterin
+
+`veri/benim_takvimim.csv` dosyasında hayalî bir fotoğraf kulübünün üç günü var; satırları kendi müşterinle
+değiştir, `BENIM_STILIM` cümlesini yeniden yaz. Çıktılar ve günlük `ciktilar/benim/` içine. Kendi renklerin
+için: `gonderi_yap(..., zemin="#FFFFFF", renk="#222222")`.
+
+Kendi stil cümleni kurarken: önce müşterinin görsel dilini Türkçe üç-dört öbekle yaz (renk, teknik,
+doku, ne olmayacak), sonra her öbeği İngilizceye çevir. Yaşayan bir sanatçının adını stil olarak yazma
+(Konu 7): üslubun özelliklerini yaz.
+
+## Şeffaflık ve telif
+
+- Müşteriye görsellerin yapay zekâyla üretildiğini söyle; teklifte ya da sözleşmede yaz. Bazı müşteriler
+  sınır koyar (ör. "son işte üretilmiş insan görseli olmasın"). Günlük bunun kaydıdır.
+- Yapay zekâ çıktısının kime ait olduğu birçok ülkede hâlâ tartışmalı. Başka bir markanın logosunu,
+  ürününü ya da yaşayan bir sanatçının adını yönergeye koyma.
+
+## Sık hatalar
+
+| Ne gördün | Neden | Ne yap |
+|---|---|---|
+| `ModuleNotFoundError: No module named 'uretim'` | Defter `uretim.py` ile aynı klasörde değil | Defteri `08-koddan-toplu-uretim` içinde aç |
+| `FileNotFoundError: anahtar.txt bulunamadı` | Anahtar dosyası `gita3111` klasöründe değil | Konu 2'deki dosyayı oraya koy |
+| `KeyError: 'başlık'` | Sütunun adı `baslik` (Türkçe harfsiz) | Takvimin ilk satırındaki adı aynen yaz |
+| `KeyError: 'gun'` (kendi takviminde) | Excel'in gizli işareti ya da Türkçe Excel'in noktalı virgülü | `utf-8-sig` ile oku; takvimi VS Code'da ya da Google E-Tablolar'da hazırla (İndir → CSV) |
+| Klasörde tek gönderi var | Döngüde dosya adı sabit | Adı günden kur: `f"ciktilar/{gun}_gonderi.jpg"` |
+| Beğendiğin görsel gitti | Hücreyi yeniden çalıştırdın, aynı adlı dosyanın üstüne yazıldı | Yeni denemeyi yeni adla kaydet (`_2`) |
+| `Görsel gelmedi (durum kodu 429)` | Çok sık istek ya da günlük kota | Biraz bekle; olmazsa yarın |
+| `NameError: name 'STIL' is not defined` | Adım 2'nin hücresi çalışmadı | Yukarıdan sırayla çalıştır |
+| `NameError: name 'secilen' is not defined` (Adım 5) | `gun` takvimdekinden farklı yazıldı (`Sali`), `if` hiç tutmadı | Gün adını takvimdeki gibi yaz |
 
 ## Kendini dene
 
-Cevaplar notun en sonunda. Önce kendin düşün.
+1. Takvime Cumartesi eklenirse Adım 3'ün döngüsünde neyi değiştirmen gerekir?
+2. Müşteri bütün başlıkları değiştirdi, görseller kalsın dedi. Kaç istek gider?
+3. Stil cümlesinden `no text, no letters` öbeğini silersen ne olabilir? Neden riskli?
+4. Aynı yönergeyle iki kez üretirsen iki görsel neden farklı çıkar, ama neden yine de birbirine benzer?
+5. Onay sayfasında dosya adlarının yazması müşteriye ne kazandırır?
 
-1. 4 stil, 5 renk ve 3 tohum kaç görsel eder? Günlük ücretsiz kotanın ne kadarı?
-2. Bir arkadaşın kartların yolunu Konu 7'deki gibi sıra numarasıyla kurdu ve her çalıştırmada numara bir sonrakinden
-   devam ediyor. `toplu_uret`'i ikinci kez çalıştırınca ne olur?
-3. `if denenen >= sinir:` kontrolü neden görseli üretmeden önce yapılıyor?
-4. Adım 1'de aynı yola iki kez çizince ilk görsel kayboldu. Adım 4'te aynı şey neden olmuyor?
-5. Kontak sayfasında `linol` satırının dördü de kötü, `pastel` sütununda yalnızca biri kötü. Ne söyleyebilirsin?
-6. Model bir görsele 5 puan verdi, sen beğenmedin. Hangisine güvenirsin? Model neden yanılmış olabilir?
-7. Üretim günlüğünü neden JSON'a yazdık; düz bir metin dosyasına (`print` gibi) yazsak ne kaybederdik?
-
----
-
-## Bu konuda öğrendiklerin
-
-- **Aynı iş koddan.** `ciz(yonerge, tohum, yol)` görseli üretip senin seçtiğin yola kaydeder; yönerge parçaları
-  değişkende, istersen kullanıcıdan (`input`). Aynı yola ikinci kez yazılan dosya eskisinin üzerine yazılır.
-- **Kombinasyon.** İç içe döngü her stili her renkle eşler; sayı çarpılarak büyür.
-- **Şablon ve kart.** Kısa adlar (dosya için) ile uzun yönerge parçaları (model için) sözlükte eşlenir; her
-  kombinasyon bir kart (sözlük) olur, bütün kartlar bir liste.
-- **Sınır ve kota.** Döngüden önce hesap, sonra küçük bir deneme; sınır kotanın kazara tükenmesini önler.
-- **Sağlamlık ve kaldığı yerden devam.** `sabirli_ciz` bekleyip yeniden dener; kararlı yollar ve "zaten var mı?"
-  sorusuyla yalnızca eksikler üretilir.
-- **Günlük.** Kartlar JSON'a yazılır: her görselin nasıl üretildiği ve durumu (`uretildi`, `olmadi`, `denenmedi`) kayıtta.
-- **Kontak sayfası.** Bütün kombinasyonları tek sayfada görmek; satırlar ve sütunlar kontrollü deneyin iki ekseni.
-- **Çok kipli eleme (Bonus).** Görsel anlayan bir model ilk elemeyi yapar; kararı tasarımcı verir.
-
-## Bu konunun tek cümlesi
-
-> Bir şablon ve listelerle bir görsel ızgarasını tek seferde üretirsin; sınır koyar, kaldığı yerden devam eder,
-> her şeyi kayda geçirir ve hepsini bir kontak sayfasında yan yana değerlendirirsin.
+Cevaplar: (1) hiçbir şey; döngü tablodaki her satırı gezer. (2) sıfır; başlık Python'da. (3) model görsele
+harfe benzeyen lekeler ya da uydurma yazılar koyabilir; üstüne başlık binince kalabalık ve marka dışı
+görünür. (4) model her seferinde başka bir rastgele gürültüden başlar (tohum yok); ama yönerge ve stil
+cümlesi aynı olduğu için renk, teknik ve konu aynı kalır. (5) geri bildirim dosyanın adıyla gelir.
 
 ## Sözlükçe
 
 | Terim | Anlamı |
 |---|---|
-| **`ciz(yonerge, tohum, yol)`** | Görseli üretip `yol`a kaydeden hazır fonksiyon; başarısızsa `None` |
-| **Yol** | Dosyanın klasörüyle birlikte adı: `ciktilar/ilk.jpg` |
-| **Üzerine yazmak** | Var olan bir dosyanın yerine aynı adla yenisini kaydetmek; eskisi geri gelmez |
-| **`input`** | Kullanıcıya bir soru sorup yazdığını metin olarak almak |
-| **Kombinasyon** | İki ya da daha çok listenin her elemanının birbiriyle eşleşmesi: 3 × 4 = 12 |
-| **İç içe döngü** | Bir döngünün içinde başka bir döngü; içteki döngü, dıştakinin her turunda baştan sona döner |
-| **Şablon** | Sabit kısmı ve değişen boşlukları olan yönerge |
-| **Kart** | Bir kombinasyonun bütün bilgileri: stil, renk, yol, yönerge, tohum, model, durum (bir sözlük) |
-| **Izgara** | Satırları bir değişken, sütunları öbür değişken olan görsel düzeni |
-| **`continue` / `break`** | Döngüde sıradakine geç / döngüyü bitir |
-| **`os.path.exists(yol)`** | Bu yolda bir dosya var mı? `True` ya da `False` |
-| **Sabit (`MAKS_URETIM`)** | Değişmemesi gereken değer; büyük harfle yazılır |
-| **Neuron** | Cloudflare'in kota birimi; günde 10.000 ücretsiz, fiyat sayfasına göre bir görsel ~58 |
-| **Kaldığı yerden devam** | Var olan çıktıları atlayıp yalnızca eksikleri üretmek |
-| **`json.dump` / `json.load`** | Python listelerini ve sözlüklerini JSON dosyasına yazmak / dosyadan okumak |
-| **Kontak sayfası** | Bütün kombinasyonları tek görselde ızgara hâlinde gösteren sayfa |
-| **Çok kipli (multimodal)** | Metni ve görseli birlikte anlayan model |
+| **İçerik takvimi** | Hangi gün hangi başlıkla hangi görselin paylaşılacağını gösteren plan |
+| **Gönderi / hikâye** | Akışta kalan paylaşım (burada 4:5, 1080 × 1350) / 24 saatlik dikey paylaşım (9:16, 1080 × 1920) |
+| **Marka dili** | Bir markanın bütün işlerinde tekrar eden renk, teknik, ses ve düzen |
+| **Stil cümlesi** | Marka dilinin görsel modeline yazılmış, her yönergeye eklenen sabit hâli |
+| **Uyarlama** | Hazır bir görseli başka bir ölçüye ya da yerleşime koymak; kota yemez |
+| **Onay sayfası** | Müşterinin bütün seti tek bakışta görüp adıyla geri bildirim verdiği sayfa |
+| **Üretim günlüğü** | Her üretimin zamanını, yönergesini ve dosyasını tutan kayıt |
+| **Kota** | Ücretsiz hesabın günlük hakkı; yalnızca üretim (istek) harcar |
 
 ## Ödev
 
-`odevler/odev8.md` (puansız): kendi konunda bir ızgara üret (en az 2 stil × 3 renk, en fazla 12 görsel) ve `odev8/`
-klasörüne kaydet; kontak sayfasını ve üretim günlüğünü teslim et. Hangi kombinasyon kazandı, neden?
-Görsellerini sakla: Konu 9'da birini videoya çevireceğiz.
+`odevler/odev8.md`: kendi müşterin için 5 günlük takvim ve stil cümlesi → onay sayfası, takvim, günlük ve
+üç cümle "stil cümlemi nasıl kurdum". Seçenek: logo teslim paketi. Gösterim Konu 9'un başında.
 
 ## Sonraki konu
 
-**Konu 9 — Video, arayüzden.** Bugün bir şablonla bir ızgara ürettik. Konu 9'da görsele zaman ekliyoruz: videoyu
-bu kez kod yazmadan, bir arayüzde üreteceğiz. Bugünkü görsellerinden birini kısa bir videoya çevireceğiz. Video yavaş ve
-pahalı bir üretim; bugünkü "önce hesap" ve "her üretimi kayda geçir" alışkanlıkları orada da işe yarayacak.
-
----
-
-## Kendini dene — cevaplar
-
-1. 4 × 5 × 3 = 60 görsel; 60 × 58 ≈ 3.480 neuron, günlük kotanın üçte birinden fazla. Sınır koymadan ve her
-   çalıştırmada yeni adlar vererek aynı döngüyü yanlışlıkla iki kez çalıştırırsan 6.960 neuron harcarsın: kotanın
-   yaklaşık %70'i. Sınır ve "zaten var mı?" bu yüzden var.
-2. Her çalıştırmada numaralar değiştiği için hiçbir yol "zaten var" olmaz; bütün görseller **yeniden** üretilir ve kota
-   harcanır. Kaldığı yerden devam için yol kararlı olmalı: aynı kart, aynı yol.
-3. Sınır bir istek **gönderilmeden önce** bilinmeli: istek bir kez gitti mi kota harcanmıştır. Kontrol önce yapıldığı
-   için `sinir` 0 olsa hiç istek gitmez. Ayrıca sayaç "zaten var" kontrolünden sonra olduğu için atlanan kartlar sayılmaz.
-4. Çünkü `toplu_uret` çizmeden önce soruyor: "bu yolda dosya var mı?" Varsa hiç çizmiyor, atlıyor. Adım 1'de bu soruyu
-   soran yoktu; `ciz` yolu verilen yere körü körüne yazdı.
-5. Sorun büyük ihtimalle **stilde** (linol bu brif için uygun değil), renkte değil; `pastel` sütunundaki tek kötü
-   görsel o stil–renk eşleşmesine özgü. Kontrollü kurulum bu ayrımı mümkün kılıyor.
-6. Kendine. Model brifteki kelimeleri görseldeki nesnelerle (fincan, defter) eşliyor olabilir; ışığı, havayı,
-   markanın kimliğini senin gibi tartmaz. Model ilk eleme içindir, karar senindir.
-7. JSON'u program geri okuyabilir (`json.load`): hangi kartın hangi yönergeyle üretildiğini, tohumunu, durumunu bir
-   sonraki çalıştırmada kullanabilirsin. Düz metin yalnızca insan içindir; programın onu yeniden ayrıştırması zor.
+**Konu 9 — Gönderini hareketlendir.** Bu haftanın yazısız görsellerinden (`ciktilar/..._gorsel.jpg`)
+birini ücretsiz bir arayüzde 6 saniyelik dikey bir videoya çevireceğiz. Yazıyı ve logoyu yine sonradan biz ekleriz.

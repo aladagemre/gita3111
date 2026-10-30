@@ -1,63 +1,46 @@
-# Konu 9 — Video, Arayüzden
+# Konu 9 — Gönderini hareketlendir
 
-Bu konuda görsele zaman ekliyoruz: kısa video klipler. Videoyu **arayüzde** üreteceksin (Google Flow, ücretsiz günlük kredi):
-önce bir yönergeden, sonra Konu 8'de ürettiğin bir görselden. Defterde iki iş var: **maliyet** (aynı klip ücretli bir API'yle
-koddan üretilseydi kaça mal olurdu, süre ve çözünürlük bedeli nasıl değiştirirdi) ve **kayıt** (her klibin yönergesi ve
-ayarları bir JSON günlüğünde).
+Bu konuda Konu 8'de müşterin için hazırladığın bir gönderinin yazısız görselini, hikâye ve Reels için birkaç saniyelik
+dikey bir videoya çeviriyorsun: buhar yükselir, yağmur camdan süzülür, ışık kayar; ürün ve kompozisyon yerinde kalır. Videoyu
+ücretsiz bir arayüzde (Google Flow) üretiyor, yönergede neyin hareket edip neyin sabit kalacağını yazmayı öğreniyorsun. Yazıyı
+ve logoyu en sonda ücretsiz bir düzenleyicide ekliyor, müşteriye iki varyasyon ve bir öneriyle gidiyorsun. Bu konuda kod yok.
 
-Konu yarım oturum sürüyor: aynı oturumun ikinci yarısı Konu 10 (üretim hattı).
+Konu yarım oturum sürüyor: aynı oturumun ikinci yarısı Konu 10 (afiş matbaaya gitmeden son kontrol).
 
-| Klasör / dosya | Ne işe yarıyor |
+| Dosya | Ne işe yarıyor |
 |---|---|
-| `slaytlar.md` | Kavram slaytları; konunun başında gösterilir |
-| `ders.ipynb` | Derste birlikte çalıştıracağımız defter: Isınma, Adım 1–6 ve Bonus (Adım 1, 4 ve 5 arayüzde) |
-| `alistirma.ipynb` | Derste kendi başına çözeceğin defter: bozuk kodlar ve boşluklu sorular |
-| `ders_notu.md` | Konu notu — arayüz adımları, adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
-| `veri/yedek_fincan.jpg` | Konu 8'in görseli yoksa görselden video için kullanılan yedek görsel |
+| `slaytlar.md` | Kavram slaytları; dersin başında gösterilir |
+| `ders_notu.md` | Adım adım arayüz akışı, yönerge kalıbı, Sayfa Kahve için üç örnek yönerge, yazıyı ekleme, sık sorunlar, kendini dene |
+| `veri/yedek_fincan.jpg` | Konu 8 görselin yoksa videoya çevireceğin yedek görsel |
 | `odevler/odev9.md` | Bu konunun ödevi |
 
-İndirdiğin videoları bu klasörde `videolar/` içine koyarsın (`metinden.mp4`, `gorselden.mp4`); günlük `video_gunlugu.json`'a
-yazılır. Alıştırma defteri `alistirma_gunlugu.json`'u kullanır. Bunların hiçbiri depoya girmez.
+İndirdiğin videoları bu klasörde `videolar/` içine koy; bu klasör depoya girmez.
+
+## Ne gerekiyor?
+
+- Bilgisayarda Chrome ya da Edge ve kişisel bir Google hesabı (18 yaş ve üstü). Arayüz: `labs.google/fx/tools/flow`.
+  Dersten önce bir kez gir, kullanım şartlarını onayla.
+- Konu 8'deki yazısız görsellerin: `08-koddan-toplu-uretim/ciktilar/` (ödevdekiler `odev8/`) içinde adında `_gorsel`
+  geçen dosyalar (ör. `Perşembe_gorsel.jpg`, `Çarşamba_gorsel_2.jpg`). Yoksa bu klasördeki yedek görsel.
+- Yazıyı eklemek için Canva'nın ücretsiz sürümü (`canva.com`) ya da CapCut'ın ücretsiz sürümü.
+
+Kart bilgisi istenirse girme, abone olman istenirse abone olma; iki durumda da hocana yaz.
 
 ## Çalıştırma
 
-Yeni kütüphane yok. Yeni konuyu almak için **`gita3111` klasöründe** bir kez:
+Defter ve yeni kütüphane yok. Yeni konuyu almak için **`gita3111` klasöründe** bir kez:
 
 ```
 git pull
-uv sync
 ```
 
-Sonra:
-
-1. VS Code'da `ders.ipynb`'yi aç.
-2. Sağ üstten çekirdek (kernel) olarak **`.venv`**'i seç.
-3. Hücreleri yukarıdan aşağı, **Shift + Enter** ile sırayla çalıştır.
-
-Arayüz için bilgisayarda Chrome ya da Edge ile `labs.google/fx/tools/flow` adresini aç ve kişisel Google hesabınla gir
-(18 yaş ve üstü). Adımlar `ders_notu.md`'de.
+Sonra `ders_notu.md`'yi aç ve "1. Görselini seç" bölümünden başla.
 
 ## Anahtar gerekiyor mu?
 
-Hayır. İki defter de anahtar istemez, internete çıkmaz. Video arayüzde, kendi Google hesabının ücretsiz günlük kredisiyle
-üretilir (Google'ın kredi sayfasına göre aboneliği olmayan kullanıcıya da her gün 50 kredi; derste iki klip 22 kredi). Kart
-bilgisi istenirse girme, abone olman istenirse abone olma; iki durumda da hocaya yaz.
+Hayır. Video arayüzde, kendi Google hesabının ücretsiz günlük kredisiyle üretilir; bu konu Cloudflare kotanı hiç harcamaz.
 
 ## Güncel kalmak
 
-Yeni materyal geldiğinde `gita3111` klasöründe `git pull` çalıştır. Depodaki bir dosyayı
-değiştirmek istersen önce aynı klasörde **yeni bir adla kopyala**, kopyada çalış; böylece
-`git pull` hiç çakışmaz.
-
-## Defterin bölümleri
-
-| Bölüm | Ne yapılıyor | Nerede |
-|---|---|---|
-| Isınma | Bir klip kaç kare | defter |
-| Adım 1 | Metinden ilk klibi başlatmak; uzun süren iş | arayüz |
-| Adım 2 | Fiyat sözlüğü; 4K ile 1080p | defter |
-| Adım 3 | 20 saniyelik tanıtım: hangi ayar bedeli yarıya indirir | defter |
-| Adım 4 | Klibi izlemek, indirmek, değerlendirmek | arayüz |
-| Adım 5 | Görselden klip | arayüz |
-| Adım 6 | Video günlüğü ve "API'yle olsaydı" hesabı | defter |
-| Bonus | Ücretsiz krediyi planlamak; dikey video | defter, arayüz |
+Yeni materyal geldiğinde `gita3111` klasöründe `git pull` çalıştır. Depodaki bir dosyayı değiştirmek istersen önce aynı
+klasörde **yeni bir adla kopyala**, kopyada çalış; böylece `git pull` hiç çakışmaz.

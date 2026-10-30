@@ -1,68 +1,48 @@
-# Konu 12 Ödevi — Ajanına yeni bir yetenek
+# Konu 12 Ödevi — Kendi müşterin için bir asistan
 
-**Puan yok.** Konu 13'ün başında sıradaki arkadaşlar gösterecek. Ajan final projesi için **zorunlu değil**; bu ödev,
-projende kullanmak istersen elinde çalışan bir örnek olsun diye.
+**Puan yok.** Konu 13'ün başında birkaç arkadaşın gösterecek. Ajan final projesinde **isteğe bağlı bir ekstra**;
+küçük bir hafıza (RAG) adımı ise finalde zorunlu. Bu ödev, ajanı projende kullanmak istersen elinde çalışan bir örnek
+olsun diye.
 
-Bu ödev kendi `anahtar.txt` dosyanı ister (Konu 2). Bir ajan çalıştırması modele yaklaşık 2–4 istek gönderir; görsel
-çizen her araç çağrısı ayrıca bir görsel demek (fiyat sayfasına göre yaklaşık 58 neuron, Konu 8'deki hesap). Aşağıdaki
-adımların tamamı yaklaşık 20 model isteği ve en fazla 6 görsel; günlük ücretsiz kotanın beşte birinden az.
+Bu ödev kendi `anahtar.txt` dosyanı ister (Konu 2). Her ajanda `tool_call_limit` kullan; denemelerin kotanı
+tüketmesin.
 
 ---
 
 ## Ne yapacaksın?
 
-1. `ders.ipynb`'yi aynı klasörde yeni bir adla kopyala (ör. `odev12-ayse.ipynb`). Adım 1'in ve Adım 5'in bütün
-   hücrelerini, sonra Adım 6'nın ilk üç kod hücresini çalıştır (ajanı kurar, bir afiş çizer, `kararlari_goster`'i
-   tanımlar). Adım 2–4'ü atlayabilirsin.
-2. **Kendi aracın.** Defterin sonuna yeni bir hücre aç ve kendi tasarladığın bir araç yaz. Fikirler:
-   - `yasak_sozcuk_bul(metin: str) -> str`: alıştırmanın Ek sorusu 1; bir metinde kılavuzun yasakladığı sözcükleri bulur.
-   - `renk_kontrol(yonerge: str) -> str`: bir görsel yönergesinde kılavuzun yasakladığı renkler (`red`, `orange`) geçiyor mu?
-   - `slogan_yaz`'ın başka bir hâli: İngilizce slogan, iki satırlık açıklama, bir gönderi metni.
-   - Kendi final projene uygun bir araç.
+1. **Hazırlık.** `ders.ipynb`'yi aynı klasörde yeni bir adla kopyala (ör. `odev12-ayse.ipynb`). Isınma'yı, Adım 1'in
+   ilk kod hücresini ve kullanacağın araçların `def` hücrelerini (Adım 2–3) çalıştır.
+2. **Hafıza.** Konu 11'de kendi müşterin için yazdığın notları (her satır bir kural ya da not) bu klasörde
+   `ciktilar/hafiza.txt` dosyasına koy. Dosya derste Sayfa Kahve'nin notlarıyla açıldıysa içini kendi notlarınla
+   değiştir. `kurallara_bak` ve `hatirla` araçları bu dosyayı kullanır.
+3. **Araçlar.** Ajanın en az iki aracı olsun:
+   - biri Adım 2–3'teki araçlardan (`kurallara_bak` ya da `hatirla`; müşterinin hafızası için),
+   - biri **baştan sona senin yazdığın** yeni bir araç: kendi müşterinin işine yarayan, içi sıradan Python olan bir
+     fonksiyon ve tarifi. Fikirler: müşterinin yasak sözcüklerini bulan bir araç; teslim ölçülerini veren bir araç
+     (gönderi, hikâye, afiş); bir metnin karakter sayısını sosyal medya sınırına göre denetleyen bir araç.
 
-   Aracın üç parçası eksiksiz olsun: **tür ipuçları** (`: str`, `-> str`), **docstring** (ne yapar, içinde ne var, ne
-   zaman seçilmeli, bilgilere ne yazılmalı) ve **`return`** (modele giden sonuç). `tarifi_goster(araci_adi)` ile
-   modelin göreceği tarife bak.
-
-   Aracını ajanla çalıştırırken sarı bir `WARNING Could not run function ...` ve altında uzun, kırmızı bir yazı
-   görürsen hata aracının içinde: Agno hücreyi durdurmaz, hatayı modele aracın sonucu olarak gönderir. Kırmızı yazının
-   son satırındaki hatayı oku (ör. `NameError`), `def` hücresini düzelt, sonra araç listesini ve ajanı yeniden kur.
-3. **Ajan.** Aracını listeye ekleyip ajanı kur. Sınırı işin büyüklüğüne göre seç (ör. 4):
-   ```
-   araclar = [afis_ciz, fotograf_duzenle, kilavuzda_ara, senin_aracin]
-   ajan = Agent(model=model, tools=araclar, tool_call_limit=4, telemetry=False)
-   ```
-4. **Plan, sonra çalıştır.** En az **dört** istek yaz: en az biri senin aracını gerektirsin, en az biri iki ya da daha
-   çok aracı bir sırayla gerektirsin, en az biri bilerek muğlak olsun. Çalıştırmadan **önce** her istek için planını yaz
-   (Isınma'daki gibi: hangi araçlar, hangi sırayla). Sonra her isteği ayrı bir hücrede çalıştır:
-   ```
-   cevap = ajan.run("...")
-   kararlari_goster(cevap)
-   ```
-5. **Tarifi boz, düzelt.** Senin aracını gerektiren isteği seç. Aracının docstring'ini bilerek tek, tembel bir cümleye
-   indir; fonksiyonu, araç listesini ve ajanı yeniden kur; isteği yeniden çalıştır. Sonra tarifi düzelt ve bir kez daha
-   çalıştır. Üç sonucu (ilk, bozuk, düzeltilmiş) not et.
-6. **Kota.** Bir çalıştırma için Bonus 1'deki iki hücreyi çalıştır: kaç istek, kaç belirteç, yaklaşık kaç neuron?
-
-**İpucu (kotanı korumak için):** görsel çizdirmeden yalnızca kararları denemek istersen `afis_ciz`'in içini geçici
-olarak değiştir: `print` satırından sonra yalnızca `return "Prova: görsel çizilmedi."` kalsın, docstring aynı kalsın.
-Model aracın içini görmez: ilk seçimi yalnızca isteğe ve tariflere bağlıdır. Değişen tek şey araçtan dönen sonuç; bu
-yüzden sonraki adımlar farklı olabilir. Denemeler bitince aracı asıl hâline döndür.
+   Aracını ajana vermeden önce kendin bir kez çağır; sonra `tarifi_goster` ile modelin göreceği tarife bak.
+4. **İki istek.** Asistana kendi müşterinle ilgili iki gerçek istek ver; en az birinde senin aracın gereksin. Her
+   isteği çalıştırmadan **önce** planını yaz (hangi araçlar, hangi sırayla), sonra `kararlari_goster` ile ajanın
+   kararını oku.
+5. **Bir brif düzeltmesi.** Aracının adını ve tarifini bilerek belirsiz yap (derste olduğu gibi: `metne_bak`,
+   "Metne bakar."); araç listesini ve ajanı yeniden kurup aynı isteği çalıştır. Sonra adı ve tarifi düzelt, bir kez
+   daha çalıştır. Model aracı adından da tanır; yalnız tarifi bozarsan fark görmeyebilirsin.
 
 ---
 
 ## Teslim edeceğin
 
 1. Defterinin kopyası (`odev12-ayse.ipynb`), çıktılarıyla.
-2. Bir tablo: her istek, senin planın, modelin çağırdığı araçlar (sırayla).
+2. Bir tablo:
 
-   | İstek | Benim planım | Modelin kararı |
+   | İstek | Benim planım | Ajanın seçtiği araçlar (sırayla) |
    |---|---|---|
    | ... | ... | ... |
 
-3. Aracının üç tarifi (ilk, bozuk, düzeltilmiş) ve her biriyle model ne yaptı.
-4. **İki cümle:** Model nerede senin planından ayrıştı? Tarifte neyi değiştirdin ve işe yaradı mı?
-5. **Bir cümle:** Kendi final projende sırası baştan belli olmayan bir iş var mı, yoksa Konu 10'daki gibi bir hat yeter mi?
+3. Aracının iki hâli (belirsiz ad ve tarif / düzeltilmiş) ve her biriyle ajanın ne yaptığı, birer cümleyle.
+4. **Bir cümle:** Bu asistan kendi müşterinin hangi işini senden alabilir, hangi kararı yine sen vermelisin?
 
 `anahtar.txt`'yi **gönderme**; defterin içine de anahtar yazma.
 
@@ -70,6 +50,7 @@ yüzden sonraki adımlar farklı olabilir. Denemeler bitince aracı asıl hâlin
 
 ## İstersen (zorunlu değil)
 
-- Bonus'taki `instructions`'ı kendi aracın için dene: kuralı aracın tarifinden çıkarıp ajanın genel brifine yaz. Model
-  aynı kararı veriyor mu?
-- Sınırı bilerek 1 yap ve iki araç isteyen bir isteği çalıştır. `kararlari_goster` ve `cevap.content` ne diyor?
+- Bonus'taki yarışma takipçisini kendi alanına göre değiştir: şehrindeki staj ilanları, illüstrasyon yarışmaları.
+  Listedeki her bağlantıya tıkla, adı ve son tarihi sitesinden doğrula: model özetlerken uydurabilir. Kaçı gerçekten
+  var ve güncel çıktı?
+- Ajana bilerek `tool_call_limit=1` ver ve iki araç isteyen bir isteği çalıştır. Cevap neyi eksik bıraktı?

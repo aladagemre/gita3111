@@ -1,39 +1,24 @@
-# Konu 12'nin yardımcı dosyası: ajanın araçlarının içinde çalışacak hazır parçalar.
-# Araçların kendisini (modelin göreceği fonksiyonları) defterde sen yazıyorsun.
-#
-# ciz: Konu 8'deki fonksiyon. Yönerge, tohum ve dosya yolu alır; görseli o yola kaydeder (klasör yoksa açar).
-#   Başarılıysa yolu, başarısızsa None verir.
-# duzenle: var olan bir görseli yönergeye göre değiştirir (Konu 7'deki duzenle; bu kez tohumu ve kayıt yolunu da sen veriyorsun).
-#   Girdi dosyasının yolu, yönerge, tohum ve çıktı yolu alır; sonucu ciz gibi kaydeder, yolu ya da None verir.
-#   Girdi dosyası yoksa istek göndermez.
-# en_yakin_paragraflar: Konu 11'deki kilavuzda_ara'nın içindeki iş, aynı kodla. Kılavuzun paragraflarını bir kez
-#   vektöre çevirir ve Konu 11'deki gibi ciktilar/kilavuz_vektorleri.json dosyasına saklar (sonraki seferlerde oradan
-#   okur); sorunun vektörünü her paragrafla karşılaştırır, soruya en yakın `kac` paragrafı tek bir metin olarak verir.
-#   Konu 11'deki kilavuzda_ara'yı defterde araç olarak sen yazıyorsun; içinde bu fonksiyon çalışıyor.
-# modele_sor: Konu 5'te yazdığın fonksiyon (soru ve sıcaklık alır, cevabı metin olarak verir; başarısızsa None).
-# tarifi_goster: Agno'nun bir fonksiyondan kurup modele göndereceği araç tarifini ekrana yazar.
-# hesap, anahtar, basliklar, adres: anahtar.txt'den okunan bilgiler ve Konu 2'deki adres kalıbı.
-# timeout: cevap bu kadar saniyede gelmezse istek bırakılır; hücre sonsuza kadar asılı kalmaz.
+# Konu 12'nin yardımcı dosyası: araçların İÇİNDE çalışan hazır işler.
+# Araçların kendisini (modelin seçeceği fonksiyonları ve tariflerini) defterde sen yazıyorsun.
+# Konu 10'daki görsel okuma ve gün hesabı, Konu 11'deki hafıza burada kopya olarak duruyor; konular birbirini çağırmaz.
+# Hafıza sadeleştirildi: kural sayısı az olduğu için vektörler her aramada yeniden hesaplanır (tek istek).
 
 import base64
-import io
-import json
+import datetime
 import os
-from collections import Counter
 
 import requests
-from PIL import Image
 from sklearn.metrics.pairwise import cosine_similarity
 
-METIN_MODELI = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
-GORSEL_MODELI = "@cf/black-forest-labs/flux-1-schnell"
-DUZENLEYICI = "@cf/black-forest-labs/flux-2-klein-4b"
-VEKTOR_MODELI = "@cf/google/embeddinggemma-300m"
+AJAN_MODELI = "@cf/google/gemma-4-26b-a4b-it"      # hem ajanın beyni hem afişi okuyan göz
+VEKTOR_MODELI = "@cf/google/embeddinggemma-300m"   # Konu 11'deki gömme modeli
+HAFIZA = "ciktilar/hafiza.txt"                     # ilk kullanımda kılavuz + notlardan açılır; veri/ değişmez
+AYLAR = ["ocak", "subat", "mart", "nisan", "mayis", "haziran",
+         "temmuz", "agustos", "eylul", "ekim", "kasim", "aralik"]
+GUNLER = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"]
+SADE = str.maketrans("ışğüçö.,/-", "isguco    ", "̇")   # "Kasım" → "kasim", "14.11.2026" → "14 11 2026"
 
-KILAVUZ = "veri/kilavuz.txt"
-VEKTOR_DOSYASI = "ciktilar/kilavuz_vektorleri.json"
-
-
+# anahtar.txt'den hesap kimliğini ve anahtarı okur (Konu 2'deki dosya, bir üst klasörde)
 def anahtari_oku():
     anahtarlar = {}
     with open("../anahtar.txt", encoding="utf-8-sig") as dosya:
@@ -43,135 +28,115 @@ def anahtari_oku():
                 anahtarlar[parcalar[0].strip()] = parcalar[1].strip()
     return anahtarlar["ACCOUNT_ID"], anahtarlar["API_TOKEN"]
 
+# Ajanın modelini kurar. OpenAILike "OpenAI biçiminde konuşan" demek: istek Cloudflare'e gider, OpenAI hesabı gerekmez
+def model_kur():
+    from agno.models.openai.like import OpenAILike
+    hesap, anahtar = anahtari_oku()
+    adres = f"https://api.cloudflare.com/client/v4/accounts/{hesap}/ai/v1"
+    return OpenAILike(id=AJAN_MODELI, api_key=anahtar, base_url=adres)
 
-hesap, anahtar = anahtari_oku()
-basliklar = {"Authorization": f"Bearer {anahtar}"}
-
-
-def adres(model):
-    return f"https://api.cloudflare.com/client/v4/accounts/{hesap}/ai/run/{model}"
-
-
-def gonder(model, **istek):
-    # Bütün isteklerin ortak kısmı: gönder, ağ hatasını ve 200 dışı kodu yakala, "result" bölümünü ver (olmazsa None)
+# Cloudflare'e bir istek gönderir (Konu 2), cevabın "result" bölümünü verir; olmazsa nedenini yazar, None verir
+def cloudflare(model, govde):
+    hesap, anahtar = anahtari_oku()
+    adres = f"https://api.cloudflare.com/client/v4/accounts/{hesap}/ai/run/{model}"
     try:
-        cevap = requests.post(adres(model), headers=basliklar, timeout=120, **istek)
+        cevap = requests.post(adres, headers={"Authorization": f"Bearer {anahtar}"}, json=govde, timeout=120)
     except requests.exceptions.RequestException:
         print("Bağlanamadım ya da cevap gelmedi")
         return None
     if cevap.status_code != 200:
         print("İstek başarısız, durum kodu:", cevap.status_code)
         return None
-    yanit = cevap.json()
-    return yanit["result"]
+    return cevap.json()["result"]
 
-
-def gorseli_kaydet(sonuc, yol):
-    # Üretimde de düzenlemede de görsel, metne çevrilmiş (base64) olarak "image" alanında geliyor
+# Konu 10'daki görsel okuma: gemma-4 afişe bakar, yazıları gördüğü gibi ve renkleri yazar
+def gorseldeki_yazi(yol):
+    if not os.path.exists(yol):
+        return "Böyle bir dosya yok: " + yol
+    with open(yol, "rb") as dosya:
+        metin = base64.b64encode(dosya.read()).decode()
+    soru = ("Bu bir afiş. Üzerindeki bütün yazıları satır satır, gördüğün gibi yaz; yazım hatalarını düzeltme. "
+            "Sonra afişte kullanılan renkleri kısa bir liste olarak yaz: hangi yazı ya da şekil, hangi renk.")
+    icerik = [{"type": "text", "text": soru},
+              {"type": "image_url", "image_url": {"url": "data:image/jpeg;base64," + metin}}]
+    govde = {"messages": [{"role": "user", "content": icerik}], "temperature": 0, "max_completion_tokens": 2000}
+    sonuc = cloudflare(AJAN_MODELI, govde)
     if sonuc is None:
-        return None
-    resim = base64.b64decode(sonuc["image"])
-    klasor = os.path.dirname(yol)
-    if klasor != "":
-        os.makedirs(klasor, exist_ok=True)
-    with open(yol, "wb") as dosya:
-        dosya.write(resim)
-    return yol
+        return "Afişi okuyamadım: istek başarısız oldu."
+    return sonuc["choices"][0]["message"]["content"]
 
+# Konu 10'daki gün hesabı: "14 Kasım 2026" (ya da "14.11.2026") → "Cumartesi". Model takvimi tahmin eder, Python hesaplar.
+# Okuyamazsa Konu 10'daki gibi "?" değil, nasıl yazılacağını söyler: model tarihi düzeltip yeniden dener.
+def gun_adi(tarih):
+    parcalar = tarih.lower().translate(SADE).split()
+    while len(parcalar) > 0 and not parcalar[0].isdigit():     # "Cumartesi, 14 Kasım 2026": baştaki sözcüğü at
+        parcalar = parcalar[1:]
+    try:
+        gun, ay, yil = parcalar[:3]
+        if len(gun) == 4:                                       # "2026-11-14" biçimi
+            gun, yil = yil, gun
+        ay_no = int(ay) if ay.isdigit() else AYLAR.index(ay) + 1
+        return GUNLER[datetime.date(int(yil), ay_no, int(gun)).weekday()]
+    except ValueError:
+        return "Bu tarihi anlayamadım; '14 Kasım 2026' biçiminde yaz."
 
-def ciz(yonerge, tohum, yol):
-    sonuc = gonder(GORSEL_MODELI, json={"prompt": yonerge, "seed": tohum})
-    return gorseli_kaydet(sonuc, yol)
+# Bir metin dosyasının boş olmayan satırlarını liste olarak verir
+def satirlar(yol):
+    with open(yol, encoding="utf-8") as dosya:
+        return [satir.strip() for satir in dosya if satir.strip() != ""]
 
+# Müşteri hafızasını satır satır verir; dosya yoksa veri/kilavuz.txt ile veri/notlar.txt'yi birleştirip açar
+def hafizayi_oku():
+    if not os.path.exists(HAFIZA):
+        os.makedirs("ciktilar", exist_ok=True)
+        with open(HAFIZA, "w", encoding="utf-8") as dosya:
+            for satir in satirlar("veri/kilavuz.txt") + satirlar("veri/notlar.txt"):
+                dosya.write(satir + "\n")
+    return satirlar(HAFIZA)
 
-def duzenle(girdi_yolu, yonerge, tohum, yol):
-    if not os.path.exists(girdi_yolu):
-        print("Böyle bir dosya yok:", girdi_yolu)
-        return None
-    # Düzenleyici en fazla 512 x 512 piksel kabul ediyor: en-boy oranını koruyarak küçült, belleğe yaz
-    gorsel = Image.open(girdi_yolu).convert("RGB")
-    gorsel.thumbnail((512, 512))
-    tampon = io.BytesIO()
-    gorsel.save(tampon, "JPEG")
-    tampon.seek(0)
-    # Form gibi gönderiyoruz: yazı alanları data= ile (hepsi metin), dosya files= ile
-    alanlar = {"prompt": yonerge, "width": "512", "height": "512", "seed": str(tohum)}
-    dosyalar = {"input_image_0": ("girdi.jpg", tampon, "image/jpeg")}
-    sonuc = gonder(DUZENLEYICI, data=alanlar, files=dosyalar)
-    return gorseli_kaydet(sonuc, yol)
-
-
-def modele_sor(soru, sicaklik):
-    sonuc = gonder(METIN_MODELI, json={"prompt": soru, "temperature": sicaklik})
+# Konu 11'deki arama: hafızada soruya anlamca en yakın `kac` kuralı tek bir metin olarak verir
+def en_yakin_kurallar(soru, kac):
+    kurallar = hafizayi_oku()
+    sonuc = cloudflare(VEKTOR_MODELI, {"text": [soru] + kurallar})   # tek istek: önce soru, sonra bütün kurallar
     if sonuc is None:
-        return None
-    return sonuc["response"]
+        return "Hafızaya şu an ulaşılamadı."
+    vektorler = sonuc["data"]
+    skorlar = cosine_similarity([vektorler[0]], vektorler[1:])[0]
+    sirali = sorted(zip(skorlar, kurallar), reverse=True)
+    return "\n".join(kural for skor, kural in sirali[:kac])
 
+# Hafızanın sonuna bugünün tarihiyle yeni bir not ekler; ajana ne yazdığını geri söyler
+def hafizaya_ekle(metin):
+    hafizayi_oku()
+    satir = "Asistanın notu, " + datetime.date.today().strftime("%d.%m.%Y") + ": " + metin.replace("\n", " ").strip()
+    with open(HAFIZA, "a", encoding="utf-8") as dosya:
+        dosya.write(satir + "\n")
+    return "Not edildi: " + satir
 
-def vektorleri_al(metinler):
-    # Konu 11'deki vektorleri_al: bir metin listesini tek istekte gönderir, aynı sırayla vektörleri verir
-    sonuc = gonder(VEKTOR_MODELI, json={"text": metinler})
-    if sonuc is None:
-        return None
-    return sonuc["data"]
+# Ücretsiz web araması (ddgs paketi, anahtar istemez): ilk 5 sonucun başlığı, adresi ve kısa özeti
+def internette_ara(sorgu):
+    from ddgs import DDGS
+    try:
+        sonuclar = DDGS().text(sorgu, region="tr-tr", max_results=5)
+    except Exception:
+        return "Arama şu an yapılamadı ya da sonuç çıkmadı."
+    return "\n\n".join(s["title"] + "\n" + s["href"] + "\n" + s["body"] for s in sonuclar)
 
-
-def benzerlik(a, b):
-    # Konu 4'teki fonksiyon
-    sonuc = cosine_similarity([a], [b])
-    satir = sonuc[0]
-    return satir[0]
-
-
-def kilavuzu_hazirla():
-    # Konu 11'in Adım 2–3'ü: kılavuzun her satırı bir paragraf; vektörler bir kez istenir, ciktilar/ içine saklanır.
-    # Saklı dosyadaki paragraflar kılavuzdakilerle aynı değilse (kılavuz değiştiyse) vektörler yeniden istenir.
-    paragraflar = []
-    with open(KILAVUZ, encoding="utf-8") as dosya:
-        for satir in dosya:
-            paragraf = satir.strip()
-            if paragraf != "":
-                paragraflar.append(paragraf)
-    if os.path.exists(VEKTOR_DOSYASI):
-        with open(VEKTOR_DOSYASI, encoding="utf-8") as dosya:
-            kilavuz_vektorleri = json.load(dosya)
-        if list(kilavuz_vektorleri) == paragraflar:
-            return kilavuz_vektorleri
-    vektorler = vektorleri_al(paragraflar)
-    if vektorler is None:
-        return None
-    kilavuz_vektorleri = {}
-    sira = 0
-    for paragraf in paragraflar:
-        kilavuz_vektorleri[paragraf] = vektorler[sira]
-        sira = sira + 1
-    klasor = os.path.dirname(VEKTOR_DOSYASI)
-    os.makedirs(klasor, exist_ok=True)
-    with open(VEKTOR_DOSYASI, "w", encoding="utf-8") as dosya:
-        json.dump(kilavuz_vektorleri, dosya, ensure_ascii=False, indent=2)
-    return kilavuz_vektorleri
-
-
-def en_yakin_paragraflar(soru, kac):
-    # Konu 11'deki kilavuzda_ara'nın içi; tek fark, kaç paragraf geleceğini `kac` söylüyor
-    kilavuz_vektorleri = kilavuzu_hazirla()
-    soru_vektorleri = vektorleri_al([soru])
-    if kilavuz_vektorleri is None or soru_vektorleri is None:
-        return "Kılavuza şu an ulaşılamadı."
-    soru_vektoru = soru_vektorleri[0]
-    skorlar = {}
-    for paragraf in kilavuz_vektorleri:
-        vektor = kilavuz_vektorleri[paragraf]
-        skorlar[paragraf] = benzerlik(soru_vektoru, vektor)
-    sirali = Counter(skorlar)
-    bilgiler = ""
-    for paragraf, skor in sirali.most_common(kac):
-        bilgiler = bilgiler + paragraf + "\n"
-    return bilgiler
-
-
+# Agno'nun bu fonksiyondan kurup modele göndereceği tarif: aracın adı, tarifi (docstring) ve bilgileri
 def tarifi_goster(fonksiyon):
-    # Agno'nun bu fonksiyondan kuracağı araç tarifi: ad, açıklama (docstring) ve bilgiler (parametreler, tür ipuçları)
     from agno.tools.function import Function
     tarif = Function.from_callable(fonksiyon).to_dict()
-    print(json.dumps(tarif, ensure_ascii=False, indent=2))
+    print("Araç adı :", tarif["name"])
+    print("Tarifi   :", tarif["description"] or "(BOŞ: model bu aracın ne işe yaradığını bilemez)")
+    print("Bilgiler :", ", ".join(tarif["parameters"]["properties"]))
+
+# cevap.tools listesini sırayla yazar: aracın adı (tool_name), modelin verdiği bilgiler (tool_args), sonucun başı
+def kararlari_goster(cevap):
+    if cevap.status == "ERROR":
+        print("Ajan çalışamadı:", cevap.content)
+    elif not cevap.tools:
+        print("Ajan hiç araç kullanmadı; cevabı kendisi yazdı.")
+    else:
+        for sira, arac in enumerate(cevap.tools, start=1):
+            print(f"{sira}. {arac.tool_name}  {arac.tool_args}")
+            print("   sonuç:", str(arac.result)[:160].replace("\n", " / "))

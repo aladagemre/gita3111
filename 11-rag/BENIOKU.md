@@ -1,67 +1,42 @@
-# Konu 11 — RAG: Belgeye Dayalı Cevap
+# Konu 11 — Müşterinin söylediklerini unutmayan bir hafıza
 
-Dil modeli senin belgeni bilmez: müşterinin marka kılavuzu, ajansın brif arşivi onun eğitim verisinde yok. Bu konuda
-modele soru sormadan önce belgede soruya en yakın paragrafları bulup soruyla birlikte gönderiyoruz; model cevabı
-belgeye bakarak veriyor. Bu yöntemin adı **RAG** (İngilizce *retrieval-augmented generation*: "bulup getirerek üretmek").
-Örnek belge, sessiz çalışma kafemiz **Sayfa Kahve**'nin marka kılavuzu. Aynı soruyu kılavuzsuz ve kılavuzlu soruyor,
-cevabı kılavuzda olmayan bir soruda modelin "bilmiyorum" deyip demediğine bakıyor ve sonunda kılavuza göre bir afiş
-çizdiriyoruz.
+Müşterinin WhatsApp'tan, e-postayla, toplantıda söyledikleri ve jüride aldığın eleştiriler dağınık durur; yeni bir
+iş yaparken yarısı unutulur. Bu konuda Sayfa Kahve için bir **müşteri hafızası** kuruyorsun: marka kılavuzu ve
+notlar tek yerde, soruna anlamca en yakın notları bulan ve cevabını yalnız o notlara dayandıran bir yardımcı. Konu
+10'daki afişin metnini müşterinin kurallarına göre kontrol ettiriyor, sonra hafızaya yeni bir not ekleyip aynı
+sorunun cevabının değiştiğini görüyorsun. En sonda kendi müşterin için küçük bir hafıza kuruyorsun.
 
-| Klasör / dosya | Ne işe yarıyor |
+| Dosya | Ne işe yarıyor |
 |---|---|
-| `slaytlar.md` | Kavram slaytları; dersin başında gösterilir |
-| `ders.ipynb` | Derste birlikte çalıştıracağımız defter: Isınma, Adım 1–7 ve Bonus |
-| `alistirma.ipynb` | Derste kendi başına çözeceğin defter: bozuk kodlar, kod okuma ve boşluklu sorular (anahtar istemez, internete çıkmaz) |
-| `veri/kilavuz.txt` | Sayfa Kahve'nin marka kılavuzu: her satır bir paragraf, 14 paragraf |
-| `rag_araclari.py` | Yardımcı dosya: `vektor_al` (Konu 4), `vektorleri_al` (yeni), `modele_sor` (Konu 5) ve `ciz` (Konu 8) hazır |
+| `slaytlar.md` | Dersin başındaki slaytlar |
+| `ders.ipynb` | Birlikte çalıştırdığımız defter: Isınma, 4 adım, Bonus |
+| `alistirma.ipynb` | Kendi başına çözeceğin defter (anahtar istemez, internete çıkmaz) |
+| `ders_notu.md` | Adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
+| `rag_araclari.py` | Yardımcı dosya: `vektor_al`, `benzerlik` (Konu 4), `modele_sor` (Konu 5), `hafizayi_kur`, `hafizada_ara`, `not_ekle` |
+| `veri/kilavuz.txt` | Sayfa Kahve'nin marka kılavuzu: her satır bir kural |
+| `veri/notlar.txt` | Hafızanın notları: her satır `Kaynak, kanal, tarih: not`. Defter yeni notları bu dosyanın sonuna ekler |
+| `veri/afis_metni.txt` | Konu 10'daki afişin üstündeki yazılar |
 | `odevler/odev11.md` | Bu konunun ödevi |
-| `ders_notu.md` | Konu notu: adım adım açıklamalar, sık hatalar, kendini dene soruları, sözlükçe |
-
-Defterin çıktıları `ciktilar/` klasörüne yazılır: kılavuzun vektörleri (`kilavuz_vektorleri.json`) ve afişler
-(`afis_kilavuzlu.jpg`, Bonus'ta `afis_kilavuzsuz.jpg`). `ciktilar/` depoya girmez.
 
 ## Çalıştırma
 
-Yeni kütüphane yok. Yeni konuyu almak için **`gita3111` klasöründe** bir kez:
+Yeni kütüphane yok. Yeni konuyu almak için `gita3111` klasöründe:
 
 ```
 git pull
 uv sync
 ```
 
-Sonra:
+Sonra VS Code'da `ders.ipynb`'yi aç, sağ üstten çekirdek olarak **`.venv`**'i seç ve hücreleri yukarıdan aşağı
+**Shift + Enter** ile çalıştır. Defter `rag_araclari.py` ve `veri/` ile aynı klasörde durmalı.
 
-1. VS Code'da `ders.ipynb`'yi aç.
-2. Sağ üstten çekirdek (kernel) olarak **`.venv`**'i seç.
-3. Hücreleri yukarıdan aşağı, **Shift + Enter** ile sırayla çalıştır.
-
-Defterin kopyası `rag_araclari.py` ve `veri/` klasörüyle **aynı klasörde** durmalı; yoksa
-`ModuleNotFoundError: No module named 'rag_araclari'` ya da `FileNotFoundError: ... 'veri/kilavuz.txt'` alırsın.
+Defter, Adım 4'te `veri/notlar.txt`'nin sonuna not ekler; hafızanın büyümesi budur. Defteri ikinci kez çalıştırırsan
+aynı not bir kez daha eklenir: dosyayı aç, fazla satırı sil. Bir gün `git pull` bu dosya
+yüzünden "your local changes would be overwritten" derse eklediğin notları bir kenara kopyala, `gita3111`
+klasöründe `git checkout 11-rag/veri/notlar.txt` çalıştır, sonra yeniden `git pull`.
 
 ## Anahtar gerekiyor mu?
 
-Isınma anahtarsız; alıştırma defteri de. Adım 1'den sonrası `anahtar.txt` ister (bütün konular için tek dosya, `gita3111`
-klasöründe). Defterin tamamı (Bonus hariç) 5 vektör isteği, 4 metin isteği ve 1 görsel isteği gönderir; Bonus'un üç
-maddesi birer kez çalıştırılınca 3 vektör, 3 metin ve 1 görsel isteği daha gider. Kılavuzun vektörleri ilk çalıştırmada kaydedilir;
-defteri yeniden çalıştırdığında o istek gitmez. Hepsi ücretsiz günlük kotanın küçük bir kısmı. Anahtarın yoksa Adım 1'den
-sonrasını hocanın paylaştığı ekrandan izle.
-
-## Güncel kalmak
-
-Yeni materyal geldiğinde `gita3111` klasöründe `git pull` çalıştır. Depodaki bir dosyayı (defter ya da kılavuz) değiştirmek
-istersen önce aynı klasörde **yeni bir adla kopyala**, kopyada çalış; böylece `git pull` hiç çakışmaz.
-`veri/kilavuz.txt`'yi değiştirdiysen `ciktilar/kilavuz_vektorleri.json`'u da sil: vektörler eski kılavuzdan kalır.
-
-## Defterin bölümleri
-
-| Bölüm | Ne yapılıyor | Anahtar |
-|---|---|---|
-| Isınma | Elle vektörlerle RAG'in üç adımı, kâğıt üstünde | gerekmez |
-| Adım 1 | Hazır araçlar; kılavuzsuz soru: model Sayfa Kahve'yi tanıyor mu? | gerekir |
-| Adım 2 | Kılavuzu paragraflara bölmek | gerekmez |
-| Adım 3 | 14 paragrafı tek istekte vektöre çevirmek; vektörleri saklamak | gerekir (ilk çalıştırmada) |
-| Adım 4 | Soruya en yakın üç paragraf (sen yazarsın) | gerekir |
-| Adım 5 | Yönerge şablonu (sen yazarsın); kılavuzsuz ve kılavuzlu cevap | gerekir |
-| Adım 6 | `kilavuzda_ara` fonksiyonu; cevabı kılavuzda olmayan bir soru | gerekir |
-| Adım 7 | Kılavuzun görsel kuralları; görsel yönergesi; afiş | gerekir |
-| Bonus | Kılavuzsuz afiş; kaç paragraf alınmalı; yarım bilgi | gerekir |
+Isınma ve alıştırma defteri anahtarsız. Ders defterinde Adım 1'den sonrası `anahtar.txt` ister (Konu 2'deki dosya,
+`gita3111` klasöründe). Defterin tamamı 12 istek gönderir (10 vektör, 2 metin); Bonus 3 istek daha. Hepsi günlük
+ücretsiz kotanın küçük bir parçası. Anahtarın yoksa Adım 1'den sonrasını hocanın ekranından izle.
