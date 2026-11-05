@@ -49,6 +49,7 @@ Ahmet Emre Aladağ
 - **Aynı model + aynı yönerge + aynı tohum = aynı görsel**
 - Tohumu sabit tutmak deneyin şartı: bir şeyi değiştirdiğinde farkın gerçekten o değişiklikten geldiğinden emin olursun
 - Sohbet arayüzlerinin çoğu tohumu gizler; API'de ve profesyonel araçlarda sen seçersin
+- **Bugün:** kullandığımız servis `flux`'ta tohumu artık kabul etmiyor (Ekim 2026); `tohum=42` yok sayılıyor. Fark küçükse bir kez daha üret
 
 -----
 
@@ -94,7 +95,7 @@ Bir brif yazar gibi düşün: modele neyi, nasıl, hangi duyguyla istediğini an
 
 - Üç şeyi birden değiştirirsen sonuç değiştiğinde **hangisinin** etkilediğini bilemezsin
 - Bilimdeki deneyin aynısı: diğer her şeyi sabit tut, tek şeyi değiştir
-- Görselde: tohum sabit, özne sabit, ışık sabit; yalnızca **stil** değişsin
+- Görselde: özne sabit, ışık sabit (araç izin veriyorsa tohum da); yalnızca **stil** değişsin
 - Sonra stil sabit, yalnızca **ışık** değişsin
 - Sonuçları **yan yana** koy: bir stil panosu
 - Müşteriye seçenek sunarken de işe yarar: farkın nereden geldiği görünür
@@ -182,7 +183,7 @@ Ayrıntılar: `odevler/odev7.md`. Puan yok; Konu 8'in başında, Konu 6'nın öd
 ## Hatırlanacak beş şey
 
 1. **Difüzyon gürültüden başlar.** Görsel bir anda çıkmaz; her adımda biraz daha temizlenir
-2. **Tohum rastgeleliği sabitler.** Aynı model, yönerge ve tohum aynı görseli verir
+2. **Tohum rastgeleliği sabitler.** Tohumu kabul eden araçta aynı model, yönerge ve tohum aynı görseli verir
 3. **Yönerge bir tariftir.** Özne, ortam, stil, ışık, kompozisyon; uzun değil net
 4. **Bir seferde tek değişken.** Sonuçları yan yana koy ki farkın nereden geldiği görünsün
 5. **Model, tohum ve yönerge yazılır.** Etik ve telif belirsizliğinde şeffaflık senin sorumluluğun

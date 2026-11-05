@@ -656,6 +656,9 @@ basliklar = {"Authorization": f"Bearer {anahtar}"}
 def modele_sor(soru, sicaklik):
     govde = {"prompt": soru, "temperature": sicaklik, "repetition_penalty": 1.15, "frequency_penalty": 0.2}
     cevap = requests.post(adres, headers=basliklar, json=govde)
+    if cevap.status_code != 200:
+        print("Hata:", cevap.status_code, cevap.text)
+        return None
     yanit = cevap.json()
     sonuc = yanit["result"]
     return sonuc["response"]
@@ -670,7 +673,11 @@ def modele_sor(soru, sicaklik):
   yazmasını cezalandıran iki ayar. Bu model bunlar olmadan aynı cümleyi döngüye
   sokabiliyor; küçük birer ceza bunu önlüyor. Sıcaklık deneyinin konusu değiller,
   yalnızca cevapları okunur tutuyorlar.
-- Geri kalan dört satır Konu 2'nin aynısı.
+- `if cevap.status_code != 200:` Konu 2'nin Adım 5'indeki durum kodu kontrolü. İstek başarısızsa
+  kodu ve sunucunun mesajını (`cevap.text`) yazar; `return None` ile fonksiyondan cevapsız çıkar.
+  Böylece hata `KeyError` ya da `TypeError` gibi şifreli bir mesaja dönüşmeden önce görünür:
+  401 anahtar, 429 kota.
+- Geri kalan satırlar Konu 2'nin aynısı.
 
 Aynı soruyu üç sıcaklıkta soruyoruz. Tek bir slogan istiyoruz ki cevapları yan yana
 karşılaştırmak kolay olsun:
@@ -886,7 +893,8 @@ Python bir hata verdiğinde en alttaki satır en önemlisidir: önce hatanın **
 | `IndexError: Cannot choose from an empty sequence` | `sonraki_kelime_zarla` içindeki `if len(sonra_gelenler) == 0:` satırları yazılmamış; zar "kahveli"ye geldi | İki satırı ekle (Adım 5) |
 | Üretilen cümle aynı kelimeyi tekrarlıyor | Döngüde `kelime` güncellenmiyor | `kelime = sonraki_kelime(kelime)` |
 | `FileNotFoundError: ... '../anahtar.txt'` | Anahtar dosyası yok ya da yanlış yerde | Dosya `gita3111` klasöründe durmalı (Konu 2) |
-| `TypeError: 'NoneType' object is not subscriptable` (Adım 6–7) | İstek başarısız oldu; cevapta `result` boş (yanlış anahtar, kota) | `cevap` fonksiyonun içinde kalıyor. Durum kodunu görmek için `modele_sor`'da `requests.post` satırının altına geçici olarak `print(cevap.status_code)` ekle: 401 anahtar, 429 kota (Konu 2 Adım 5) |
+| `Hata: 401 ...` ya da `Hata: 429 ...`, ardından cevap yerine `None` (Adım 6–7) | İstek başarısız oldu; `modele_sor` hatayı yazıp `None` döndürdü | 401 anahtar (`anahtar.txt`'yi kontrol et), 429 kota (Konu 2 Adım 5) |
+| `TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'` (Adım 7) | Bir istek başarısız oldu; `metin` `None` olduğu için dosyaya yazılamadı | Çıktıda bu hatanın üstündeki `Hata:` satırına bak: 401 anahtar, 429 kota |
 | `requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.cloudflare.com', ...)` (Adım 6–7) | İnternet yok | İnternete bağlan; Adım 6–7 internetsiz çalışmaz |
 | `TypeError: can only concatenate str (not "float") to str` | Adım 7'de sıcaklık metne çevrilmeden eklendi | `str(sicaklik)` |
 
