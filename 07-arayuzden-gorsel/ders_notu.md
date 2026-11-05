@@ -32,7 +32,7 @@ klasöründe bir kez `uv sync` çalıştır.
 aynısı, `gita3111` klasöründe). Defterin tamamı yaklaşık 25 görsel üretir; Cloudflare'in
 ücretsiz günlük kotasının küçük bir kısmı. Kota her gün 03:00'te (Türkiye saati) yenilenir.
 
-> **Bu nottaki çıktılar hakkında.** Görseller her çalıştırmada (tohum vermediğinde) değişir
+> **Bu nottaki çıktılar hakkında.** Görseller her çalıştırmada değişir (bugün flux tohumu da yok sayıyor; Adım 2)
 > ve her modelde farklıdır; o yüzden notta görsel yok, **sorular** var. Kendi çıktına bak.
 
 ---
@@ -129,11 +129,18 @@ ikinci = ciz(yonerge, tohum=42, goster=False)
 yan_yana([birinci, ikinci], ["tohum 42", "yine tohum 42"])
 ```
 
-**Aynı model + aynı yönerge + aynı tohum = aynı görsel.** 42'nin özel bir anlamı yok;
-herhangi bir tam sayı olur. Önemli olan, deney boyunca **aynı** kalması.
+Yine iki farklı görsel geldiyse şaşırma: kullandığımız servis `flux` modelinde tohumu **artık
+kabul etmiyor** (Ekim 2026'da kaldırdı). `tohum=42` yazsak da araç bunu yok sayıp bir not yazıyor.
+Gerçek hayatta da olur: servisler bu ayarı gizleyebilir, kaldırabilir.
+
+Fikir yine geçerli: tohumu veren bir araçta **aynı model + aynı yönerge + aynı tohum = aynı
+görsel**. 42'nin özel bir anlamı yok; herhangi bir tam sayı olur. Önemli olan, deney boyunca
+**aynı** kalması.
 
 Bu, deney yapabilmenin şartı. Bir şeyi değiştirdiğimizde farkın o değişiklikten geldiğinden
-emin olmak için geri kalan her şeyi sabit tutarız. Bundan sonra hep `tohum=42`.
+emin olmak için geri kalan her şeyi sabit tutarız. Burada tohumu sabitleyemediğimiz için şunu
+akılda tutacağız: farkın bir kısmı gürültüden de gelebilir. Karşılaştırmada fark küçükse bir kez
+daha üretip bak. Kodda `tohum=42`'yi yine de bırakıyoruz; tohumu kabul eden bir modelde işe yarar.
 
 ---
 
@@ -153,9 +160,10 @@ yan_yana(yollar, ["1 adım", "2 adım", "4 adım", "8 adım"])
 
 - `yollar = []`: boş bir liste; her turda üretilen görselin yolunu ekliyoruz (`append`).
   Konu 2'de soruları listeden döngüyle sormuştuk; burada cevapları (görselleri) listeye topluyoruz.
-- Tohum sabit; yalnızca `adim` değişiyor. Kontrollü deneyin ilk örneği.
+- Kodda tohum sabit; yalnızca `adim` değişiyor. Kontrollü deneyin ilk örneği.
 - **Dikkat:** dört görsel aynı üretimin ara kareleri değil. Her biri baştan, farklı adım sayısıyla
-  üretildi. Aynı tohumla başladıkları için aynı gürültüden yola çıkıyorlar.
+  üretildi. Tohumu kabul eden bir modelde dördü de aynı gürültüden yola çıkardı; bugün flux tohumu
+  yok saydığı için her biri başka bir gürültüden başlıyor. Farkın bir kısmı oradan gelebilir.
 
 **Bak:** 1 adımla 8 adım arasındaki fark nerede: biçimde mi, renkte mi, ayrıntıda mı? Fark
 beklediğinden küçükse şaşırma: bu model (FLUX.1 schnell) az adımda bitirmek için özel olarak
@@ -170,7 +178,7 @@ Yönerge, temizlerken hangi yöne gideceğini söylüyor.
 
 Konu 6'nın diliyle: gürültü, haritada rastgele bir **başlangıç noktası**. Her adım bu noktayı
 yönergenin tarif ettiği bölgeye biraz kaydırıyor; en sonda çözücü noktadan görseli geri kuruyor.
-Tohum başlangıç noktasını belirlediği için aynı tohum aynı görseli veriyor.
+Tohum başlangıç noktasını belirlediği için, tohumu kabul eden bir modelde aynı tohum aynı görseli verir.
 
 ---
 
@@ -199,8 +207,9 @@ yan_yana(yollar, stiller, kaydet="stil_panosu.png")
 - Yan yana dizilmiş görseller bir **stil panosu**. `kaydet="stil_panosu.png"` panoyu bu klasöre bir görsel dosyası olarak da kaydeder. Ödevde
   kendi panonu böyle kaydedeceksin.
 
-**Bak:** tohum aynı olduğu için üç görselin kompozisyonu (fincanın yeri, açısı) birbirine
-benziyor mu? Benziyorsa stil değişikliği yalnızca "yüzeyi" değiştirmiş demektir.
+**Bak:** tohumu sabitleyemediğimiz için üç görsel yalnızca stilde mi ayrışıyor, yoksa kompozisyon
+(fincanın yeri, açısı) da değişiyor mu? Kompozisyon benziyorsa stil değişikliği yalnızca "yüzeyi"
+değiştirmiş demektir; o da değiştiyse farkın bir kısmı stilden değil, gürültüden geliyor.
 
 ### Yalnızca ışık değişsin
 
@@ -247,7 +256,7 @@ karıştırmış mı? Hangisinin olacağını sen belirleyemiyorsun. "8k, master
 da çoğu zaman bir şey katmaz.
 
 Senin denemende iddia tutmadıysa bu da bir bulgu: tek modelde, tek tohumla yapılan tek deney
-kesin hüküm vermez. Tohumu değiştirip tekrarla.
+kesin hüküm vermez. Tohumu değiştirip (bugün flux'ta hücreyi yeniden çalıştırıp) tekrarla.
 
 ---
 
@@ -424,7 +433,8 @@ Cevaplar notun en sonunda. Önce kendin düşün.
 - **Difüzyon.** Model rastgele bir gürültüden başlar, her adımda biraz temizler; yönerge yönü
   belirler. Çoğu modelde az adım kaba sonuç verir; bugünkü FLUX.1 schnell az adım için eğitildiği
   için fark küçük olabilir. Çok adım daha yavaş ve pahalı.
-- **Tohum.** Başlangıç gürültüsünü belirleyen sayı. Aynı model + yönerge + tohum = aynı görsel.
+- **Tohum.** Başlangıç gürültüsünü belirleyen sayı. Aynı model + yönerge + tohum = aynı görsel;
+  ama yalnızca tohumu kabul eden araçta (bugünkü flux tohumu yok sayıyor).
 - **Yönerge anatomisi.** Özne, ortam, stil, ışık, kompozisyon. Uzun değil net; çelişkisiz.
 - **Kontrollü deney.** Bir seferde tek değişken; sonuçları yan yana bir panoda karşılaştırmak.
 - **Dil.** Çoğu model İngilizce yönergede daha iyi; Türkçe yönergenin bazı parçaları kaybolabilir.
@@ -476,7 +486,8 @@ müşteriye tek bir onay sayfasıyla göndereceğiz.
 2. Söyleyemezsin: üç şey birden değişti. Önce tek birini değiştirip (ör. yalnızca ışık) aynı
    tohumla denemeliydin; sonra ötekileri tek tek.
 3. Fark adım sayısından mı, gürültüden mi geldi, ayırt etmek için. Tohum değişseydi her görsel
-   başka bir gürültüden başlardı; farkın adım sayısından geldiğini bilemezdik.
+   başka bir gürültüden başlardı; farkın adım sayısından geldiğini bilemezdik. Bugün flux tohumu
+   yok saydığı için tam olarak bu durumdayız; o yüzden fark küçükse bir kez daha üretip bakıyoruz.
 4. Bu kalıplar çoğu zaman bir şey katmıyor (Adım 5). Önce yönergeyi parçalarına ayır: özne,
    stil, ışık net mi, çelişen istek var mı? Sorunu bulmak için tek bir parçayı değiştirip dene.
 5. `sdxl` (en ve boy alan model), dikey: `en=576, boy=1024` (9:16). flux en ve boy almıyor.
