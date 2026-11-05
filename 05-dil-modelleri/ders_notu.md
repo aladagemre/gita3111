@@ -654,7 +654,7 @@ basliklar = {"Authorization": f"Bearer {anahtar}"}
 
 ```python
 def modele_sor(soru, sicaklik):
-    govde = {"prompt": soru, "temperature": sicaklik}
+    govde = {"prompt": soru, "temperature": sicaklik, "repetition_penalty": 1.15, "frequency_penalty": 0.2}
     cevap = requests.post(adres, headers=basliklar, json=govde)
     yanit = cevap.json()
     sonuc = yanit["result"]
@@ -666,6 +666,10 @@ def modele_sor(soru, sicaklik):
   `"temperature"`. `"sicaklik"` yazarsan sunucu bu alanı tanımaz.
 - Bu model 0 ile 5 arasında bir sıcaklık kabul ediyor; hiç yazmazsan 0.6 kullanıyor.
   (Konu 2'de sıcaklık vermediğimiz için cevaplar 0.6 ile üretiliyordu.)
+- `"repetition_penalty"` ve `"frequency_penalty"`: modelin aynı kelimeleri tekrar tekrar
+  yazmasını cezalandıran iki ayar. Bu model bunlar olmadan aynı cümleyi döngüye
+  sokabiliyor; küçük birer ceza bunu önlüyor. Sıcaklık deneyinin konusu değiller,
+  yalnızca cevapları okunur tutuyorlar.
 - Geri kalan dört satır Konu 2'nin aynısı.
 
 Aynı soruyu üç sıcaklıkta soruyoruz. Tek bir slogan istiyoruz ki cevapları yan yana
